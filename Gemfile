@@ -66,4 +66,5 @@ group :test do
   gem "selenium-webdriver"
 end
 
+gem "ruby-openai"
 gem "tailwindcss-rails", "~> 4.2"
