@@ -69,3 +69,5 @@ end
 gem "tailwindcss-rails", "~> 4.2"
 gem "mission_control-jobs"
 gem "oj"
+gem "ruby-openai"
+gem "tiktoken_ruby"
