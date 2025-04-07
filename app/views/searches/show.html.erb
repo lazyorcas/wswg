@@ -1,0 +1,20 @@
+<main class="w-full">
+  <h1 class="text-3xl font-bold text-neutral-800 mb-2">Where Should We Go?</h1>
+  <%= render "form", search: Event::Search.new(query: @search.query) %>
+  <% if @events.present? %>
+    <div class="mt-10">
+      <%= render "events", events: @events, search: @search %>
+    </div>
+  <% end %>
+  <% if flash.present? %>
+    <div class="mt-10">
+      <% flash.each do |key, message| %>
+        <%= tag.p message, class: class_names(
+          "px-4 py-2 rounded-md text-sm",
+          "bg-yellow-100 text-yellow-900": key == "warning",
+          "bg-blue-100 text-blue-900": key == "notice"
+        ) %>
+      <% end %>
+    </div>
+  <% end %>
+</main>

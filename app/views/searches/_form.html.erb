@@ -1,0 +1,8 @@
+<%= form_for search, url: searches_path, html: { class: "flex gap-x-4" } do |form| %>
+  <%= form.text_field :query,
+    placeholder: "Search for things to do (e.g., 'concerts this weekend under $50')",
+    class: "grow border border-neutral-300 rounded-2xl px-4 py-2 text-neutral-700",
+    required: true
+  %>
+  <%= form.submit "Submit", class: "shrink-0 bg-neutral-900 text-white rounded-2xl px-4 py-2 cursor-pointer" %>
+<% end %>

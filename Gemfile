@@ -58,6 +58,7 @@ group :development do
   # Use console on exceptions pages [https://github.com/rails/web-console]
   gem "web-console"
   gem "hotwire-spark"
+  gem "htmlbeautifier"
 end
 
 group :test do
@@ -71,3 +72,12 @@ gem "mission_control-jobs"
 gem "oj"
 gem "ruby-openai"
 gem "tiktoken_ruby"
+gem "httparty"
+gem "ferrum"
+gem "nokogiri"
+# gem "redcarpet"
+gem "searchkick"
+# gem "searchjoy"
+gem "opensearch-ruby"
+gem "view_component"
+gem "store_model"

@@ -1,0 +1,69 @@
+class Init < ActiveRecord::Migration[8.0]
+  def change
+    create_table :cities do |t|
+      t.string :name, null: false
+      t.string :slug, null: false, index: { unique: true }
+
+      t.timestamps
+    end
+
+    create_table :sources do |t|
+      t.string :name, null: false
+      t.string :homepage_url, null: false, index: { unique: true }
+
+      t.string :city_url_finder_class_name, null: false
+      t.string :city_events_finder_class_name, null: false
+
+      t.timestamps
+    end
+
+    create_table :city_sources do |t|
+      t.belongs_to :city, null: false, foreign_key: true
+      t.belongs_to :source, foreign_key: true
+
+      t.boolean :verified, index: true
+      t.string :url, null: false
+
+      t.string :city_events_finder_class_name
+
+      t.timestamps
+    end
+
+    create_table :events do |t|
+      t.belongs_to :city_source, null: false, foreign_key: true
+
+      t.string :uid, null: false
+      t.string :url, null: false
+
+      t.string :title, null: false
+      t.string :description, null: false
+
+      t.string :start_date, null: false
+      t.string :end_date, null: false
+      t.string :start_time, null: false
+      t.string :end_time, null: false
+      t.integer :price, null: false
+
+      t.jsonb :data, null: false
+
+      t.timestamps
+    end
+
+    create_table :searches do |t|
+      t.string :public_id, null: false, index: { unique: true }
+
+      t.string :query, null: false
+      t.integer :status, null: false, index: true
+
+      t.string :keywords
+      t.jsonb :conditions
+
+      t.jsonb :result
+
+      t.timestamps
+    end
+
+    add_index :city_sources, [ :city_id, :url ], unique: true
+    add_index :events, [ :city_source_id, :uid ], unique: true
+  end
+end
