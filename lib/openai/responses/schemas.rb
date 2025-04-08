@@ -41,7 +41,7 @@ class OpenAI::Responses::Schemas
       image_url: { type: "string" },
       location: {
         type: "string",
-        description: "Full address of the event if possible."
+        description: "Full address of the event. If not available, return an empty string. If the address only contains a city name, return an empty string."
       },
       start_date: {
         type: "string",
@@ -75,6 +75,11 @@ class OpenAI::Responses::Schemas
       date_range: {
         type: "object",
         properties: {
+          city: {
+            type: "string",
+            description: "City name. If not mentioned, return an empty string.",
+            enum: [ *City.pluck(:name), "" ]
+          },
           start_date: {
             type: "string",
             description: "Start date in YYYY-MM-DD format. If not mentioned, return an empty string."

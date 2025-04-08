@@ -1,15 +1,13 @@
-# TODO: this is too specific to event search - see "Rules" section.
-
-class OpenAI::Assistants::SearchQueryBuilder
-  INSTRUCTIONS = "You are a helpful assistant that builds search queries for a search engine."
+class OpenAI::Assistants::EventCurator
+  INSTRUCTIONS = "You are a helpful event curator that builds search queries for a search engine."
   INPUT_TEMPLATE = <<-TEXT
     Build a search query from the following user input.
 
-    ## Context
-    Today is #{Date.today.strftime("%Y-%m-%d")}.
-    Today is a #{Date.today.strftime("%A")}.
-    The current time is #{Time.now.strftime("%H:%M")}.
-    The current year is #{Date.today.year}.
+    ## User Context
+    The current date is %{current_date}.
+    The current day of the week is %{current_dow}.
+    The current time is %{current_time}.
+    The current year is %{current_year}.
 
     ## Facts
     - Monday is the first day of the week with index 0.
@@ -26,11 +24,8 @@ class OpenAI::Assistants::SearchQueryBuilder
     - It's possible to have a start date before the current date.
 
     ## Rules
-    - The keywords should exclude information related to date, time, and price.
+    - The keywords should exclude information related to date, time, price.
     - The keywords should exclude determiner words like "every", "all".
-
-    ## Notes
-    - It's possible that a date is not mentioned at all. Then, you can ignore the date related information.
 
     ## User Input
     %{text}
@@ -42,8 +37,8 @@ class OpenAI::Assistants::SearchQueryBuilder
     @input_template = INPUT_TEMPLATE
   end
 
-  def build_search_query(text, json_schema:)
-    input = build_input(text)
+  def build_search_query(text, json_schema:, time_zone:)
+    input = build_input(text, time_zone: time_zone)
     @openai_responses_client.ask(
       input: input,
       instructions: @instructions,
@@ -53,7 +48,16 @@ class OpenAI::Assistants::SearchQueryBuilder
 
   private
 
-  def build_input(text)
-    @input_template % { text: text }
+  def build_input(text, time_zone:)
+    today = Date.today.in_time_zone(time_zone)
+    now = Time.now.in_time_zone(time_zone)
+
+    @input_template % {
+      current_date: today.strftime("%Y-%m-%d"),
+      current_dow: today.strftime("%A"),
+      current_time: now.strftime("%H:%M"),
+      current_year: today.year,
+      text: text
+    }
   end
 end

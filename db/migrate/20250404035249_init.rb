@@ -3,6 +3,27 @@ class Init < ActiveRecord::Migration[8.0]
     create_table :cities do |t|
       t.string :name, null: false
       t.string :slug, null: false, index: { unique: true }
+      t.string :time_zone, null: false
+
+      t.timestamps
+    end
+
+    create_table :users do |t|
+      t.belongs_to :city, null: false, foreign_key: true
+
+      t.string :name, null: false
+      t.string :email, null: false, index: { unique: true }
+      t.boolean :admin, default: false
+
+      t.timestamps
+    end
+
+    create_table :locations do |t|
+      t.belongs_to :city, null: false, foreign_key: true, index: true
+
+      t.string :full_address, null: false, index: { unique: true }
+      t.float :latitude, null: false
+      t.float :longitude, null: false
 
       t.timestamps
     end
@@ -31,25 +52,29 @@ class Init < ActiveRecord::Migration[8.0]
 
     create_table :events do |t|
       t.belongs_to :city_source, null: false, foreign_key: true
+      t.belongs_to :location, foreign_key: true, index: true
 
       t.string :uid, null: false
       t.string :url, null: false
 
       t.string :title, null: false
       t.string :description, null: false
+      t.string :image_url, null: false
 
-      t.string :start_date, null: false
+      t.string :start_date, null: false, index: true
       t.string :end_date, null: false
       t.string :start_time, null: false
       t.string :end_time, null: false
       t.integer :price, null: false
 
-      t.jsonb :data, null: false
+      t.string :location_query
 
       t.timestamps
     end
 
     create_table :searches do |t|
+      t.belongs_to :user, foreign_key: true, index: true
+
       t.string :public_id, null: false, index: { unique: true }
 
       t.string :query, null: false

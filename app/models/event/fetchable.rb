@@ -9,7 +9,7 @@ module Event::Fetchable
     raise "No JSON found for #{url}" if json.blank?
 
     self.attributes = json.slice(*self.class.column_names)
-    self.data = json
+    self.location_query = json["location"].presence
 
     save!
   end

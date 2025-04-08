@@ -5,6 +5,8 @@ class Search < ApplicationRecord
     failed: -1
   }, default: :processing
 
+  belongs_to :user
+
   attribute :result, Search::Result.to_type
 
   validates :public_id, presence: true, uniqueness: true
@@ -37,7 +39,7 @@ class Search < ApplicationRecord
 
       self.conditions = build_conditions(query_object)
 
-      result = searchable_class.search(
+      result = searchable_model.search(
         self.keywords,
         where: self.conditions.deep_symbolize_keys,
         load: false
@@ -63,10 +65,10 @@ class Search < ApplicationRecord
   end
 
   def build_query_object
-    search_query_builder.build_search_query(query, json_schema: json_schema)
+    raise NotImplementedError
   end
 
-  def searchable_class
+  def searchable_model
     raise NotImplementedError
   end
 
@@ -76,13 +78,5 @@ class Search < ApplicationRecord
 
   def build_conditions(query_object)
     raise NotImplementedError
-  end
-
-  def json_schema
-    raise NotImplementedError
-  end
-
-  def search_query_builder
-    @search_query_builder ||= OpenAI::Assistants::SearchQueryBuilder.new
   end
 end

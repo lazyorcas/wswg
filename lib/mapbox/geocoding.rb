@@ -1,0 +1,56 @@
+class Mapbox::Geocoding
+  BASE_URL = "https://api.mapbox.com/search/geocode/v6"
+  HEADERS = {
+    "Content-Type": "application/json"
+  }
+
+  # https://docs.mapbox.com/api/search/geocoding/#batch-geocoding
+  BATCH_GEOCODING_URL = "#{BASE_URL}/batch"
+  MAX_BATCH_SIZE = 1000
+  def self.batch_lookup(queries)
+    results = []
+
+    queries.uniq.each_slice(MAX_BATCH_SIZE) do |batch|
+      url = build_url(BATCH_GEOCODING_URL)
+
+      body = batch.map do |q|
+        {
+          "types": [ "address" ],
+          "q": q
+        }
+      end
+
+      response = HTTParty.post(url, headers: HEADERS, body: body.to_json)
+      response_body = JSON.parse(response.body)
+
+      batch_results = batch.map.with_index do |address, index|
+        data = response_body["batch"][index]
+
+        if data["features"].present?
+          properties = data["features"].first["properties"]
+          {
+            full_address: properties["full_address"],
+            latitude: properties["coordinates"]["latitude"],
+            longitude: properties["coordinates"]["longitude"]
+          }
+        else
+          nil
+        end
+      end
+
+      results.concat(batch_results)
+    end
+
+    results
+  end
+
+  private
+
+  def self.build_url(path)
+    url = URI.parse(BATCH_GEOCODING_URL)
+    url.query = URI.encode_www_form(
+      access_token: ENV["MAPBOX_ACCESS_TOKEN"],
+    )
+    url.to_s
+  end
+end

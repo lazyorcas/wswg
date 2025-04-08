@@ -1,77 +1,17 @@
 # https://en.wikipedia.org/wiki/List_of_largest_cities
 
-CITY_NAMES = [
-  # # Asia & Pacific
-  # "Bangkok",
-  # "Bengaluru",
-  # "Dubai",
-  # "Ho Chi Minh City",
-  # "Hong Kong",
-  # "Jakarta",
-  # "Kuala Lumpur",
-  # "Manila",
-  # "Melbourne",
-  # "Mumbai",
-  # "New Delhi",
-  # "Seoul",
-  "Singapore"
-  # "Sydney",
-  # "Taipei",
-  # "Tokyo",
-  # # Africa
-  # "Lagos",
-  # "Nairobi",
-  # # Europe
-  # "Amsterdam",
-  # "Barcelona",
-  # "Berlin",
-  # "Brussels",
-  # "Copenhagen",
-  # "Geneva",
-  # "Helsinki",
-  # "Istanbul",
-  # "Lausanne",
-  # "Lisbon",
-  # "London",
-  # "Madrid",
-  # "Milan",
-  # "Munich",
-  # "Paris",
-  # "Stockholm",
-  # "Zurich",
-  # # North America
-  # "Atlanta",
-  # "Austin",
-  # "Boston",
-  # "Calgary",
-  # "Chicago",
-  # "Dallas",
-  # "Denver",
-  # "Houston",
-  # "Las Vegas",
-  # "Los Angeles",
-  # "Mexico City",
-  # "Miami",
-  # "Montréal",
-  # "New York",
-  # "Philadelphia",
-  # "Phoenix",
-  # "Portland",
-  # "Salt Lake City",
-  # "San Diego",
-  # "San Francisco",
-  # "Seattle",
-  # "Toronto",
-  # "Vancouver",
-  # "Washington DC",
-  # "Waterloo",
-  # # South America
-  # "Bogotá",
-  # "Buenos Aires",
-  # "Medellín",
-  # "São Paulo"
+CITIES = [
+  { name: "Singapore", time_zone: "Singapore" },
+  { name: "Barcelona", time_zone: "Madrid" },
+  { name: "Munich", time_zone: "Berlin" },
+  { name: "Berlin", time_zone: "Berlin" },
+  { name: "Tokyo", time_zone: "Tokyo" }
 ]
 
-CITY_NAMES.each do |city_name|
-  City.find_or_create_by!(name: city_name)
+CITIES.each do |city_attributes|
+  city = City.find_or_initialize_by(name: city_attributes[:name])
+  if city.new_record?
+    city.assign_attributes(city_attributes)
+    city.save!
+  end
 end

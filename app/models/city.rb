@@ -3,6 +3,9 @@ class City < ApplicationRecord
 
   validates :name, presence: true
   validates :slug, presence: true, uniqueness: true
+  validates :time_zone,
+    presence: true,
+    inclusion: { in: ActiveSupport::TimeZone.all.map(&:name) }
 
   before_validation :set_slug
 
