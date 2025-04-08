@@ -1,17 +1,19 @@
 class SearchesController < ApplicationController
+  before_action :require_user!
+
   def index
     build_search
   end
 
   def create
     build_search
-    if @search.save!
-      sleep(2)
+    @search.save!
 
-      redirect_to(search_path(id: @search.public_id))
-    else
-      redirect_to(searches_path, alert: "Failed to build query. Please try again.")
-    end
+    sleep(2)
+
+    redirect_to(search_path(id: @search.public_id))
+  rescue => e
+    redirect_to(searches_path, error: e.message)
   end
 
   def show
@@ -25,10 +27,10 @@ class SearchesController < ApplicationController
       end
 
     elsif @search.failed?
-      redirect_to(searches_path, alert: "Failed to build query. Please try again.")
+      flash.now[:error] = @search.result.error["message"]
 
     else
-      flash.now[:notice] = "Searching..."
+      flash.now[:info] = "Searching..."
     end
   end
 
@@ -50,7 +52,7 @@ class SearchesController < ApplicationController
   end
 
   def search_scope
-    Event::Search.all
+    Event::Search.where(user: current_user)
   end
 
   def search_params

@@ -62,7 +62,7 @@ CITY_SOURCES.each do |city_source_attributes|
 
   if city_source.new_record?
     city_source.assign_attributes(
-      url: source_attributes[:url],
+      url: city_source_attributes[:url],
       verified: true
     )
     city_source.save!

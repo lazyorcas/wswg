@@ -99,7 +99,7 @@ class OpenAI::Responses::Schemas
             description: "End time in HH:mm:ss format. If not mentioned, return an empty string."
           }
         },
-        required: [ "start_date", "start_time", "end_date", "end_time" ],
+        required: [ "city", "start_date", "start_time", "end_date", "end_time" ],
         additionalProperties: false
       },
       max_price: {

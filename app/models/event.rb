@@ -3,9 +3,7 @@ class Event < ApplicationRecord
   include Locatable
 
   scope :search_import, -> { includes(:city_source) }
-  searchkick \
-    searchable: [ "title", "description" ],
-    filterable: [ "start_date", "end_date", "start_time", "end_time", "price", "city_source.city_id" ]
+  searchkick
 
   belongs_to :city_source
 
@@ -21,4 +19,17 @@ class Event < ApplicationRecord
   validates :start_time, presence: true
   validates :end_time, presence: true
   validates :price, presence: true
+
+  def search_data
+    {
+      title: title,
+      description: description,
+      start_date: start_date,
+      end_date: end_date,
+      start_time: start_time,
+      end_time: end_time,
+      price: price,
+      city_id: city_source.city_id
+    }
+  end
 end

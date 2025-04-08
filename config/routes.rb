@@ -13,5 +13,8 @@ Rails.application.routes.draw do
   # Defines the root path route ("/")
   root "searches#index"
 
+  get "/login", to: "sessions#new"
+  get "/auth/:provider/callback", to: "sessions#create"
+
   resources :searches, only: [ :index, :create, :show ]
 end

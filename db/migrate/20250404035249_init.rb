@@ -18,6 +18,16 @@ class Init < ActiveRecord::Migration[8.0]
       t.timestamps
     end
 
+    create_table :accounts do |t|
+      t.belongs_to :user, null: false, foreign_key: true
+
+      t.string :provider, null: false
+      t.string :uid, null: false
+      t.jsonb :auth_hash, null: false
+
+      t.timestamps
+    end
+
     create_table :locations do |t|
       t.belongs_to :city, null: false, foreign_key: true, index: true
 
@@ -88,6 +98,7 @@ class Init < ActiveRecord::Migration[8.0]
       t.timestamps
     end
 
+    add_index :accounts, [ :provider, :uid ], unique: true
     add_index :city_sources, [ :city_id, :url ], unique: true
     add_index :events, [ :city_source_id, :uid ], unique: true
   end

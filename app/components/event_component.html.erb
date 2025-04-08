@@ -1,7 +1,7 @@
 <li class="bg-white hover:bg-neutral-200 transition ease-in-out rounded">
   <%= tag.a href: event.url, class: "size-full", target: "_blank" do %>
     <div class="size-full flex gap-x-2">
-      <%= image_tag event.data["image_url"], class: "w-12 h-12 object-cover rounded" %>
+      <%= image_tag event.image_url, class: "w-12 h-12 object-cover rounded" %>
       <div class="grow flex flex-col gap-y-2 justify-between">
         <div class="flex justify-between gap-x-2">
           <h2 class="text-sm font-semibold text-neutral-800 line-clamp-2">

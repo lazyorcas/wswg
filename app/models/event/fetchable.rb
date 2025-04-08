@@ -17,7 +17,7 @@ module Event::Fetchable
   private
 
   def json_schema
-    OpenAI::Responses::Schemas.event_schema(time_zone: city_source.city.timezone)
+    OpenAI::Responses::Schemas.event_schema(time_zone: city_source.city.time_zone)
   end
 
   def jina_reader

@@ -1,11 +1,4 @@
 class Event::Search < Search
-  def initialize
-    super
-    @json_schema = OpenAI::Responses::Schemas.event_search_query_schema
-    @event_curator ||= OpenAI::Assistants::EventCurator.new
-    @time_zone = user.city.timezone
-  end
-
   private
 
   def searchable_model
@@ -29,7 +22,7 @@ class Event::Search < Search
     city_id = City.find_by(name: query_object.dig("city"))&.id || user.city_id
 
     {
-      "city_source.city_id": city_id,
+      city_id: city_id,
       start_date: {
         gte: query_start_date,
         lte: query_object.dig("date_range", "end_date").presence
@@ -45,13 +38,25 @@ class Event::Search < Search
   end
 
   def today_iso8601
-    Date.today.in_time_zone(@time_zone).strftime("%Y-%m-%d")
+    Date.today.in_time_zone(time_zone).strftime("%Y-%m-%d")
   end
 
   def build_query_object
-    @event_curator.build_search_query(query,
-      json_schema: @json_schema,
-      time_zone: @time_zone
+    event_curator.build_search_query(query,
+      json_schema: json_schema,
+      time_zone: time_zone
     )
+  end
+
+  def json_schema
+    @json_schema ||= OpenAI::Responses::Schemas.event_search_query_schema
+  end
+
+  def event_curator
+    @event_curator ||= OpenAI::Assistants::EventCurator.new
+  end
+
+  def time_zone
+    @time_zone ||= user.city.time_zone
   end
 end
