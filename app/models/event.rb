@@ -23,6 +23,7 @@ class Event < ApplicationRecord
   validates :price, presence: true
 
   validate :start_date_is_today_or_future
+  validate :city_id_is_same_as_city_source
 
   before_update -> { self.location = nil }, if: :location_query_changed?
 
@@ -36,9 +37,9 @@ class Event < ApplicationRecord
     end
   end
 
-  def city_id_same_as_city_source_city_id
+  def city_id_is_same_as_city_source
     if city_id != city_source.city_id
-      errors.add(:city_id, "must be the same as the city_source's city_id")
+      errors.add(:city_id, "must be the same as the city_source's")
     end
   end
 end

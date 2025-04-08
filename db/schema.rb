@@ -39,6 +39,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_04_035249) do
     t.bigint "source_id"
     t.boolean "verified"
     t.string "url", null: false
+    t.string "icon_url"
     t.string "city_events_finder_class_name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -99,6 +100,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_04_035249) do
   create_table "sources", force: :cascade do |t|
     t.string "name", null: false
     t.string "homepage_url", null: false
+    t.string "icon_url", null: false
     t.string "city_url_finder_class_name", null: false
     t.string "city_events_finder_class_name", null: false
     t.datetime "created_at", null: false

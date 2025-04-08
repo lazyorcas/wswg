@@ -25,7 +25,6 @@ module Source::CityUrlFindable
     if city_source.new_record?
       url = find_city_url(city_id)
       city_source.url = url
-      city_source.city_events_finder_class_name = city_events_finder_class_name
       city_source.save!
     end
 

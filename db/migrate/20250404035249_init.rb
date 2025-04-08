@@ -41,6 +41,7 @@ class Init < ActiveRecord::Migration[8.0]
     create_table :sources do |t|
       t.string :name, null: false
       t.string :homepage_url, null: false, index: { unique: true }
+      t.string :icon_url, null: false
 
       t.string :city_url_finder_class_name, null: false
       t.string :city_events_finder_class_name, null: false
@@ -55,6 +56,7 @@ class Init < ActiveRecord::Migration[8.0]
       t.boolean :verified, index: true
       t.string :url, null: false
 
+      t.string :icon_url
       t.string :city_events_finder_class_name
 
       t.timestamps

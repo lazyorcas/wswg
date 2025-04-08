@@ -8,8 +8,4 @@ class User < ApplicationRecord
             presence: true,
             uniqueness: { case_sensitive: false },
             format: { with: URI::MailTo::EMAIL_REGEXP }
-
-  def require_authentication?
-    account.present? && account.token_expired?
-  end
 end
