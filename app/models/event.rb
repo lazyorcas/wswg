@@ -32,8 +32,8 @@ class Event < ApplicationRecord
   def start_date_is_today_or_future
     today = Date.today.in_time_zone(city.time_zone)
 
-    if start_date < today
-      errors.add(:start_date, "must be today or in the future")
+    if start_date < today.to_s
+      errors.add(:start_date, "(#{start_date}) must be today (#{today}) or in the future")
     end
   end
 

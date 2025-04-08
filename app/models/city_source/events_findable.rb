@@ -5,7 +5,7 @@ module CitySource::EventsFindable
       source.city_events_finder_class_name
     ).constantize
 
-    city_events_finder = city_events_finder_class.constantize.new
+    city_events_finder = city_events_finder_class.new
     events_attributes = city_events_finder.find_events(id)
 
     events_attributes.each do |event_attributes|
