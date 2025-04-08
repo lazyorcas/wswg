@@ -31,7 +31,7 @@ class OpenAI::Responses::Schemas
   #   })
   # end
 
-  def self.event_schema(time_zone:)
+  def self.event_schema(city_name:, time_zone:)
     current_year = Date.today.in_time_zone(time_zone).year
 
     build_schema("event", {
@@ -43,7 +43,7 @@ class OpenAI::Responses::Schemas
       image_url: { type: "string" },
       location: {
         type: "string",
-        description: "Full address of the event. If not available, return an empty string. If the address only contains a city name, return an empty string."
+        description: "Precise address of the event. If not mentioned, return an empty string. If the address only contains the city name \"#{city_name}\", return an empty string."
       },
       start_date: {
         type: "string",

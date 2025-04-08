@@ -23,7 +23,7 @@ class Mapbox::Geocoding
       response = HTTParty.post(url, headers: HEADERS, body: body.to_json)
       response_body = JSON.parse(response.body)
 
-      batch_results = batch.map.with_index do |address, index|
+      batch_results = batch.map.with_index do |_, index|
         data = response_body["batch"][index]
 
         if data["features"].present?

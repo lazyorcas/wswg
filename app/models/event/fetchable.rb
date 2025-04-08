@@ -9,7 +9,7 @@ module Event::Fetchable
     raise "No JSON found for #{url}" if json.blank?
 
     self.attributes = json.slice(*self.class.column_names)
-    self.location_query = json["location"].presence
+    self.location_query = json["location"].presence&.gsub(city_source.city.name, "")
 
     save!
   end
@@ -17,7 +17,10 @@ module Event::Fetchable
   private
 
   def json_schema
-    OpenAI::Responses::Schemas.event_schema(time_zone: city_source.city.time_zone)
+    OpenAI::Responses::Schemas.event_schema(
+      city_name: city_source.city.name,
+      time_zone: city_source.city.time_zone
+    )
   end
 
   def jina_reader

@@ -20,6 +20,8 @@ class Event < ApplicationRecord
   validates :end_time, presence: true
   validates :price, presence: true
 
+  before_update -> { self.location = nil }, if: :location_query_changed?
+
   def search_data
     {
       title: title,

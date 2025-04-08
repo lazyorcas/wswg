@@ -2,6 +2,9 @@ class OpenAI::Assistants::MarkdownExpert
   INSTRUCTIONS = "You are a helpful markdown expert.".freeze
   CONVERT_TO_JSON_INPUT_TEMPLATE = <<-TEXT
     Convert the following markdown to JSON.
+
+    ## Rules
+    - If a field is not explicitly mentioned in the markdown, return an empty string. Please do not assume it!
     ---
     %{markdown}
   TEXT
