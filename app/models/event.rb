@@ -20,6 +20,8 @@ class Event < ApplicationRecord
   validates :end_time, presence: true
   validates :price, presence: true
 
+  validate :start_date_is_today_or_future
+
   before_update -> { self.location = nil }, if: :location_query_changed?
 
   def search_data
@@ -33,5 +35,15 @@ class Event < ApplicationRecord
       price: price,
       city_id: city_source.city_id
     }
+  end
+
+  private
+
+  def start_date_is_today_or_future
+    errors.add(:start_date, "must be today or in the future") if start_date < today
+  end
+
+  def today
+    Date.today.in_time_zone(city_source.city.time_zone)
   end
 end
