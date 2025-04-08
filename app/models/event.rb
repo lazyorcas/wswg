@@ -2,8 +2,9 @@ class Event < ApplicationRecord
   include Fetchable
   include Locatable
 
-  scope :search_import, -> { includes(:city_source) }
-  searchkick
+  searchkick \
+    searchable: [ :title, :description ],
+    filterable: [ :start_date, :end_date, :start_time, :end_time, :price, :city_id ]
 
   belongs_to :city_source
 
@@ -24,26 +25,19 @@ class Event < ApplicationRecord
 
   before_update -> { self.location = nil }, if: :location_query_changed?
 
-  def search_data
-    {
-      title: title,
-      description: description,
-      start_date: start_date,
-      end_date: end_date,
-      start_time: start_time,
-      end_time: end_time,
-      price: price,
-      city_id: city_source.city_id
-    }
-  end
-
   private
 
   def start_date_is_today_or_future
-    errors.add(:start_date, "must be today or in the future") if start_date < today
+    today = Date.today.in_time_zone(city.time_zone)
+
+    if start_date < today
+      errors.add(:start_date, "must be today or in the future")
+    end
   end
 
-  def today
-    Date.today.in_time_zone(city_source.city.time_zone)
+  def city_id_same_as_city_source_city_id
+    if city_id != city_source.city_id
+      errors.add(:city_id, "must be the same as the city_source's city_id")
+    end
   end
 end

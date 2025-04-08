@@ -24,7 +24,7 @@ module Event::Locatable
         )
 
         if event.location.new_record?
-          event.location.city_id = event.city_source.city_id
+          event.location.city_id = event.city_id
           event.location.attributes = location_attributes
           event.location.save!
         end

@@ -5,6 +5,7 @@ module CitySource::EventsFindable
 
     events_attributes.each do |event_attributes|
       Event::CreateJob.perform_later(
+        city_id: city_id,
         city_source_id: id,
         uid: event_attributes[:uid],
         url: event_attributes[:url]

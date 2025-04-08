@@ -9,7 +9,7 @@ module Event::Fetchable
     raise "No JSON found for #{url}" if json.blank?
 
     self.attributes = json.slice(*self.class.column_names)
-    self.location_query = json["location"].presence&.gsub(city_source.city.name, "")
+    self.location_query = json["location"].presence&.gsub(city.name, "")
 
     save!
   end
@@ -18,8 +18,8 @@ module Event::Fetchable
 
   def json_schema
     OpenAI::Responses::Schemas.event_schema(
-      city_name: city_source.city.name,
-      time_zone: city_source.city.time_zone
+      city_name: city.name,
+      time_zone: city.time_zone
     )
   end
 
