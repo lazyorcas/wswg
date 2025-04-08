@@ -2,12 +2,10 @@ class Event < ApplicationRecord
   include Fetchable
   include Locatable
 
-  default_scope { where(start_date: { gte: Date.yesterday.to_s }) }
   scope :search_import, -> { includes(:city_source) }
-
   searchkick \
-    searchable: [ "title", "description", "city_source.city_id" ],
-    filterable: [ "start_date", "end_date", "start_time", "end_time", "price", "location_id" ]
+    searchable: [ "title", "description" ],
+    filterable: [ "start_date", "end_date", "start_time", "end_time", "price", "city_source.city_id" ]
 
   belongs_to :city_source
 
@@ -23,8 +21,4 @@ class Event < ApplicationRecord
   validates :start_time, presence: true
   validates :end_time, presence: true
   validates :price, presence: true
-
-  def should_index?
-    start_date >= Date.yesterday.to_s
-  end
 end

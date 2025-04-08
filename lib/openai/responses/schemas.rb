@@ -31,7 +31,9 @@ class OpenAI::Responses::Schemas
   #   })
   # end
 
-  def self.event_schema
+  def self.event_schema(time_zone:)
+    current_year = Date.today.in_time_zone(time_zone).year
+
     build_schema("event", {
       title: { type: "string" },
       description: {
@@ -45,7 +47,7 @@ class OpenAI::Responses::Schemas
       },
       start_date: {
         type: "string",
-        description: "Start date of the event in YYYY-MM-DD format. The current year is #{Date.today.year} if not mentioned."
+        description: "Start date of the event in YYYY-MM-DD format. The current year is #{current_year} if not mentioned."
       },
       start_time: {
         type: "string",
@@ -53,7 +55,7 @@ class OpenAI::Responses::Schemas
       },
       end_date: {
         type: "string",
-        description: "End date of the event in YYYY-MM-DD format. The current year is #{Date.today.year} if not mentioned."
+        description: "End date of the event in YYYY-MM-DD format. The current year is #{current_year} if not mentioned."
       },
       end_time: {
         type: "string",
