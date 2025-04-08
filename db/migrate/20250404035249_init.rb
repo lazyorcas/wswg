@@ -29,7 +29,7 @@ class Init < ActiveRecord::Migration[8.0]
     end
 
     create_table :locations do |t|
-      t.belongs_to :city, null: false, foreign_key: true, index: true
+      t.belongs_to :city, null: false, foreign_key: true
 
       t.string :full_address, null: false, index: { unique: true }
       t.float :latitude, null: false
@@ -61,8 +61,8 @@ class Init < ActiveRecord::Migration[8.0]
     end
 
     create_table :events do |t|
+      t.belongs_to :city, null: false, foreign_key: true, index: true
       t.belongs_to :city_source, null: false, foreign_key: true
-      t.belongs_to :location, foreign_key: true, index: true
 
       t.string :uid, null: false
       t.string :url, null: false
@@ -71,12 +71,13 @@ class Init < ActiveRecord::Migration[8.0]
       t.string :description, null: false
       t.string :image_url, null: false
 
-      t.string :start_date, null: false, index: true
+      t.string :start_date, null: false
       t.string :end_date, null: false
       t.string :start_time, null: false
       t.string :end_time, null: false
       t.integer :price, null: false
 
+      t.belongs_to :location, foreign_key: true
       t.string :location_query
 
       t.timestamps
@@ -88,7 +89,7 @@ class Init < ActiveRecord::Migration[8.0]
       t.string :public_id, null: false, index: { unique: true }
 
       t.string :query, null: false
-      t.integer :status, null: false, index: true
+      t.integer :status, null: false
 
       t.string :keywords
       t.jsonb :conditions

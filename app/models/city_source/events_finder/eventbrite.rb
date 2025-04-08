@@ -6,7 +6,7 @@ class CitySource::EventsFinder::Eventbrite < CitySource::EventsFinder::Base
       url = link.attribute("href")
 
       @events << {
-        uid: url.split("/").last.split("-").last,
+        uid: url.split("?").first.split("/").last.split("-").last,
         url: url
       }
     end

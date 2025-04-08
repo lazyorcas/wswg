@@ -1,6 +1,8 @@
 class Event::CreateJob < ApplicationJob
   queue_as :default
 
+  retry_on Net::ReadTimeout, wait: 10.seconds, attempts: 3
+
   def perform(city_id:, city_source_id:, uid:, url:)
     event = Event.find_or_initialize_by(
       city_source_id: city_source_id,

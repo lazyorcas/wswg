@@ -8,13 +8,16 @@ class CitySource < ApplicationRecord
   validates :url, presence: true
   validates :city_events_finder_class_name,
     presence: true,
-    inclusion: { in: CitySource::EventsFinder::ALL.map(&:name) },
-    if: -> { source.nil? }
+    inclusion: { in: CitySource::EventsFinder::ALL.map(&:name) }
 
 
   after_commit :queue_verify, on: :create, if: -> { verified.nil? }
 
-  def city_events_finder_class_name
-    (super || source.city_events_finder_class_name)
+  private
+
+  def validate_city_events_finder_class_name
+    if source.present? && city_events_finder_class_name != source.city_events_finder_class_name
+      errors.add(:city_events_finder_class_name, "must be the same as the source's city_events_finder_class_name")
+    end
   end
 end

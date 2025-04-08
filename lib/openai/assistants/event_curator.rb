@@ -24,8 +24,9 @@ class OpenAI::Assistants::EventCurator
     - It's possible to have a start date before the current date.
 
     ## Rules
-    - The keywords should exclude information related to date, time, price.
+    - The keywords should exclude information related to date, time, price (including "free").
     - The keywords should exclude determiner words like "every", "all".
+    - The keywords should exclude adjectives.
 
     ## User Input
     %{text}

@@ -49,8 +49,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_04_035249) do
   end
 
   create_table "events", force: :cascade do |t|
+    t.bigint "city_id", null: false
     t.bigint "city_source_id", null: false
-    t.bigint "location_id"
     t.string "uid", null: false
     t.string "url", null: false
     t.string "title", null: false
@@ -61,13 +61,14 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_04_035249) do
     t.string "start_time", null: false
     t.string "end_time", null: false
     t.integer "price", null: false
+    t.bigint "location_id"
     t.string "location_query"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["city_id"], name: "index_events_on_city_id"
     t.index ["city_source_id", "uid"], name: "index_events_on_city_source_id_and_uid", unique: true
     t.index ["city_source_id"], name: "index_events_on_city_source_id"
     t.index ["location_id"], name: "index_events_on_location_id"
-    t.index ["start_date"], name: "index_events_on_start_date"
   end
 
   create_table "locations", force: :cascade do |t|
@@ -92,7 +93,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_04_035249) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["public_id"], name: "index_searches_on_public_id", unique: true
-    t.index ["status"], name: "index_searches_on_status"
     t.index ["user_id"], name: "index_searches_on_user_id"
   end
 
@@ -120,6 +120,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_04_035249) do
   add_foreign_key "accounts", "users"
   add_foreign_key "city_sources", "cities"
   add_foreign_key "city_sources", "sources"
+  add_foreign_key "events", "cities"
   add_foreign_key "events", "city_sources"
   add_foreign_key "events", "locations"
   add_foreign_key "locations", "cities"

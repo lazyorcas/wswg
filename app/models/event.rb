@@ -7,6 +7,7 @@ class Event < ApplicationRecord
     filterable: [ :start_date, :end_date, :start_time, :end_time, :price, :city_id ]
 
   belongs_to :city_source
+  belongs_to :city
 
   validates :uid, uniqueness: { scope: :city_source_id }
   validates :url, presence: true

@@ -3,7 +3,8 @@ class CitySourceAttributesBuilder
     {
       city_name: city_name,
       source_name: "Eventbrite",
-      url: "https://www.eventbrite.com/d/#{city_param}/all-events/"
+      url: "https://www.eventbrite.com/d/#{city_param}/all-events/",
+      city_events_finder_class_name: "CitySource::EventsFinder::Eventbrite"
     }
   end
 
@@ -11,7 +12,8 @@ class CitySourceAttributesBuilder
     {
       city_name: city_name,
       source_name: "Luma",
-      url: "https://lu.ma/#{city_param}"
+      url: "https://lu.ma/#{city_param}",
+      city_events_finder_class_name: "CitySource::EventsFinder::Luma"
     }
   end
 
@@ -19,7 +21,8 @@ class CitySourceAttributesBuilder
     {
       city_name: city_name,
       source_name: "Meetup",
-      url: "https://www.meetup.com/find/?location=#{city_param}&eventType=inPerson&source=EVENTS&sortField=DATETIME"
+      url: "https://www.meetup.com/find/?location=#{city_param}&eventType=inPerson&source=EVENTS&sortField=DATETIME",
+      city_events_finder_class_name: "CitySource::EventsFinder::Meetup"
     }
   end
 end
@@ -63,6 +66,7 @@ CITY_SOURCES.each do |city_source_attributes|
   if city_source.new_record?
     city_source.assign_attributes(
       url: city_source_attributes[:url],
+      city_events_finder_class_name: city_source_attributes[:city_events_finder_class_name],
       verified: true
     )
     city_source.save!

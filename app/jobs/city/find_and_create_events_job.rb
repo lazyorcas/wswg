@@ -1,7 +1,7 @@
 class City::FindAndCreateEventsJob < ApplicationJob
   queue_as :default
 
-  def perform(city_id:)
+  def perform(city_id)
     city = City.find(city_id)
 
     city.city_sources.find_each do |city_source|
