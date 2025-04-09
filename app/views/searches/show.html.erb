@@ -2,7 +2,7 @@
   <%= javascript_include_tag "https://api.mapbox.com/mapbox-gl-js/v3.11.0/mapbox-gl.js" %>
   <%= stylesheet_link_tag "https://api.mapbox.com/mapbox-gl-js/v3.11.0/mapbox-gl.css" %>
 <% end %>
-<main class="w-full max-h-dvh flex">
+<main class="w-full h-dvh max-h-dvh flex">
   <section class="overflow-y-scroll" style="width: 512px;">
     <% if @events.present? %>
       <div class="p-4">
