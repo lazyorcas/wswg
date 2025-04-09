@@ -6,6 +6,7 @@ module Event::Locatable
 
     scope :with_location_query, -> { where.not(location_query: nil) }
     scope :locatable, -> { where.missing(:location).with_location_query }
+    scope :located, -> { where.not(location: nil) }
   end
 
   class_methods do

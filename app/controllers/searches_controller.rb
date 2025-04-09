@@ -24,30 +24,17 @@ class SearchesController < ApplicationController
 
       respond_to do |format|
         format.html do
-          if @events.empty?
+          if @events.present?
+            load_center_location
+            load_info_window_html_template
+          else
             flash.now[:warning] = "Nothing found. Please try other search terms."
           end
         end
 
         format.geojson do
-          render json: {
-            type: "FeatureCollection",
-            features: @events.map do |event|
-              next unless event.location.present?
-
-              {
-                type: "Feature",
-                properties: {
-                  title: event.title,
-                  html: render_to_string(partial: "events/info_window", formats: [ :html ], locals: { event: event }, layout: false)
-                },
-                geometry: {
-                  type: "Point",
-                  coordinates: [ event.location.longitude, event.location.latitude ]
-                }
-              }
-            end.compact
-          }
+          load_located_events
+          render template: "searches/show"
         end
       end
     elsif @search.failed?
@@ -72,6 +59,23 @@ class SearchesController < ApplicationController
     @events = Event
       .where(id: @search.result.ids)
       .order(start_date: :asc, start_time: :asc)
+      .includes(:location)
+  end
+
+  def load_located_events
+    @located_events = @events.located
+  end
+
+  def load_center_location
+    @center_location = @events.map(&:location).compact.first
+  end
+
+  def load_info_window_html_template
+    @info_window_html_template = render_to_string(
+      partial: "maps/events/info_window",
+      formats: [ :html ],
+      layout: false
+    )
   end
 
   def search_scope

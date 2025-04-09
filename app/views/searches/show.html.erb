@@ -7,7 +7,11 @@
   <%= render "form", search: Event::Search.new(query: @search.query) %>
   <% if @events.present? %>
     <div class="mt-10">
-      <%= render "events/map", events: @events %>
+      <%= render "maps/map", 
+        source_url: search_path(id: @search.public_id, format: :geojson),
+        center_coordinates: [@center_location.longitude, @center_location.latitude],
+        info_window_html_template: @info_window_html_template
+      %>
     </div>
     <div class="mt-10">
       <%= render "events", events: @events, search: @search %>

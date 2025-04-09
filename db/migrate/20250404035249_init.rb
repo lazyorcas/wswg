@@ -79,7 +79,7 @@ class Init < ActiveRecord::Migration[8.0]
       t.string :end_time, null: false
       t.integer :price, null: false
 
-      t.belongs_to :location, foreign_key: true
+      t.belongs_to :location, foreign_key: true, index: true
       t.string :location_query
 
       t.timestamps

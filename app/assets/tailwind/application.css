@@ -18,6 +18,11 @@
     @apply bg-red-100 text-red-900;
   }
 
+  .map-container {
+    @apply w-full;
+    height: 600px;
+  }
+
   .mapboxgl-popup-content {
     @apply !p-0;
   }
