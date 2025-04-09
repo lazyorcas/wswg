@@ -1,20 +1,20 @@
-<li class="bg-white hover:bg-neutral-200 transition ease-in-out rounded">
-  <%= tag.a href: event.url, class: "size-full", target: "_blank" do %>
+<%= tag.li class: "bg-white hover:bg-neutral-200 transition ease-in-out rounded", data: { event_id: event.id } do %>
+  <%= tag.a href: url, class: "size-full", target: "_blank", data: { event_url: url } do %>
     <div class="size-full flex gap-x-2">
-      <%= image_tag event.image_url, class: "w-12 h-12 object-cover rounded" %>
+      <%= image_tag image_url, class: "w-12 h-12 object-cover rounded", data: { event_image_url: image_url } %>
       <div class="grow flex flex-col gap-y-2 justify-between">
         <div class="flex justify-between gap-x-2">
-          <h2 class="text-sm font-semibold text-neutral-800 line-clamp-2">
-            <%= event.title %>
-          </h2>
-          <span class="h-fit bg-indigo-100 text-indigo-800 text-xs px-2 py-1 rounded-2xl">
-            <%= price_label %>
-          </span>
+          <%= tag.h2 title, 
+            class: "text-sm font-semibold text-neutral-800 line-clamp-2", 
+            data: { event_title: title } %>
+          <%= tag.span price_label,
+            class: "h-fit bg-indigo-100 text-indigo-800 text-xs px-2 py-1 rounded-2xl", 
+            data: { event_price_label: price_label } %>
         </div>
-        <p class="text-xs text-neutral-500">
-          <%= "#{event.start_date.to_date.strftime('%A, %B %d')} at #{event.start_time.to_time.strftime('%I:%M %p')}" %>
-        </p>
+        <%= tag.p "#{date} at #{time}",
+          class: "text-xs text-neutral-500",
+          data: { event_date: date, event_time: time } %>
       </div>
     </div>
   <% end %>
-</li>
+<% end %>

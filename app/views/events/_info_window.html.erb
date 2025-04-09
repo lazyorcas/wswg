@@ -1,0 +1,27 @@
+<div>
+  <!-- Image Section -->
+  <div class="relative w-full h-auto">
+    <%= image_tag event.image_url, class: "w-full h-full object-cover" %>
+    <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 to-transparent p-4">
+      <h3 class="text-white font-bold text-lg"><%= event.title %></h3>
+    </div>
+  </div>
+  <!-- Content Section -->
+  <div class="p-4">
+    <!-- Date and Time Section -->
+    <div class="flex items-center space-x-2 text-gray-600 mb-3">
+      <div class="bg-blue-50 rounded-lg p-2 text-center flex-shrink-0">
+        <span class="block text-xs uppercase"><%= event.start_date %></span>
+        <span class="block text-lg font-bold"><%= event.start_date %></span>
+      </div>
+      <div class="flex-1">
+        <p class="text-sm"><%= event.start_time %> - <%= event.end_time %></p>
+        <p class="text-sm font-medium text-blue-600"><%= number_to_currency(event.price) %></p>
+      </div>
+    </div>
+    <!-- Action Button -->
+    <%= link_to event.url, target: "_blank", rel: "noopener noreferrer", class: "block text-center bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-lg transition duration-150 ease-in-out text-sm font-medium" do %>
+      View Event
+    <% end %>
+  </div>
+</div>

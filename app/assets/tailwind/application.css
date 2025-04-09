@@ -17,4 +17,8 @@
   .flash--error {
     @apply bg-red-100 text-red-900;
   }
+
+  .mapboxgl-popup-content {
+    @apply !p-0;
+  }
 }

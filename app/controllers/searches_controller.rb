@@ -22,13 +22,36 @@ class SearchesController < ApplicationController
     if @search.completed?
       load_events
 
-      if @events.empty?
-        flash.now[:warning] = "Nothing found. Please try other search terms."
-      end
+      respond_to do |format|
+        format.html do
+          if @events.empty?
+            flash.now[:warning] = "Nothing found. Please try other search terms."
+          end
+        end
 
+        format.geojson do
+          render json: {
+            type: "FeatureCollection",
+            features: @events.map do |event|
+              next unless event.location.present?
+
+              {
+                type: "Feature",
+                properties: {
+                  title: event.title,
+                  html: render_to_string(partial: "events/info_window", formats: [ :html ], locals: { event: event }, layout: false)
+                },
+                geometry: {
+                  type: "Point",
+                  coordinates: [ event.location.longitude, event.location.latitude ]
+                }
+              }
+            end.compact
+          }
+        end
+      end
     elsif @search.failed?
       flash.now[:error] = @search.result.error["message"]
-
     else
       flash.now[:info] = "Searching..."
     end

@@ -1,7 +1,14 @@
+<% content_for :head do %>
+  <%= javascript_include_tag "https://api.mapbox.com/mapbox-gl-js/v3.11.0/mapbox-gl.js" %>
+  <%= stylesheet_link_tag "https://api.mapbox.com/mapbox-gl-js/v3.11.0/mapbox-gl.css" %>
+<% end %>
 <main class="w-full">
   <h1 class="text-3xl font-bold text-neutral-800 mb-2">Where Should We Go?</h1>
   <%= render "form", search: Event::Search.new(query: @search.query) %>
   <% if @events.present? %>
+    <div class="mt-10">
+      <%= render "events/map", events: @events %>
+    </div>
     <div class="mt-10">
       <%= render "events", events: @events, search: @search %>
     </div>
