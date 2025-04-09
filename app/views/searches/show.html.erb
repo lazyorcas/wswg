@@ -2,20 +2,30 @@
   <%= javascript_include_tag "https://api.mapbox.com/mapbox-gl-js/v3.11.0/mapbox-gl.js" %>
   <%= stylesheet_link_tag "https://api.mapbox.com/mapbox-gl-js/v3.11.0/mapbox-gl.css" %>
 <% end %>
-<main class="w-full">
-  <h1 class="text-3xl font-bold text-neutral-800 mb-2">Where Should We Go?</h1>
-  <%= render "form", search: Event::Search.new(query: @search.query) %>
-  <% if @events.present? %>
-    <div class="mt-10">
-      <%= render "maps/map", 
-        source_url: search_path(id: @search.public_id, format: :geojson),
-        center_coordinates: [@center_location.longitude, @center_location.latitude],
-        info_window_html_template: @info_window_html_template
-      %>
+<main class="w-full max-h-dvh flex">
+  <section class="overflow-y-scroll" style="width: 512px;">
+    <% if @events.present? %>
+      <div class="p-4">
+        <%= render "events", events: @events, search: @search %>
+      </div>
+    <% end %>
+    <%= render "shared/flash" %>
+  </section>
+  <section class="grow relative">
+    <% if @events.present?  %>
+      <div class="absolute inset-0">
+        <%= render "maps/map", 
+            source_url: search_path(id: @search.public_id, format: :geojson),
+            center_coordinates: [@center_location.longitude, @center_location.latitude],
+            info_window_html_template: @info_window_html_template,
+            width: "100%",
+            height: "100%"
+        %>
+      </div>
+    <% end %>
+    <h2 class="absolute top-4 left-4 text-shadow text-3xl font-bold text-neutral-800">Maps</h2>
+    <div class="absolute bottom-4 left-4">
+      <%= render "form", search: Event::Search.new(query: @search.query) %>
     </div>
-    <div class="mt-10">
-      <%= render "events", events: @events, search: @search %>
-    </div>
-  <% end %>
-  <%= render "shared/flash" %>
+  </section>
 </main>
