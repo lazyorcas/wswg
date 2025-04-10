@@ -2,7 +2,7 @@
   <div class="flex flex-col gap-y-4  bg-white dark:bg-neutral-900 rounded-xl p-4 border border-neutral-300 dark:border-neutral-800">
     <%= image_tag event.image_url, class: "aspect-square object-cover rounded-lg w-full h-auto" %>
     <div class="flex flex-col gap-y-1">
-      <h1 class="text-lg/6 font-bold"><%= event.title %></h1>
-      <%= tag.p "#{date} at #{time_range}", class: "text-sm" %>
+      <h1 class="text-lg/6 font-bold dark:text-neutral-100"><%= event.title %></h1>
+      <%= tag.p "#{date} at #{time_range}", class: "text-sm dark:text-neutral-100" %>
     </div>
   <% end %>

@@ -9,6 +9,7 @@ export default class extends Controller {
     accessToken: String,
     sourceUrl: String,
     centerCoordinates: Array,
+    darkMode: Boolean
   }
 
   connect() {
@@ -39,10 +40,9 @@ export default class extends Controller {
   }
 
   getMapStyle() {
-    const currentHour = new Date().getHours()
-    return currentHour >= 6 && currentHour < 18
-      ? 'mapbox://styles/mapbox/light-v11'
-      : 'mapbox://styles/mapbox/dark-v11'
+    return this.darkModeValue
+      ? 'mapbox://styles/mapbox/dark-v11'
+      : 'mapbox://styles/mapbox/light-v11'
   }
 
   addSource() {

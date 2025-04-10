@@ -7,7 +7,8 @@
     controller: "map",
     map_access_token_value: ENV['MAPBOX_PUBLIC_ACCESS_TOKEN'],
     map_source_url_value: search_path(id: @search.public_id, format: :geojson),
-    map_center_coordinates_value: [@center_location.longitude, @center_location.latitude]
+    map_center_coordinates_value: [@center_location.longitude, @center_location.latitude],
+    map_dark_mode_value: Time.current.in_time_zone(current_user.city.time_zone).hour > 18 || Time.current.in_time_zone(current_user.city.time_zone).hour < 6
   } do %>
   <% if @events.present?  %>
     <div class="absolute inset-0">
@@ -19,11 +20,11 @@
     </div>
   <% end %>
   <section class="absolute py-8 left-8 flex gap-x-8 inset-y-0">
-    <div class="text-7xl font-black italic text-neutral-300 logo">W</div>
+    <div class="text-7xl font-black italic text-neutral-300 logo dark:text-neutral-600">W</div>
     <div class="flex flex-col gap-y-2">
       <div class="flex">
-        <button class="h-11 px-4 rounded-3xl flex items-center font-bold">Discover</button>
-        <button class="h-11 px-4 rounded-3xl flex items-center font-bold text-neutral-300">Bookmarks</button>
+        <button class="h-11 px-4 rounded-3xl flex items-center font-bold dark:text-white">Discover</button>
+        <button class="h-11 px-4 rounded-3xl flex items-center font-bold text-neutral-300 dark:text-neutral-600">Bookmarks</button>
       </div>
       <%= render "form", search: Event::Search.new(query: @search.query) %>
       <section class="shadow overflow-y-scroll bg-white dark:bg-neutral-900 rounded-xl" style="max-width: 512px; min-width: 256px; width: 40vw;">
