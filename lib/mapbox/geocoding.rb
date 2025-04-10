@@ -13,22 +13,23 @@ class Mapbox::Geocoding
     queries.uniq.each_slice(MAX_BATCH_SIZE) do |batch|
       url = build_url(BATCH_GEOCODING_URL)
 
-      body = batch.map do |q|
+      body = batch.map do |query|
         {
           "types": [ "address" ],
-          "q": q
+          "q": query
         }
       end
 
       response = HTTParty.post(url, headers: HEADERS, body: body.to_json)
       response_body = JSON.parse(response.body)
 
-      batch_results = batch.map.with_index do |_, index|
+      batch_results = batch.map.with_index do |query, index|
         data = response_body["batch"][index]
 
         if data["features"].present?
           properties = data["features"].first["properties"]
           {
+            query: query,
             full_address: properties["full_address"],
             latitude: properties["coordinates"]["latitude"],
             longitude: properties["coordinates"]["longitude"]

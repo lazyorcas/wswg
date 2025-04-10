@@ -15,7 +15,7 @@ module Event::Locatable
       results = Mapbox::Geocoding.batch_lookup(queries)
 
       event_ids.each_with_index do |event_id, index|
-        location_attributes = results[index]
+        location_attributes = results.find { |result| result[:query] == queries[index] }
         next if location_attributes.nil?
 
         event = Event.find(event_id)
