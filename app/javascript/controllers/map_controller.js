@@ -78,7 +78,7 @@ export default class extends Controller {
     this.map.flyTo({
       center: feature.geometry.coordinates,
       padding: {
-        left: 100
+        left: 320
       }
     });
 
