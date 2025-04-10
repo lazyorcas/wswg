@@ -1,8 +1,10 @@
-<div class="flex flex-col gap-y-2 pt-4 pb-2">
+<div class="flex flex-col gap-y-2 pt-4">
   <p class="text-neutral-500 text-sm px-4">
     Found <%= search.result.count %> events
   </p>
-  <ul class="flex flex-col">
-    <%= render events %>
-  </ul>
+  <section class="flex flex-col">
+    <% events.each do |event| %>
+      <%= render Map::EventComponent.new(event) %>
+    <% end %>
+  </section>
 </div>

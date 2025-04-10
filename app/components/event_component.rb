@@ -13,23 +13,27 @@ class EventComponent < ViewComponent::Base
     event.title
   end
 
-  def image_url
-    event.image_url
-  end
-
   def date
     event.start_date.to_date.strftime("%A, %B %d")
   end
 
-  def time
-    event.start_time.to_time.strftime("%I:%M %p")
+  def start_time
+    event.start_time.to_time.strftime("%H:%M")
   end
 
-  def price_label
-    if event.price.zero?
-      "Free"
-    else
-      "$#{event.price}"
-    end
+  def end_time
+    event.end_time.to_time.strftime("%H:%M")
+  end
+
+  def time_range
+    "#{start_time} - #{end_time}"
+  end
+
+  def source_icon_url
+    event.city_source.icon_url || event.city_source.source.icon_url
+  end
+
+  def location
+    event.location
   end
 end

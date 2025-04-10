@@ -26,7 +26,6 @@ class SearchesController < ApplicationController
         format.html do
           if @events.present?
             load_center_location
-            load_info_window_html_template
           else
             flash.now[:warning] = "Nothing found. Please try other search terms."
           end
@@ -59,7 +58,7 @@ class SearchesController < ApplicationController
     @events = Event
       .where(id: @search.result.ids)
       .order(start_date: :asc, start_time: :asc)
-      .includes(:location)
+      .includes(:location, city_source: :source)
   end
 
   def load_located_events
@@ -68,14 +67,6 @@ class SearchesController < ApplicationController
 
   def load_center_location
     @center_location = @events.map(&:location).compact.first
-  end
-
-  def load_info_window_html_template
-    @info_window_html_template = render_to_string(
-      partial: "maps/events/info_window",
-      formats: [ :html ],
-      layout: false
-    )
   end
 
   def search_scope

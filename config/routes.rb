@@ -17,4 +17,5 @@ Rails.application.routes.draw do
   get "/auth/:provider/callback", to: "sessions#create"
 
   resources :searches, only: [ :index, :create, :show ]
+  resources :events, only: [ :show ]
 end

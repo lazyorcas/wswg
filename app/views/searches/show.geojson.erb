@@ -5,13 +5,8 @@
     {
       "type": "Feature",
       "properties": {
-        "image_url": "<%= event.image_url %>",
-        "title": "<%= event.title %>",
-        "start_date": "<%= event.start_date.to_date.strftime("%A, %B %d") %>",
-        "start_time": "<%= event.start_time.to_time.strftime("%I:%M %p") %>",
-        "end_time": "<%= event.end_time.to_time.strftime("%I:%M %p") %>",
-        "price": "<%= event.price %>",
-        "url": "<%= event.url %>"
+        "dom_id": "<%= dom_id(event) %>",
+        "url": "<%= event_path(event, context: "map") %>"
       },
       "geometry": {
         "type": "Point",

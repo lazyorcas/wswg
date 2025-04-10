@@ -4,38 +4,38 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-  static targets = ["container"]
+  static targets = ["container", "item"]
   static values = {
     accessToken: String,
     sourceUrl: String,
     centerCoordinates: Array,
-    infoWindowHtmlTemplate: String
   }
 
   connect() {
-    mapboxgl.accessToken = this.accessTokenValue
+    if (this.hasContainerTarget) {
+      mapboxgl.accessToken = this.accessTokenValue
 
-    this.map = new mapboxgl.Map({
-      container: this.containerTarget,
-      center: this.centerCoordinatesValue,
-      // https://docs.mapbox.com/api/maps/styles/
-      style: this.getMapStyle(),
-      // https://docs.mapbox.com/help/glossary/zoom-level/
-      zoom: 15,
-      minZoom: 11,
-      maxZoom: 17
-    })
-
-    this.map.on('load', async () => {
-      this.addSource({
-        id: 'initial-items',
-        url: this.sourceUrlValue
+      this.map = new mapboxgl.Map({
+        container: this.containerTarget,
+        center: this.centerCoordinatesValue,
+        // https://docs.mapbox.com/api/maps/styles/
+        style: this.getMapStyle(),
+        // https://docs.mapbox.com/help/glossary/zoom-level/
+        zoom: 15,
+        minZoom: 11,
+        maxZoom: 17
       })
-    })
+
+      this.map.on('load', async () => {
+        this.addSource()
+      })
+    }
   }
 
   disconnect() {
-    this.map.remove()
+    if (this.map) {
+      this.map.remove()
+    }
   }
 
   getMapStyle() {
@@ -45,18 +45,52 @@ export default class extends Controller {
       : 'mapbox://styles/mapbox/dark-v11'
   }
 
-  addSource(params) {
-    const sourceId = params.id
-    const sourceUrl = params.url
+  addSource() {
+    const sourceId = 'items'
+    const features = this.itemTargets.map(item => JSON.parse(item.dataset.mapFeature))
 
     this.map.addSource(sourceId, {
       type: 'geojson',
-      data: sourceUrl
+      data: {
+        type: 'FeatureCollection',
+        features: features
+      }
     })
     
     this.#addLayer(sourceId)
     this.#addClickEventListeners(sourceId)
     this.#addMouseEventListeners(sourceId)
+  }
+
+  removeAllPopups() {
+    const popups = document.getElementsByClassName("mapboxgl-popup")
+    for (let popup of popups) {
+      popup.remove();
+    }
+  }
+
+  showFeaturePopupOnHover(e) {
+    const feature = JSON.parse(e.target.dataset.mapFeature)
+    this.#showFeaturePopup(feature)
+  }
+
+  #showFeaturePopup(feature) {
+    this.map.flyTo({
+      center: feature.geometry.coordinates,
+      padding: {
+        left: 100
+      }
+    });
+
+    new mapboxgl.Popup({
+      anchor: 'left',
+      closeButton: false,
+      closeOnClick: true,
+      maxWidth: '480px'
+    })
+    .setLngLat(feature.geometry.coordinates)
+    .setHTML(this.#buildInfoWindowHtml(feature))
+    .addTo(this.map)
   }
 
   #addLayer(sourceId) {
@@ -66,7 +100,7 @@ export default class extends Controller {
       'type': 'circle',
       'paint': {
         'circle-radius': 8,
-        'circle-color': '#FF0000',
+        'circle-color': '#171717',
         'circle-opacity': 0.5
       }
     })
@@ -76,26 +110,12 @@ export default class extends Controller {
     this.map.on('click', sourceId, (item) => {
       const feature = item.features[0]
 
-      new mapboxgl.Popup({
-        anchor: 'right',
-        closeButton: false,
-        closeOnClick: true
-      })
-      .setLngLat(feature.geometry.coordinates)
-      .setHTML(this.#buildInfoWindowHtml(feature))
-      .addTo(this.map)
+      this.#showFeaturePopup(feature)
     })
   }
 
   #buildInfoWindowHtml(feature) {
-    let s = this.infoWindowHtmlTemplateValue;
-    const properties = feature.properties;
-
-    for(let propertyKey in properties) {
-      s = s.replace(new RegExp('{'+ propertyKey +'}','g'), properties[propertyKey]);
-    }
-
-    return s;
+    return `<turbo-frame id="${feature.properties.dom_id}" src="${feature.properties.info_window_path}"></turbo-frame>`
   }
 
   #addMouseEventListeners(sourceId) {
