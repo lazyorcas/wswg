@@ -50,14 +50,13 @@ class OpenAI::Assistants::EventCurator
   private
 
   def build_input(text, time_zone:)
-    today = Date.today.in_time_zone(time_zone)
-    now = Time.now.in_time_zone(time_zone)
+    now = Time.current.in_time_zone(time_zone)
 
     @input_template % {
-      current_date: today.strftime("%Y-%m-%d"),
-      current_dow: today.strftime("%A"),
+      current_date: now.strftime("%Y-%m-%d"),
+      current_dow: now.strftime("%A"),
       current_time: now.strftime("%H:%M"),
-      current_year: today.year,
+      current_year: now.year,
       text: text
     }
   end

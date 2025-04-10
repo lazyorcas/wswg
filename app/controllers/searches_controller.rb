@@ -16,6 +16,7 @@ class SearchesController < ApplicationController
     redirect_to(searches_path, error: e.message)
   end
 
+  # TODO: handle past events
   def show
     load_search
 

@@ -1,4 +1,6 @@
 class EventComponent < ViewComponent::Base
+  include DateHelper
+
   attr_reader :event
 
   def initialize(event)
@@ -14,7 +16,7 @@ class EventComponent < ViewComponent::Base
   end
 
   def date
-    event.start_date.to_date.strftime("%A, %B %d")
+    helpers.get_easy_date(Date.parse(event.start_date), time_zone: event.city.time_zone)
   end
 
   def start_time

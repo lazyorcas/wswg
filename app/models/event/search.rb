@@ -38,7 +38,7 @@ class Event::Search < Search
   end
 
   def today_iso8601
-    Date.today.in_time_zone(time_zone).strftime("%Y-%m-%d")
+    Time.current.in_time_zone(time_zone).strftime("%Y-%m-%d")
   end
 
   def build_query_object

@@ -32,7 +32,7 @@ class OpenAI::Responses::Schemas
   # end
 
   def self.event_schema(city_name:, time_zone:)
-    current_year = Date.today.in_time_zone(time_zone).year
+    current_year = Time.current.in_time_zone(time_zone).year
 
     build_schema("event", {
       title: { type: "string" },
