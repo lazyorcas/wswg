@@ -84,19 +84,19 @@ class OpenAI::Responses::Schemas
         properties: {
           start_date: {
             type: "string",
-            description: "Start date in YYYY-MM-DD format. If it's not mentioned, return an empty string. Do not assume anything."
+            description: "Start date in YYYY-MM-DD format. If it's not mentioned, return an empty string."
           },
           start_time: {
             type: "string",
-            description: "Start time in HH:mm:ss format. If it's not mentioned, return an empty string. Do not assume anything."
+            description: "Start time in HH:mm:ss format. If it's not mentioned, return an empty string."
           },
           end_date: {
             type: "string",
-            description: "End date in YYYY-MM-DD format. If it's not mentioned, return an empty string. Do not assume anything."
+            description: "End date in YYYY-MM-DD format. If it's not mentioned, return an empty string."
           },
           end_time: {
             type: "string",
-            description: "End time in HH:mm:ss format. If it's not mentioned, return an empty string. Do not assume anything."
+            description: "End time in HH:mm:ss format. If it's not mentioned, return an empty string."
           }
         },
         required: [ "start_date", "start_time", "end_date", "end_time" ],

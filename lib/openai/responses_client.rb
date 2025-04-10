@@ -6,12 +6,13 @@ class OpenAI::ResponsesClient
     @openai_client = OpenAI::Client.new
   end
 
-  def ask(input:, instructions: nil, response_schema: nil)
+  def ask(input:, instructions: nil, response_schema: nil, temperature: 0)
     open_ai_response = @openai_client.responses.create(parameters: {
       model: @model,
       input: input,
       instructions: instructions,
-      text: response_schema ? { format: response_schema } : nil
+      text: response_schema ? { format: response_schema } : nil,
+      temperature: temperature
     })
 
     @response = build_response(open_ai_response)
