@@ -1,0 +1,5 @@
+<%= tag.a href: url, target: "_blank", class: "bg-white dark:bg-neutral-900 hover:bg-neutral-200 dark:hover:bg-neutral-700 transition ease-in-out rounded-xl group py-2 px-4 cursor-pointer flex gap-x-4", data: data do %>
+  <%= tag.p time_range, class: "w-30 mt-0.5 shrink-0 text-xs text-neutral-400 dark:text-neutral-500" %>
+  <%= tag.h3 title, class: "grow text-sm text-neutral-800 dark:text-neutral-100 truncate" %>
+  <%= image_tag source_icon_url, class: "shrink-0 size-4 mt-0.5 grayscale group-hover:grayscale-0 transition-all" %>
+<% end %>

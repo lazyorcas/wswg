@@ -26,9 +26,7 @@
         <button class="h-11 px-4 rounded-3xl flex items-center font-bold dark:text-white">Bookmarks</button>
       </div>
       <section class="shadow overflow-y-scroll bg-white dark:bg-neutral-900 rounded-xl" style="max-width: 600px; min-width: 480px; width: 40vw;">
-        <% if @events.present? %>
-          <%= render "searches/events", events: @events, event_count: @events.count %>
-        <% end %>
+        <%= render "events", events: @events %>
       </section>
     </div>
   </section>

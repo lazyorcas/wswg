@@ -59,6 +59,23 @@ export default class extends Controller {
     this.#addLayer(sourceId)
     this.#addClickEventListeners(sourceId)
     this.#addMouseEventListeners(sourceId)
+
+    // zoom to fit all features
+    this.map.on('sourcedata', (e) => {
+      if (e.sourceId === sourceId) {
+        const coordinates = features.map(feature => feature.geometry.coordinates)
+        const bounds = new mapboxgl.LngLatBounds(coordinates[0], coordinates[1])
+        coordinates.forEach(coordinate => bounds.extend(coordinate))
+        this.map.fitBounds(bounds, {
+          padding: {
+            top: 128,
+            bottom: 128,
+            left: 640,
+            right: 128
+          }
+        })
+      }
+    })
   }
 
   removeAllPopups() {
@@ -99,8 +116,20 @@ export default class extends Controller {
       'type': 'circle',
       'paint': {
         'circle-radius': 8,
-        'circle-color': '#171717',
-        'circle-opacity': 0.5
+        'circle-opacity': 0.5,
+        // https://docs.mapbox.com/mapbox-gl-js/example/data-driven-circle-colors/
+        'circle-color': [
+          'match',
+          ['get', 'dow'],
+          '1', '#FFFF00', // yellow
+          '2', '#FFC0CB', // pink
+          '3', '#008000', // green
+          '4', '#FFA500', // orange
+          '5', '#0000FF', // blue
+          '6', '#800080', // purple
+          '7', '#FF0000', // red
+          '#FF0000'
+        ]
       }
     })
   }

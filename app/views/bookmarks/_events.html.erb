@@ -1,0 +1,16 @@
+<% dow_colors = %w[#ccc #FFFF00 #FFC0CB #008000 #FFA500 #0000FF #800080 #FF0000] %>
+<div class="flex flex-col gap-y-4 pt-4">
+  <% events.sort_by { |event| event.start_date }.group_by { |event| event.start_date }.each_with_index do |(date, events), index| %>
+    <div>
+      <div class="px-4 flex items-center gap-x-2">
+        <div class="size-2 rounded-full" style="background-color: <%= dow_colors[Date.parse(date).wday] %>"></div>
+        <%= tag.h2 get_easy_date(Date.parse(date), time_zone: current_user.city.time_zone), class: "text-lg font-bold text-neutral-500 dark:text-neutral-100" %>
+      </div>
+      <div class="flex flex-col">
+        <% events.each do |event| %>
+          <%= render Bookmark::EventComponent.new(event) %>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+</div>
