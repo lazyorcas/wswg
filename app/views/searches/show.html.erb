@@ -26,7 +26,7 @@
         <button class="h-11 px-4 rounded-3xl flex items-center font-bold text-neutral-300">Bookmarks</button>
       </div>
       <%= render "form", search: Event::Search.new(query: @search.query) %>
-      <section class="overflow-y-scroll bg-white dark:bg-neutral-900 rounded-xl" style="max-width: 512px;">
+      <section class="shadow overflow-y-scroll bg-white dark:bg-neutral-900 rounded-xl" style="max-width: 512px; min-width: 256px; width: 40vw;">
         <% if @events.present? %>
           <%= render "events", events: @events, search: @search %>
         <% end %>

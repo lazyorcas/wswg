@@ -86,7 +86,7 @@ export default class extends Controller {
       anchor: 'left',
       closeButton: false,
       closeOnClick: true,
-      maxWidth: '480px'
+      maxWidth: '320px'
     })
     .setLngLat(feature.geometry.coordinates)
     .setHTML(this.#buildInfoWindowHtml(feature))
