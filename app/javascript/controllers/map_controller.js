@@ -22,7 +22,7 @@ export default class extends Controller {
       style: this.getMapStyle(),
       // https://docs.mapbox.com/help/glossary/zoom-level/
       zoom: 15,
-      minZoom: 13,
+      minZoom: 11,
       maxZoom: 17
     })
 
