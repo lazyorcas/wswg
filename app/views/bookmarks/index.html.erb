@@ -22,15 +22,13 @@
     <div class="text-7xl font-black italic text-neutral-300 logo dark:text-neutral-600">W</div>
     <div class="flex flex-col gap-y-2">
       <div class="flex">
-        <button class="h-11 px-4 rounded-3xl flex items-center font-bold dark:text-white">Discover</button>
-        <button class="h-11 px-4 rounded-3xl flex items-center font-bold text-neutral-300 dark:text-neutral-600">Bookmarks</button>
+        <button class="h-11 px-4 rounded-3xl flex items-center font-bold text-neutral-300 dark:text-neutral-600">Discover</button>
+        <button class="h-11 px-4 rounded-3xl flex items-center font-bold dark:text-white">Bookmarks</button>
       </div>
-      <%= render "form", search: Event::Search.new(query: @search.query) %>
       <section class="shadow overflow-y-scroll bg-white dark:bg-neutral-900 rounded-xl" style="max-width: 600px; min-width: 480px; width: 40vw;">
         <% if @events.present? %>
-          <%= render "events", events: @events, event_count: @search.result.count %>
+          <%= render "searches/events", events: @events, event_count: @events.count %>
         <% end %>
-        <%= render "shared/flash" %>
       </section>
     </div>
   </section>

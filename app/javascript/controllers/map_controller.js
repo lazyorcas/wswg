@@ -7,7 +7,6 @@ export default class extends Controller {
   static targets = ["container", "item"]
   static values = {
     accessToken: String,
-    sourceUrl: String,
     centerCoordinates: Array,
     darkMode: Boolean
   }

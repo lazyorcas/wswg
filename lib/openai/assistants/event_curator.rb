@@ -27,6 +27,7 @@ class OpenAI::Assistants::EventCurator
     - The keywords should exclude information related to date, time, price (including "free").
     - The keywords should exclude determiner words like "every", "all".
     - The keywords should exclude adjectives.
+    - Your answer must not include that are not mentioned in the user input.
 
     ## User Input
     %{text}

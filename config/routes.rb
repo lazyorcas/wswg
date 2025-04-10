@@ -18,4 +18,5 @@ Rails.application.routes.draw do
 
   resources :searches, only: [ :index, :create, :show ]
   resources :events, only: [ :show ]
+  resources :bookmarks, only: [ :index ]
 end

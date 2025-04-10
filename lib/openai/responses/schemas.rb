@@ -74,32 +74,32 @@ class OpenAI::Responses::Schemas
         type: "string",
         description: "Keywords that will be input to OpenSearch. Each keyword should be separated by a blank space. The keywords should be downcased."
       },
+      city: {
+        type: "string",
+        description: "City name. If not mentioned, return an empty string.",
+        enum: [ *City.pluck(:name), "" ]
+      },
       date_range: {
         type: "object",
         properties: {
-          city: {
-            type: "string",
-            description: "City name. If not mentioned, return an empty string.",
-            enum: [ *City.pluck(:name), "" ]
-          },
           start_date: {
             type: "string",
-            description: "Start date in YYYY-MM-DD format. If not mentioned, return an empty string."
+            description: "Start date in YYYY-MM-DD format. If it's not mentioned, return an empty string. Do not assume anything."
           },
           start_time: {
             type: "string",
-            description: "Start time in HH:mm:ss format. If not mentioned, return an empty string."
+            description: "Start time in HH:mm:ss format. If it's not mentioned, return an empty string. Do not assume anything."
           },
           end_date: {
             type: "string",
-            description: "End date in YYYY-MM-DD format. If not mentioned, return an empty string."
+            description: "End date in YYYY-MM-DD format. If it's not mentioned, return an empty string. Do not assume anything."
           },
           end_time: {
             type: "string",
-            description: "End time in HH:mm:ss format. If not mentioned, return an empty string."
+            description: "End time in HH:mm:ss format. If it's not mentioned, return an empty string. Do not assume anything."
           }
         },
-        required: [ "city", "start_date", "start_time", "end_date", "end_time" ],
+        required: [ "start_date", "start_time", "end_date", "end_time" ],
         additionalProperties: false
       },
       max_price: {
