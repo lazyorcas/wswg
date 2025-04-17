@@ -1,0 +1,24 @@
+# Changelog
+
+## Currently
+These cities and sources are supported.
+
+### Cities
+<%= City.pluck(:name).to_sentence %>
+
+### Sources
+<%= Source.pluck(:name).uniq.to_sentence %>
+
+***
+## Versions
+### Next Version(s)
+- Support mobile devices.
+- Fetch local things to do, concerts, festivals, and movie showings.
+
+### v0.0.0
+- **[Feature]** Search for events using only one text input
+- **[Feature]** Interactive map
+- **[Feature]** Bookmark events for later
+- **[Feature]** Events are automatically fetched from Eventbrite, Luma, Meetup.
+- **[Limitation]** You can only search within the city you live in.
+- **[Limitation]** Mobile devices are not supported.

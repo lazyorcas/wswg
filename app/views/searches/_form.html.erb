@@ -1,0 +1,7 @@
+<%= form_for search, url: searches_path, html: { class: "popup !rounded-3xl !border-none" } do |form| %>
+  <%= form.search_field :query,
+    placeholder: "e.g. concerts this weekend under #{Money.from_amount(50, Current.user.city.currency).format(no_cents: true)}",
+    class: "input truncate",
+    required: true
+  %>
+<% end %>

@@ -1,0 +1,9 @@
+<%= tag.li class: "list-item" do %>
+  <%= tag.button class: "w-full cursor-pointer", data: data do %>
+    <span class="pointer-events-none flex gap-x-4 items-center text-primary">
+      <%= tag.p time_range, class: "w-25 shrink-0" %>
+      <%= image_tag source_icon_url, class: "shrink-0 list-item__icon" %>
+      <%= tag.h3 title, class: "grow list-item__text truncate" %>
+    </span>
+  <% end %>
+<% end %>

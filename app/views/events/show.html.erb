@@ -1,0 +1,3 @@
+<% if params[:context] == "map" %>
+  <%= render Event::Map::InfoWindowComponent.new(@event, bookmark: @bookmark) %>
+<% end %>

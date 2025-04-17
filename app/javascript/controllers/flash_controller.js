@@ -1,0 +1,16 @@
+import { Controller } from "@hotwired/stimulus"
+
+export default class extends Controller {
+  static targets = [ "message" ]
+
+  connect() {
+    this.shownDuration = 5000
+  }
+
+  messageTargetConnected(target) {
+    // add a delay to remove the flash message
+    setTimeout(() => {
+      target.remove()
+    }, this.shownDuration)
+  }
+}

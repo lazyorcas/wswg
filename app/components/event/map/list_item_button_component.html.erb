@@ -1,0 +1,13 @@
+<%= tag.li class: "shrink-0 group list-item" do %>
+  <%= tag.button class: "w-full cursor-pointer", data: data do %>
+    <span class="pointer-events-none flex gap-x-4 items-center">
+      <%= image_tag source_icon_url, class: "shrink-0 list-item__icon grayscale group-hover:grayscale-0 transition-all" %>
+      <%= tag.span title, class: "grow list-item__text group-hover:font-semibold line-clamp-1" %>
+      <% if bookmarked? %>
+        <i class="ph-fill ph-bookmark-simple"></i>
+      <% elsif seen? %>
+        <i class="ph-bold ph-checks"></i>
+      <% end %>
+    </span>
+  <% end %>
+<% end %>

@@ -1,0 +1,12 @@
+<%= form_for bookmark, html: { id: "#{dom_id(bookmark.bookmarkable)}_bookmark_form" } do |form| %>
+  <%= form.hidden_field :bookmarkable_id, value: bookmark.bookmarkable_id %>
+  <%= form.hidden_field :bookmarkable_type, value: bookmark.bookmarkable_type %>
+  <%= form.hidden_field :removed, value: bookmark.persisted? && !bookmark.removed? %>
+  <%= form.button class: "icon-button button--secondary" do %>
+    <% if bookmark.persisted? && !bookmark.removed? %>
+      <i class="ph-fill ph-bookmark-simple"></i>
+    <% else %>
+      <i class="ph ph-bookmark-simple"></i>
+    <% end %>
+  <% end %>
+<% end %>
