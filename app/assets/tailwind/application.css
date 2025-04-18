@@ -1,0 +1,185 @@
+@import "tailwindcss";
+
+@layer base {
+  html {
+    font-family: "Inter", sans-serif, system-ui;
+  }
+}
+
+@layer components {
+  /* ==========================================================================
+  |
+  |
+  |
+  |  Buttons
+  |
+  |
+  |
+  ============================================================================= */
+  .button {
+    @apply px-4 h-11;
+    @apply rounded-3xl;
+    @apply flex items-center justify-center gap-x-2;
+    @apply font-medium text-base text-center;
+    @apply transition ease-in-out;
+    @apply cursor-pointer;
+  }
+
+  .icon-button {
+    @apply h-11 w-11;
+    @apply rounded-full;
+    @apply flex items-center justify-center;
+    @apply transition ease-in-out;
+    @apply cursor-pointer;
+  }
+
+  .button i, .icon-button i {
+    @apply text-2xl;
+  }
+
+  .button--secondary {
+    @apply bg-neutral-200 dark:bg-neutral-700;
+    @apply hover:bg-neutral-300 dark:hover:bg-neutral-600;
+    @apply text-neutral-900 dark:text-neutral-100;
+  }
+
+  .tab-button {
+    @apply h-11 px-4;
+    @apply rounded-3xl;
+    @apply flex items-center;
+    @apply font-bold;
+  }
+
+  .tab-button--active {
+    @apply text-neutral-900 dark:text-neutral-100;
+  }
+
+  .tab-button--inactive {
+    @apply hover:bg-neutral-800 dark:hover:bg-neutral-100;
+    @apply text-neutral-300 dark:text-neutral-600;
+    @apply hover:text-neutral-100 dark:hover:text-neutral-900;
+    @apply transition ease-in-out;
+  }
+
+  /* ==========================================================================
+  |
+  |
+  |
+  |  Inputs
+  |
+  |
+  |
+  ============================================================================= */
+  .input {
+    @apply w-full h-11 px-4;
+    @apply rounded-3xl;
+    @apply border border-neutral-300 dark:border-neutral-700;
+    @apply text-neutral-700 dark:text-neutral-300;
+  }
+
+  /* ==========================================================================
+  |
+  |
+  |
+  |  Tags
+  |
+  |
+  |
+  ============================================================================= */
+  .tag {
+    @apply w-fit px-2 py-1;
+    @apply rounded-full;
+    @apply bg-neutral-200 dark:bg-neutral-700;
+    @apply text-neutral-700 dark:text-neutral-300;
+    @apply text-xs;
+  }
+
+  /* ==========================================================================
+  |
+  |
+  |
+  |  Popups
+  |
+  |
+  |
+  ============================================================================= */
+  .popup:has(*) {
+    @apply rounded-xl;
+    @apply border border-neutral-300 dark:border-neutral-700;
+    @apply bg-white dark:bg-neutral-900;
+    @apply shadow;
+  }
+
+  /* ==========================================================================
+  |
+  |
+  |
+  |  List
+  |
+  |
+  |
+  ============================================================================= */
+  .list-item {
+    @apply py-2 px-4;
+    @apply bg-white dark:bg-neutral-900;
+    @apply hover:bg-neutral-200 dark:hover:bg-neutral-700;
+    @apply flex;
+    @apply text-sm;
+    @apply text-neutral-800 dark:text-neutral-200;
+    @apply transition ease-in-out;
+  }
+
+  .list-item__icon {
+    @apply size-4;
+  }
+
+  .list-item__text {
+    @apply text-left;
+  }
+
+  /* ==========================================================================
+  |
+  |
+  |
+  |  Flash
+  |
+  |
+  |
+  ============================================================================= */
+  .flash {
+    max-width: 512px;
+    @apply w-fit;
+    @apply px-4 py-2 rounded-md;
+    @apply text-sm;
+    @apply shadow;
+  }
+}
+  
+@layer utilities {
+  .text-primary {
+    @apply text-neutral-900 dark:text-neutral-100;
+  }
+
+  .text-secondary {
+    @apply text-neutral-600 dark:text-neutral-400;
+  }
+
+  .mapboxgl-popup-content {
+    @apply !p-0;
+    @apply !rounded-xl;
+    @apply !shadow-lg;
+  }
+  
+  .mapboxgl-popup-tip {
+    @apply dark:!border-r-neutral-900;
+  }
+
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+}

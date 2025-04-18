@@ -1,0 +1,8 @@
+<%= turbo_frame_tag "content" do %>
+  <section class="flex flex-col gap-y-2 h-full">
+    <div class="shrink-0">
+      <%= render "form", search: @search %>
+    </div>
+    <%= turbo_frame_tag "search-results", src: events_path(context: "search"), class: "grow min-h-0 popup" %>
+  </section>
+<% end %> 

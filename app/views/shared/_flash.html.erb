@@ -1,0 +1,8 @@
+<% flash.each do |key, value| %>
+  <%= tag.p value, class: class_names("flash", {
+    "bg-blue-200 dark:bg-blue-800 text-blue-900 dark:text-blue-100": key == "info",
+    "bg-green-200 dark:bg-green-800 text-green-900 dark:text-green-100": key == "success",
+    "bg-yellow-200 dark:bg-yellow-800 text-yellow-900 dark:text-yellow-100": key == "warning",
+    "bg-red-200 dark:bg-red-800 text-red-900 dark:text-red-100": key == "error"
+  }), data: { flash_target: "message" } %>
+<% end %>

@@ -1,0 +1,22 @@
+<% content_for :head do %>
+  <%= javascript_include_tag "https://api.mapbox.com/mapbox-gl-js/v3.11.0/mapbox-gl.js" %>
+  <%= stylesheet_link_tag "https://api.mapbox.com/mapbox-gl-js/v3.11.0/mapbox-gl.css" %>
+<% end %>
+<%= tag.main class: "w-full h-dvh max-h-dvh flex", 
+  data: { 
+    controller: "map",
+    map_access_token_value: ENV['MAPBOX_PUBLIC_ACCESS_TOKEN'],
+    map_center_coordinates_value: Current.user.city.coordinates
+  } do %>
+  <div class="size-full" data-map-target="container"></div>
+  <section class="absolute py-8 left-8 flex gap-x-8 max-h-full">
+    <%= render "shared/logo" %>
+    <div class="flex flex-col gap-y-2 max-h-full">
+      <%= render "nav" %>
+      <%= turbo_frame_tag "content", 
+        src: searches_path, 
+        class: "grow min-h-0",
+        style: "max-width: 600px; min-width: 320px; width: 40vw;" %>
+    </div>
+  </section>
+<% end %>

@@ -1,0 +1,4 @@
+CREATE DATABASE wswg_production;
+CREATE DATABASE wswg_production_cache;
+CREATE DATABASE wswg_production_queue;
+CREATE DATABASE wswg_production_cable;
