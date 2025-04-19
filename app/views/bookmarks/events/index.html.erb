@@ -1,5 +1,5 @@
 <%= turbo_frame_tag "content" do %>
-  <%= tag.div class: "popup py-4 h-full", data: { map_target: "source" } do %>
+  <%= tag.div class: "popup pt-4 h-full", data: { map_target: "source" } do %>
     <% if @events.any? %>
       <%= render Bookmark::Event::Map::ListComponent.new(@events, city: Current.user.city) %>
     <% else %>
