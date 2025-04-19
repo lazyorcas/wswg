@@ -5,7 +5,7 @@ class EventsController < ApplicationController
   after_action :add_event_to_seen_events, only: :show
 
   def index
-    load_random_events
+    load_events_this_week
     filter_out_past_events
     @events = @events.includes(:source, :city, :location)
   end
@@ -21,6 +21,11 @@ class EventsController < ApplicationController
     @events = event_scope
       .order("RANDOM()")
       .limit(RANDOM_EVENT_COUNT)
+  end
+
+  def load_events_this_week
+    @events = event_scope
+      .where(start_date: ..today.end_of_week)
   end
 
   def filter_out_past_events
