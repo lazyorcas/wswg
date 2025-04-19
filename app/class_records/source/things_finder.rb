@@ -10,7 +10,7 @@ class Source::ThingsFinder
     @source = Source.find(source_id)
 
     begin
-      @browser = Possum::Browser.new
+      @browser = Possum::Browser.new(proxy: @source.proxy)
       @browser.go_to(@source.url)
 
       max_page_count.times do |page|

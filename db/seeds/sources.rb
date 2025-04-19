@@ -6,7 +6,8 @@ class SourceAttributesBuilder
     {
       city_name: city_name,
       source_name: "Eventbrite",
-      url: "https://www.eventbrite.com/d/#{city_param}/all-events/"
+      url: "https://www.eventbrite.com/d/#{city_param}/all-events/",
+      proxy: true
     }
   end
 
@@ -14,7 +15,8 @@ class SourceAttributesBuilder
     {
       city_name: city_name,
       source_name: "Luma",
-      url: "https://lu.ma/#{city_param}"
+      url: "https://lu.ma/#{city_param}",
+      proxy: false
     }
   end
 
@@ -22,7 +24,8 @@ class SourceAttributesBuilder
     {
       city_name: city_name,
       source_name: "Meetup",
-      url: "https://www.meetup.com/find/?location=#{city_param}&eventType=inPerson&source=EVENTS&sortField=DATETIME"
+      url: "https://www.meetup.com/find/?location=#{city_param}&eventType=inPerson&source=EVENTS&sortField=DATETIME",
+      proxy: false
     }
   end
 end
@@ -72,6 +75,7 @@ SOURCES.each do |source_attributes|
   if source.new_record?
     source.thing_type = "Event"
     source.url = source_attributes[:url]
+    source.proxy = source_attributes[:proxy]
     source.save!
   end
 end
