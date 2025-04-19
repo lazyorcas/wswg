@@ -15,17 +15,14 @@ class Possum::Browser < Ferrum::Browser
   )
     super(
       timeout: timeout,
-      browser_options: {
-        "no-sandbox": nil,
-        "ignore-certificate-errors" => nil
-      },
+      browser_options: { "no-sandbox": nil },
       ws_url: ENV["CHROMIUM_URL"],
-      proxy: proxy ? {
-        host: ENV["PROXY_HOST"],
-        port: ENV["PROXY_PORT"],
-        user: ENV["PROXY_USERNAME"],
-        password: ENV["PROXY_PASSWORD"]
-      } : nil,
+      # proxy: proxy ? {
+      #   host: ENV["PROXY_HOST"],
+      #   port: ENV["PROXY_PORT"],
+      #   user: ENV["PROXY_USERNAME"],
+      #   password: ENV["PROXY_PASSWORD"]
+      # } : nil,
       window_size: window_size
     )
 
