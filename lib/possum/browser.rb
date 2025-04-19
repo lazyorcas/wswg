@@ -1,4 +1,5 @@
 class Possum::Browser < Ferrum::Browser
+  DEFAULT_TIMEOUT = 10
   WINDOW_SIZE = [ 1920, 1080 ]
   SCROLL_DISTANCE = 10_000
   NETWORK_IDLE_TIMEOUT = 5
@@ -7,7 +8,7 @@ class Possum::Browser < Ferrum::Browser
   ]
 
   def initialize(
-    timeout: Fetch::DefaultConfig::TIMEOUT,
+    timeout: DEFAULT_TIMEOUT,
     headers: Fetch::DefaultConfig::HEADERS,
     window_size: WINDOW_SIZE,
     proxy: false
