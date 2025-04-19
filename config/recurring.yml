@@ -4,4 +4,4 @@ production:
     schedule: "0 * * * *"  # Every hour at 0 minutes
   reindex_events_job:
     class: Events::ReindexJob
-    schedule: "*/5 * * * *"  # Every 5 minutes
+    schedule: "30 * * * *"  # Every hour at 30 minutes
