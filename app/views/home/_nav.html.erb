@@ -6,7 +6,7 @@
 <%= tag.nav class: "shrink-0 flex", data: { controller: "home-nav" } do %>
   <% links.each do |link| %>
     <%= link_to link[0], link[1], 
-      class: class_names("tab-button", link[2] ? "tab-button--active" : "tab-button--inactive"), 
+      class: class_names("home-tab-button", link[2] ? "home-tab-button--active" : "home-tab-button--inactive"), 
       target: link[3] ? "_blank" : nil,
       data: link[3] ? nil : { 
         turbo_frame: "content",

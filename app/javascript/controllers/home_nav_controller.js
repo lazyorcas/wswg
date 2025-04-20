@@ -7,11 +7,11 @@ export default class extends Controller {
     this.linkTargets.forEach(link => {
       link.addEventListener("click", () => {
         this.linkTargets.forEach(otherLink => {
-          otherLink.classList.remove("tab-button--active")
-          otherLink.classList.add("tab-button--inactive")
+          otherLink.classList.remove("home-tab-button--active")
+          otherLink.classList.add("home-tab-button--inactive")
         })
-        link.classList.add("tab-button--active")
-        link.classList.remove("tab-button--inactive")
+        link.classList.add("home-tab-button--active")
+        link.classList.remove("home-tab-button--inactive")
       })
     })
   }

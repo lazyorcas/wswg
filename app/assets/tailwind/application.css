@@ -11,6 +11,37 @@
   |
   |
   |
+  |  Home
+  |
+  |
+  |
+  ============================================================================= */
+  .home-content {
+    @apply w-full md:max-w-[600px] md:min-w-[320px] md:w-[40vw];
+  }
+
+  .home-tab-button {
+    @apply h-10 md:h-11 px-4;
+    @apply rounded-3xl;
+    @apply flex items-center;
+    @apply text-sm md:text-base font-bold;
+  }
+
+  .home-tab-button--active {
+    @apply text-neutral-900 dark:text-neutral-100;
+  }
+
+  .home-tab-button--inactive {
+    @apply hover:bg-neutral-800 dark:hover:bg-neutral-100;
+    @apply text-neutral-300 dark:text-neutral-600;
+    @apply hover:text-neutral-100 dark:hover:text-neutral-900;
+    @apply transition ease-in-out;
+  }
+
+  /* ==========================================================================
+  |
+  |
+  |
   |  Buttons
   |
   |
@@ -26,39 +57,32 @@
   }
 
   .icon-button {
-    @apply h-11 w-11;
     @apply rounded-full;
     @apply flex items-center justify-center;
     @apply transition ease-in-out;
     @apply cursor-pointer;
   }
 
-  .button i, .icon-button i {
+  .icon-button--base {
+    @apply h-11 w-11;
+  }
+
+  .icon-button--small {
+    @apply h-8 w-8;
+  }
+
+  .button i, .icon-button--base i {
     @apply text-2xl;
+  }
+
+  .icon-button--small i {
+    @apply text-xl;
   }
 
   .button--secondary {
     @apply bg-neutral-200 dark:bg-neutral-700;
     @apply hover:bg-neutral-300 dark:hover:bg-neutral-600;
     @apply text-neutral-900 dark:text-neutral-100;
-  }
-
-  .tab-button {
-    @apply h-11 px-4;
-    @apply rounded-3xl;
-    @apply flex items-center;
-    @apply font-bold;
-  }
-
-  .tab-button--active {
-    @apply text-neutral-900 dark:text-neutral-100;
-  }
-
-  .tab-button--inactive {
-    @apply hover:bg-neutral-800 dark:hover:bg-neutral-100;
-    @apply text-neutral-300 dark:text-neutral-600;
-    @apply hover:text-neutral-100 dark:hover:text-neutral-900;
-    @apply transition ease-in-out;
   }
 
   /* ==========================================================================
@@ -104,6 +128,7 @@
   |
   ============================================================================= */
   .popup:has(*) {
+    @apply z-10;
     @apply rounded-xl;
     @apply border border-neutral-300 dark:border-neutral-700;
     @apply bg-white dark:bg-neutral-900;
@@ -165,6 +190,18 @@
     @apply text-neutral-600 dark:text-neutral-400;
   }
 
+  /* ==========================================================================
+  |
+  |
+  |
+  |  Mapbox
+  |
+  |
+  ============================================================================= */
+  .mapboxgl-popup {
+    @apply w-[320px];
+  }
+
   .mapboxgl-popup-content {
     @apply !p-0;
     @apply !rounded-xl;
@@ -175,6 +212,12 @@
     @apply dark:!border-r-neutral-900;
   }
 
+  /* ==========================================================================
+  |
+  |  Scroll
+  |
+  |
+  ============================================================================= */
   .no-scrollbar::-webkit-scrollbar {
     display: none;
   }
