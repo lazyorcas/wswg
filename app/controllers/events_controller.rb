@@ -4,9 +4,14 @@ class EventsController < ApplicationController
   before_action :require_user!
   after_action :add_event_to_seen_events, only: :show
 
+  helper_method :wday
+
   def index
-    load_events_this_week
-    filter_out_past_events
+    if wday == 6
+      load_events_next_week
+    else
+      load_events_this_week
+    end
     @events = @events.includes(:source, :city, :location)
   end
 
@@ -24,12 +29,14 @@ class EventsController < ApplicationController
   end
 
   def load_events_this_week
-    @events = event_scope
-      .where(start_date: ..today.end_of_week)
+    @events = event_scope.where(start_date: today..today.end_of_week)
   end
 
-  def filter_out_past_events
-    @events = @events.where(start_date: today..)
+  def load_events_next_week
+    next_monday = today.end_of_week.next_occurring(:monday)
+    next_sunday = today.end_of_week.next_occurring(:sunday)
+
+    @events = event_scope.where(start_date: next_monday..next_sunday)
   end
 
   def load_event

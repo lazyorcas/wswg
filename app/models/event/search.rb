@@ -36,16 +36,12 @@ class Event::Search < Search
     {
       city_id: city.id,
       start_date: {
+        gte: query_start_date,
         lte: query_object.dig("date_range", "end_date").presence
       },
-      end_date: {
-        gte: query_start_date
-      },
       start_time: {
+        gte: query_object.dig("date_range", "start_time").presence,
         lte: query_object.dig("date_range", "end_time").presence
-      },
-      end_time: {
-        gte: query_object.dig("date_range", "start_time").presence
       },
       price: {
         lte: query_object.dig("max_price") == -1 ? nil : query_object.dig("max_price")

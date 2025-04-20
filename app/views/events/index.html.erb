@@ -3,7 +3,7 @@
     <% if @events.any? %>
       <%= tag.section class: "flex flex-col gap-y-2 h-full pt-4", data: { map_target: "source" } do %>
         <p class="shrink-0 text-secondary text-sm px-4">
-          Here's what happening this week in <%= Current.user.city.name %>.
+          Here's what happening <%= wday == 6 ? "next week" : "this week" %> in <%= Current.user.city.name %>.
         </p>
         <div class="grow min-h-0">
           <%= render Event::Map::ListComponent.new(@events, 

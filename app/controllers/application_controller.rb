@@ -14,6 +14,10 @@ class ApplicationController < ActionController::Base
     turbo_stream.append "flash", partial: "shared/flash"
   end
 
+  def wday
+    (today.wday + 6) % 7
+  end
+
   def today
     @today ||= Time.current.in_time_zone(Current.user.city.time_zone).to_date
   end
