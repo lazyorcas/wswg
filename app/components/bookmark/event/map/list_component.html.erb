@@ -1,4 +1,4 @@
-<section class="flex flex-col gap-y-4 h-full overflow-y-scroll no-scrollbar">
+<section class="flex flex-col gap-y-4 h-full overflow-y-scroll no-scrollbar" data-bottom-sheet-target="nonDraggable">
   <% events_by_date.each_with_index do |(date, events), index| %>
     <section class="group">
       <%= tag.h2 get_easy_date(Date.parse(date), time_zone: city.time_zone), class: "font-bold text-primary px-4" %>

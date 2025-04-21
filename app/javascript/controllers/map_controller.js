@@ -87,12 +87,17 @@ export default class extends Controller {
   }
 
   async #addLayer() {
-    this.itemSources.forEach(async (source) => {
-      await this.map.loadImage(`/sources/${source.toLowerCase()}.ico`, (error, image) => {
-        if (error) throw error;
-        this.map.addImage(source, image);
+    const imagePromises = this.itemSources.map(source => {
+      return new Promise((resolve, reject) => {
+        this.map.loadImage(`/sources/${source.toLowerCase()}.ico`, (error, image) => {
+          if (error) reject(error);
+          this.map.addImage(source, image);
+          resolve();
+        });
       });
     });
+
+    await Promise.all(imagePromises);
 
     this.map.addLayer({
       "id": this.sourceId,
@@ -126,10 +131,10 @@ export default class extends Controller {
     this.#flyTo(feature.geometry.coordinates)
 
     this.activePopup = new mapboxgl.Popup({
-      anchor: "left",
+      anchor: this.#isMobile() ? "bottom" : "left",
       closeButton: false,
       closeOnClick: true,
-      maxWidth: "320px"
+      maxWidth: this.#isMobile() ? "80vw" : "320px"
     })
 
     this.activePopup
@@ -162,7 +167,10 @@ export default class extends Controller {
   #flyTo(coordinates) {
     this.map.flyTo({
       center: coordinates,
-      padding: { left: 320 }
+      padding: { 
+        left: this.#isMobile() ? 0 : 320,
+        top: this.#isMobile() ? 480 : 0
+      }
     })
   }
 
@@ -170,5 +178,25 @@ export default class extends Controller {
     if (this.activePopup && this.activePopup.isOpen()) {
       this.activePopup.remove()
     }
+  }
+
+  #isMobile() {
+    const breakpoint = this.#getCurrentBreakpoint()
+    return ["xs", "sm"].includes(breakpoint)
+  }
+
+  // https://tailwindcss.com/docs/responsive-design
+  #getCurrentBreakpoint() {
+    const breakpoints = {
+      'sm': '40rem',
+      'md': '48rem',
+      'lg': '64rem',
+      'xl': '80rem',
+      '2xl': '96rem'
+    }
+  
+    return Object.entries(breakpoints)
+      .reverse()
+      .find(([_, width]) => window.matchMedia(`(min-width: ${width})`).matches)?.[0] || 'xs'
   }
 }

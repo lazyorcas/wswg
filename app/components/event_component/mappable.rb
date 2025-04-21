@@ -9,7 +9,7 @@ module EventComponent::Mappable
 
   def data
     {
-      action: "map#showFeaturePopup",
+      action: "map#showFeaturePopup bottom-sheet#collapse",
       map_target: "item",
       map_feature: {
         type: "Feature",

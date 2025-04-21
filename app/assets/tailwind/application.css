@@ -21,19 +21,24 @@
   }
 
   .home-tab-button {
-    @apply h-10 md:h-11 px-4;
+    @apply h-8 md:h-10 px-2 md:px-4;
+    @apply bg-white dark:bg-neutral-900;
+    @apply border;
     @apply rounded-3xl;
     @apply flex items-center;
-    @apply text-sm md:text-base font-bold;
+    @apply text-sm md:text-base;
   }
 
   .home-tab-button--active {
     @apply text-neutral-900 dark:text-neutral-100;
+    @apply border-neutral-900 dark:border-neutral-100;
+    @apply font-bold;
   }
 
   .home-tab-button--inactive {
     @apply hover:bg-neutral-800 dark:hover:bg-neutral-100;
-    @apply text-neutral-300 dark:text-neutral-600;
+    @apply border-neutral-300 dark:border-neutral-700;
+    @apply text-neutral-500;
     @apply hover:text-neutral-100 dark:hover:text-neutral-900;
     @apply transition ease-in-out;
   }
@@ -136,6 +141,28 @@
     @apply shadow;
   }
 
+  /* equivalent to screen(md) */
+  @media (max-width: 48rem) {
+    .popup--bottom-sheet:has(*) {
+      @apply fixed inset-x-0 bottom-0;
+      @apply min-h-[128px] max-h-[calc(100vh-128px)] h-[calc(100vh-128px)];
+      @apply rounded-none rounded-t-xl;
+      @apply border-b-0 border-x-0 border-t;
+    }
+
+    .popup--bottom-sheet:has(*)::before {
+      @apply absolute inset-x-0 mx-auto top-1;
+      @apply h-1 w-16;
+      @apply bg-neutral-200 dark:bg-neutral-700;
+      @apply content-[''];
+      @apply rounded-full;
+    }
+  }
+
+  .bottom-sheet-transition {
+    @apply transition-[height] duration-500 ease-in-out;
+  }
+
   /* ==========================================================================
   |
   |
@@ -182,6 +209,14 @@
 }
   
 @layer utilities {
+  /* ==========================================================================
+  |
+  |
+  |
+  |  Text
+  |
+  |
+  ============================================================================= */
   .text-primary {
     @apply text-neutral-900 dark:text-neutral-100;
   }
@@ -209,7 +244,7 @@
   }
   
   .mapboxgl-popup-tip {
-    @apply dark:!border-r-neutral-900;
+    @apply dark:!border-t-neutral-900 md:dark:!border-r-neutral-900 md:dark:!border-t-0;
   }
 
   /* ==========================================================================

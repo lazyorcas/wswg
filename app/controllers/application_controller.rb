@@ -1,6 +1,4 @@
 class ApplicationController < ActionController::Base
-  before_action :render_device_not_supported, if: -> { browser.device.mobile? }
-
   include SetCurrentRequestDetails
   include Authentication
 

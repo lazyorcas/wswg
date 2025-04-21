@@ -9,8 +9,10 @@
     map_center_coordinates_value: Current.user.city.coordinates
   } do %>
   <div class="size-full" data-map-target="container"></div>
-  <section class="absolute py-8 left-8 flex gap-x-8 max-h-full">
-    <%= render "shared/logo" %>
+  <section class="absolute py-4 md:py-8 left-4 md:left-8 flex gap-x-2 justify-between md:gap-x-8 max-h-full">
+    <div class="mt-1 md:mt-0">
+      <%= render "shared/logo" %>
+    </div>
     <div class="flex flex-col gap-y-2 max-h-full">
       <%= render "nav" %>
       <%= turbo_frame_tag "content", 

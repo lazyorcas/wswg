@@ -1,9 +1,9 @@
 <% links = [
   ["Discover", searches_path, current_page?(searches_path) || current_page?(root_path), false], 
-  ["Bookmarks", bookmarks_events_path, current_page?(bookmarks_events_path), false],
-  ["Changelog", changelog_path, current_page?(changelog_path), true]
+  ["Bookmarks", bookmarks_events_path, current_page?(bookmarks_events_path), false]
 ] %>
-<%= tag.nav class: "shrink-0 flex", data: { controller: "home-nav" } do %>
+<% links << ["Changelog", changelog_path, current_page?(changelog_path), true] %>
+<%= tag.nav class: "shrink-0 flex gap-x-1 md:gap-x-2", data: { controller: "home-nav" } do %>
   <% links.each do |link| %>
     <%= link_to link[0], link[1], 
       class: class_names("home-tab-button", link[2] ? "home-tab-button--active" : "home-tab-button--inactive"), 

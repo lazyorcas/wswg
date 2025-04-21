@@ -1,4 +1,4 @@
-<ul class="flex flex-col h-full overflow-y-auto no-scrollbar">
+<ul class="flex flex-col h-full overflow-y-auto no-scrollbar" data-bottom-sheet-target="nonDraggable">
   <% events.each do |event| %>
     <%= render Event::Map::ListItemButtonComponent.new(event, 
       bookmarked: bookmarked_event_ids.include?(event.id), 

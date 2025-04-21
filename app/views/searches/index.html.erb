@@ -3,6 +3,10 @@
     <div class="shrink-0">
       <%= render "form", search: @search %>
     </div>
-    <%= turbo_frame_tag "search-results", src: events_path(context: "search"), class: "grow min-h-0 popup" %>
+    <%= turbo_frame_tag "search-results", 
+      src: events_path(context: "search"), 
+      class: "grow md:min-h-0 popup popup--bottom-sheet bottom-sheet-transition",
+      data: { controller: "bottom-sheet", bottom_sheet_target: "bottomSheet" }
+    %>
   </section>
 <% end %> 
