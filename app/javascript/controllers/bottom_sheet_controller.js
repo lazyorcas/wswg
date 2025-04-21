@@ -19,7 +19,11 @@ export default class extends Controller {
 
   contentTargetConnected() {
     if (this.#isMobile()) {
-      this.bottomSheetTarget.style.height = `${this.contentTarget.scrollHeight}px`
+      if (this.contentTarget.dataset.collapsed) {
+        this.collapse()
+      } else {
+        this.bottomSheetTarget.style.height = "calc(100dvh - 256px)"
+      }
     }
   }
 
