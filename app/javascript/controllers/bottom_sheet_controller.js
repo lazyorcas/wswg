@@ -18,7 +18,9 @@ export default class extends Controller {
   }
 
   contentTargetConnected() {
-    this.bottomSheetTarget.style.height = `${this.contentTarget.scrollHeight}px`
+    if (this.#isMobile()) {
+      this.bottomSheetTarget.style.height = `${this.contentTarget.scrollHeight}px`
+    }
   }
 
   // only works with 1 nonDraggableTarget
