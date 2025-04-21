@@ -43,7 +43,7 @@ class OpenAI::Responses::Schemas
       image_url: { type: "string" },
       location: {
         type: "string",
-        description: "Location of the event. It can be a precise address or a general area. If not mentioned, return an empty string."
+        description: "Location of the event. It can be a precise address or a general area that is more precise than the city. If not mentioned, return an empty string. If the location is online, return an empty string. If the location cannot be more precise than the city, return an empty string. If the location is to be determined, return an empty string."
       },
       start_date: {
         type: "string",
