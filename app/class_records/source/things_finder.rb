@@ -25,6 +25,8 @@ class Source::ThingsFinder
           break
         end
       end
+    rescue
+      # ignore
     ensure
       begin
         @browser.reset

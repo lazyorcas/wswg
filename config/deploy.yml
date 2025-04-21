@@ -171,7 +171,7 @@ accessories:
     port: "127.0.0.1:9222:3000"
     env:
       clear:
-        TIMEOUT: 600000 # 10 minutes
+        TIMEOUT: 900000 # 15 minutes
   opensearch:
     image: opensearchproject/opensearch:2
     roles:
