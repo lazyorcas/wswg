@@ -8,10 +8,7 @@ module Event::Fetchable
 
   def fetch
     markdown = jina_reader.fetch(url)
-    raise "No markdown found for #{url}" if markdown.blank?
-
     json = markdown_expert.convert_to_json(markdown, json_schema: json_schema)
-    raise "No JSON found for #{url}" if json.blank?
 
     self.attributes = json.slice(*self.class.column_names)
 

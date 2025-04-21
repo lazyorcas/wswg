@@ -8,7 +8,7 @@ class SessionsController < ApplicationController
     user = User.find_by(email: auth_hash[:info][:email])
 
     if user.nil?
-      raise "Account not found"
+      raise UserReadableError.new("Account not found")
     end
 
     account = Account.find_or_initialize_by(
