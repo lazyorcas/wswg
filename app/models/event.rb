@@ -46,7 +46,7 @@ class Event < ApplicationRecord
       end_date: end_date,
       end_time: end_time
     )
-      errors.add(:base, "Event already exists in this date time range and location")
+      errors.add(:base, "Event already exists in this date time range (#{start_date} #{start_time} - #{end_date} #{end_time}) and location #{location_id}")
     end
   end
 end
