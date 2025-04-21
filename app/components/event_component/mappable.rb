@@ -2,7 +2,8 @@ module EventComponent::Mappable
   SOURCE_ICON_SIZES = {
     "Meetup" => 32,
     "Luma" => 64,
-    "Eventbrite" => 256
+    "Eventbrite" => 256,
+    "MuenchenDe" => 32
   }
 
   ICON_SIZE = 16.0

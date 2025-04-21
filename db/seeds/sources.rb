@@ -79,3 +79,11 @@ SOURCES.each do |source_attributes|
     source.save!
   end
 end
+
+# Source.create(
+#   city: City.find_by(name: "Munich"),
+#   name: "MuenchenDe",
+#   thing_type: "Event",
+#   url: "https://www.muenchen.de/en/events",
+#   proxy: false
+# )

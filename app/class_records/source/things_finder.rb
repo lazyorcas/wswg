@@ -60,4 +60,12 @@ class Source::ThingsFinder
     total_height = @browser.evaluate("document.documentElement.scrollHeight")
     current_scroll >= total_height
   end
+
+  def host
+    @host ||= URI.join(@source.url).host
+  end
+
+  def base_url
+    @base_url ||= "https://#{host}"
+  end
 end

@@ -6,9 +6,6 @@ class Source::Luma::ThingsFinder < Source::ThingsFinder
   end
 
   def get_things
-    host = URI.join(@source.url).host
-    base_url = "https://#{host}"
-
     @browser.css("a.event-link").each do |link|
       path = link.attribute("href")
 

@@ -1,7 +1,7 @@
 class Source < ApplicationRecord
   belongs_to :city
 
-  validates :name, presence: true, inclusion: { in: %w[ Eventbrite Luma Meetup ] }
+  validates :name, presence: true, inclusion: { in: %w[ Eventbrite Luma Meetup MuenchenDe ] }
   validates :url, presence: true, uniqueness: true
 
   validates :thing_type, presence: true, inclusion: { in: %w[ Event ] }

@@ -13,7 +13,7 @@ export default class extends Controller {
   connect() {
     this.activePopup = null
     this.sourceId = "items"
-    this.itemSources = ["Meetup", "Luma", "Eventbrite"]
+    this.itemSources = ["Meetup", "Luma", "Eventbrite", "MuenchenDe"]
 
     mapboxgl.accessToken = this.accessTokenValue
 
