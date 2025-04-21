@@ -38,6 +38,10 @@ class Possum::Browser < Ferrum::Browser
     network.wait_for_idle(timeout: NETWORK_IDLE_TIMEOUT)
   end
 
+  def click_on(selector)
+    execute("document.querySelector('#{selector}').click()")
+  end
+
   private
 
   def reject_requests

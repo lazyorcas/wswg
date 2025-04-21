@@ -17,6 +17,6 @@ class Source::Eventbrite::ThingsFinder < Source::ThingsFinder
   end
 
   def go_to_next_page
-    @browser.at_css("[aria-label=\"Next Page\"]").click
+    @browser.click_on("[aria-label=\"Next Page\"]")
   end
 end

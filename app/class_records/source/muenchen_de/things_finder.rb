@@ -22,6 +22,6 @@ class Source::MuenchenDe::ThingsFinder < Source::ThingsFinder
   end
 
   def go_to_next_page
-    @browser.at_css(".m-pagination__item.m-pagination__item--next-page a").click
+    @browser.click_on(".m-pagination__item.m-pagination__item--next-page a")
   end
 end

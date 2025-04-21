@@ -19,6 +19,6 @@ class Source::Klook::ThingsFinder < Source::ThingsFinder
   end
 
   def go_to_next_page
-    @browser.at_css(".klk-pagination-next-btn").click
+    @browser.click_on(".klk-pagination-next-btn")
   end
 end
