@@ -134,7 +134,7 @@ export default class extends Controller {
       anchor: this.#isMobile() ? "bottom" : "left",
       closeButton: false,
       closeOnClick: true,
-      maxWidth: this.#isMobile() ? "80vw" : "320px"
+      maxWidth: this.#isMobile() ? "90vw" : "354px"
     })
 
     this.activePopup
@@ -169,7 +169,7 @@ export default class extends Controller {
       center: coordinates,
       padding: { 
         left: this.#isMobile() ? 0 : 320,
-        top: this.#isMobile() ? 480 : 0
+        top: this.#isMobile() ? 320 : 0
       }
     })
   }
