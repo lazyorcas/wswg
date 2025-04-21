@@ -7,6 +7,11 @@ class Event::CreateJob < ApplicationJob
     event = Event.new(attributes)
     event.fetch
     event.locate
-    event.save!
+
+    if event.valid?
+      event.save!
+    else
+      raise "Event is not valid: #{event.errors.full_messages.to_sentence}"
+    end
   end
 end

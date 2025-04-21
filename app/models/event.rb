@@ -23,7 +23,7 @@ class Event < ApplicationRecord
   validates :end_time, presence: true
   validates :price, presence: true
 
-  validate :end_date_is_today_or_future
+  validate :end_date_is_today_or_future, if: -> { city.present? }
 
   before_update -> { self.location = nil }, if: :location_query_changed?
 
