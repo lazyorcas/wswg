@@ -168,6 +168,7 @@ accessories:
     image: ghcr.io/browserless/chromium:latest
     roles: 
       - web
+    port: "127.0.0.1:9222:3000"
     env:
       clear:
         TIMEOUT: 600000 # 10 minutes
