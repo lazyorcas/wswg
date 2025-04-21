@@ -8,6 +8,8 @@ class Location < ApplicationRecord
 
   belongs_to :city
 
+  has_many :events
+
   validates :full_address, presence: true, uniqueness: true
 
   def self.find_or_create_by_query(query, city_id:)
