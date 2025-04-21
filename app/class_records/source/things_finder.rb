@@ -25,7 +25,7 @@ class Source::ThingsFinder
           break
         end
       end
-    rescue
+    rescue Ferrum::DeadBrowserError
       # ignore
     ensure
       begin
