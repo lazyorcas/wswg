@@ -23,7 +23,8 @@ class Event < ApplicationRecord
   validates :end_time, presence: true
   validates :price, presence: true
 
-  validate :end_date_is_today_or_future, if: -> { city.present? }
+  validate :end_date_is_today_or_future, if: -> { city_id.present? }
+  validate :date_time_range_and_location_are_unique, if: -> { location_id.present? && start_date.present? && start_time.present? && end_date.present? && end_time.present? }
 
   before_update -> { self.location = nil }, if: :location_query_changed?
 
@@ -36,8 +37,16 @@ class Event < ApplicationRecord
       errors.add(:end_date, "(#{end_date}) must be today (#{today}) or in the future")
     end
   end
-end
 
-# TODO: deduplicate events
-# https://github.com/flori/amatch
-# Match by title, location, date time range
+  def date_time_range_and_location_are_unique
+    if Event.exists?(
+      location_id: location_id,
+      start_date: start_date,
+      start_time: start_time,
+      end_date: end_date,
+      end_time: end_time
+    )
+      errors.add(:base, "Event already exists in this date time range and location")
+    end
+  end
+end
