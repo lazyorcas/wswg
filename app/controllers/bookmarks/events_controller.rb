@@ -15,7 +15,7 @@ class Bookmarks::EventsController < ApplicationController
   end
 
   def filter_out_past_events
-    @events = @events.where(start_date: today..)
+    @events = @events.where(end_date: today..)
   end
 
   def order_events

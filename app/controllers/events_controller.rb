@@ -29,14 +29,14 @@ class EventsController < ApplicationController
   end
 
   def load_events_this_week
-    @events = event_scope.where(start_date: today..today.end_of_week)
+    @events = event_scope.where(end_date: today..today.end_of_week)
   end
 
   def load_events_next_week
     next_monday = today.end_of_week.next_occurring(:monday)
     next_sunday = today.end_of_week.next_occurring(:sunday)
 
-    @events = event_scope.where(start_date: next_monday..next_sunday)
+    @events = event_scope.where(end_date: next_monday..next_sunday)
   end
 
   def load_event

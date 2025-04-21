@@ -35,7 +35,7 @@ class Event::Search < Search
 
     {
       city_id: city.id,
-      start_date: {
+      end_date: {
         gte: query_start_date,
         lte: query_object.dig("date_range", "end_date").presence
       },
