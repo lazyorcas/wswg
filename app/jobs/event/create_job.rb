@@ -10,11 +10,11 @@ class Event::CreateJob < ApplicationJob
   # when the event is not parsed correctly
   retry_on ActiveRecord::RecordInvalid, wait: :polynomially_longer, attempts: 2
 
-  rescue_from(ActiveRecord::RecordInvalid) do |exception|
-    event = exception.record
-    DeadLink.find_or_create_by!(url: event.url)
-    raise exception
-  end
+  # rescue_from(ActiveRecord::RecordInvalid) do |exception|
+  #   event = exception.record
+  #   DeadLink.find_or_create_by!(url: event.url)
+  #   raise exception
+  # end
 
   def perform(attributes)
     event = Event.find_or_initialize_by(
