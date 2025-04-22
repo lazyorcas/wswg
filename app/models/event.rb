@@ -24,7 +24,7 @@ class Event < ApplicationRecord
   validates :price, presence: true
 
   validate :end_date_is_today_or_future, if: -> { city_id.present? }, on: :create
-  validate :date_time_range_and_location_are_unique, if: -> { location_id.present? && start_date.present? && start_time.present? && end_date.present? && end_time.present? }, on: :create
+  # validate :date_time_range_and_location_are_unique, if: -> { location_id.present? && start_date.present? && start_time.present? && end_date.present? && end_time.present? }, on: :create
 
   before_update -> { self.location = nil }, if: :location_query_changed?
 
@@ -38,15 +38,15 @@ class Event < ApplicationRecord
     end
   end
 
-  def date_time_range_and_location_are_unique
-    if Event.exists?(
-      location_id: location_id,
-      start_date: start_date,
-      start_time: start_time,
-      end_date: end_date,
-      end_time: end_time
-    )
-      errors.add(:base, "Event already exists in this date time range (#{start_date} #{start_time} - #{end_date} #{end_time}) and location #{location_id}")
-    end
-  end
+  # def date_time_range_and_location_are_unique
+  #   if Event.exists?(
+  #     location_id: location_id,
+  #     start_date: start_date,
+  #     start_time: start_time,
+  #     end_date: end_date,
+  #     end_time: end_time
+  #   )
+  #     errors.add(:base, "Event already exists in this date time range (#{start_date} #{start_time} - #{end_date} #{end_time}) and location #{location_id}")
+  #   end
+  # end
 end
