@@ -242,9 +242,25 @@
     @apply !rounded-xl;
     @apply !shadow-lg;
   }
-  
-  .mapboxgl-popup-tip {
-    @apply dark:!border-t-neutral-900 md:dark:!border-r-neutral-900 md:dark:!border-t-0;
+
+  .mapboxgl-popup-anchor-left {
+    @apply pl-2;
+  }
+
+  .mapboxgl-popup-anchor-bottom {
+    @apply pb-2;
+  }
+
+  .mapboxgl-popup-anchor-left .mapboxgl-popup-tip {
+    @apply dark:!border-r-neutral-900;
+  }
+
+  .mapboxgl-popup-anchor-bottom .mapboxgl-popup-tip {
+    @apply dark:!border-t-neutral-900;
+  }
+
+  .mapboxgl-popup:has([data-no-location="true"]) .mapboxgl-popup-tip {
+    @apply !hidden;
   }
 
   /* ==========================================================================

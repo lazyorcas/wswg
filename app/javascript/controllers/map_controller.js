@@ -128,7 +128,9 @@ export default class extends Controller {
   #showFeaturePopup(feature) {
     this.#closeActivePopup()
 
-    this.#flyTo(feature.geometry.coordinates)
+    const coordinates = feature.geometry.coordinates || this.map.getCenter()
+
+    this.#flyTo(coordinates)
 
     this.activePopup = new mapboxgl.Popup({
       anchor: this.#isMobile() ? "bottom" : "left",
@@ -138,7 +140,7 @@ export default class extends Controller {
     })
 
     this.activePopup
-      .setLngLat(feature.geometry.coordinates)
+      .setLngLat(coordinates)
       .setHTML(this.#buildInfoWindowHtml(feature))
       .addTo(this.map)
   }

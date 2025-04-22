@@ -11,7 +11,7 @@ module EventComponent::Mappable
   def data
     {
       action: "map#showFeaturePopup bottom-sheet#collapse",
-      map_target: "item",
+      map_target: location.present? ? "item" : nil,
       map_feature: {
         type: "Feature",
         properties: {
@@ -22,7 +22,7 @@ module EventComponent::Mappable
         },
         geometry: {
           type: "Point",
-          coordinates: location&.coordinates || city.scattered_coordinates
+          coordinates: location&.coordinates
         }
       }
     }
