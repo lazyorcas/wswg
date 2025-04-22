@@ -170,8 +170,8 @@ export default class extends Controller {
     this.map.flyTo({
       center: coordinates,
       padding: { 
-        left: this.#isMobile() ? 0 : 320,
-        top: this.#isMobile() ? 320 : 0
+        left: this.#isMobile() ? 0 : 256,
+        top: this.#isMobile() ? 256 : 0
       }
     })
   }
