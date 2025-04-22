@@ -23,7 +23,7 @@ class Event < ApplicationRecord
   validates :end_time, presence: true
   validates :price, presence: true
 
-  validate :end_date_is_today_or_future, if: -> { city_id.present? }
+  validate :end_date_is_today_or_future, if: -> { city_id.present? }, on: :create
   validate :date_time_range_and_location_are_unique, if: -> { location_id.present? && start_date.present? && start_time.present? && end_date.present? && end_time.present? }, on: :create
 
   before_update -> { self.location = nil }, if: :location_query_changed?
