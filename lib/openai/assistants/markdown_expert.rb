@@ -1,7 +1,8 @@
 class OpenAI::Assistants::MarkdownExpert
   INSTRUCTIONS = "You are a helpful markdown expert.".freeze
   CONVERT_TO_JSON_INPUT_TEMPLATE = <<-TEXT
-    Convert the following markdown to JSON.
+    Given the following context, convert the following markdown to JSON.
+    Context: %{context}
     ---
     %{markdown}
   TEXT
@@ -19,10 +20,11 @@ class OpenAI::Assistants::MarkdownExpert
     @instructions = INSTRUCTIONS
   end
 
-  def convert_to_json(markdown, json_schema:)
+  def convert_to_json(markdown, context:, json_schema:)
     input = build_input(
       input_template: CONVERT_TO_JSON_INPUT_TEMPLATE,
-      markdown: markdown
+      context: context,
+      markdown: markdown,
     )
 
     @openai_responses_client.ask(

@@ -1,6 +1,8 @@
 module Event::Fetchable
   extend ActiveSupport::Concern
 
+  CONTEXT = "This markdown should be about an event in %{city_name}. It's possible that the event has already expired or not found."
+
   def fetch!
     fetch
     save!
@@ -8,9 +10,17 @@ module Event::Fetchable
 
   def fetch
     markdown = jina_reader.fetch(url)
-    json = markdown_expert.convert_to_json(markdown, json_schema: json_schema)
+    json = markdown_expert.convert_to_json(
+      markdown,
+      context: CONTEXT % { city_name: city.name },
+      json_schema: json_schema
+    )
 
     self.attributes = json.slice(*self.class.column_names)
+
+    if json["not_found"]
+      raise Event::NotFoundViaUrlError
+    end
 
     if json["location"].present?
       if city.precise?(json["location"])
