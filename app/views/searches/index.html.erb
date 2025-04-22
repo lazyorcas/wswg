@@ -1,12 +1,12 @@
 <%= turbo_frame_tag "content" do %>
-  <section class="flex flex-col gap-y-2 h-full">
+  <%= tag.section class: "flex flex-col gap-y-2 h-full", data: { controller: "search" } do %>
     <div class="shrink-0">
       <%= render "form", search: @search %>
     </div>
     <%= turbo_frame_tag "search-results", 
       src: events_path(context: "search"), 
       class: "grow md:min-h-0 popup popup--bottom-sheet bottom-sheet-transition",
-      data: { controller: "bottom-sheet", bottom_sheet_target: "bottomSheet" }
+      data: { controller: "bottom-sheet", bottom_sheet_target: "bottomSheet", search_target: "results" }
     %>
-  </section>
+  <% end %>
 <% end %> 
