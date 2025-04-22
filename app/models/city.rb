@@ -22,6 +22,25 @@ class City < ApplicationRecord
     ]
   end
 
+  def precise?(query)
+    query
+      .downcase
+      .gsub(name.downcase, "")
+      .gsub(self.alias&.downcase || "", "")
+      .gsub(",", "")
+      .strip
+      .present?
+  end
+
+  def contains?(query)
+    downcased_query = query.downcase
+    downcased_query.include?(name.downcase) ||
+      (
+        self.alias.present? &&
+        downcased_query.include?(self.alias.downcase)
+      )
+  end
+
   private
 
   def set_slug

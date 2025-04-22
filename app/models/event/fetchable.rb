@@ -13,13 +13,10 @@ module Event::Fetchable
     self.attributes = json.slice(*self.class.column_names)
 
     if json["location"].present?
-      if json["location"].include?(city.name) &&
-        !json["location"].start_with?(city.name) &&
-        json["location"].split(",").length > 1
-
+      if city.precise?(json["location"])
         self.location_query = json["location"]
-      # When the location doesn't contain the city name
-      elsif json["location"].exclude?(city.name)
+
+      elsif !city.contains?(json["location"])
         self.location_query = "#{json["location"]}, #{city.name}"
       end
     end
