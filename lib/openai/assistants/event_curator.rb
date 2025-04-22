@@ -50,8 +50,7 @@ class OpenAI::Assistants::EventCurator
     @openai_responses_client.ask(
       input: input,
       instructions: @instructions,
-      response_schema: json_schema,
-      temperature: 0.1
+      response_schema: json_schema
     )
   end
 
