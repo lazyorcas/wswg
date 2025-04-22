@@ -8,8 +8,7 @@ class Event::CreateJob < ApplicationJob
   retry_on Faraday::ServerError, wait: 5.minutes, attempts: 3
 
   rescue_from(Event::NotFoundViaUrlError) do |exception|
-    event = exception.record
-    DeadLink.find_or_create_by!(url: event.url)
+    DeadLink.find_or_create_by!(url: exception.url)
   end
 
   def perform(attributes)
