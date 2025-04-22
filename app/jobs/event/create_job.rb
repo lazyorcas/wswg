@@ -8,7 +8,7 @@ class Event::CreateJob < ApplicationJob
   retry_on Faraday::ServerError, wait: 5.minutes, attempts: 3
 
   # when the event is not parsed correctly
-  retry_on ActiveRecord::RecordInvalid, wait: :polynomially_longer, attempts: 2
+  # retry_on ActiveRecord::RecordInvalid, wait: :polynomially_longer, attempts: 2
 
   # rescue_from(ActiveRecord::RecordInvalid) do |exception|
   #   event = exception.record
