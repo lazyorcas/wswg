@@ -1,14 +1,18 @@
-<% content = capture do %>
-  <span class="pointer-events-none flex gap-x-4 items-center">
-    <%= image_tag source_icon_url, class: "shrink-0 list-item__icon grayscale group-hover:grayscale-0 transition-all" %>
-    <%= tag.span title, class: "grow list-item__text group-hover:font-semibold line-clamp-1" %>
-    <% if bookmarked? %>
-      <i class="ph-fill ph-bookmark-simple"></i>
-    <% elsif seen? %>
-      <i class="ph-bold ph-checks"></i>
-    <% end %>
-  </span>
-<% end %>
 <%= tag.li class: "shrink-0 group" do %>
-  <%= tag.button content, class: "w-full cursor-pointer list-item", data: data %>
+  <%= tag.button class: "w-full cursor-pointer list-item", data: data do %>
+    <span class="pointer-events-none flex gap-x-4 items-start">
+      <%= image_tag source_icon_url, class: "shrink-0 list-item__icon grayscale group-hover:grayscale-0 transition-all mt-[3px]" %>
+      <span class="grow flex flex-col list-item__text">
+        <%= tag.span title, class: "text-sm text-primary line-clamp-1" %>
+        <%= tag.span class: "text-xs text-secondary" do %>
+          <%= date %> &#x2022; <%= time_range %>
+        <% end %>
+      </span>
+      <% if bookmarked? %>
+        <i class="mt-[3px] ph-fill ph-bookmark-simple"></i>
+      <% elsif seen? %>
+        <i class="mt-[3px] ph-bold ph-checks"></i>
+      <% end %>
+    </span>
+  <% end %>
 <% end %>

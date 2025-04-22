@@ -177,7 +177,6 @@
     @apply bg-white dark:bg-neutral-900;
     @apply hover:bg-neutral-200 dark:hover:bg-neutral-700;
     @apply flex;
-    @apply text-sm;
     @apply text-neutral-800 dark:text-neutral-200;
     @apply transition ease-in-out;
   }
