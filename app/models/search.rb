@@ -78,7 +78,7 @@ class Search < ApplicationRecord
 
   def result_items
     if keywords == "*"
-      model.order(:start_date, :start_time).find(result.ids)
+      model.where(id: result.ids).order(:start_date, :start_time)
     else
       model.find(result.inlier_ids)
     end
