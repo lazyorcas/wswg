@@ -2,6 +2,9 @@ class Events::ReindexJob < ApplicationJob
   queue_with_priority 0
 
   def perform
-    Event.reindex
+    Language.all.each do |language|
+      searchable_class = "Searchable::#{language.name.capitalize}::Event"
+      searchable_class.constantize.reindex
+    end
   end
 end

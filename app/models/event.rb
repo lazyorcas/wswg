@@ -1,7 +1,6 @@
 class Event < ApplicationRecord
   include Fetchable
   include Locatable
-  include Searchable
 
   belongs_to :source
   belongs_to :city

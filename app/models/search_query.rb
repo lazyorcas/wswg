@@ -41,37 +41,35 @@ class SearchQuery < ApplicationRecord
     city = City.find_by(name: city_name) || user.city
 
     query_object = build_query_object(city: city)
+    thing_types = query_object["thing_types"]
 
-    if query_object["thing_types"].empty?
+    if thing_types.empty?
       Sentry.capture_message(
         "Thing types are empty",
         level: :warning,
         extra: { search_query_id: id }
       )
+
+      thing_types = [ "Event" ]
     end
 
     language_keywords = build_language_keywords(query_object)
-    unique_keywords_groups = language_keywords.map { |language_keyword| language_keyword[:keywords] }.uniq
-
-    if unique_keywords_groups.include?("*") && unique_keywords_groups.length > 1
-      Sentry.capture_message(
-        "Some keywords are empty",
-        level: :warning,
-        extra: { search_query_id: id }
-      )
-
-      unique_keywords_groups = unique_keywords_groups.reject { |keywords| keywords == "*" }
-    end
-
     conditions = build_conditions(query_object, city: city)
 
-    unique_keywords_groups.each do |keywords|
-      Search.create!(
-        search_query: self,
-        model_type: query_object["thing_types"].first || "Event",
-        keywords: keywords,
-        conditions: conditions
-      )
+    thing_types.each do |thing_type|
+      language_keywords.each do |language, keywords|
+        begin
+          Search.create!(
+            search_query: self,
+            model_type: thing_type,
+            searchable_model_type: "Searchable::#{language.capitalize}::#{thing_type.capitalize}",
+            keywords: keywords,
+            conditions: conditions
+          )
+        rescue => e
+          Sentry.capture_exception(e)
+        end
+      end
     end
 
     self.status = :searching
@@ -124,7 +122,9 @@ class SearchQuery < ApplicationRecord
   private
 
   def build_language_keywords(query_object)
-    query_object["language_keywords"].map do |language_keyword|
+    lks = {}
+
+    query_object["language_keywords"].each do |language_keyword|
       keywords_arr = language_keyword["keywords"]
         .split(" ")
         .reject(&:blank?)
@@ -132,11 +132,25 @@ class SearchQuery < ApplicationRecord
       keywords_arr << "*" if keywords_arr.empty?
       keywords = keywords_arr.join(" ")
 
-      {
-        language: language_keyword["language"],
-        keywords: keywords
-      }
+      lks[language_keyword["language"]] = keywords
     end
+
+    # if there are multiple keywords with "*" and no other keywords
+    if lks.select { |_, keywords| keywords == "*" }.length == lks.length
+      lks = { "English" => "*" }
+
+    # if there are multiple keywords with "*" and other keywords
+    elsif lks.select { |_, keywords| keywords == "*" }.length > 1
+      Sentry.capture_message(
+        "Some keywords are empty",
+        level: :warning,
+        extra: { search_query_id: id }
+      )
+
+      lks = lks.reject { |_, keywords| keywords == "*" }
+    end
+
+    lks
   end
 
   def build_conditions(query_object, city:)

@@ -1,6 +1,4 @@
 class Search < ApplicationRecord
-  MISSPELLING_EDIT_DISTANCE = 3
-
   enum :status, {
     searching: 0,
     completed: 1,
@@ -14,6 +12,7 @@ class Search < ApplicationRecord
   validates :conditions, presence: true
   validates :status, presence: true
   validates :model_type, presence: true, inclusion: { in: %w[ Event ] }
+  validates :searchable_model_type, presence: true
   validates :result, presence: true, if: :completed?
 
   after_commit :queue_query, on: :create
@@ -22,13 +21,16 @@ class Search < ApplicationRecord
     @model ||= model_type.constantize
   end
 
+  def searchable_model
+    @searchable_model ||= searchable_model_type.constantize
+  end
+
   def query!
     self.result = Search::Result.new
 
-    searchkick_result = model.search(
+    searchkick_result = searchable_model.search(
       self.keywords,
       where: self.conditions.deep_symbolize_keys,
-      misspellings: { edit_distance: MISSPELLING_EDIT_DISTANCE },
       load: false
     )
 
