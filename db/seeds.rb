@@ -9,6 +9,7 @@
 #   end
 
 require_relative "seeds/cities"
+require_relative "seeds/languages"
 require_relative "seeds/sources"
 require_relative "seeds/users"
 # require_relative "seeds/events"
