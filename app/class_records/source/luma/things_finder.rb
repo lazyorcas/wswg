@@ -1,4 +1,15 @@
 class Source::Luma::ThingsFinder < Source::ThingsFinder
+  UID_DELIMITER = "___"
+
+  # Luma's event URLs are not unique, so we need to add the date to the UID
+  def self.build_uid(id, date: Time.current.to_date)
+    "#{id}#{UID_DELIMITER}#{date}"
+  end
+
+  def self.get_id(uid)
+    uid.split(UID_DELIMITER).first
+  end
+
   private
 
   def max_page_count
@@ -8,9 +19,10 @@ class Source::Luma::ThingsFinder < Source::ThingsFinder
   def get_things
     @browser.css("a.event-link").each do |link|
       path = link.attribute("href")
+      id = path[1..]
 
       @things << {
-        uid: path[1..],
+        uid: self.class.build_uid(id),
         url: URI.join(base_url, path).to_s
       }
     end
