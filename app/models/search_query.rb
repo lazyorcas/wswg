@@ -93,7 +93,7 @@ class SearchQuery < ApplicationRecord
     else
       searches.each do |search|
         scores = search.result.scores
-        things += search.model.find(search.result.ids).map.with_index do |thing, index|
+        things += search.model.find(search.result.inlier_ids).map.with_index do |thing, index|
           { thing: thing, score: scores[index] }
         end
       end
