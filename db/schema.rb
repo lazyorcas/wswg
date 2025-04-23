@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_04_22_021418) do
+ActiveRecord::Schema[8.0].define(version: 2025_04_23_015348) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -96,6 +96,16 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_22_021418) do
     t.index ["slug"], name: "index_cities_on_slug", unique: true
   end
 
+  create_table "city_languages", force: :cascade do |t|
+    t.bigint "city_id", null: false
+    t.bigint "language_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["city_id", "language_id"], name: "index_city_languages_on_city_id_and_language_id", unique: true
+    t.index ["city_id"], name: "index_city_languages_on_city_id"
+    t.index ["language_id"], name: "index_city_languages_on_language_id"
+  end
+
   create_table "dead_links", force: :cascade do |t|
     t.string "url", null: false
     t.datetime "created_at", null: false
@@ -126,6 +136,14 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_22_021418) do
     t.index ["location_query"], name: "index_events_on_location_query"
     t.index ["source_id", "uid"], name: "index_events_on_source_id_and_uid", unique: true
     t.index ["source_id"], name: "index_events_on_source_id"
+  end
+
+  create_table "languages", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "code", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["code"], name: "index_languages_on_code", unique: true
   end
 
   create_table "locations", force: :cascade do |t|
@@ -186,6 +204,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_22_021418) do
 
   add_foreign_key "accounts", "users"
   add_foreign_key "bookmarks", "users"
+  add_foreign_key "city_languages", "cities"
+  add_foreign_key "city_languages", "languages"
   add_foreign_key "events", "cities"
   add_foreign_key "events", "locations"
   add_foreign_key "events", "sources"

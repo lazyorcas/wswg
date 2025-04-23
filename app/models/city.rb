@@ -3,6 +3,9 @@ class City < ApplicationRecord
 
   has_many :sources
 
+  has_many :city_languages
+  has_many :languages, through: :city_languages
+
   validates :name, presence: true
   validates :slug, presence: true, uniqueness: true
   validates :time_zone,
