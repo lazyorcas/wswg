@@ -35,7 +35,7 @@ class Search::Result
 
   private
 
-  MIN_SCORE = 2
+  MIN_SCORE = 5
   def get_inliers_by_min_score
     hits.select { |hit| hit.score >= MIN_SCORE }
   end
