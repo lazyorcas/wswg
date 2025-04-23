@@ -1,4 +1,4 @@
-module Search::Broadcastable
+module SearchQuery::Broadcastable
   include Turbo::Broadcastable
   include Broadcastable
 
@@ -6,10 +6,10 @@ module Search::Broadcastable
     broadcast_update_to(
       self,
       target: "search-results",
-      partial: "searches/#{model_type.underscore.pluralize}",
+      partial: "search_queries/events",
       locals: {
-        events: result_items,
-        took_in_seconds: result.took_in_seconds,
+        events: result_things,
+        took_in_seconds: took_in_seconds,
         viewing_user: user
       }
     )

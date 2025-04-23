@@ -7,30 +7,6 @@ class OpenAI::Responses::Schemas
     })
   end
 
-  # def self.thing_types_schema
-  #   build_schema("thing_types", {
-  #     thing_types: {
-  #       type: "array",
-  #       description: "A list of thing types that the user is looking for. If the user is looking for all types, return only an array with type \"Thing\".",
-  #       items: {
-  #         type: "object",
-  #         properties: {
-  #           type: {
-  #             type: "string",
-  #             enum: %w[ Thing Event ]
-  #           },
-  #           query: {
-  #             type: "string",
-  #             description: "Extracted from the user's query. The query should be related to type of thing that the user is looking for. The query can have many keywords that are shared by multiple types. The query should be downcased."
-  #           }
-  #         },
-  #         required: [ "type", "query" ],
-  #         additionalProperties: false
-  #       }
-  #     }
-  #   })
-  # end
-
   def self.event_schema(time_zone:)
     current_year = Time.current.in_time_zone(time_zone).year
 
@@ -72,16 +48,24 @@ class OpenAI::Responses::Schemas
     })
   end
 
-  def self.event_search_query_schema
-    build_schema("event_search_query", {
-      keywords: {
-        type: "string",
-        description: "Keywords that will be input to Elasticsearch. Each keyword should be separated by a blank space. The keywords should be downcased."
-      },
+  def self.search_query_schema
+    build_schema("search_query", {
       city: {
         type: "string",
         description: "City name. If not mentioned, return an empty string. If the city isn't in the list of supported cities, return \"NOT_SUPPORTED\". The list of supported cities is #{City.pluck(:name).to_sentence}.",
         enum: [ *City.pluck(:name), "", "NOT_SUPPORTED" ]
+      },
+      thing_types: {
+        type: "array",
+        description: "The types of things that the user is looking for. If the user is looking for all types, return all of the types.",
+        items: {
+          type: "string",
+          enum: %w[ Event ]
+        }
+      },
+      keywords: {
+        type: "string",
+        description: "Keywords that will be input to Elasticsearch. Each keyword should be separated by a blank space. The keywords should be downcased. The keywords must not include generic words such as \"event\", \"thing to do\", and their plural forms."
       },
       date_range: {
         type: "object",

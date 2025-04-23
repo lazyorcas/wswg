@@ -16,6 +16,10 @@ class Search::Result
     hits.map { |hit| hit.id }
   end
 
+  def scores
+    hits.map { |hit| hit.score }
+  end
+
   def inlier_ids(outlier_detection_method: :min_score)
     inliers = case outlier_detection_method
     when :min_score
