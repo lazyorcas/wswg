@@ -24,7 +24,10 @@ class OpenAI::Assistants::LocalGuide
     - It's perfectly fine for the keywords to be empty.
 
     ### Languages
-    - For each language from this list: %{languages}, you must attempt to build keywords for that language. It's fine if the keywords are empty.
+    - For each language from this list: %{languages}, you must build keywords for that language. You can always start with the English keywords and then translate them.
+    - The meaning of the keywords must be the same in all languages.
+    - It's fine if no language has keywords.
+    - It's not fine if only some languages have keywords.
 
     ## Date Time
     If a time-sensitive keyword is mentioned, please use the section below to build the date time range.
