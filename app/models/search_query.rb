@@ -25,12 +25,20 @@ class SearchQuery < ApplicationRecord
   def create_searches!
     query_object = build_query_object
 
+    if query_object["thing_types"].empty?
+      Sentry.capture_message(
+        "Thing types are empty",
+        level: :warning,
+        extra: { search_query_id: id }
+      )
+    end
+
     keywords = build_keywords(query_object)
     conditions = build_conditions(query_object)
 
     Search.create!(
       search_query: self,
-      model_type: query_object["thing_types"].first,
+      model_type: query_object["thing_types"].first || "Event",
       keywords: keywords,
       conditions: conditions
     )
