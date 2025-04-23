@@ -85,7 +85,8 @@ class OpenAI::Assistants::LocalGuide
   end
 
   DETECT_CITY_INPUT_TEMPLATE = <<-TEXT
-    From the user input below, detect the city that the user is looking for. It's possible that they are not mentioning the city by name.
+    From the user input below, detect the city that the user is looking for.
+    It's fine if they are not mentioning the city.
 
     ## User Input
     %{text}
