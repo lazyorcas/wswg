@@ -23,7 +23,24 @@ class SearchQuery < ApplicationRecord
   end
 
   def create_searches!
-    query_object = build_query_object
+    city_response = detect_city
+    city_name = city_response.dig("city")
+
+    if city_name == "NOT_SUPPORTED"
+      Sentry.capture_message(
+        "Location not supported",
+        level: :warning,
+        extra: { search_id: id }
+      )
+
+      raise UserReadableError.new(
+        "This location is not supported yet. Only #{City.pluck(:name).map { |name| "<b>#{name}</b>" }.to_sentence} are currently supported.".html_safe
+      )
+    end
+
+    city = City.find_by(name: city_name) || user.city
+
+    query_object = build_query_object(city: city)
 
     if query_object["thing_types"].empty?
       Sentry.capture_message(
@@ -33,15 +50,19 @@ class SearchQuery < ApplicationRecord
       )
     end
 
-    keywords = build_keywords(query_object)
-    conditions = build_conditions(query_object)
+    language_keywords = build_language_keywords(query_object)
+    unique_keywords_groups = language_keywords.map { |language_keyword| language_keyword[:keywords] }.uniq
 
-    Search.create!(
-      search_query: self,
-      model_type: query_object["thing_types"].first || "Event",
-      keywords: keywords,
-      conditions: conditions
-    )
+    conditions = build_conditions(query_object, city: city)
+
+    unique_keywords_groups.each do |keywords|
+      Search.create!(
+        search_query: self,
+        model_type: query_object["thing_types"].first || "Event",
+        keywords: keywords,
+        conditions: conditions
+      )
+    end
 
     self.status = :searching
     save!
@@ -80,6 +101,9 @@ class SearchQuery < ApplicationRecord
       things = things.sort_by { |thing| thing[:score] }.reverse.map { |thing| thing[:thing] }
     end
 
+    # remove duplicates
+    things = things.uniq
+
     things
   end
 
@@ -89,32 +113,23 @@ class SearchQuery < ApplicationRecord
 
   private
 
-  def build_keywords(query_object)
-    keywords_arr = query_object["keywords"]
-      # .gsub(/events?|things? to do/, "")
-      .split(" ")
-      .reject(&:blank?)
+  def build_language_keywords(query_object)
+    query_object["language_keywords"].map do |language_keyword|
+      keywords_arr = language_keyword["keywords"]
+        .split(" ")
+        .reject(&:blank?)
 
-    keywords_arr << "*" if keywords_arr.empty?
-    keywords_arr.join(" ")
+      keywords_arr << "*" if keywords_arr.empty?
+      keywords = keywords_arr.join(" ")
+
+      {
+        language: language_keyword["language"],
+        keywords: keywords
+      }
+    end
   end
 
-  def build_conditions(query_object)
-    query_city = query_object.dig("city")
-
-    if query_city == "NOT_SUPPORTED"
-      Sentry.capture_message(
-        "Location not supported",
-        level: :warning,
-        extra: { search_id: id }
-      )
-
-      raise UserReadableError.new(
-        "This location is not supported yet. Only #{City.pluck(:name).map { |name| "<b>#{name}</b>" }.to_sentence} are currently supported.".html_safe
-      )
-    end
-
-    city = City.find_by(name: query_object.dig("city")) || user.city
+  def build_conditions(query_object, city:)
     today = Time.current.in_time_zone(city.time_zone).to_date
 
     query_start_date = query_object.dig("date_range", "start_date").presence
@@ -138,15 +153,16 @@ class SearchQuery < ApplicationRecord
     }
   end
 
-  def build_query_object
-    local_guide.build_search_query(query,
-      json_schema: json_schema,
-      time_zone: user.city.time_zone
-    )
+  def detect_city
+    local_guide.detect_city(query)
   end
 
-  def json_schema
-    @json_schema ||= OpenAI::Responses::Schemas.search_query_schema
+  def build_query_object(city:)
+    local_guide.build_search_query(query,
+      city_name: city.name,
+      time_zone: city.time_zone,
+      languages: city.languages.pluck(:name)
+    )
   end
 
   def local_guide

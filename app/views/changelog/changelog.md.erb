@@ -6,6 +6,9 @@ These cities and sources are supported.
 ### Cities
 <%= City.pluck(:name).to_sentence %>
 
+### Languages
+<%= Language.pluck(:name).to_sentence %>
+
 ### Sources
 <%= Source.pluck(:name).uniq.to_sentence %>
 
@@ -13,7 +16,9 @@ These cities and sources are supported.
 ## Versions
 ### Next Version(s)
 - Fetch local things to do, concerts, festivals, and movie showings.
-- Localization & translation
+
+### v0.0.2
+- **[Feature]** Multi-language search is supported for <%= Language.pluck(:name).to_sentence %>.
 
 ### v0.0.1
 - **[Feature]** Mobile devices are now supported.

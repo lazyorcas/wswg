@@ -1,4 +1,6 @@
 class Search < ApplicationRecord
+  MISSPELLING_EDIT_DISTANCE = 3
+
   enum :status, {
     searching: 0,
     completed: 1,
@@ -26,6 +28,7 @@ class Search < ApplicationRecord
     searchkick_result = model.search(
       self.keywords,
       where: self.conditions.deep_symbolize_keys,
+      misspellings: { edit_distance: MISSPELLING_EDIT_DISTANCE },
       load: false
     )
 

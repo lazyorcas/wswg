@@ -48,13 +48,18 @@ class OpenAI::Responses::Schemas
     })
   end
 
-  def self.search_query_schema
-    build_schema("search_query", {
+  def self.city_schema
+    build_schema("city", {
       city: {
         type: "string",
-        description: "City name. If not mentioned, return an empty string. If the city isn't in the list of supported cities, return \"NOT_SUPPORTED\". The list of supported cities is #{City.pluck(:name).to_sentence}.",
-        enum: [ *City.pluck(:name), "", "NOT_SUPPORTED" ]
-      },
+        description: "City name. If not mentioned, return an empty string. If the city isn't in the list of supported cities, return \"NOT_SUPPORTED\".",
+        enum: [ *City.pluck(:name), "NOT_SUPPORTED" ]
+      }
+    })
+  end
+
+  def self.search_query_schema
+    build_schema("search_query", {
       thing_types: {
         type: "array",
         description: "The types of things that the user is looking for. If the user is looking for all types, return all of the types.",
@@ -63,9 +68,23 @@ class OpenAI::Responses::Schemas
           enum: %w[ Event ]
         }
       },
-      keywords: {
-        type: "string",
-        description: "Keywords that will be input to Elasticsearch. Each keyword should be separated by a blank space. The keywords should be downcased. The keywords must not include generic words such as \"event\", \"thing to do\", and their plural forms."
+      language_keywords: {
+        type: "array",
+        items: {
+          type: "object",
+          properties: {
+            language: {
+              type: "string",
+              enum: Language.pluck(:name)
+            },
+            keywords: {
+              type: "string",
+              description: "Keywords that will be input to Elasticsearch. Each keyword should be separated by a blank space. The keywords should be downcased."
+            }
+          },
+          required: [ "language", "keywords" ],
+          additionalProperties: false
+        }
       },
       date_range: {
         type: "object",

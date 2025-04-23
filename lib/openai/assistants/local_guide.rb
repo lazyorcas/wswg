@@ -1,16 +1,30 @@
 class OpenAI::Assistants::LocalGuide
-  INSTRUCTIONS = "You are a local guide who's passionate about helping people find the best things to do in their city. You are an expert in building search queries for Elasticsearch, which you use to search fast and efficiently."
-  INPUT_TEMPLATE = <<-TEXT
-    Build a search query from the following user input and rules below.
+  INSTRUCTIONS_TEMPLATE = <<-TEXT
+    You are a local guide who's passionate about helping people find the best things to do in their city.
+
+    You are an expert in building search queries for Elasticsearch, which you use to search fast and efficiently.
+  TEXT
+
+  BUILD_SEARCH_QUERY_INPUT_TEMPLATE = <<-TEXT
+    You are a polygot in %{languages}.
+
+    Build a search query or multiple search queries from the following user input, context, facts, and rules below. The facts and rules are in English. It's safe to consider variations of these rules in %{languages}, but retain the semantic meaning.
 
     ## User Input
     %{text}
 
-    ## Keywords Rules
-    - The keywords should exclude information related to date (including relative dates), time (including relative times), location, and price (including "free").
-    - The keywords should exclude determiner words like "every", "all".
-    - The keywords should exclude adjectives.
-    - The keywords should exclude generic words such as "event", "thing to do", and their plural forms.
+    ## Keywords
+    ### Rules
+    - The keywords must exclude information related to date, time, location, and price (including "free").
+    - The keywords must exclude determiner words like "every", "all".
+    - The keywords must exclude adjectives.
+    - The keywords must exclude generic words such as "event", "thing to do", and their plural forms.
+    - The keywords must exclude the city name: %{city_name}.
+    - The keywords must not include information that is not in the user input.
+    - It's perfectly fine for the keywords to be empty.
+
+    ### Languages
+    - For each language from this list: %{languages}, you must attempt to build keywords for that language. It's fine if the keywords are empty.
 
     ## Date Time
     If a time-sensitive keyword is mentioned, please use the section below to build the date time range.
@@ -43,30 +57,45 @@ class OpenAI::Assistants::LocalGuide
 
   def initialize
     @openai_responses_client = OpenAI::ResponsesClient.new
-    @instructions = INSTRUCTIONS
-    @input_template = INPUT_TEMPLATE
   end
 
-  def build_search_query(text, json_schema:, time_zone:)
-    input = build_input(text, time_zone: time_zone)
-    @openai_responses_client.ask(
-      input: input,
-      instructions: @instructions,
-      response_schema: json_schema
-    )
-  end
+  def build_search_query(text, city_name:, time_zone:, languages:)
+    instructions = INSTRUCTIONS_TEMPLATE
 
-  private
-
-  def build_input(text, time_zone:)
     now = Time.current.in_time_zone(time_zone)
-
-    @input_template % {
+    input = BUILD_SEARCH_QUERY_INPUT_TEMPLATE % {
       current_date: now.strftime("%Y-%m-%d"),
       current_dow: now.strftime("%A"),
       current_time: now.strftime("%H:%M"),
       current_year: now.year,
+      city_name: city_name,
+      languages: languages,
       text: text
     }
+
+    @openai_responses_client.ask(
+      input: input,
+      instructions: instructions,
+      response_schema: OpenAI::Responses::Schemas.search_query_schema,
+      model: "gpt-4.1-mini"
+    )
+  end
+
+  DETECT_CITY_INPUT_TEMPLATE = <<-TEXT
+    From the user input below, detect the city that the user is looking for. It's possible that they are not mentioning the city by name.
+
+    ## User Input
+    %{text}
+  TEXT
+
+  def detect_city(text)
+    instructions = INSTRUCTIONS_TEMPLATE
+    input = DETECT_CITY_INPUT_TEMPLATE % { text: text }
+
+    @openai_responses_client.ask(
+      input: input,
+      instructions: instructions,
+      response_schema: OpenAI::Responses::Schemas.city_schema
+    )
   end
 end
