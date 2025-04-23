@@ -41,6 +41,8 @@ class Search < ApplicationRecord
     self.status = :completed
     save!
   rescue => e
+    Sentry.capture_exception(e)
+
     self.result.error = e.message
     self.status = :failed
     save!

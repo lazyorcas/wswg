@@ -24,7 +24,14 @@ class SessionsController < ApplicationController
 
     redirect_to(root_path)
   rescue => e
-    flash.now[:error] = e.message
+    Sentry.capture_exception(e)
+
+    if e.is_a?(UserReadableError)
+      flash.now[:error] = e.message
+    else
+      flash.now[:error] = "Failed to sign in. Try again."
+    end
+
     turbo_stream_flash
   end
 end

@@ -6,9 +6,6 @@ class SearchQueriesController < ApplicationController
   def create
     build_search_query
     @search_query.save!
-  rescue => e
-    flash.now[:error] = e.message
-    turbo_stream_flash
   end
 
   private

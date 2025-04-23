@@ -6,9 +6,6 @@ class BookmarksController < ApplicationController
     @bookmark.save!
 
     flash.now[:success] = "Added <b>\"#{@bookmark.bookmarkable.title}\"</b> to bookmarks".html_safe
-  rescue => e
-    flash.now[:error] = e.message
-    turbo_stream_flash
   end
 
   def update
@@ -21,9 +18,6 @@ class BookmarksController < ApplicationController
     else
       flash.now[:success] = "Added <b>\"#{@bookmark.bookmarkable.title}\"</b> to bookmarks".html_safe
     end
-  rescue => e
-    flash.now[:error] = e.message
-    turbo_stream_flash
   end
 
   private
