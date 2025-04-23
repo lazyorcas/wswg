@@ -5,6 +5,8 @@ class SearchQuery::CreateSearchesJob < ApplicationJob
     search_query = SearchQuery.find(id)
     search_query.create_searches!
 
-    SearchQuery::PollForSearchesJob.perform_later(id)
+    SearchQuery::PollForSearchesJob
+      .set(wait: 2.second)
+      .perform_later(id)
   end
 end

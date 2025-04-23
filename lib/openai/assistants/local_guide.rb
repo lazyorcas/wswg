@@ -7,7 +7,7 @@ class OpenAI::Assistants::LocalGuide
     %{text}
 
     ## Keywords Rules
-    - The keywords should exclude information related to date, time, location, and price (including "free").
+    - The keywords should exclude information related to date (including relative dates), time (including relative times), location, and price (including "free").
     - The keywords should exclude determiner words like "every", "all".
     - The keywords should exclude adjectives.
     - The keywords should exclude generic words such as "event", "thing to do", and their plural forms.

@@ -8,13 +8,11 @@ class Search < ApplicationRecord
   belongs_to :search_query
   attribute :result, Search::Result.to_type
 
+  validates :keywords, presence: true
+  validates :conditions, presence: true
   validates :status, presence: true
   validates :model_type, presence: true, inclusion: { in: %w[ Event ] }
-
-  with_options if: :completed? do
-    validates :conditions, presence: true
-    validates :result, presence: true
-  end
+  validates :result, presence: true, if: :completed?
 
   after_commit :queue_query, on: :create
 

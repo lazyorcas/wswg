@@ -1,5 +1,3 @@
-# TODO: add non-null constraint to searches.search_query_id
-
 class CreateSearchQueries < ActiveRecord::Migration[8.0]
   def change
     create_table :search_queries do |t|

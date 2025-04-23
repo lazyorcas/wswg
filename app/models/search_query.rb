@@ -30,9 +30,7 @@ class SearchQuery < ApplicationRecord
 
     Search.create!(
       search_query: self,
-      user_id: user_id,
       model_type: query_object["thing_types"].first,
-      query: query,
       keywords: keywords,
       conditions: conditions
     )
@@ -40,6 +38,8 @@ class SearchQuery < ApplicationRecord
     self.status = :searching
     save!
   rescue => e
+    Sentry.capture_exception(e)
+
     self.status = :failed
     save!
 

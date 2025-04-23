@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_04_23_024647) do
+ActiveRecord::Schema[8.0].define(version: 2025_04_23_045934) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -166,18 +166,15 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_23_024647) do
   end
 
   create_table "searches", force: :cascade do |t|
-    t.bigint "user_id"
     t.string "model_type", null: false
-    t.string "query", null: false
     t.integer "status", null: false
     t.string "keywords"
     t.jsonb "conditions"
     t.jsonb "result"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.bigint "search_query_id"
+    t.bigint "search_query_id", null: false
     t.index ["search_query_id"], name: "index_searches_on_search_query_id"
-    t.index ["user_id"], name: "index_searches_on_user_id"
   end
 
   create_table "seens", force: :cascade do |t|
@@ -222,7 +219,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_23_024647) do
   add_foreign_key "events", "sources"
   add_foreign_key "locations", "cities"
   add_foreign_key "search_queries", "users"
-  add_foreign_key "searches", "users"
   add_foreign_key "seens", "users"
   add_foreign_key "sources", "cities"
   add_foreign_key "users", "cities"
