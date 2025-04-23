@@ -53,6 +53,16 @@ class SearchQuery < ApplicationRecord
     language_keywords = build_language_keywords(query_object)
     unique_keywords_groups = language_keywords.map { |language_keyword| language_keyword[:keywords] }.uniq
 
+    if unique_keywords_groups.include?("*") && unique_keywords_groups.length > 1
+      Sentry.capture_message(
+        "Some keywords are empty",
+        level: :warning,
+        extra: { search_query_id: id }
+      )
+
+      unique_keywords_groups = unique_keywords_groups.reject { |keywords| keywords == "*" }
+    end
+
     conditions = build_conditions(query_object, city: city)
 
     unique_keywords_groups.each do |keywords|
