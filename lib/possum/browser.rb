@@ -16,7 +16,8 @@ class Possum::Browser < Ferrum::Browser
         "disable-blink-features" => "AutomationControlled"
       },
       ws_url: ENV["CHROMIUM_URL"],
-      window_size: window_size
+      window_size: window_size,
+      extensions: [ Rails.root.join("lib", "possum", "stealth.min.js") ]
     )
   end
 
