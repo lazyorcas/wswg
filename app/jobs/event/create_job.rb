@@ -31,6 +31,8 @@ class Event::CreateJob < ApplicationJob
         if Event.exists?(source_id: event.source_id, uid: uid)
           return
         end
+
+        event.uid = uid
       end
       event.attributes
     end
