@@ -1,7 +1,17 @@
 module Event::Fetchable
   extend ActiveSupport::Concern
 
-  CONTEXT = "This markdown should be about an event in %{city_name}. It's possible that the event has already expired or not found."
+  CONTEXT = <<~TEXT
+    This markdown should be about an event in %{city_name}.
+
+    ## Facts
+    - The current year is %{current_year}.
+
+    ## Keep in mind
+    - It's possible that the event has already expired or not found.
+    - It's possible that year is not mentioned. In this case, use the current year.
+    - It's possible that the end date is not mentioned. In this case, the end date is the same as the start date.
+  TEXT
 
   def fetch!
     fetch
@@ -12,7 +22,10 @@ module Event::Fetchable
     markdown = jina_reader.fetch(url)
     json = markdown_expert.convert_to_json(
       markdown,
-      context: CONTEXT % { city_name: city.name },
+      context: CONTEXT % {
+        city_name: city.name,
+        current_year: Time.current.in_time_zone(city.time_zone).year
+      },
       json_schema: json_schema
     )
 
@@ -35,9 +48,7 @@ module Event::Fetchable
   private
 
   def json_schema
-    OpenAI::Responses::Schemas.event_schema(
-      time_zone: city.time_zone
-    )
+    OpenAI::Responses::Schemas.event_schema
   end
 
   def jina_reader

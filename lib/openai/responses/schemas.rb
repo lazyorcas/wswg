@@ -7,9 +7,7 @@ class OpenAI::Responses::Schemas
     })
   end
 
-  def self.event_schema(time_zone:)
-    current_year = Time.current.in_time_zone(time_zone).year
-
+  def self.event_schema
     build_schema("event", {
       title: { type: "string" },
       description: {
@@ -19,11 +17,11 @@ class OpenAI::Responses::Schemas
       image_url: { type: "string" },
       location: {
         type: "string",
-        description: "Location of the event. It can be a precise address or a general area that is more precise than the city. If not mentioned, return an empty string. If the location is online, return an empty string. If the location is to be determined / TBD, return an empty string."
+        description: "Location of the event. It can be a precise address or a general area. If not mentioned, return an empty string. If the location is online, return an empty string. If the location is to be determined / TBD, return an empty string."
       },
       start_date: {
         type: "string",
-        description: "Start date of the event in YYYY-MM-DD format. The current year is #{current_year} if not mentioned."
+        description: "Start date of the event in YYYY-MM-DD format."
       },
       start_time: {
         type: "string",
@@ -31,7 +29,7 @@ class OpenAI::Responses::Schemas
       },
       end_date: {
         type: "string",
-        description: "End date of the event in YYYY-MM-DD format. The current year is #{current_year} if not mentioned."
+        description: "End date of the event in YYYY-MM-DD format."
       },
       end_time: {
         type: "string",

@@ -2,8 +2,13 @@ class OpenAI::Assistants::MarkdownExpert
   INSTRUCTIONS = "You are a helpful markdown expert.".freeze
   CONVERT_TO_JSON_INPUT_TEMPLATE = <<-TEXT
     Given the following context, convert the following markdown to JSON.
-    Context: %{context}
+
+    # Context
+    %{context}
+
     ---
+
+    # Markdown
     %{markdown}
   TEXT
   TRUE_OR_FALSE_INPUT_TEMPLATE = <<-TEXT
