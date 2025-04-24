@@ -172,6 +172,8 @@ accessories:
     env:
       clear:
         TIMEOUT: 900000 # 15 minutes
+    volumes:
+      - /usr/local/share/ca-certificates/brightdata-ca.crt:/usr/local/share/ca-certificates/brightdata-ca.crt
   opensearch:
     image: opensearchproject/opensearch:2
     roles:
