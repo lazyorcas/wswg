@@ -1,4 +1,4 @@
-# TODO: ticketmaster
+# TODO: ticketmaster, rausgegangen, kino.de
 # TODO: VisitSingapore, Esplanade
 
 class SourceAttributesBuilder
