@@ -6,11 +6,11 @@ class Source::Meetup::ThingsFinder < Source::ThingsFinder
   end
 
   def get_things
-    links = @browser.css("[data-element-name=\"categoryResults-eventCard\"] a")
+    links = @page.css("[data-element-name=\"categoryResults-eventCard\"] a")
 
     # old selector
     if links.empty?
-      links = @browser.css("a#event-card-in-search-results")
+      links = @page.css("a#event-card-in-search-results")
     end
 
     links.each do |link|
@@ -24,7 +24,7 @@ class Source::Meetup::ThingsFinder < Source::ThingsFinder
   end
 
   def go_to_next_page
-    @browser.scroll_to_load
+    @page.scroll_to_load
   end
 
   def done?

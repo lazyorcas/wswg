@@ -17,7 +17,7 @@ class Source::Luma::ThingsFinder < Source::ThingsFinder
   end
 
   def get_things
-    @browser.css("a.event-link").each do |link|
+    @page.css("a.event-link").each do |link|
       path = link.attribute("href")
       id = path[1..]
 
@@ -29,7 +29,7 @@ class Source::Luma::ThingsFinder < Source::ThingsFinder
   end
 
   def go_to_next_page
-    @browser.scroll_to_load
+    @page.scroll_to_load
   end
 
   def done?

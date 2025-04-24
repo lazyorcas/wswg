@@ -6,7 +6,7 @@ class Source::MuenchenDe::ThingsFinder < Source::ThingsFinder
   end
 
   def get_things
-    links = @browser.css(".m-event-list-item a")
+    links = @page.css(".m-event-list-item a")
 
     links.each do |link|
       url = link.attribute("href").split("?").first
@@ -22,6 +22,6 @@ class Source::MuenchenDe::ThingsFinder < Source::ThingsFinder
   end
 
   def go_to_next_page
-    @browser.click_on(".m-pagination__item.m-pagination__item--next-page a")
+    @page.click_on(".m-pagination__item.m-pagination__item--next-page a")
   end
 end

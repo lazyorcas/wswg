@@ -10,11 +10,13 @@ class Source::ThingsFinder
     @source = Source.find(source_id)
 
     begin
-      @browser = Possum::Browser.new(proxy: @source.proxy)
-      @browser.go_to(@source.url)
+      browser = Possum::Browser.new
+
+      @page = browser.create_page(proxy: @source.proxy)
+      @page.go_to(@source.url)
 
       max_page_count.times do |page|
-        @browser.wait_for_idle
+        @page.wait_for_idle
 
         get_things
         begin
@@ -29,8 +31,8 @@ class Source::ThingsFinder
       # ignore
     ensure
       begin
-        @browser.reset
-        @browser.quit
+        browser.reset
+        browser.quit
       rescue
         # ignore
       end
@@ -58,8 +60,8 @@ class Source::ThingsFinder
   end
 
   def end_of_page?
-    current_scroll = @browser.evaluate("window.pageYOffset + window.innerHeight")
-    total_height = @browser.evaluate("document.documentElement.scrollHeight")
+    current_scroll = @page.evaluate("window.pageYOffset + window.innerHeight")
+    total_height = @page.evaluate("document.documentElement.scrollHeight")
     current_scroll >= total_height
   end
 

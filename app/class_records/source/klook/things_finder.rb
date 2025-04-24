@@ -6,9 +6,9 @@ class Source::Klook::ThingsFinder < Source::ThingsFinder
   end
 
   def get_things
-    @browser.scroll_to_load
+    @page.scroll_to_load
 
-    @browser.css(".card_item").each do |link|
+    @page.css(".card_item").each do |link|
       url = link.attribute("href")
 
       @things << {
@@ -19,6 +19,6 @@ class Source::Klook::ThingsFinder < Source::ThingsFinder
   end
 
   def go_to_next_page
-    @browser.click_on(".klk-pagination-next-btn")
+    @page.click_on(".klk-pagination-next-btn")
   end
 end

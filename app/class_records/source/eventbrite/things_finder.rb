@@ -6,7 +6,7 @@ class Source::Eventbrite::ThingsFinder < Source::ThingsFinder
   end
 
   def get_things
-    @browser.css("a.event-card-link").each do |link|
+    @page.css("a.event-card-link").each do |link|
       url = link.attribute("href")
 
       @things << {
@@ -17,6 +17,6 @@ class Source::Eventbrite::ThingsFinder < Source::ThingsFinder
   end
 
   def go_to_next_page
-    @browser.click_on("[aria-label=\"Next Page\"]")
+    @page.click_on("[aria-label=\"Next Page\"]")
   end
 end
