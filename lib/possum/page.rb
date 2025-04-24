@@ -19,7 +19,7 @@ module Possum::Page
   def reject_redundant_requests
     network.intercept
     on(:request) do |request|
-      if Config::BLOCKED_FILETYPES.any? { |ext| request.url.end_with?(ext) }
+      if Config::BLOCKED_FILETYPES.any? { |ext| request.url.include?(ext) }
         request.abort
       else
         request.continue

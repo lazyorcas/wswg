@@ -6,7 +6,13 @@ module Possum::Page::Config
   BLOCKED_VIDEO_EXTENSIONS = %w[.mp4 .avi .mov .mkv .webm]
   BLOCKED_SOUND_EXTENSIONS = %w[.mp3 .ogg .wav .aac .flac]
   BLOCKED_FONT_EXTENSIONS = %w[.woff .woff2 .ttf .otf .eot]
-  BLOCKED_FILETYPES = BLOCKED_IMAGE_EXTENSIONS + BLOCKED_VIDEO_EXTENSIONS + BLOCKED_SOUND_EXTENSIONS + BLOCKED_FONT_EXTENSIONS
+  BLOCKED_DOMAINS = %w[www.googletagmanager.com]
+  BLOCKED_FILETYPES =
+    BLOCKED_IMAGE_EXTENSIONS +
+    BLOCKED_VIDEO_EXTENSIONS +
+    BLOCKED_SOUND_EXTENSIONS +
+    BLOCKED_FONT_EXTENSIONS +
+    BLOCKED_DOMAINS
 
   HEADERS = {
     "Accept" => "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7",
