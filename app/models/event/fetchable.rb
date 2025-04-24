@@ -13,15 +13,13 @@ module Event::Fetchable
     - It's possible that the end date is not mentioned. In this case, the end date is the same as the start date.
   TEXT
 
-  def fetch!
-    fetch
-    save!
+  def fetch
+    @markdown ||= jina_reader.fetch(url)
   end
 
-  def fetch
-    markdown = jina_reader.fetch(url)
+  def parse
     json = markdown_expert.convert_to_json(
-      markdown,
+      @markdown,
       context: CONTEXT % {
         city_name: city.name,
         current_year: Time.current.in_time_zone(city.time_zone).year

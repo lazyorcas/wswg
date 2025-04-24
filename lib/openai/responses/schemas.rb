@@ -29,7 +29,7 @@ class OpenAI::Responses::Schemas
       },
       end_date: {
         type: "string",
-        description: "End date of the event in YYYY-MM-DD format."
+        description: "End date of the event in YYYY-MM-DD format. If not mentioned, it is the same as the start date."
       },
       end_time: {
         type: "string",

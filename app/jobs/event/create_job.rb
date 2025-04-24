@@ -22,19 +22,21 @@ class Event::CreateJob < ApplicationJob
     event.url = attributes[:url]
 
     # cache the event attributes to avoid fetching the same event multiple times when the job is retried
-    event.attributes = Rails.cache.fetch("source_#{event.source_id}_event_#{event.uid}_fetched", expires_in: 1.day) do
+    Rails.cache.fetch("source_#{event.source_id}_event_#{event.uid}_fetched", expires_in: 15.minutes) do
       event.fetch
-      if event.source.name == "Luma"
-        id = Source::Luma::ThingsFinder.get_id(event.uid)
-        uid = Source::Luma::ThingsFinder.build_uid(id, date: event.start_date)
+    end
 
-        if Event.exists?(source_id: event.source_id, uid: uid)
-          return
-        end
+    event.parse
 
-        event.uid = uid
+    if event.source.name == "Luma"
+      id = Source::Luma::ThingsFinder.get_id(event.uid)
+      uid = Source::Luma::ThingsFinder.build_uid(id, date: event.start_date)
+
+      if Event.exists?(source_id: event.source_id, uid: uid)
+        return
       end
-      event.attributes
+
+      event.uid = uid
     end
 
     event.locate
