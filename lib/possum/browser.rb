@@ -13,8 +13,7 @@ class Possum::Browser < Ferrum::Browser
       timeout: timeout,
       browser_options: {
         "no-sandbox": nil,
-        "disable-blink-features" => "AutomationControlled",
-        "ignore-certificate-errors" => nil
+        "disable-blink-features" => "AutomationControlled"
       },
       ws_url: ENV["CHROMIUM_URL"],
       window_size: window_size
