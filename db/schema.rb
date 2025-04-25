@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_04_25_021932) do
+ActiveRecord::Schema[8.0].define(version: 2025_04_25_041345) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -133,8 +133,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_25_021932) do
     t.index ["city_id"], name: "index_events_on_city_id"
     t.index ["location_id"], name: "index_events_on_location_id"
     t.index ["location_query"], name: "index_events_on_location_query"
-    t.index ["source_id", "uid"], name: "index_events_on_source_id_and_uid", unique: true
     t.index ["source_id"], name: "index_events_on_source_id"
+    t.index ["uid", "source_id"], name: "index_events_on_uid_and_source_id", unique: true
   end
 
   create_table "languages", force: :cascade do |t|

@@ -9,7 +9,7 @@ class Event < ApplicationRecord
   has_many :seens, as: :seenable
   has_many :seen_users, through: :seens, source: :user
 
-  validates :uid, uniqueness: { scope: :source_id }
+  validates :uid, presence: true, uniqueness: { scope: :source_id }
   validates :url, presence: true
 
   validates :title, presence: true
@@ -20,7 +20,7 @@ class Event < ApplicationRecord
   validates :end_date, presence: true
   validates :start_time, presence: true
   validates :end_time, presence: true
-  validates :price, presence: true
+  validates :price, presence: true, numericality: { greater_than_or_equal_to: 0 }
 
   validate :validate_end_date_is_today_or_future, on: :create
   validate :validate_start_date_is_before_or_same_as_end_date
