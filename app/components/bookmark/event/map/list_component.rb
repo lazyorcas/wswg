@@ -1,10 +1,10 @@
 class Bookmark::Event::Map::ListComponent < ViewComponent::Base
   delegate :get_easy_date, to: :helpers
-  attr_reader :events, :city
+  attr_reader :events, :time_zone
 
-  def initialize(events, city:)
+  def initialize(events, time_zone:)
     @events = events
-    @city = city
+    @time_zone = time_zone
   end
 
   def events_by_date

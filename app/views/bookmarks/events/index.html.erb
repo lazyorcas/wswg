@@ -1,7 +1,7 @@
 <%= turbo_frame_tag "content" do %>
   <%= tag.div class: "py-4 popup popup--bottom-sheet bottom-sheet-transition h-fit md:h-full", data: { controller: "bottom-sheet", bottom_sheet_target: "bottomSheet content", map_target: "source", collapsed: true } do %>
     <% if @events.any? %>
-      <%= render Bookmark::Event::Map::ListComponent.new(@events, city: Current.user.city) %>
+      <%= render Bookmark::Event::Map::ListComponent.new(@events, time_zone: Current.user.city.time_zone) %>
     <% else %>
       <p class="px-4 text-sm text-primary">
         No events bookmarked yet.
