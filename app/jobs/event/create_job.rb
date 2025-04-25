@@ -6,6 +6,7 @@ class Event::CreateJob < ApplicationJob
 
   # when OpenAI fails
   retry_on Faraday::TooManyRequestsError, wait: 5.minutes, attempts: 3
+  retry_on Faraday::ServerError, wait: 15.minutes, attempts: 2
 
   rescue_from(Event::NotFoundViaUrlError) do |exception|
     DeadLink.find_or_create_by!(url: exception.url)
