@@ -10,10 +10,18 @@ class Source < ApplicationRecord
     things_attributes = things_finder.find_things(id)
 
     existing_uids = thing_model.where(source_id: id).pluck(:uid)
+    normalized_existing_ids = if name == "Luma"
+      existing_uids.map { |uid| Source::Luma::ThingsFinder.get_id(uid) }
+    else
+      existing_uids
+    end
+
     archived_urls = ArchivedLink.where(url: things_attributes.map { |thing_attributes| thing_attributes[:url] }).pluck(:url)
 
     things_attributes = things_attributes.reject do |thing_attributes|
-      existing_uids.include?(thing_attributes[:uid]) ||
+      normalized_id = name == "Luma" ? Source::Luma::ThingsFinder.get_id(thing_attributes[:uid]) : thing_attributes[:uid]
+
+      normalized_existing_ids.include?(normalized_id) ||
       archived_urls.include?(thing_attributes[:url])
     end
 
