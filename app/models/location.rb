@@ -33,6 +33,8 @@ class Location < ApplicationRecord
       if location.valid?
         location.save
         break
+      else
+        location = nil
       end
     end
 
