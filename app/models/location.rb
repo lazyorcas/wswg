@@ -39,20 +39,16 @@ class Location < ApplicationRecord
     location
   end
 
-  def names
-    [ city.name, city.alias ].compact
-  end
-
   private
 
   def validate_full_address_contains_city_name
-    return if names.any? { |name| full_address.include?(name) }
+    return if city.names.any? { |name| full_address.include?(name) }
 
     errors.add(:full_address, "does not contain #{city.name}")
   end
 
   def validate_full_address_contains_more_than_city_name
-    return if names.all? { |name| full_address != name }
+    return if city.names.all? { |name| full_address != name }
 
     errors.add(:full_address, "only contains #{city.name}")
   end

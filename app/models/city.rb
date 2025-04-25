@@ -17,13 +17,18 @@ class City < ApplicationRecord
 
   before_validation :set_slug
 
+  def names
+    @names ||= [ name, self.alias ].compact
+  end
+
+  def downcased_names
+    @downcased_names ||= names.map(&:downcase)
   end
 
   def precise?(query)
     query
       .downcase
-      .gsub(name.downcase, "")
-      .gsub(self.alias&.downcase || "", "")
+      .gsub(downcased_names.join("|"), "")
       .gsub(",", "")
       .strip
       .present?
@@ -31,11 +36,7 @@ class City < ApplicationRecord
 
   def contains?(query)
     downcased_query = query.downcase
-    downcased_query.include?(name.downcase) ||
-      (
-        self.alias.present? &&
-        downcased_query.include?(self.alias.downcase)
-      )
+    downcased_names.any? { |name| downcased_query.include?(name) }
   end
 
   private
