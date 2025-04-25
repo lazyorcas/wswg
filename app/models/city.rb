@@ -17,12 +17,6 @@ class City < ApplicationRecord
 
   before_validation :set_slug
 
-  # By default, radius is 0.001 degrees, which is approximately 100 meters.
-  def scattered_coordinates(radius = 0.001)
-    [
-      longitude + rand(-radius..radius) / Math.cos(latitude * Math::PI / 180),
-      latitude + rand(-radius..radius)
-    ]
   end
 
   def precise?(query)
