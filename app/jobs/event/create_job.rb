@@ -32,21 +32,22 @@ class Event::CreateJob < ApplicationJob
     if event.valid?
       event.locate
       event.save!
+
+    elsif event.end_date.present?
+      today = Time.current.in_time_zone(event.city.time_zone).to_date
+
+      if event.end_date == "#{today.year}-01-01"
+        raise OpenAI::HallucinationError.new
+      end
+
+      raise ActiveRecord::RecordInvalid.new(event)
+
     else
-      if event.end_date && !event.end_date_is_today_or_future?
-        today = Time.current.in_time_zone(event.city.time_zone).to_date
+      archived_link = ArchivedLink.find_or_initialize_by(url: event.url)
 
-        if event.end_date == "#{today.year}-01-01"
-          raise OpenAI::HallucinationError.new(event.url)
-        end
-
-        archived_link = ArchivedLink.find_or_initialize_by(url: event.url)
-        if archived_link.new_record?
-          archived_link.reason = :not_found_or_expired
-          archived_link.save!
-        end
-      else
-        raise ActiveRecord::RecordInvalid.new(event)
+      if archived_link.new_record?
+        archived_link.reason = :not_found_or_expired
+        archived_link.save!
       end
     end
   end
