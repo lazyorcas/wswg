@@ -33,7 +33,8 @@ module Event::Fetchable
     self.attributes = json.slice(*self.class.column_names)
 
     if json["not_found"]
-      raise Event::NotFoundViaUrlError.new(url)
+      errors.add(:url, "is not found or expired")
+      return
     end
 
     if json["location"].present?

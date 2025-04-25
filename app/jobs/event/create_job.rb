@@ -8,6 +8,8 @@ class Event::CreateJob < ApplicationJob
   retry_on Faraday::TooManyRequestsError, wait: 5.minutes, attempts: 3
   retry_on Faraday::ServerError, wait: 15.minutes, attempts: 2
 
+  retry_on OpenAI::HallucinationError, wait: 1.minute, attempts: 3
+
   def perform(attributes)
     event = Event.find_or_initialize_by(
       source_id: attributes[:source_id],
@@ -25,23 +27,19 @@ class Event::CreateJob < ApplicationJob
 
     event.parse
 
-    if event.source.name == "Luma"
-      id = Source::Luma::ThingsFinder.get_id(event.uid)
-      uid = Source::Luma::ThingsFinder.build_uid(id, date: event.start_date)
-
-      if Event.exists?(source_id: event.source_id, uid: uid)
-        return
-      end
-
-      event.uid = uid
-    end
-
-    event.locate
+    handle_luma_event(event) if event.source.name == "Luma"
 
     if event.valid?
+      event.locate
       event.save!
     else
-      if !event.end_date_is_today_or_future?
+      if event.end_date && !event.end_date_is_today_or_future?
+        today = Time.current.in_time_zone(event.city.time_zone).to_date
+
+        if event.end_date == "#{today.year}-01-01"
+          raise OpenAI::HallucinationError.new(event.url)
+        end
+
         archived_link = ArchivedLink.find_or_initialize_by(url: event.url)
         if archived_link.new_record?
           archived_link.reason = :not_found_or_expired
@@ -51,5 +49,18 @@ class Event::CreateJob < ApplicationJob
         raise ActiveRecord::RecordInvalid.new(event)
       end
     end
+  end
+
+  private
+
+  def handle_luma_event(event)
+    id = Source::Luma::ThingsFinder.get_id(event.uid)
+    uid = Source::Luma::ThingsFinder.build_uid(id, date: event.start_date)
+
+    if Event.exists?(source_id: event.source_id, uid: uid)
+      return
+    end
+
+    event.uid = uid
   end
 end
