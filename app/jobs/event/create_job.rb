@@ -44,7 +44,12 @@ class Event::CreateJob < ApplicationJob
     if event.valid?
       event.save!
     else
-      raise ActiveRecord::RecordInvalid.new(event)
+      # OpenAI sometimes hallucinates and returns Jan 1st when start date is not found
+      if event.start_date.include?("01-01")
+        raise ActiveRecord::RecordInvalid.new(event)
+      else
+        raise Event::NotFoundViaUrlError
+      end
     end
   end
 end
