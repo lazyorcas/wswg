@@ -5,6 +5,7 @@ class Location < ApplicationRecord
   # Mapbox: 100,000 requests per month for free
   # Google: 10,000 requests per month for free
   GEOCODERS = [ Mapbox::Geocoding, Google::Geocoding ]
+  MAX_DISTANCE_TO_CITY_IN_KM = 30
 
   belongs_to :city
 
@@ -12,31 +13,54 @@ class Location < ApplicationRecord
 
   validates :full_address, presence: true, uniqueness: true
 
-  def self.find_or_create_by_query(query, city_id:)
-    location_attributes = nil
+  validate :validate_full_address_contains_city_name
+  validate :validate_full_address_contains_more_than_city_name
+  validate :validate_coordinates_are_close_to_city
 
-    city = City.find(city_id)
+  def self.find_or_create_by_query(query, city_id:)
+    location = nil
 
     GEOCODERS.each do |geocoder|
-      data = geocoder.lookup(query)
+      attributes = geocoder.lookup(query)
+      next if attributes.blank?
 
-      # Mapbox sometimes returns the city name as the full address.
-      if data.present? && data[:full_address] != city.name
-        location_attributes = data
+      location = find_or_initialize_by(full_address: attributes[:full_address])
+      break if location.persisted?
+
+      location.city_id = city_id
+      location.attributes = attributes
+
+      if location.valid?
+        location.save
         break
       end
     end
 
-    return if location_attributes.blank?
-
-    location = find_or_initialize_by(full_address: location_attributes[:full_address])
-
-    if location.new_record?
-      location.city_id = city_id
-      location.attributes = location_attributes
-      location.save
-    end
-
     location
+  end
+
+  def names
+    [ city.name, city.alias ].compact
+  end
+
+  private
+
+  def validate_full_address_contains_city_name
+    return if names.any? { |name| full_address.include?(name) }
+
+    errors.add(:full_address, "does not contain #{city.name}")
+  end
+
+  def validate_full_address_contains_more_than_city_name
+    return if names.all? { |name| full_address != name }
+
+    errors.add(:full_address, "only contains #{city.name}")
+  end
+
+  def validate_coordinates_are_close_to_city
+    distance_to_city_in_km = Geospatial.distance_in_km_between(city.coordinates_h, coordinates_h)
+    return if distance_to_city_in_km <= MAX_DISTANCE_TO_CITY_IN_KM
+
+    errors.add(:coordinates, "are too far from #{city.name}")
   end
 end

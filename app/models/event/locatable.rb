@@ -15,21 +15,12 @@ module Event::Locatable
     return if location_query.blank?
 
     # cost efficient
-    same_location_event = self.class.located
+    self.location = self.class.located
       .where(location_query: location_query)
       .excluding(self)
       .order(created_at: :desc)
-      .first
+      .first&.location
 
-    if same_location_event.present?
-      self.location = same_location_event.location
-      return
-    end
-
-    self.location = Location.find_or_create_by_query(location_query, city_id: city_id)
-
-    if location.present? && location.full_address.exclude?(city.name)
-      self.location = nil
-    end
+    self.location ||= Location.find_or_create_by_query(location_query, city_id: city_id)
   end
 end

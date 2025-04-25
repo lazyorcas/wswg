@@ -7,6 +7,13 @@ module HasCoordinates
   end
 
   def coordinates
-    [ longitude, latitude ]
+    @coordinates ||= [ longitude, latitude ]
+  end
+
+  def coordinates_h
+    @coordinates_h ||= {
+      latitude: latitude,
+      longitude: longitude
+    }
   end
 end
