@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_04_25_041345) do
+ActiveRecord::Schema[8.0].define(version: 2025_04_25_042125) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -68,6 +68,15 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_25_041345) do
     t.index ["visitor_token", "started_at"], name: "index_ahoy_visits_on_visitor_token_and_started_at"
   end
 
+  create_table "archived_links", force: :cascade do |t|
+    t.string "url", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "reason"
+    t.jsonb "details"
+    t.index ["url"], name: "index_archived_links_on_url", unique: true
+  end
+
   create_table "bookmarks", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.string "bookmarkable_type", null: false
@@ -104,13 +113,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_25_041345) do
     t.index ["city_id", "language_id"], name: "index_city_languages_on_city_id_and_language_id", unique: true
     t.index ["city_id"], name: "index_city_languages_on_city_id"
     t.index ["language_id"], name: "index_city_languages_on_language_id"
-  end
-
-  create_table "dead_links", force: :cascade do |t|
-    t.string "url", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["url"], name: "index_dead_links_on_url", unique: true
   end
 
   create_table "events", force: :cascade do |t|

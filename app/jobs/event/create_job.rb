@@ -42,7 +42,11 @@ class Event::CreateJob < ApplicationJob
       event.save!
     else
       if !event.end_date_is_today_or_future?
-        DeadLink.find_or_create_by!(url: event.url)
+        archived_link = ArchivedLink.find_or_initialize_by(url: event.url)
+        if archived_link.new_record?
+          archived_link.reason = :not_found_or_expired
+          archived_link.save!
+        end
       else
         raise ActiveRecord::RecordInvalid.new(event)
       end

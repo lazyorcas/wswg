@@ -10,11 +10,11 @@ class Source < ApplicationRecord
     things_attributes = things_finder.find_things(id)
 
     existing_uids = thing_model.where(source_id: id).pluck(:uid)
-    dead_urls = DeadLink.where(url: things_attributes.map { |thing_attributes| thing_attributes[:url] }).pluck(:url)
+    archived_urls = ArchivedLink.where(url: things_attributes.map { |thing_attributes| thing_attributes[:url] }).pluck(:url)
 
     things_attributes = things_attributes.reject do |thing_attributes|
       existing_uids.include?(thing_attributes[:uid]) ||
-      dead_urls.include?(thing_attributes[:url])
+      archived_urls.include?(thing_attributes[:url])
     end
 
     create_jobs = things_attributes.map do |thing_attributes|
