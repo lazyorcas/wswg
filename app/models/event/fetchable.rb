@@ -2,15 +2,19 @@ module Event::Fetchable
   extend ActiveSupport::Concern
 
   CONTEXT = <<~TEXT
-    This markdown should be about an event in %{city_name}.
+    This markdown should be about an event.
+
+    ## Rules
+    - Please don't assume information that is not mentioned in this markdown.
 
     ## Facts
     - The current year is %{current_year}.
+    - The end date is always after the start date.
 
     ## Keep in mind
     - It's possible that the event has already expired or not found.
     - It's possible that year is not mentioned. In this case, use the current year.
-    - It's possible that the end date is not mentioned. In this case, the end date is the same as the start date.
+    - Important! It's possible that the end date is not mentioned. In this case, the end date is the same as the start date.
   TEXT
 
   def fetch
@@ -21,7 +25,6 @@ module Event::Fetchable
     json = markdown_expert.convert_to_json(
       @markdown,
       context: CONTEXT % {
-        city_name: city.name,
         current_year: Time.current.in_time_zone(city.time_zone).year
       },
       json_schema: json_schema

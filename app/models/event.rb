@@ -22,19 +22,36 @@ class Event < ApplicationRecord
   validates :end_time, presence: true
   validates :price, presence: true
 
-  validate :end_date_is_today_or_future, if: -> { city_id.present? }, on: :create
+  validate :validate_end_date_is_today_or_future, on: :create
+  validate :validate_start_date_is_before_or_same_as_end_date
   # validate :date_time_range_and_location_are_unique, if: -> { location_id.present? && start_date.present? && start_time.present? && end_date.present? && end_time.present? }, on: :create
 
   before_update -> { self.location = nil }, if: :location_query_changed?
 
+  def end_date_is_today_or_future?
+    end_date >= today_in_city_timezone.to_s
+  end
+
+  def start_date_is_before_or_same_as_end_date?
+    start_date <= end_date
+  end
+
   private
 
-  def end_date_is_today_or_future
-    today = Time.current.in_time_zone(city.time_zone).to_date
+  def validate_end_date_is_today_or_future
+    return if end_date_is_today_or_future?
 
-    if end_date < today.to_s
-      errors.add(:end_date, "(#{end_date}) must be today (#{today}) or in the future")
-    end
+    errors.add(:end_date, "must be today (#{today_in_city_timezone}) or in the future")
+  end
+
+  def validate_start_date_is_before_or_same_as_end_date
+    return if start_date_is_before_or_same_as_end_date?
+
+    errors.add(:start_date, "must be before end date")
+  end
+
+  def today_in_city_timezone
+    @today_in_city_timezone ||= Time.current.in_time_zone(city.time_zone).to_date
   end
 
   # def date_time_range_and_location_are_unique

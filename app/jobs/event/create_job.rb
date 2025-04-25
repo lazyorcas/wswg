@@ -8,10 +8,6 @@ class Event::CreateJob < ApplicationJob
   retry_on Faraday::TooManyRequestsError, wait: 5.minutes, attempts: 3
   retry_on Faraday::ServerError, wait: 15.minutes, attempts: 2
 
-  rescue_from(Event::NotFoundViaUrlError) do |exception|
-    DeadLink.find_or_create_by!(url: exception.url)
-  end
-
   def perform(attributes)
     event = Event.find_or_initialize_by(
       source_id: attributes[:source_id],
@@ -45,11 +41,10 @@ class Event::CreateJob < ApplicationJob
     if event.valid?
       event.save!
     else
-      # OpenAI sometimes hallucinates and returns Jan 1st when start date is not found
-      if event.start_date.include?("01-01")
-        raise ActiveRecord::RecordInvalid.new(event)
+      if !event.end_date_is_today_or_future?
+        DeadLink.find_or_create_by!(url: event.url)
       else
-        raise Event::NotFoundViaUrlError
+        raise ActiveRecord::RecordInvalid.new(event)
       end
     end
   end
