@@ -15,6 +15,10 @@ module Event::Fetchable
     - Important! It's possible that the end date is not mentioned. In this case, the end date is the same as the start date.
   TEXT
 
+  def found?
+    @found
+  end
+
   def fetch
     @markdown ||= jina_reader.fetch(url)
   end
@@ -31,9 +35,11 @@ module Event::Fetchable
     self.attributes = json.slice(*self.class.column_names)
 
     if json["not_found"]
-      errors.add(:url, :not_found_or_expired)
+      @found = false
       return
     end
+
+    @found = true
 
     if json["location"].present?
       if city.precise?(json["location"])
