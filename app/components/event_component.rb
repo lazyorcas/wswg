@@ -51,7 +51,11 @@ class EventComponent < ViewComponent::Base
   end
 
   def time_range
-    "#{start_time} - #{end_time}"
+    if end_time.blank?
+      "#{start_time}"
+    else
+      "#{start_time} - #{end_time}"
+    end
   end
 
   def source_icon_url
