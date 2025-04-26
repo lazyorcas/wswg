@@ -3,6 +3,7 @@ class ArchivedLink < ApplicationRecord
   validates :reason, presence: true
 
   enum :reason, {
-    not_found_or_expired: 0
+    not_found_or_expired: 0,
+    duplicated: 1
   }
 end
