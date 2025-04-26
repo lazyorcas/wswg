@@ -46,19 +46,19 @@ class Location < ApplicationRecord
   def validate_full_address_contains_city_name
     return if city.names.any? { |name| full_address.include?(name) }
 
-    errors.add(:full_address, "does not contain #{city.name}")
+    errors.add(:full_address, :invalid, message: "does not contain #{city.name}")
   end
 
   def validate_full_address_contains_more_than_city_name
     return if city.names.all? { |name| full_address != name }
 
-    errors.add(:full_address, "only contains #{city.name}")
+    errors.add(:full_address, :invalid, message: "only contains #{city.name}")
   end
 
   def validate_coordinates_are_close_to_city
     distance_to_city_in_km = Geospatial.distance_in_km_between(city.coordinates_h, coordinates_h)
     return if distance_to_city_in_km <= MAX_DISTANCE_TO_CITY_IN_KM
 
-    errors.add(:coordinates, "are too far from #{city.name}")
+    errors.add(:coordinates, :invalid, message: "are too far from #{city.name}")
   end
 end

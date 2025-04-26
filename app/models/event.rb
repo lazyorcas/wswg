@@ -58,19 +58,19 @@ class Event < ApplicationRecord
   def validate_end_date_is_today_or_future
     return if end_date_is_today_or_future?
 
-    errors.add(:end_date, "must be today (#{today_in_city_timezone}) or in the future")
+    errors.add(:end_date, :invalid, message: "must be today (#{today_in_city_timezone}) or in the future")
   end
 
   def validate_start_date_is_before_or_same_as_end_date
     return if start_date_is_before_or_same_as_end_date?
 
-    errors.add(:start_date, "must be before end date")
+    errors.add(:start_date, :invalid, message: "must be before end date")
   end
 
   def validate_not_duplicated
     return if !duplicated?
 
-    errors.add(:base, "already exists in this date time range, location, and title.")
+    errors.add(:base, :duplicated, message: "already exists in this date time range, location, and title.")
   end
 
   def today_in_city_timezone
