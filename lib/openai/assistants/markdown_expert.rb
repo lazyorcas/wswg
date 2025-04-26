@@ -1,7 +1,7 @@
 class OpenAI::Assistants::MarkdownExpert
   INSTRUCTIONS = "You are a helpful markdown expert. You are also a polygot in #{Language.pluck(:name).to_sentence}. For each task, you will be given a markdown in a language that you understand and some context for that task.".freeze
   CONVERT_TO_JSON_INPUT_TEMPLATE = <<-TEXT
-    Given the following context, convert the following markdown to JSON.
+    Convert the following markdown to JSON.
 
     # Context
     %{context}

@@ -33,7 +33,15 @@ class Event::CreateJob < ApplicationJob
       event.locate
       event.save!
 
-    elsif event.end_date.present?
+    elsif event.errors.any? { |error| error.attribute == :url && error.type == :not_found_or_expired }
+      archived_link = ArchivedLink.find_or_initialize_by(url: event.url)
+
+      if archived_link.new_record?
+        archived_link.reason = :not_found_or_expired
+        archived_link.save!
+      end
+
+    else
       today = Time.current.in_time_zone(event.city.time_zone).to_date
 
       if event.end_date == "#{today.year}-01-01"
@@ -41,14 +49,6 @@ class Event::CreateJob < ApplicationJob
       end
 
       raise ActiveRecord::RecordInvalid.new(event)
-
-    else
-      archived_link = ArchivedLink.find_or_initialize_by(url: event.url)
-
-      if archived_link.new_record?
-        archived_link.reason = :not_found_or_expired
-        archived_link.save!
-      end
     end
   end
 

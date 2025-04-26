@@ -1,6 +1,4 @@
 module Event::Fetchable
-  extend ActiveSupport::Concern
-
   CONTEXT = <<~TEXT
     This markdown should be about an event.
 
@@ -33,7 +31,7 @@ module Event::Fetchable
     self.attributes = json.slice(*self.class.column_names)
 
     if json["not_found"]
-      errors.add(:url, "is not found or expired")
+      errors.add(:url, :not_found_or_expired)
       return
     end
 

@@ -21,19 +21,19 @@ class OpenAI::Responses::Schemas
       },
       start_date: {
         type: "string",
-        description: "Start date of the event in YYYY-MM-DD format."
+        description: "Start date of the event in YYYY-MM-DD format. If not mentioned, return an empty string."
       },
       start_time: {
         type: "string",
-        description: "Start time of the event in HH:mm:ss format."
+        description: "Start time of the event in HH:mm:ss format. If not mentioned, return an empty string."
       },
       end_date: {
         type: "string",
-        description: "End date of the event in YYYY-MM-DD format."
+        description: "End date of the event in YYYY-MM-DD format. If not mentioned and the start date is mentioned, return the same date as the start date. If not mentioned and the start date is also not mentioned, return an empty string."
       },
       end_time: {
         type: "string",
-        description: "End time of the event in HH:mm:ss format."
+        description: "End time of the event in HH:mm:ss format. If not mentioned, return an empty string."
       },
       price: {
         type: "number",

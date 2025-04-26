@@ -25,7 +25,7 @@ class Event < ApplicationRecord
   validates :price, presence: true, numericality: { greater_than_or_equal_to: 0 }
 
   validate :validate_end_date_is_today_or_future, on: :create
-  validate :validate_not_duplicated, on: :create
+  validate :validate_not_duplicated, on: :create, if: -> { location_id.present? && start_date.present? && end_date.present? && start_time.present? && end_time.present? }
   validate :validate_start_date_is_before_or_same_as_end_date
 
   before_update -> { self.location = nil }, if: :location_query_changed?
