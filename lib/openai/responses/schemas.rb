@@ -9,12 +9,18 @@ class OpenAI::Responses::Schemas
 
   def self.event_schema
     build_schema("event", {
-      title: { type: "string" },
+      title: {
+        type: "string",
+        description: "Title of the event. If not mentioned, return an empty string."
+      },
       description: {
         type: "string",
-        description: "Full description in markdown format."
+        description: "Full description in markdown format. If not mentioned, return an empty string."
       },
-      image_url: { type: "string" },
+      image_url: {
+        type: "string",
+        description: "URL of the event image. If not mentioned, return an empty string."
+      },
       location: {
         type: "string",
         description: "Location of the event. It can be a precise address or a general area. If not mentioned, return an empty string. If the location is online, return an empty string. If the location is to be determined / TBD, return an empty string."

@@ -34,12 +34,10 @@ class Event::CreateJob < ApplicationJob
       event.save!
 
     elsif event.errors.any? { |error| error.attribute == :url && error.type == :not_found_or_expired }
-      archived_link = ArchivedLink.find_or_initialize_by(url: event.url)
+      create_archived_link(event.url, reason: :not_found_or_expired)
 
-      if archived_link.new_record?
-        archived_link.reason = :not_found_or_expired
-        archived_link.save!
-      end
+    elsif event.errors.any? { |error| error.attribute == :base && error.type == :duplicated }
+      create_archived_link(event.url, reason: :duplicated)
 
     else
       today = Time.current.in_time_zone(event.city.time_zone).to_date
@@ -63,5 +61,14 @@ class Event::CreateJob < ApplicationJob
     end
 
     event.uid = uid
+  end
+
+  def create_archived_link(url, reason:)
+    archived_link = ArchivedLink.find_or_initialize_by(url: url)
+
+    if archived_link.new_record?
+      archived_link.reason = error_type
+      archived_link.save!
+    end
   end
 end
