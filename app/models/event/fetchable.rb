@@ -4,6 +4,7 @@ module Event::Fetchable
 
     ## Rules
     - Please don't assume information that is not mentioned in this markdown.
+    - The start time and end time cannot be the same.
 
     ## Facts
     - The current year is %{current_year}.

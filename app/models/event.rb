@@ -32,7 +32,7 @@ class Event < ApplicationRecord
   validate :validate_start_date_is_before_or_same_as_end_date
 
   before_update -> { self.location = nil }, if: :location_query_changed?
-  before_save -> { self.end_time = nil }, if: -> { end_time.blank? }
+  before_save -> { self.end_time = nil }, if: -> { end_time.blank? || start_time == end_time }
 
   def end_date_is_today_or_future?
     end_date >= today_in_city_timezone.to_s
