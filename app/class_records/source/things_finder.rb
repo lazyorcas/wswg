@@ -1,4 +1,7 @@
 class Source::ThingsFinder
+  INITIAL_PAGE_TIMEOUT = 20
+  SUBSEQUENT_PAGE_TIMEOUT = 5
+
   attr_reader :things
 
   def initialize
@@ -16,7 +19,8 @@ class Source::ThingsFinder
       @page.go_to(@source.url)
 
       max_page_count.times do |page|
-        @page.wait_for_idle
+        timeout = page == 0 ? INITIAL_PAGE_TIMEOUT : SUBSEQUENT_PAGE_TIMEOUT
+        @page.wait_for_idle(timeout: timeout)
 
         get_things
         begin

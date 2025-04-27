@@ -8,8 +8,8 @@ module Possum::Page
     execute("window.scrollTo({ top: #{Config::SCROLL_DISTANCE}, behavior: 'smooth' })")
   end
 
-  def wait_for_idle
-    network.wait_for_idle(timeout: Config::NETWORK_IDLE_TIMEOUT)
+  def wait_for_idle(timeout: Config::NETWORK_IDLE_TIMEOUT)
+    network.wait_for_idle(timeout: timeout)
   end
 
   def click_on(selector)
