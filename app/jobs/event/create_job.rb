@@ -29,8 +29,9 @@ class Event::CreateJob < ApplicationJob
 
     handle_luma_event(event) if event.source.name == "Luma"
 
+    event.locate
+
     if event.valid?
-      event.locate
       event.save!
 
     elsif event.errors.any? { |error| error.attribute == :url && error.type == :not_found_or_expired }
