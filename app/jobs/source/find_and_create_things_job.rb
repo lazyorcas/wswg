@@ -6,5 +6,7 @@ class Source::FindAndCreateThingsJob < ApplicationJob
   def perform(id)
     source = Source.find(id)
     source.find_and_create_things!
+
+    source.update(last_fetched_at: Time.current)
   end
 end
