@@ -18,8 +18,9 @@ class OpenAI::Responses::Schemas
         description: "Full description in markdown format. If not mentioned, return an empty string."
       },
       image_url: {
-        type: "string",
-        description: "URL of the event image. If not mentioned, return an empty string."
+        type: "string"
+        # # OpenAI hallucinates when it's not explicitly mentioned
+        # description: "Image URL of the event. If not mentioned, return an empty string."
       },
       location: {
         type: "string",
