@@ -20,6 +20,7 @@ module Event::Fetchable::Parseable
     - It's possible that the event has already expired or not found.
     - It's possible that year is not mentioned. In this case, use the current year.
     - Important! It's possible that the end date is not mentioned. In this case, the end date is the same as the start date.
+    - It's possible that there are multiple dates mentioned. You should only focus on the highlighted date.
   TEXT
 
   private
