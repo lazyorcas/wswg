@@ -1,6 +1,4 @@
 module Event::Fetchable::Parseable
-  extend ActiveSupport::Concern
-
   CONTEXT = <<~TEXT
     This markdown should be about an event.
 
@@ -17,10 +15,6 @@ module Event::Fetchable::Parseable
     - It's possible that year is not mentioned. In this case, use the current year.
     - Important! It's possible that the end date is not mentioned. In this case, the end date is the same as the start date.
   TEXT
-
-  included do
-    validate :validate_openai_not_hallucinated, if: -> { end_date.present? }
-  end
 
   private
 
@@ -59,6 +53,8 @@ module Event::Fetchable::Parseable
   end
 
   def openai_hallucinated?
+    return false if end_date.blank?
+
     first_day_of_year = "#{today.year}-01-01"
     end_date == first_day_of_year && today != first_day_of_year
   end
