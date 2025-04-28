@@ -42,17 +42,19 @@ module Event::Fetchable
 
     @found = true
 
-    if json["location"].present?
-      if precise_location?(json["location"])
-        self.location_query = json["location"]
-
-      elsif !city.contains?(json["location"])
-        self.location_query = "#{json["location"]}, #{city.name}"
-      end
-    end
+    set_location_query(json["location"]) if json["location"].present?
   end
 
   private
+
+  def set_location_query(location_query)
+    if precise_location?(location_query)
+      self.location_query = location_query
+
+    elsif !city.contains?(location_query)
+      self.location_query = "#{location_query}, #{city.name}"
+    end
+  end
 
   def precise_location?(query)
     !location_is_city?(query)
