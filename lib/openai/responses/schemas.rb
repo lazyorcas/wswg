@@ -22,7 +22,7 @@ class OpenAI::Responses::Schemas
         # # OpenAI hallucinates when it's not explicitly mentioned
         # description: "Image URL of the event. If not mentioned, return an empty string."
       },
-      location: {
+      location_query: {
         type: "string",
         description: "Location of the event. It can be a precise address or a general area. If not mentioned, return an empty string. If the location is online, return an empty string. If the location is to be determined / TBD, return an empty string."
       },

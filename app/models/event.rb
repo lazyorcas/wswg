@@ -35,7 +35,7 @@ class Event < ApplicationRecord
   before_save -> { self.end_time = nil }, if: -> { end_time.blank? || start_time == end_time }
 
   def end_date_is_today_or_future?
-    end_date >= today_in_city_timezone.to_s
+    end_date >= today.to_s
   end
 
   def start_date_is_before_or_same_as_end_date?
@@ -68,7 +68,7 @@ class Event < ApplicationRecord
   def validate_end_date_is_today_or_future
     return if end_date_is_today_or_future?
 
-    errors.add(:end_date, :invalid, message: "must be today (#{today_in_city_timezone}) or in the future")
+    errors.add(:end_date, :invalid, message: "must be today (#{today}) or in the future")
   end
 
   def validate_start_date_is_before_or_same_as_end_date
@@ -83,7 +83,7 @@ class Event < ApplicationRecord
     errors.add(:base, :duplicated, message: "already exists in this date time range, location, and title.")
   end
 
-  def today_in_city_timezone
-    @today_in_city_timezone ||= Time.current.in_time_zone(city.time_zone).to_date
+  def today
+    @today ||= Time.current.in_time_zone(city.time_zone).to_date
   end
 end

@@ -18,6 +18,12 @@ class OpenAI::ResponsesClient
     })
 
     @response = build_response(open_ai_response)
+
+  rescue Faraday::TooManyRequestsError => e
+    raise OpenAI::TooManyRequestsError.new(e.response)
+
+  rescue Faraday::ServerError => e
+    raise OpenAI::ServerError.new(e.response)
   end
 
   private

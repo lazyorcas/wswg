@@ -1,23 +1,33 @@
 class Jina::Reader
   TIMEOUT = 20
-  TIMEOUT_BUFFER = 2
 
   BASE_URL = "https://r.jina.ai"
   HEADERS = {
     "Authorization" => "Bearer #{ENV["JINA_API_KEY"]}",
     "X-Engine" => "browser",
     "X-Return-Format" => "markdown",
-    "X-Timeout" => "#{TIMEOUT - TIMEOUT_BUFFER}"
+    "X-Timeout" => TIMEOUT
   }
 
   def fetch(url)
     jina_url = build_jina_url(url)
-    response = HTTParty.get(
-      jina_url,
-      headers: headers,
-      timeout: timeout,
-    )
-    response.body
+    cache_key = "jina:#{jina_url}"
+
+    begin
+      response = Rails.cache.fetch(cache_key, expires_in: 1.hour) do
+        HTTParty.get(
+          jina_url,
+          headers: headers,
+          timeout: timeout,
+        )
+      end
+
+      response.body
+
+    rescue Net::ReadTimeout
+      Rails.cache.delete(cache_key)
+      raise Jina::TimeoutError.new(url)
+    end
   end
 
   private

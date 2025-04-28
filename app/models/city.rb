@@ -25,15 +25,6 @@ class City < ApplicationRecord
     @downcased_names ||= names.map(&:downcase)
   end
 
-  def precise?(query)
-    query
-      .downcase
-      .gsub(/(#{downcased_names.join("|")})/, "")
-      .gsub(",", "")
-      .strip
-      .present?
-  end
-
   def contains?(query)
     downcased_query = query.downcase
     downcased_names.any? { |name| downcased_query.include?(name) }
