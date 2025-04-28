@@ -12,7 +12,7 @@ class EventsController < ApplicationController
     else
       load_events_this_week
     end
-    @events = @events.includes(:source, :city, :location)
+    @events = @events.includes(:location, source: :city)
   end
 
   def show

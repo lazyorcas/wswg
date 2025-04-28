@@ -8,7 +8,7 @@ module Event::Fetchable::PreciseLocationQuery
       @location_query = query
 
     elsif missing_city_name?(query)
-      @location_query = "#{query}, #{city.name}"
+      @location_query = "#{query}, #{source.city.name}"
     end
   end
 
@@ -30,7 +30,7 @@ module Event::Fetchable::PreciseLocationQuery
   end
 
   def has_city_name?(query)
-    city.contains?(query)
+    source.city.contains?(query)
   end
 
   def geographer
