@@ -47,6 +47,8 @@ class EventComponent < ViewComponent::Base
   end
 
   def end_time
+    return nil if event.end_time.blank?
+
     event.end_time.to_time.strftime("%H:%M")
   end
 
