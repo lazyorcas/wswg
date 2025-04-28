@@ -28,7 +28,7 @@ class City < ApplicationRecord
   def precise?(query)
     query
       .downcase
-      .gsub(downcased_names.join("|"), "")
+      .gsub(/(#{downcased_names.join("|")})/, "")
       .gsub(",", "")
       .strip
       .present?
