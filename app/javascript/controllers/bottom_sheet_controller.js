@@ -80,6 +80,16 @@ export default class extends Controller {
 
     if (!this.isDragging) return
     this.isDragging = false
+
+    // Get the current height and compare to maxHeight
+    const maxHeight = window.getComputedStyle(this.bottomSheetTarget).maxHeight.replace("px", "")
+    const currentHeight = this.bottomSheetTarget.offsetHeight
+
+    if (currentHeight < maxHeight / 2) {
+      this.collapse()
+    } else {
+      this.bottomSheetTarget.style.height = `${maxHeight}px`
+    }
   }
 
   #isMobile() {
