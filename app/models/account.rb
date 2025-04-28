@@ -12,4 +12,8 @@ class Account < ApplicationRecord
   def token_expires_at
     Time.at(auth_hash["credentials"]["expires_at"])
   end
+
+  def image_url
+    auth_hash["info"]["image"]
+  end
 end
