@@ -32,9 +32,11 @@ module Event::Fetchable::Parseable
       json_schema: json_schema
     )
 
-    @json = nil if @json["not_found"]
-
-    self.attributes = @json.slice(*self.class.column_names)
+    if @json["not_found"]
+      @json = nil
+    else
+      self.attributes = @json.slice(*self.class.column_names)
+    end
   end
 
   def markdown
