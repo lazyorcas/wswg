@@ -5,10 +5,10 @@ class Geospatial
   # d = R * c
   # where φ is latitude, λ is longitude, R is the radius of the earth (mean radius = 6,371km)
   def self.distance_in_km_between(coords1, coords2)
-    lat1 = coords1[:latitude] * Math::PI / 180
-    lon1 = coords1[:longitude] * Math::PI / 180
-    lat2 = coords2[:latitude] * Math::PI / 180
-    lon2 = coords2[:longitude] * Math::PI / 180
+    lat1 = coords1[:lat] * Math::PI / 180
+    lon1 = coords1[:lon] * Math::PI / 180
+    lat2 = coords2[:lat] * Math::PI / 180
+    lon2 = coords2[:lon] * Math::PI / 180
 
     dlat = lat2 - lat1
     dlon = lon2 - lon1

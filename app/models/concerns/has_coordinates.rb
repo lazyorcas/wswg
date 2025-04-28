@@ -12,8 +12,8 @@ module HasCoordinates
 
   def coordinates_h
     @coordinates_h ||= {
-      latitude: latitude,
-      longitude: longitude
+      lat: latitude,
+      lon: longitude
     }
   end
 end
