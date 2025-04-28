@@ -17,10 +17,6 @@ class City < ApplicationRecord
 
   before_validation :set_slug
 
-  def names
-    @names ||= [ name, self.alias ].compact
-  end
-
   private
 
   def set_slug

@@ -3,7 +3,7 @@ class Event::LocateJob < ApplicationJob
 
   def perform(id, location_query:)
     location_query = LocationQuery.find_or_create_by(query: location_query)
-    return if location_query.persisted?
+    return if location_query.location_id.blank?
 
     event = Event.find(id)
     event.location_id = location_query.location_id
