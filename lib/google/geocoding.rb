@@ -5,11 +5,10 @@ class Google::Geocoding
   def self.lookup(address)
     url = build_url(address)
     response = HTTParty.get(url)
-    response_body = JSON.parse(response.body)
 
-    return nil if response_body["status"] != "OK"
+    return nil if response.parsed_response["status"] != "OK"
 
-    data = response_body["results"].first
+    data = response.parsed_response["results"].first
     {
       full_address: data["formatted_address"],
       latitude: data["geometry"]["location"]["lat"],
