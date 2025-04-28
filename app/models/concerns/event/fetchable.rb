@@ -1,4 +1,6 @@
 module Event::Fetchable
+  extend ActiveSupport::Concern
+
   include Parseable
   include PreciseLocationQuery
 
