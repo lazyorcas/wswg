@@ -22,8 +22,11 @@ class Jina::Reader
         )
         response.body
       end
+
     rescue Net::ReadTimeout
+      Rails.cache.delete(cache_key)
       raise Jina::TimeoutError.new(url)
+
     rescue => e
       Rails.cache.delete(cache_key)
       raise e
