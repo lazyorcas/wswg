@@ -8,6 +8,7 @@
 #     MovieGenre.find_or_create_by!(name: genre_name)
 #   end
 
+require_relative "seeds/time_zones"
 require_relative "seeds/cities"
 require_relative "seeds/languages"
 require_relative "seeds/sources"
