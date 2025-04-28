@@ -9,22 +9,26 @@ class LocationQuery < ApplicationRecord
   validates :query, presence: true, uniqueness: true
 
   before_validation -> { self.query = query.strip }
-  before_create :geocode, if: :precise?
+  before_create :geocode!, if: :precise?
 
-  def geocode
+  def geocode!
+    location_attributes = nil
+
     GEOCODERS.each do |geocoder|
-      attributes = geocoder.lookup(query)
-      next if attributes.blank?
-
-      location = Location.find_or_initialize_by(full_address: attributes[:full_address])
-      break if location.persisted?
-
-      location.attributes = attributes
-
-      location.save
-      self.location = location
-      break
+      location_attributes = geocoder.lookup(query)
+      break if location_attributes.present?
     end
+
+    return if location_attributes.blank?
+
+    location = Location.find_or_initialize_by(full_address: location_attributes[:full_address])
+
+    if location.new_record?
+      location.attributes = location_attributes
+      location.save!
+    end
+
+    self.location = location
   end
 
   private
