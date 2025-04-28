@@ -25,11 +25,11 @@ class Event < ApplicationRecord
 
   with_options on: :create do
     validate :validate_url_found
-    validate :validate_end_date_is_today_or_future
+    validate :validate_end_date_is_today_or_future, if: -> { end_date.present? }
     validate :validate_not_duplicated, if: -> { location_id.present? && start_date.present? && end_date.present? && start_time.present? }
   end
 
-  validate :validate_start_date_is_before_or_same_as_end_date
+  validate :validate_start_date_is_before_or_same_as_end_date, if: -> { start_date.present && end_date.present? }
 
   before_update -> { self.location = nil }, if: :location_query_changed?
   before_save -> { self.end_time = nil }, if: -> { end_time.blank? || start_time == end_time }
