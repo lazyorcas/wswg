@@ -47,6 +47,15 @@ class Event::CreateJob < ApplicationJob
     archived_link = ArchivedLink.find_or_initialize_by(url: url)
 
     if archived_link.new_record?
+      reason = case reason
+      when :not_found_or_expired
+        :not_found_or_expired
+      when :duplicated
+        :duplicated
+      else
+        :other
+      end
+
       archived_link.reason = reason
       archived_link.details = details
       archived_link.save!

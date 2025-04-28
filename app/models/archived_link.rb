@@ -4,6 +4,7 @@ class ArchivedLink < ApplicationRecord
 
   enum :reason, {
     not_found_or_expired: 0,
-    duplicated: 1
+    duplicated: 1,
+    other: -1
   }
 end
