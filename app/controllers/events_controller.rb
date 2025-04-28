@@ -12,7 +12,7 @@ class EventsController < ApplicationController
     else
       load_events_this_week
     end
-    @events = @events.includes(:location, source: :city)
+    @events = @events.includes(:location, city: :time_zone)
   end
 
   def show
@@ -56,8 +56,9 @@ class EventsController < ApplicationController
 
   def event_scope
     Event
+      .joins(:source)
       .left_joins(:seen_users)
       .where(seens: { user_id: nil })
-      .where(city: Current.user.city)
+      .where(source: { city: Current.user.city })
   end
 end

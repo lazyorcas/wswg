@@ -21,6 +21,6 @@ module Event::Locatable
       .order(created_at: :desc)
       .first&.location
 
-    self.location ||= Location.find_or_create_by_query(location_query, city_id: source.city_id)
+    self.location ||= Location.find_or_create_by_query(location_query, city_id: city_id)
   end
 end

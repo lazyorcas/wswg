@@ -28,7 +28,6 @@ class Source < ApplicationRecord
     create_jobs = things_attributes.map do |thing_attributes|
       create_thing_job_class.new(
         source_id: id,
-        city_id: city_id,
         uid: thing_attributes[:uid],
         url: thing_attributes[:url]
       )

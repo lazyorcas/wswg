@@ -5,7 +5,7 @@ class Event < ApplicationRecord
   include Locatable
 
   belongs_to :source
-  belongs_to :city
+  has_one :city, through: :source
 
   has_many :bookmarks, as: :bookmarkable
   has_many :seens, as: :seenable
@@ -44,7 +44,6 @@ class Event < ApplicationRecord
 
   def duplicated?
     similar_events = Event.where(
-      city_id: city_id,
       location_id: location_id,
       start_date: start_date,
       start_time: start_time,
@@ -84,6 +83,6 @@ class Event < ApplicationRecord
   end
 
   def today
-    @today ||= Time.current.in_time_zone(source.city.time_zone.name).to_date
+    @today ||= Time.current.in_time_zone(city.time_zone.name).to_date
   end
 end

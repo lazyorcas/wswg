@@ -17,12 +17,12 @@ module Event::Searchable
       start_time: start_time,
       end_time: end_time,
       price: price,
-      location: location&.coordinates_h || source.city.coordinates_h
+      location: location&.coordinates_h || city.coordinates_h
     }
   end
 
   def should_index?
-    today = Time.current.in_time_zone(source.city.time_zone.name).to_date
+    today = Time.current.in_time_zone(city.time_zone.name).to_date
     end_date >= today.to_s
   end
 end

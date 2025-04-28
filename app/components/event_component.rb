@@ -11,7 +11,7 @@ class EventComponent < ViewComponent::Base
   end
 
   def city
-    source.city
+    event.city
   end
 
   def url

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_04_28_053823) do
+ActiveRecord::Schema[8.0].define(version: 2025_04_28_064034) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -117,7 +117,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_28_053823) do
   end
 
   create_table "events", force: :cascade do |t|
-    t.bigint "city_id", null: false
     t.bigint "source_id", null: false
     t.string "uid", null: false
     t.string "url", null: false
@@ -133,7 +132,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_28_053823) do
     t.string "location_query"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["city_id"], name: "index_events_on_city_id"
     t.index ["location_id"], name: "index_events_on_location_id"
     t.index ["location_query"], name: "index_events_on_location_query"
     t.index ["source_id"], name: "index_events_on_source_id"
@@ -226,7 +224,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_28_053823) do
   add_foreign_key "cities", "time_zones"
   add_foreign_key "city_languages", "cities"
   add_foreign_key "city_languages", "languages"
-  add_foreign_key "events", "cities"
   add_foreign_key "events", "locations"
   add_foreign_key "events", "sources"
   add_foreign_key "locations", "cities"
