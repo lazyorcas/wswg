@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_04_28_064909) do
+ActiveRecord::Schema[8.0].define(version: 2025_04_28_075614) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -129,11 +129,9 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_28_064909) do
     t.string "end_time"
     t.integer "price", null: false
     t.bigint "location_id"
-    t.string "location_query"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["location_id"], name: "index_events_on_location_id"
-    t.index ["location_query"], name: "index_events_on_location_query"
     t.index ["source_id"], name: "index_events_on_source_id"
     t.index ["uid", "source_id"], name: "index_events_on_uid_and_source_id", unique: true
   end
@@ -148,7 +146,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_28_064909) do
 
   create_table "location_queries", force: :cascade do |t|
     t.string "query", null: false
-    t.bigint "location_id", null: false
+    t.bigint "location_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["location_id"], name: "index_location_queries_on_location_id"
@@ -156,13 +154,11 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_28_064909) do
   end
 
   create_table "locations", force: :cascade do |t|
-    t.bigint "city_id", null: false
     t.string "full_address", null: false
     t.float "latitude", null: false
     t.float "longitude", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["city_id"], name: "index_locations_on_city_id"
   end
 
   create_table "search_queries", force: :cascade do |t|
@@ -236,7 +232,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_28_064909) do
   add_foreign_key "events", "locations"
   add_foreign_key "events", "sources"
   add_foreign_key "location_queries", "locations"
-  add_foreign_key "locations", "cities"
   add_foreign_key "search_queries", "users"
   add_foreign_key "seens", "users"
   add_foreign_key "sources", "cities"

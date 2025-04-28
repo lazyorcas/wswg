@@ -5,7 +5,7 @@ module Event::Searchable
   FILTERABLE_FIELDS = [ :start_date, :end_date, :start_time, :end_time, :price ]
 
   included do
-    scope :search_import, -> { includes(:location, source: { city: :time_zone }) }
+    scope :search_import, -> { includes(:location, city: :time_zone) }
   end
 
   def search_data

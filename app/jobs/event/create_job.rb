@@ -19,10 +19,9 @@ class Event::CreateJob < ApplicationJob
       return if Event.exists?(source_id: event.source_id, uid: event.uid)
     end
 
-    event.url = attributes[:url]
+    event.attributes = attributes
 
     event.fetch
-    event.locate
 
     if event.valid?
       event.save!

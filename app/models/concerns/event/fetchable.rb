@@ -2,10 +2,9 @@ module Event::Fetchable
   extend ActiveSupport::Concern
 
   include Parseable
-  include PreciseLocationQuery
 
   def found?
-    parsed?
+    json.present?
   end
 
   def fetch

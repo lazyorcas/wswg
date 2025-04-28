@@ -21,15 +21,6 @@ class City < ApplicationRecord
     @names ||= [ name, self.alias ].compact
   end
 
-  def downcased_names
-    @downcased_names ||= names.map(&:downcase)
-  end
-
-  def contains?(query)
-    downcased_query = query.downcase
-    downcased_names.any? { |name| downcased_query.include?(name) }
-  end
-
   private
 
   def set_slug

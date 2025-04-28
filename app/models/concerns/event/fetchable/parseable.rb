@@ -1,4 +1,10 @@
 module Event::Fetchable::Parseable
+  extend ActiveSupport::Concern
+
+  included do
+    attr_reader :json
+  end
+
   CONTEXT = <<~TEXT
     This markdown should be about an event.
 
@@ -18,26 +24,16 @@ module Event::Fetchable::Parseable
 
   private
 
-  def parsed?
-    @parsed
-  end
-
   def parse
-    json = markdown_expert.convert_to_json(
+    @json = markdown_expert.convert_to_json(
       markdown,
       context: CONTEXT % { current_year: today.year },
       json_schema: json_schema
     )
 
-    raise OpenAI::HallucinationError if openai_hallucinated?
+    @json = nil if @json["not_found"]
 
-    if json["not_found"]
-      @parsed = false
-      return
-    end
-
-    self.attributes = json.slice(*self.class.column_names)
-    @parsed = true
+    self.attributes = @json.slice(*self.class.column_names)
   end
 
   def markdown
@@ -50,12 +46,5 @@ module Event::Fetchable::Parseable
 
   def json_schema
     OpenAI::Responses::Schemas.event_schema
-  end
-
-  def openai_hallucinated?
-    return false if end_date.blank?
-
-    first_day_of_year = "#{today.year}-01-01"
-    end_date == first_day_of_year && today != first_day_of_year
   end
 end

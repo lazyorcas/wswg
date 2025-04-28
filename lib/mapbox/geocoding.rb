@@ -16,7 +16,8 @@ class Mapbox::Geocoding
   def self.lookup(query)
     url = build_url(FORWARD_GEOCODING_URL, **FORWARD_GEOCODING_PARAMS, q: query)
     response = HTTParty.get(url)
-    get_lookup_entry(response.parsed_response)
+    response_body = JSON.parse(response.body)
+    get_lookup_entry(response_body)
   end
 
   # https://docs.mapbox.com/api/search/geocoding/#batch-geocoding
@@ -36,9 +37,10 @@ class Mapbox::Geocoding
       end
 
       response = HTTParty.post(url, headers: HEADERS, body: body.to_json)
+      response_body = JSON.parse(response.body)
 
       queries.each_with_index do |query, index|
-        entry = response.parsed_response["batch"][index]
+        entry = response_body["batch"][index]
         lookup[query] = get_lookup_entry(entry)
       end
     end
