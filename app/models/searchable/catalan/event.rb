@@ -1,4 +1,6 @@
 class Searchable::Catalan::Event < Event
+  include Event::Searchable
+
   searchkick \
     language: "catalan",
     index_name: "events_catalan_#{Rails.env}",

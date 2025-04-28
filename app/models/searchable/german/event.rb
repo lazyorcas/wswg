@@ -1,4 +1,6 @@
 class Searchable::German::Event < Event
+  include Event::Searchable
+
   searchkick \
     language: "german",
     index_name: "events_german_#{Rails.env}",
