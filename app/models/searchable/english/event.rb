@@ -5,5 +5,6 @@ class Searchable::English::Event < Event
     index_name: "events_#{Rails.env}",
     searchable: Event::Searchable::SEARCHABLE_FIELDS,
     filterable: Event::Searchable::FILTERABLE_FIELDS,
+    locations: [ :location ],
     callbacks: false
 end

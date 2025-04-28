@@ -6,5 +6,6 @@ class Searchable::Catalan::Event < Event
     index_name: "events_catalan_#{Rails.env}",
     searchable: Event::Searchable::SEARCHABLE_FIELDS,
     filterable: Event::Searchable::FILTERABLE_FIELDS,
+    locations: [ :location ],
     callbacks: false
 end

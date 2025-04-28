@@ -1,6 +1,8 @@
 class SearchQuery < ApplicationRecord
   include Broadcastable
 
+  SEARCH_RADIUS_IN_KM = 30
+
   enum :status, {
     analyzing: 0,
     completed: 1,
@@ -162,7 +164,10 @@ class SearchQuery < ApplicationRecord
     end
 
     {
-      city_id: city.id,
+      location: {
+        near: city.coordinates_h,
+        within: "#{SEARCH_RADIUS_IN_KM}km"
+      },
       end_date: {
         gte: query_start_date,
         lte: query_object.dig("date_range", "end_date").presence
