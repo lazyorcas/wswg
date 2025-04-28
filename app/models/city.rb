@@ -1,6 +1,8 @@
 class City < ApplicationRecord
   include HasCoordinates
 
+  belongs_to :time_zone
+
   has_many :sources
 
   has_many :city_languages
@@ -8,9 +10,7 @@ class City < ApplicationRecord
 
   validates :name, presence: true
   validates :slug, presence: true, uniqueness: true
-  validates :time_zone,
-    presence: true,
-    inclusion: { in: ActiveSupport::TimeZone.all.map(&:tzinfo).map(&:name) }
+
   validates :currency,
     presence: true,
     inclusion: { in: Money::Currency.table.keys.map(&:to_s).map(&:upcase) }

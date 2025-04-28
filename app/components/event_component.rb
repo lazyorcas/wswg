@@ -36,9 +36,9 @@ class EventComponent < ViewComponent::Base
 
   def date
     if start_date == end_date
-      get_easy_date(Date.parse(start_date), time_zone: city.time_zone)
+      get_easy_date(Date.parse(start_date), time_zone: city.time_zone.name)
     else
-      "#{get_easy_date(Date.parse(start_date), time_zone: city.time_zone)} - #{get_easy_date(Date.parse(end_date), time_zone: city.time_zone)}"
+      "#{get_easy_date(Date.parse(start_date), time_zone: city.time_zone.name)} - #{get_easy_date(Date.parse(end_date), time_zone: city.time_zone.name)}"
     end
   end
 

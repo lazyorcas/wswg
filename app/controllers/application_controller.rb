@@ -17,7 +17,7 @@ class ApplicationController < ActionController::Base
   end
 
   def today
-    @today ||= Time.current.in_time_zone(Current.user.city.time_zone).to_date
+    @today ||= Time.current.in_time_zone(Current.user.city.time_zone.name).to_date
   end
 
   def render_device_not_supported

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_04_28_042434) do
+ActiveRecord::Schema[8.0].define(version: 2025_04_28_053823) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -95,14 +95,15 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_28_042434) do
   create_table "cities", force: :cascade do |t|
     t.string "name", null: false
     t.string "slug", null: false
-    t.string "time_zone", null: false
     t.string "currency", null: false
     t.float "latitude", null: false
     t.float "longitude", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "alias"
+    t.bigint "time_zone_id"
     t.index ["slug"], name: "index_cities_on_slug", unique: true
+    t.index ["time_zone_id"], name: "index_cities_on_time_zone_id"
   end
 
   create_table "city_languages", force: :cascade do |t|
@@ -222,6 +223,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_28_042434) do
 
   add_foreign_key "accounts", "users"
   add_foreign_key "bookmarks", "users"
+  add_foreign_key "cities", "time_zones"
   add_foreign_key "city_languages", "cities"
   add_foreign_key "city_languages", "languages"
   add_foreign_key "events", "cities"

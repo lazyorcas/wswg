@@ -84,6 +84,6 @@ class Event < ApplicationRecord
   end
 
   def today
-    @today ||= Time.current.in_time_zone(city.time_zone).to_date
+    @today ||= Time.current.in_time_zone(city.time_zone.name).to_date
   end
 end
