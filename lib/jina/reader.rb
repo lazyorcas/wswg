@@ -1,13 +1,11 @@
 class Jina::Reader
-  TIMEOUT = 20
-  TIMEOUT_BUFFER = 2
+  TIMEOUT = 30
 
   BASE_URL = "https://r.jina.ai"
   HEADERS = {
     "Authorization" => "Bearer #{ENV["JINA_API_KEY"]}",
     "X-Engine" => "browser",
-    "X-Return-Format" => "markdown",
-    "X-Timeout" => "#{TIMEOUT - TIMEOUT_BUFFER}"
+    "X-Return-Format" => "markdown"
   }
 
   def fetch(url)
