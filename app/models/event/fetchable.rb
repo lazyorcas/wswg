@@ -43,7 +43,7 @@ module Event::Fetchable
     @found = true
 
     if json["location"].present?
-      if city.precise?(json["location"])
+      if precise_location?(json["location"])
         self.location_query = json["location"]
 
       elsif !city.contains?(json["location"])
@@ -53,6 +53,17 @@ module Event::Fetchable
   end
 
   private
+
+  def precise_location?(query)
+    !location_is_city?(query)
+  end
+
+  def location_is_city?(query)
+    geographer.true_or_false?(
+      location: query,
+      question: "Is the location a city?"
+    )
+  end
 
   def json_schema
     OpenAI::Responses::Schemas.event_schema
@@ -64,5 +75,9 @@ module Event::Fetchable
 
   def markdown_expert
     @markdown_expert ||= OpenAI::Assistants::MarkdownExpert.new
+  end
+
+  def geographer
+    @geographer ||= OpenAI::Assistants::Geographer.new
   end
 end
