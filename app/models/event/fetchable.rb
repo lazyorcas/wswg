@@ -1,4 +1,6 @@
 module Event::Fetchable
+  extend ActiveSupport::Concern
+
   CONTEXT = <<~TEXT
     This markdown should be about an event.
 
@@ -15,6 +17,10 @@ module Event::Fetchable
     - It's possible that year is not mentioned. In this case, use the current year.
     - Important! It's possible that the end date is not mentioned. In this case, the end date is the same as the start date.
   TEXT
+
+  included do
+    validate :validate_openai_not_hallucinated, if: -> { end_date.present? }
+  end
 
   def found?
     @found
@@ -45,7 +51,18 @@ module Event::Fetchable
     set_location_query(json["location"]) if json["location"].present?
   end
 
+  def openai_hallucinated?
+    first_day_of_year = "#{today_in_city_timezone.year}-01-01"
+    end_date == first_day_of_year && today_in_city_timezone != first_day_of_year
+  end
+
   private
+
+  def validate_openai_not_hallucinated
+    return if !openai_hallucinated?
+
+    errors.add(:base, :openai_hallucinated)
+  end
 
   def set_location_query(location_query)
     if precise_location?(location_query)

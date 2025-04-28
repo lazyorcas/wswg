@@ -40,13 +40,10 @@ class Event::CreateJob < ApplicationJob
     elsif event.errors.any? { |error| error.attribute == :base && error.type == :duplicated }
       create_archived_link(event.url, reason: :duplicated, details: event.errors.to_json)
 
+    elsif event.errors.any? { |error| error.attribute == :base && error.type == :openai_hallucinated }
+      raise OpenAI::HallucinationError.new
+
     else
-      today = Time.current.in_time_zone(event.city.time_zone).to_date
-
-      if event.end_date == "#{today.year}-01-01"
-        raise OpenAI::HallucinationError.new
-      end
-
       raise ActiveRecord::RecordInvalid.new(event)
     end
   end
