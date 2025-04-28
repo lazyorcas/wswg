@@ -34,17 +34,11 @@ class Event::CreateJob < ApplicationJob
     if event.valid?
       event.save!
 
-    elsif event.errors.any? { |error| error.attribute == :url && error.type == :not_found_or_expired }
-      create_archived_link(event.url, reason: :not_found_or_expired)
-
-    elsif event.errors.any? { |error| error.attribute == :base && error.type == :duplicated }
-      create_archived_link(event.url, reason: :duplicated, details: event.errors.to_json)
-
     elsif event.errors.any? { |error| error.attribute == :base && error.type == :openai_hallucinated }
       raise OpenAI::HallucinationError.new
 
     else
-      raise ActiveRecord::RecordInvalid.new(event)
+      create_archived_link(event.url, reason: event.errors.first.type, details: event.errors.to_json)
     end
   end
 
