@@ -85,11 +85,11 @@ class SearchQuery < ApplicationRecord
     events = []
 
     if searches.pluck(:keywords).all? { |keywords| keywords == "*" }
-      events = searches.map { |search| search.model.where(id: search.result.ids).order(:start_date, :start_time) }.flatten
+      events = searches.map { |search| Event.where(id: search.result.ids).order(:start_date, :start_time) }.flatten
     else
       searches.each do |search|
         scores = search.result.scores
-        events += search.model.find(search.result.inlier_ids).map.with_index do |event, index|
+        events += Event.find(search.result.inlier_ids).map.with_index do |event, index|
           { event: event, score: scores[index] }
         end
       end

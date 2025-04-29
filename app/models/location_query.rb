@@ -21,6 +21,8 @@ class LocationQuery < ApplicationRecord
 
     return if location_attributes.blank?
 
+    # TODO: check if the full_address is a city
+
     location = Location.find_or_initialize_by(full_address: location_attributes[:full_address])
 
     if location.new_record?
