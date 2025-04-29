@@ -2,14 +2,17 @@ class CitySource < ApplicationRecord
   belongs_to :city
   belongs_to :source
 
-  validates :name, presence: true, inclusion: { in: %w[ Eventbrite Luma Meetup MuenchenDe ] }
-  validates :url, presence: true, uniqueness: true
   validates :url_params, presence: true
+
+  def url
+    @url ||= source.template_url % url_params
+  end
 
   def find_and_create_events!
     event_urls = events_finder.find_events(id)
 
-    existing_event_urls = Event.where(city_source_id: id).pluck(:url)
+    # TODO: Luma urls are not unique
+    existing_event_urls = Event.where(url: event_urls).pluck(:url)
     existing_archived_urls = ArchivedLink.where(url: event_urls).pluck(:url)
 
     existing_urls = existing_event_urls + existing_archived_urls
@@ -25,6 +28,6 @@ class CitySource < ApplicationRecord
   end
 
   def events_finder
-    @events_finder ||= "Source::#{name}EventsFinder".constantize.new
+    @events_finder ||= "Source::#{source.name}EventsFinder".constantize.new
   end
 end

@@ -14,4 +14,6 @@ class User < ApplicationRecord
             presence: true,
             uniqueness: { case_sensitive: false },
             format: { with: URI::MailTo::EMAIL_REGEXP }
+
+  # TODO: handle cases where email is x+something@gmail.com
 end
