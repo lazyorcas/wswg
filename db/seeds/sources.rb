@@ -73,7 +73,6 @@ SOURCES.each do |source_attributes|
   )
 
   if source.new_record?
-    source.thing_type = "Event"
     source.url = source_attributes[:url]
     source.proxy = source_attributes[:proxy]
     source.save!
@@ -83,7 +82,6 @@ end
 # Source.create(
 #   city: City.find_by(name: "Munich"),
 #   name: "MuenchenDe",
-#   thing_type: "Event",
 #   url: "https://www.muenchen.de/en/events",
 #   proxy: false
 # )
