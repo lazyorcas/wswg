@@ -8,7 +8,7 @@ module SearchQuery::Broadcastable
       target: "search-results",
       partial: "search_queries/events",
       locals: {
-        events: result_things,
+        events: result_events,
         took_in_seconds: took_in_seconds,
         viewing_user: user
       }

@@ -1,4 +1,4 @@
-class Source::Luma::ThingsFinder < Source::ThingsFinder
+class Source::Luma::EventsFinder < Source::EventsFinder
   UID_DELIMITER = "___"
 
   # Luma's event URLs are not unique, so we need to add the date to the UID
@@ -16,12 +16,12 @@ class Source::Luma::ThingsFinder < Source::ThingsFinder
     10
   end
 
-  def get_things
+  def get_events
     @page.css("a.event-link").each do |link|
       path = link.attribute("href")
       id = path[1..]
 
-      @things << {
+      @events << {
         uid: self.class.build_uid(id),
         url: URI.join(base_url, path).to_s
       }

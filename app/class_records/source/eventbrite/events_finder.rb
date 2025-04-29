@@ -1,15 +1,15 @@
-class Source::Eventbrite::ThingsFinder < Source::ThingsFinder
+class Source::Eventbrite::EventsFinder < Source::EventsFinder
   private
 
   def max_page_count
     50
   end
 
-  def get_things
+  def get_events
     @page.css("a.event-card-link").each do |link|
       url = link.attribute("href")
 
-      @things << {
+      @events << {
         uid: url.split("?").first.split("/").last.split("-").last,
         url: url
       }

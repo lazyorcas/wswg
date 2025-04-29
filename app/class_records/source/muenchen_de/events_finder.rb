@@ -1,11 +1,11 @@
-class Source::MuenchenDe::ThingsFinder < Source::ThingsFinder
+class Source::MuenchenDe::EventsFinder < Source::EventsFinder
   private
 
   def max_page_count
     200
   end
 
-  def get_things
+  def get_events
     links = @page.css(".m-event-list-item a")
 
     links.each do |link|
@@ -14,7 +14,7 @@ class Source::MuenchenDe::ThingsFinder < Source::ThingsFinder
         url = URI.join(base_url, url).to_s
       end
 
-      @things << {
+      @events << {
         uid: url.split("/").last,
         url: url
       }

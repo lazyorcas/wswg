@@ -1,6 +1,6 @@
 production:
-  # find_and_create_things_job:
-  #   class: Sources::FindAndCreateThingsJob
+  # find_and_create_events_job:
+  #   class: Sources::FindAndCreateEventsJob
   #   schedule: "0 */6 * * *"  # Every 6 hours at 0 minutes
   reindex_events_job:
     class: Events::ReindexJob

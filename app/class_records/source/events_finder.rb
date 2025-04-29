@@ -1,15 +1,15 @@
-class Source::ThingsFinder
+class Source::EventsFinder
   INITIAL_PAGE_TIMEOUT = 20
   SUBSEQUENT_PAGE_TIMEOUT = 5
 
-  attr_reader :things
+  attr_reader :events
 
   def initialize
     @source = nil
-    @things = []
+    @events = []
   end
 
-  def find_things(source_id)
+  def find_events(source_id)
     @source = Source.find(source_id)
 
     begin
@@ -22,7 +22,7 @@ class Source::ThingsFinder
         timeout = page == 0 ? INITIAL_PAGE_TIMEOUT : SUBSEQUENT_PAGE_TIMEOUT
         @page.wait_for_idle(timeout: timeout)
 
-        get_things
+        get_events
         begin
           go_to_next_page
 
@@ -42,7 +42,7 @@ class Source::ThingsFinder
       end
     end
 
-    @things = @things.uniq { |thing| thing[:uid] }
+    @events = @events.uniq { |event| event[:uid] }
   end
 
   private
@@ -51,7 +51,7 @@ class Source::ThingsFinder
     raise NotImplementedError
   end
 
-  def get_things
+  def get_events
     raise NotImplementedError
   end
 

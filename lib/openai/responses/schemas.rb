@@ -65,14 +65,6 @@ class OpenAI::Responses::Schemas
 
   def self.search_query_schema
     build_schema("search_query", {
-      thing_types: {
-        type: "array",
-        description: "The types of things that the user is looking for. If the user is looking for all types, return all of the types.",
-        items: {
-          type: "string",
-          enum: %w[ Event ]
-        }
-      },
       language_keywords: {
         type: "array",
         items: {

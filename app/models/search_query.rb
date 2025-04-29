@@ -43,34 +43,20 @@ class SearchQuery < ApplicationRecord
     city = City.find_by(name: city_name) || user.city
 
     query_object = build_query_object(city: city)
-    thing_types = query_object["thing_types"]
-
-    if thing_types.empty?
-      Sentry.capture_message(
-        "Thing types are empty",
-        level: :warning,
-        extra: { search_query_id: id }
-      )
-
-      thing_types = [ "Event" ]
-    end
 
     language_keywords = build_language_keywords(query_object)
     conditions = build_conditions(query_object, city: city)
 
-    thing_types.each do |thing_type|
-      language_keywords.each do |language, keywords|
-        begin
-          Search.create!(
-            search_query: self,
-            model_type: thing_type,
-            searchable_model_type: "Searchable::#{language.capitalize}::#{thing_type.capitalize}",
-            keywords: keywords,
-            conditions: conditions
-          )
-        rescue => e
-          Sentry.capture_exception(e)
-        end
+    language_keywords.each do |language, keywords|
+      begin
+        Search.create!(
+          search_query: self,
+          searchable_model_type: "Searchable::#{language.capitalize}::Event",
+          keywords: keywords,
+          conditions: conditions
+        )
+      rescue => e
+        Sentry.capture_exception(e)
       end
     end
 
@@ -95,26 +81,26 @@ class SearchQuery < ApplicationRecord
     searches.pluck(:status).all? { |status| status == "completed" }
   end
 
-  def result_things
-    things = []
+  def result_events
+    events = []
 
     if searches.pluck(:keywords).all? { |keywords| keywords == "*" }
-      things = searches.map { |search| search.model.where(id: search.result.ids).order(:start_date, :start_time) }.flatten
+      events = searches.map { |search| search.model.where(id: search.result.ids).order(:start_date, :start_time) }.flatten
     else
       searches.each do |search|
         scores = search.result.scores
-        things += search.model.find(search.result.inlier_ids).map.with_index do |thing, index|
-          { thing: thing, score: scores[index] }
+        events += search.model.find(search.result.inlier_ids).map.with_index do |event, index|
+          { event: event, score: scores[index] }
         end
       end
 
-      things = things.sort_by { |thing| thing[:score] }.reverse.map { |thing| thing[:thing] }
+      events = events.sort_by { |event| event[:score] }.reverse.map { |event| event[:event] }
     end
 
     # remove duplicates
-    things = things.uniq
+    events = events.uniq
 
-    things
+    events
   end
 
   def took_in_seconds

@@ -1,4 +1,4 @@
-class Source::FindAndCreateThingsJob < ApplicationJob
+class Source::FindAndCreateEventsJob < ApplicationJob
   queue_with_priority 2
 
   retry_on Ferrum::TimeoutError, wait: 30.minutes, attempts: 3
@@ -6,7 +6,7 @@ class Source::FindAndCreateThingsJob < ApplicationJob
 
   def perform(id)
     source = Source.find(id)
-    source.find_and_create_things!
+    source.find_and_create_events!
 
     source.update(last_fetched_at: Time.current)
   end

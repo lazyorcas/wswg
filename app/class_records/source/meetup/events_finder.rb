@@ -1,11 +1,11 @@
-class Source::Meetup::ThingsFinder < Source::ThingsFinder
+class Source::Meetup::EventsFinder < Source::EventsFinder
   private
 
   def max_page_count
     100
   end
 
-  def get_things
+  def get_events
     links = @page.css("[data-element-name=\"categoryResults-eventCard\"] a")
 
     # old selector
@@ -16,7 +16,7 @@ class Source::Meetup::ThingsFinder < Source::ThingsFinder
     links.each do |link|
       url = link.attribute("href").split("?").first
 
-      @things << {
+      @events << {
         uid: url.split("/").last,
         url: url
       }

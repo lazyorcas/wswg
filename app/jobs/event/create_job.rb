@@ -42,8 +42,8 @@ class Event::CreateJob < ApplicationJob
   private
 
   def build_luma_event_uid(event)
-    id = Source::Luma::ThingsFinder.get_id(event.uid)
-    uid = Source::Luma::ThingsFinder.build_uid(id, date: event.start_date)
+    id = Source::Luma::EventsFinder.get_id(event.uid)
+    uid = Source::Luma::EventsFinder.build_uid(id, date: event.start_date)
     event.uid = uid
   end
 
