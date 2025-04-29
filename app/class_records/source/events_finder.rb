@@ -63,12 +63,6 @@ class Source::EventsFinder
     false
   end
 
-  def end_of_page?
-    current_scroll = @page.evaluate("window.pageYOffset + window.innerHeight")
-    total_height = @page.evaluate("document.documentElement.scrollHeight")
-    current_scroll >= total_height
-  end
-
   def host
     @host ||= URI.join(@source.url).host
   end

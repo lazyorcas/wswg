@@ -1,4 +1,4 @@
-class Source::MuenchenDe::EventsFinder < Source::EventsFinder
+class Source::MuenchenDeEventsFinder < Source::EventsFinder
   private
 
   def max_page_count

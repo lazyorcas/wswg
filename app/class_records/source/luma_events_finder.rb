@@ -1,4 +1,4 @@
-class Source::Luma::EventsFinder < Source::EventsFinder
+class Source::LumaEventsFinder < Source::EventsFinder
   private
 
   def max_page_count
@@ -19,6 +19,6 @@ class Source::Luma::EventsFinder < Source::EventsFinder
   end
 
   def done?
-    end_of_page?
+    @page.end_of_page?
   end
 end

@@ -26,4 +26,10 @@ module Possum::Page
       end
     end
   end
+
+  def end_of_page?
+    current_scroll = evaluate("window.pageYOffset + window.innerHeight")
+    total_height = evaluate("document.documentElement.scrollHeight")
+    current_scroll >= total_height
+  end
 end

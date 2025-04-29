@@ -1,4 +1,4 @@
-class Source::Eventbrite::EventsFinder < Source::EventsFinder
+class Source::EventbriteEventsFinder < Source::EventsFinder
   private
 
   def max_page_count

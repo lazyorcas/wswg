@@ -1,4 +1,4 @@
-class Source::Meetup::EventsFinder < Source::EventsFinder
+class Source::MeetupEventsFinder < Source::EventsFinder
   private
 
   def max_page_count
@@ -25,6 +25,6 @@ class Source::Meetup::EventsFinder < Source::EventsFinder
   end
 
   def done?
-    end_of_page?
+    @page.end_of_page?
   end
 end

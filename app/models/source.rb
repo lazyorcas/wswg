@@ -23,6 +23,6 @@ class Source < ApplicationRecord
   end
 
   def events_finder
-    @events_finder ||= "Source::#{name}::EventsFinder".constantize.new
+    @events_finder ||= "Source::#{name}EventsFinder".constantize.new
   end
 end
