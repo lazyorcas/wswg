@@ -1,5 +1,3 @@
-# TODO: add non null check
-
 class ReferenceTimeZoneInEvents < ActiveRecord::Migration[8.0]
   def change
     add_reference :events, :time_zone, foreign_key: true
@@ -8,5 +6,5 @@ end
 
 # UPDATE events
 # SET time_zone_id = cities.time_zone_id
-# FROM cities
-# WHERE events.city_id = cities.id
+# FROM sources
+# JOIN cities ON cities.id = sources.city_id
