@@ -20,8 +20,8 @@ module Source::EventsFindable
       page = browser.create_page(proxy: proxy)
       page.go_to(city_source_url)
 
-      max_page_count.times do |page|
-        timeout = page == 0 ? INITIAL_PAGE_TIMEOUT : SUBSEQUENT_PAGE_TIMEOUT
+      max_page_count.times do |page_index|
+        timeout = page_index == 0 ? INITIAL_PAGE_TIMEOUT : SUBSEQUENT_PAGE_TIMEOUT
         page.wait_for_idle(timeout: timeout)
 
         get_event_urls(page: page, city_source_url: city_source_url) do |event_url|
@@ -29,9 +29,9 @@ module Source::EventsFindable
         end
 
         begin
-          go_to_next_page(page)
+          go_to_next_page(page: page)
 
-          break if check_after_going_to_next_page? && done_after_going_to_next_page?(page)
+          break if check_after_going_to_next_page? && done_after_going_to_next_page?(page: page)
         rescue
           break
         end

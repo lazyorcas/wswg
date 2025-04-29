@@ -5,6 +5,6 @@ class CitySource < ApplicationRecord
   validates :url_params, presence: true
 
   def url
-    @url ||= source.template_url % url_params
+    @url ||= source.template_url % url_params.symbolize_keys
   end
 end
