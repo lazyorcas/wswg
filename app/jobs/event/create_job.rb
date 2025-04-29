@@ -6,13 +6,11 @@ class Event::CreateJob < ApplicationJob
   retry_on OpenAI::TooManyRequestsError, wait: 5.minutes, attempts: 3
   retry_on OpenAI::ServerError, wait: 15.minutes, attempts: 3
 
-  retry_on ActiveRecord::RecordInvalid, wait: 1.hour, attempts: 2
+  retry_on ActiveRecord::RecordInvalid, wait: 1.hour, attempts: 3
 
-  def perform(attributes)
-    event = Event.find_or_initialize_by(source_id: attributes[:source_id])
+  def perform(city_source_id:, url:)
+    event = Event.find_or_initialize_by(city_source_id: city_source_id, url: url)
     return if event.persisted?
-
-    event.attributes = attributes
 
     event.fetch
 

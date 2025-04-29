@@ -3,6 +3,7 @@ class Event < ApplicationRecord
 
   include Fetchable
   include Locatable
+  include Createable
 
   belongs_to :city_source
 

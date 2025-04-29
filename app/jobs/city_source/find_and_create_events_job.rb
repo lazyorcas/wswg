@@ -6,7 +6,11 @@ class CitySource::FindAndCreateEventsJob < ApplicationJob
 
   def perform(id)
     city_source = CitySource.find(id)
-    city_source.find_and_create_events!
+
+    source = city_source.source
+    source.extend("Source::#{source.name}".constantize)
+
+    source.find_and_create_events!(city_source)
 
     city_source.update(last_fetched_at: Time.current)
   end
