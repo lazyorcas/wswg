@@ -4,9 +4,9 @@ class Event < ApplicationRecord
   include Fetchable
   include Locatable
 
-  belongs_to :source
   belongs_to :time_zone
-  has_one :city, through: :source
+  belongs_to :city_source
+  has_one :city, through: :city_source
 
   has_many :bookmarks
   has_many :seens

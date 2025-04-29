@@ -6,12 +6,16 @@ class EventComponent < ViewComponent::Base
     @event = event
   end
 
+  def city_source
+    event.city_source
+  end
+
   def source
-    event.source
+    city_source.source
   end
 
   def city
-    event.city
+    event.city_source.city
   end
 
   def url

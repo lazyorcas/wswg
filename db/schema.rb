@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_04_29_040412) do
+ActiveRecord::Schema[8.0].define(version: 2025_04_29_042714) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -113,8 +113,22 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_29_040412) do
     t.index ["language_id"], name: "index_city_languages_on_language_id"
   end
 
+  create_table "city_sources", force: :cascade do |t|
+    t.bigint "city_id", null: false
+    t.string "name", null: false
+    t.string "url", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.boolean "proxy", default: false
+    t.datetime "last_fetched_at"
+    t.bigint "source_id"
+    t.index ["city_id"], name: "index_city_sources_on_city_id"
+    t.index ["source_id"], name: "index_city_sources_on_source_id"
+    t.index ["url"], name: "index_city_sources_on_url", unique: true
+  end
+
   create_table "events", force: :cascade do |t|
-    t.bigint "source_id", null: false
+    t.bigint "city_source_id", null: false
     t.string "url", null: false
     t.string "title", null: false
     t.string "description", null: false
@@ -128,8 +142,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_29_040412) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "time_zone_id", null: false
+    t.index ["city_source_id"], name: "index_events_on_city_source_id"
     t.index ["location_id"], name: "index_events_on_location_id"
-    t.index ["source_id"], name: "index_events_on_source_id"
     t.index ["start_date", "end_date", "start_time", "end_time", "location_id"], name: "idx_on_start_date_end_date_start_time_end_time_loca_8ae687a5e3"
     t.index ["time_zone_id"], name: "index_events_on_time_zone_id"
   end
@@ -190,15 +204,12 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_29_040412) do
   end
 
   create_table "sources", force: :cascade do |t|
-    t.bigint "city_id", null: false
     t.string "name", null: false
-    t.string "url", null: false
+    t.string "template_url", null: false
+    t.boolean "proxy", default: false, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.boolean "proxy", default: false
-    t.datetime "last_fetched_at"
-    t.index ["city_id"], name: "index_sources_on_city_id"
-    t.index ["url"], name: "index_sources_on_url", unique: true
+    t.index ["name"], name: "index_sources_on_name", unique: true
   end
 
   create_table "time_zones", force: :cascade do |t|
@@ -224,13 +235,14 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_29_040412) do
   add_foreign_key "cities", "time_zones"
   add_foreign_key "city_languages", "cities"
   add_foreign_key "city_languages", "languages"
+  add_foreign_key "city_sources", "cities"
+  add_foreign_key "city_sources", "sources"
+  add_foreign_key "events", "city_sources"
   add_foreign_key "events", "locations"
-  add_foreign_key "events", "sources"
   add_foreign_key "events", "time_zones"
   add_foreign_key "location_queries", "locations"
   add_foreign_key "search_queries", "users"
   add_foreign_key "seens", "events"
   add_foreign_key "seens", "users"
-  add_foreign_key "sources", "cities"
   add_foreign_key "users", "cities"
 end
