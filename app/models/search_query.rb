@@ -51,7 +51,7 @@ class SearchQuery < ApplicationRecord
       begin
         Search.create!(
           search_query: self,
-          searchable_model_type: "Searchable::#{language.capitalize}::Event",
+          searchable_type: "Searchable::#{language.capitalize}::Event",
           keywords: keywords,
           conditions: conditions
         )

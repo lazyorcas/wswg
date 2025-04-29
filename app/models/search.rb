@@ -11,19 +11,19 @@ class Search < ApplicationRecord
   validates :keywords, presence: true
   validates :conditions, presence: true
   validates :status, presence: true
-  validates :searchable_model_type, presence: true
+  validates :searchable_type, presence: true
   validates :result, presence: true, if: :completed?
 
   after_commit :queue_query, on: :create
 
-  def searchable_model
-    @searchable_model ||= searchable_model_type.constantize
+  def searchable
+    @searchable ||= searchable_type.constantize
   end
 
   def query!
     self.result = Search::Result.new
 
-    searchkick_result = searchable_model.search(
+    searchkick_result = searchable.search(
       self.keywords,
       where: self.conditions.deep_symbolize_keys,
       load: false

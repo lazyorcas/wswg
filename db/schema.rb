@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_04_29_031148) do
+ActiveRecord::Schema[8.0].define(version: 2025_04_29_033234) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -175,7 +175,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_29_031148) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "search_query_id", null: false
-    t.string "searchable_model_type", null: false
+    t.string "searchable_type", null: false
     t.index ["search_query_id"], name: "index_searches_on_search_query_id"
   end
 
