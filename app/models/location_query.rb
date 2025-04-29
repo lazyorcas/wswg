@@ -9,19 +9,21 @@ class LocationQuery < ApplicationRecord
   validates :query, presence: true, uniqueness: true
 
   before_validation -> { self.query = query.strip }
-  before_create :geocode!, if: :precise?
+  before_create :geocode!, if: -> { precise?(query) }
 
   def geocode!
     location_attributes = nil
 
     GEOCODERS.each do |geocoder|
-      location_attributes = geocoder.lookup(query)
-      break if location_attributes.present?
+      entry = geocoder.lookup(query)
+
+      if entry.present? && precise?(entry[:full_address])
+        location_attributes = entry
+        break
+      end
     end
 
     return if location_attributes.blank?
-
-    # TODO: check if the full_address is a city
 
     location = Location.find_or_initialize_by(full_address: location_attributes[:full_address])
 
@@ -35,11 +37,11 @@ class LocationQuery < ApplicationRecord
 
   private
 
-  def precise?
-    !city?
+  def precise?(query)
+    !city?(query)
   end
 
-  def city?
+  def city?(query)
     geographer.true_or_false?(
       location: query,
       question: "Is the location a city?"
