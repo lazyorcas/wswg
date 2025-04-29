@@ -5,6 +5,7 @@ class Event < ApplicationRecord
   include Locatable
 
   belongs_to :source
+  belongs_to :time_zone
   has_one :city, through: :source
 
   has_many :bookmarks

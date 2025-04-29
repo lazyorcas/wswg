@@ -79,4 +79,8 @@ class EventComponent < ViewComponent::Base
       Money.from_amount(price, city.currency).format(no_cents: true)
     end
   end
+
+  def time_zone
+    event.time_zone
+  end
 end
