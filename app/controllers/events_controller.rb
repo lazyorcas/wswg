@@ -12,7 +12,7 @@ class EventsController < ApplicationController
     else
       load_events_this_week
     end
-    @events = @events.includes(:location, city: :time_zone)
+    @events = @events.includes(:location)
   end
 
   def show

@@ -142,7 +142,7 @@ class SearchQuery < ApplicationRecord
   end
 
   def build_conditions(query_object, city:)
-    today = Time.current.in_time_zone(city.time_zone.name).to_date
+    today = city.time_zone.today
 
     query_start_date = query_object.dig("date_range", "start_date").presence
     if query_start_date.blank? || query_start_date < today.to_s
