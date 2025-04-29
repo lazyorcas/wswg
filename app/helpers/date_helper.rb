@@ -1,6 +1,6 @@
 module DateHelper
   def get_easy_date(date, time_zone:)
-    today = Time.current.in_time_zone(time_zone).to_date
+    today = time_zone.today
 
     if date < today
       date.strftime("%A, %B %d")

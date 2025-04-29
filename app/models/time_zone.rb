@@ -11,6 +11,6 @@ class TimeZone < ApplicationRecord
   end
 
   def now
-    @time_now ||= Time.current.in_time_zone(name)
+    @now ||= Time.current.in_time_zone(name)
   end
 end

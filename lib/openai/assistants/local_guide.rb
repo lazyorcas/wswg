@@ -65,7 +65,7 @@ class OpenAI::Assistants::LocalGuide
   def build_search_query(text, city_name:, time_zone:, languages:)
     instructions = INSTRUCTIONS_TEMPLATE
 
-    now = Time.current.in_time_zone(time_zone)
+    now = time_zone.now
     input = BUILD_SEARCH_QUERY_INPUT_TEMPLATE % {
       current_date: now.strftime("%Y-%m-%d"),
       current_dow: now.strftime("%A"),
