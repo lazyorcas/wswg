@@ -5,7 +5,7 @@ module Event::Searchable
   FILTERABLE_FIELDS = [ :start_date, :end_date, :start_time, :end_time, :price ]
 
   included do
-    scope :search_import, -> { includes(:location) }
+    scope :search_import, -> { includes(:location, city_source: { city: :time_zone }) }
   end
 
   def search_data
@@ -17,12 +17,11 @@ module Event::Searchable
       start_time: start_time,
       end_time: end_time,
       price: price,
-      location: location&.coordinates_h || city.coordinates_h
+      location: location&.coordinates_h || city_source.city.coordinates_h
     }
   end
 
   def should_index?
-    today = time_zone.today
-    end_date >= today.to_s
+    end_date >= city_source.city.time_zone.today.to_s
   end
 end

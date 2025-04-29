@@ -4,9 +4,7 @@ class Event < ApplicationRecord
   include Fetchable
   include Locatable
 
-  belongs_to :time_zone
   belongs_to :city_source
-  has_one :city, through: :city_source
 
   has_many :bookmarks
   has_many :seens
@@ -81,9 +79,5 @@ class Event < ApplicationRecord
     return if !duplicated?
 
     errors.add(:base, :duplicated, message: "already exists in this date time range, location, and title.")
-  end
-
-  def today
-    @today ||= time_zone.today
   end
 end

@@ -173,11 +173,7 @@ class SearchQuery < ApplicationRecord
   end
 
   def build_query_object(city:)
-    local_guide.build_search_query(query,
-      city_name: city.name,
-      time_zone: city.time_zone,
-      languages: city.languages.pluck(:name)
-    )
+    local_guide.build_search_query(query, city: city)
   end
 
   def local_guide

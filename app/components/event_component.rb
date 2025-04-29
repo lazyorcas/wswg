@@ -18,6 +18,10 @@ class EventComponent < ViewComponent::Base
     event.city_source.city
   end
 
+  def time_zone
+    city.time_zone
+  end
+
   def url
     event.url
   end
@@ -82,9 +86,5 @@ class EventComponent < ViewComponent::Base
     else
       Money.from_amount(price, city.currency).format(no_cents: true)
     end
-  end
-
-  def time_zone
-    event.time_zone
   end
 end

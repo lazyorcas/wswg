@@ -62,17 +62,17 @@ class OpenAI::Assistants::LocalGuide
     @openai_responses_client = OpenAI::ResponsesClient.new
   end
 
-  def build_search_query(text, city_name:, time_zone:, languages:)
+  def build_search_query(text, city:)
     instructions = INSTRUCTIONS_TEMPLATE
 
-    now = time_zone.now
+    now = city.time_zone.now
     input = BUILD_SEARCH_QUERY_INPUT_TEMPLATE % {
       current_date: now.strftime("%Y-%m-%d"),
       current_dow: now.strftime("%A"),
       current_time: now.strftime("%H:%M"),
       current_year: now.year,
-      city_name: city_name,
-      languages: languages,
+      city_name: city.name,
+      languages: city.languages.pluck(:name),
       text: text
     }
 
