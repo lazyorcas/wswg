@@ -49,7 +49,7 @@ module Source::EventsFindable
   end
 
   def build_create_event_jobs(city_source_id:, event_urls:)
-    createable_urls = Event.get_createable_event_urls(event_urls)
+    createable_urls = Event.get_createable_urls(event_urls)
     createable_urls.map do |event_url|
       Event::CreateJob.new(city_source_id: city_source_id, url: event_url)
     end

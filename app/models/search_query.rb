@@ -45,7 +45,7 @@ class SearchQuery < ApplicationRecord
     query_object = build_query_object(city: city)
 
     language_keywords = build_language_keywords(query_object)
-    conditions = build_conditions(query_object, city: city)
+    conditions = build_conditions(query_object)
 
     language_keywords.each do |language, keywords|
       begin
@@ -86,6 +86,7 @@ class SearchQuery < ApplicationRecord
 
     if searches.pluck(:keywords).all? { |keywords| keywords == "*" }
       events = searches.map { |search| Event.where(id: search.result.ids).order(:start_date, :start_time) }.flatten
+
     else
       searches.each do |search|
         scores = search.result.scores
@@ -141,21 +142,14 @@ class SearchQuery < ApplicationRecord
     lks
   end
 
-  def build_conditions(query_object, city:)
-    today = city.time_zone.today
-
-    query_start_date = query_object.dig("date_range", "start_date").presence
-    if query_start_date.blank? || query_start_date < today.to_s
-      query_start_date = today.to_s
-    end
-
+  def build_conditions(query_object)
     {
       location: {
-        near: city.coordinates_h,
+        near: query_object.dig("date_range", "start_date").presence,
         within: "#{SEARCH_RADIUS_IN_KM}km"
       },
       end_date: {
-        gte: query_start_date,
+        gte: query_object.dig("date_range", "start_date").presence,
         lte: query_object.dig("date_range", "end_date").presence
       },
       start_time: {
