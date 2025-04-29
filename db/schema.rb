@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_04_29_042714) do
+ActiveRecord::Schema[8.0].define(version: 2025_04_29_044450) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -121,7 +121,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_29_042714) do
     t.datetime "updated_at", null: false
     t.boolean "proxy", default: false
     t.datetime "last_fetched_at"
-    t.bigint "source_id"
+    t.bigint "source_id", null: false
+    t.jsonb "url_params", default: {}
     t.index ["city_id"], name: "index_city_sources_on_city_id"
     t.index ["source_id"], name: "index_city_sources_on_source_id"
     t.index ["url"], name: "index_city_sources_on_url", unique: true

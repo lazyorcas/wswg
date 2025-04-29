@@ -4,6 +4,7 @@ class CitySource < ApplicationRecord
 
   validates :name, presence: true, inclusion: { in: %w[ Eventbrite Luma Meetup MuenchenDe ] }
   validates :url, presence: true, uniqueness: true
+  validates :url_params, presence: true
 
   def find_and_create_events!
     event_urls = events_finder.find_events(id)
