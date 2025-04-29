@@ -1,6 +1,7 @@
 class SearchQuery < ApplicationRecord
   include Broadcastable
 
+  EVENT_COUNT_LIMIT = 1000
   SEARCH_RADIUS_IN_KM = 30
 
   enum :status, {
@@ -85,7 +86,10 @@ class SearchQuery < ApplicationRecord
     events = []
 
     if searches.pluck(:keywords).all? { |keywords| keywords == "*" }
-      events = searches.map { |search| Event.where(id: search.result.ids).order(:start_date, :start_time) }.flatten
+      events = searches
+        .map { |search| Event.where(id: search.result.ids).order(:start_date, :start_time) }
+        .flatten
+        .take(EVENT_COUNT_LIMIT)
 
     else
       searches.each do |search|
@@ -95,7 +99,11 @@ class SearchQuery < ApplicationRecord
         end
       end
 
-      events = events.sort_by { |event| event[:score] }.reverse.map { |event| event[:event] }
+      events = events
+        .sort_by { |event| event[:score] }
+        .reverse
+        .map { |event| event[:event] }
+        .take(EVENT_COUNT_LIMIT)
     end
 
     # remove duplicates
