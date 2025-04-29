@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_04_29_034114) do
+ActiveRecord::Schema[8.0].define(version: 2025_04_29_034728) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -128,7 +128,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_29_034114) do
     t.bigint "location_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.bigint "time_zone_id"
+    t.bigint "time_zone_id", null: false
     t.index ["location_id"], name: "index_events_on_location_id"
     t.index ["source_id"], name: "index_events_on_source_id"
     t.index ["time_zone_id"], name: "index_events_on_time_zone_id"
