@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_04_29_034728) do
+ActiveRecord::Schema[8.0].define(version: 2025_04_29_040412) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -115,7 +115,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_29_034728) do
 
   create_table "events", force: :cascade do |t|
     t.bigint "source_id", null: false
-    t.string "uid", null: false
     t.string "url", null: false
     t.string "title", null: false
     t.string "description", null: false
@@ -131,8 +130,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_29_034728) do
     t.bigint "time_zone_id", null: false
     t.index ["location_id"], name: "index_events_on_location_id"
     t.index ["source_id"], name: "index_events_on_source_id"
+    t.index ["start_date", "end_date", "start_time", "end_time", "location_id"], name: "idx_on_start_date_end_date_start_time_end_time_loca_8ae687a5e3"
     t.index ["time_zone_id"], name: "index_events_on_time_zone_id"
-    t.index ["uid", "source_id"], name: "index_events_on_uid_and_source_id", unique: true
   end
 
   create_table "languages", force: :cascade do |t|

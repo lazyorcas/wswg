@@ -9,10 +9,7 @@ class Source::Eventbrite::EventsFinder < Source::EventsFinder
     @page.css("a.event-card-link").each do |link|
       url = link.attribute("href")
 
-      @events << {
-        uid: url.split("?").first.split("/").last.split("-").last,
-        url: url
-      }
+      @event_urls << url
     end
   end
 

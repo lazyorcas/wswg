@@ -14,10 +14,7 @@ class Source::MuenchenDe::EventsFinder < Source::EventsFinder
         url = URI.join(base_url, url).to_s
       end
 
-      @events << {
-        uid: url.split("/").last,
-        url: url
-      }
+      @event_urls << url
     end
   end
 

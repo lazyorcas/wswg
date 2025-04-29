@@ -2,11 +2,11 @@ class Source::EventsFinder
   INITIAL_PAGE_TIMEOUT = 20
   SUBSEQUENT_PAGE_TIMEOUT = 5
 
-  attr_reader :events
+  attr_reader :event_urls
 
   def initialize
     @source = nil
-    @events = []
+    @event_urls = []
   end
 
   def find_events(source_id)
@@ -42,7 +42,7 @@ class Source::EventsFinder
       end
     end
 
-    @events = @events.uniq { |event| event[:uid] }
+    @event_urls = @event_urls.uniq
   end
 
   private

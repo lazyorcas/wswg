@@ -12,7 +12,6 @@ class Event < ApplicationRecord
   has_many :seens
   has_many :seen_users, through: :seens, source: :user
 
-  validates :uid, presence: true, uniqueness: { scope: :source_id }
   validates :url, presence: true
 
   validates :title, presence: true
@@ -46,11 +45,11 @@ class Event < ApplicationRecord
 
   def duplicated?
     similar_events = Event.where(
-      location_id: location_id,
       start_date: start_date,
-      start_time: start_time,
       end_date: end_date,
-      end_time: end_time
+      start_time: start_time,
+      end_time: end_time,
+      location_id: location_id,
     ).excluding(self)
 
     similar_events.any? do |event|

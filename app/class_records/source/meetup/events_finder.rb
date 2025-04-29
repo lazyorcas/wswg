@@ -16,10 +16,7 @@ class Source::Meetup::EventsFinder < Source::EventsFinder
     links.each do |link|
       url = link.attribute("href").split("?").first
 
-      @events << {
-        uid: url.split("/").last,
-        url: url
-      }
+      @event_urls << url
     end
   end
 

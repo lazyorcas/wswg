@@ -9,16 +9,8 @@ class Event::CreateJob < ApplicationJob
   retry_on ActiveRecord::RecordInvalid, wait: 1.hour, attempts: 2
 
   def perform(attributes)
-    event = Event.find_or_initialize_by(
-      source_id: attributes[:source_id],
-      uid: attributes[:uid]
-    )
+    event = Event.find_or_initialize_by(source_id: attributes[:source_id])
     return if event.persisted?
-
-    if event.source.name == "Luma"
-      build_luma_event_uid(event)
-      return if Event.exists?(source_id: event.source_id, uid: event.uid)
-    end
 
     event.attributes = attributes
 
@@ -40,12 +32,6 @@ class Event::CreateJob < ApplicationJob
   end
 
   private
-
-  def build_luma_event_uid(event)
-    id = Source::Luma::EventsFinder.get_id(event.uid)
-    uid = Source::Luma::EventsFinder.build_uid(id, date: event.start_date)
-    event.uid = uid
-  end
 
   def should_retry?(reason:)
     return false if [ :not_found_or_expired, :duplicated ].include?(reason)
