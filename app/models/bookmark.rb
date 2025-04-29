@@ -1,9 +1,8 @@
 class Bookmark < ApplicationRecord
   belongs_to :user
-  belongs_to :bookmarkable, polymorphic: true
+  belongs_to :event, class_name: "::Event"
 
-  validates :user_id, uniqueness: { scope: [ :bookmarkable_id, :bookmarkable_type ] }
-  validates :bookmarkable_type, inclusion: { in: %w[ Event ] }
+  validates :user_id, uniqueness: { scope: :event_id }
   validates :removed_at, presence: true, if: :removed?
 
   before_validation :set_removed_at, on: :update

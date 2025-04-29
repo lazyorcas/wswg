@@ -19,6 +19,6 @@ class SeensController < ApplicationController
 
   def seen_params
     seen_params = params[:seen]
-    seen_params ? seen_params.permit(:seenable_id, :seenable_type) : {}
+    seen_params ? seen_params.permit(:event_id) : {}
   end
 end

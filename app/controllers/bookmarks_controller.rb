@@ -5,7 +5,7 @@ class BookmarksController < ApplicationController
     build_bookmark
     @bookmark.save!
 
-    flash.now[:success] = "Added <b>\"#{@bookmark.bookmarkable.title}\"</b> to bookmarks".html_safe
+    flash.now[:success] = "Added <b>\"#{@bookmark.event.title}\"</b> to bookmarks".html_safe
   end
 
   def update
@@ -14,9 +14,9 @@ class BookmarksController < ApplicationController
     @bookmark.save!
 
     if @bookmark.removed?
-      flash.now[:info] = "Removed <b>\"#{@bookmark.bookmarkable.title}\"</b> from bookmarks".html_safe
+      flash.now[:info] = "Removed <b>\"#{@bookmark.event.title}\"</b> from bookmarks".html_safe
     else
-      flash.now[:success] = "Added <b>\"#{@bookmark.bookmarkable.title}\"</b> to bookmarks".html_safe
+      flash.now[:success] = "Added <b>\"#{@bookmark.event.title}\"</b> to bookmarks".html_safe
     end
   end
 
@@ -37,6 +37,6 @@ class BookmarksController < ApplicationController
 
   def bookmark_params
     bookmark_params = params[:bookmark]
-    bookmark_params ? bookmark_params.permit(:removed, :bookmarkable_id, :bookmarkable_type) : {}
+    bookmark_params ? bookmark_params.permit(:removed, :event_id) : {}
   end
 end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_04_29_025804) do
+ActiveRecord::Schema[8.0].define(version: 2025_04_29_031148) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -79,18 +79,14 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_29_025804) do
 
   create_table "bookmarks", force: :cascade do |t|
     t.bigint "user_id", null: false
-    t.string "bookmarkable_type", null: false
-    t.bigint "bookmarkable_id", null: false
     t.boolean "removed"
     t.datetime "removed_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "event_id"
-    t.index ["bookmarkable_type", "bookmarkable_id"], name: "index_bookmarks_on_bookmarkable"
     t.index ["event_id"], name: "index_bookmarks_on_event_id"
     t.index ["removed"], name: "index_bookmarks_on_removed"
     t.index ["removed_at"], name: "index_bookmarks_on_removed_at"
-    t.index ["user_id", "bookmarkable_id", "bookmarkable_type"], name: "idx_on_user_id_bookmarkable_id_bookmarkable_type_0feb0fe0be", unique: true
     t.index ["user_id"], name: "index_bookmarks_on_user_id"
   end
 
@@ -185,14 +181,10 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_29_025804) do
 
   create_table "seens", force: :cascade do |t|
     t.bigint "user_id", null: false
-    t.string "seenable_type", null: false
-    t.bigint "seenable_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "event_id"
     t.index ["event_id"], name: "index_seens_on_event_id"
-    t.index ["seenable_type", "seenable_id"], name: "index_seens_on_seenable"
-    t.index ["user_id", "seenable_id", "seenable_type"], name: "index_seens_on_user_id_and_seenable_id_and_seenable_type", unique: true
     t.index ["user_id"], name: "index_seens_on_user_id"
   end
 

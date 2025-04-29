@@ -7,8 +7,8 @@ class Event < ApplicationRecord
   belongs_to :source
   has_one :city, through: :source
 
-  has_many :bookmarks, as: :bookmarkable
-  has_many :seens, as: :seenable
+  has_many :bookmarks
+  has_many :seens
   has_many :seen_users, through: :seens, source: :user
 
   validates :uid, presence: true, uniqueness: { scope: :source_id }
