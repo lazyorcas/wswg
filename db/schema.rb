@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_04_29_025519) do
+ActiveRecord::Schema[8.0].define(version: 2025_04_29_025804) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -172,7 +172,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_29_025519) do
   end
 
   create_table "searches", force: :cascade do |t|
-    t.string "model_type", null: false
     t.integer "status", null: false
     t.string "keywords"
     t.jsonb "conditions"
@@ -201,7 +200,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_29_025519) do
     t.bigint "city_id", null: false
     t.string "name", null: false
     t.string "url", null: false
-    t.string "thing_type", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.boolean "proxy", default: false

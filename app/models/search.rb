@@ -11,15 +11,10 @@ class Search < ApplicationRecord
   validates :keywords, presence: true
   validates :conditions, presence: true
   validates :status, presence: true
-  validates :model_type, presence: true, inclusion: { in: %w[ Event ] }
   validates :searchable_model_type, presence: true
   validates :result, presence: true, if: :completed?
 
   after_commit :queue_query, on: :create
-
-  def model
-    @model ||= model_type.constantize
-  end
 
   def searchable_model
     @searchable_model ||= searchable_model_type.constantize
