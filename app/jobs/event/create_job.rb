@@ -4,8 +4,9 @@ class Event::CreateJob < ApplicationJob
   retry_on Jina::TimeoutError, wait: :polynomially_longer, attempts: 3
 
   retry_on OpenAI::TooManyRequestsError, wait: 5.minutes, attempts: 3
-  retry_on OpenAI::ServerError, wait: 15.minutes, attempts: 2
-  retry_on OpenAI::HallucinationError, wait: 1.minute, attempts: 3
+  retry_on OpenAI::ServerError, wait: 15.minutes, attempts: 3
+
+  retry_on ActiveRecord::RecordInvalid, wait: 1.hour, attempts: 2
 
   def perform(attributes)
     event = Event.find_or_initialize_by(
@@ -26,6 +27,9 @@ class Event::CreateJob < ApplicationJob
     if event.valid?
       event.save!
 
+    elsif should_retry?(reason: event.errors.first.type)
+      raise ActiveRecord::RecordInvalid.new(event)
+
     else
       create_archived_link(
         event.url,
@@ -41,6 +45,12 @@ class Event::CreateJob < ApplicationJob
     id = Source::Luma::ThingsFinder.get_id(event.uid)
     uid = Source::Luma::ThingsFinder.build_uid(id, date: event.start_date)
     event.uid = uid
+  end
+
+  def should_retry?(reason:)
+    return false if [ :not_found_or_expired, :duplicated ].include?(reason)
+
+    (exception_executions[ActiveRecord::RecordInvalid.to_s] || 0).zero?
   end
 
   def create_archived_link(url, reason:, details: nil)
