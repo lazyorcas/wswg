@@ -5,7 +5,7 @@ class Bookmarks::EventsController < ApplicationController
     load_events
     filter_out_past_events
     order_events
-    @events = @events.includes(:location)
+    @events = @events.includes(:location, source: :city)
   end
 
   private
