@@ -1,4 +1,4 @@
-class SourceScraper::Strategy::Luma < SourceScraper::Strategy::BrowserBase
+class Source::Scraper::Strategy::Luma < Source::Scraper::Strategy::BrowserBase
   def self.max_page_count
     10
   end

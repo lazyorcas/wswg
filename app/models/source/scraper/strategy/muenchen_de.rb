@@ -1,4 +1,4 @@
-class SourceScraper::Strategy::MuenchenDe < SourceScraper::Strategy::BrowserBase
+class Source::Scraper::Strategy::MuenchenDe < Source::Scraper::Strategy::BrowserBase
   def self.max_page_count
     100
   end
