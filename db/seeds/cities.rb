@@ -1,3 +1,5 @@
+# Luma: Bengaluru, Dubai, Melbourne, Sydney, Seoul, Tokyo, Amsterdam, London, Lisbon, Madrid, Paris, Stockholm, Zurich, Vienna, Boston, New York City, San Francisco, Toronto, Vancouver, Los Angeles, Chicago, Miami, Philadelphia, Bangkok, Bali, Kuala Lumpur, Da Nang
+
 CITIES = [
   {
     name: "Singapore",
