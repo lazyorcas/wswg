@@ -12,7 +12,7 @@ class Source::Scraper::BaseScraper
     raise NotImplementedError
   end
 
-  def page_count
-    Rails.env.development? ? DEV_MAX_PAGE_COUNT : strategy.page_count
+  def max_page_count
+    Rails.env.development? ? DEV_MAX_PAGE_COUNT : strategy.max_page_count
   end
 end

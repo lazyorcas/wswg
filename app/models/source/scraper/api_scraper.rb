@@ -2,7 +2,7 @@ class Source::Scraper::ApiScraper < Source::Scraper::BaseScraper
   def find_events_from_city_source(city_source)
     event_urls = []
 
-    page_count.times do |page_index|
+    max_page_count.times do |page_index|
       response = strategy.fetch_city_source(city_source, page_index: page_index)
 
       strategy.add_event_urls(response) do |url|

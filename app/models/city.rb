@@ -1,10 +1,12 @@
 class City < ApplicationRecord
+  include Scorable
   include HasCoordinates
+
+  scope :enabled, -> { where(enabled: true) }
 
   has_many :users
 
-  has_many :sources
-  has_many :city_sources, through: :sources
+  has_many :city_sources
 
   has_many :city_languages
   has_many :languages, through: :city_languages

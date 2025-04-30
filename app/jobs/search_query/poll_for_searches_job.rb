@@ -2,7 +2,7 @@ class SearchQuery::PollForSearchesJob < ApplicationJob
   MAX_ATTEMPTS = 5
   WAIT_DURATION = 2.seconds
 
-  queue_with_priority 1
+  queue_with_priority 0
 
   def perform(id, attempt: 1)
     return if attempt > MAX_ATTEMPTS

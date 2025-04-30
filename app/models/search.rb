@@ -25,6 +25,7 @@ class Search < ApplicationRecord
 
     searchkick_result = searchable.search(
       self.keywords,
+      fields: [ "title^3", "description" ],
       where: self.conditions.deep_symbolize_keys,
       load: false
     )

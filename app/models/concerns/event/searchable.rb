@@ -1,7 +1,7 @@
 module Event::Searchable
   extend ActiveSupport::Concern
 
-  SEARCHABLE_FIELDS = [ "title^3", :description ]
+  SEARCHABLE_FIELDS = [ :title, :description ]
   FILTERABLE_FIELDS = [ :start_date, :end_date, :start_time, :end_time, :price ]
 
   included do

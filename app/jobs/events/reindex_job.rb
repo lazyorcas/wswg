@@ -1,5 +1,5 @@
 class Events::ReindexJob < ApplicationJob
-  queue_with_priority 0
+  queue_with_priority 1
 
   def perform
     Language.all.each do |language|

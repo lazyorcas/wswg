@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_04_30_092244) do
+ActiveRecord::Schema[8.0].define(version: 2025_04_30_155849) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -99,6 +99,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_30_092244) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "time_zone", null: false
+    t.boolean "enabled", default: false
     t.index ["slug"], name: "index_cities_on_slug", unique: true
   end
 
@@ -127,7 +128,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_30_092244) do
     t.bigint "city_source_id", null: false
     t.string "url", null: false
     t.string "title", null: false
-    t.string "description", null: false
+    t.string "description"
     t.string "image_url", null: false
     t.string "start_date", null: false
     t.string "end_date", null: false
@@ -204,6 +205,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_30_092244) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "scraper_type", null: false
+    t.boolean "enabled", default: false
     t.index ["name"], name: "index_sources_on_name", unique: true
   end
 

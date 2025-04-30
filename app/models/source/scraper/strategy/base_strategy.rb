@@ -1,8 +1,8 @@
 class Source::Scraper::Strategy::BaseStrategy
-  attr_reader :page_count
+  attr_reader :max_page_count
 
-  def initialize(page_count_modifier: 1)
-    @page_count = self.class.max_page_count * page_count_modifier
+  def initialize(max_page_count: self.class.max_page_count)
+    @max_page_count = max_page_count
   end
 
   def self.max_page_count

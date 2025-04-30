@@ -14,7 +14,6 @@ class Event < ApplicationRecord
   validates :url, presence: true
 
   validates :title, presence: true
-  validates :description, presence: true
   validates :image_url, presence: true
 
   validates :start_date, presence: true

@@ -3,6 +3,8 @@
 class Search::Result
   include StoreModel::Model
 
+  MIN_SCORE = 5
+
   attribute :hits, Search::Result::Hit.to_array_type
   attribute :count, :integer
   attribute :took, :integer
@@ -20,12 +22,22 @@ class Search::Result
     hits.map { |hit| hit.score }
   end
 
-  def inlier_ids(outlier_detection_method: :min_score)
+  def inlier_ids(outlier_detection_method: nil)
     inliers = case outlier_detection_method
     when :min_score
       get_inliers_by_min_score
     when :boxplot
       get_inliers_by_boxplot
+    when :avg
+      get_inliers_by_avg
+    when nil
+      if count > 20
+        get_inliers_by_boxplot
+      elsif count > 10
+        get_inliers_by_avg
+      else
+        get_inliers_by_min_score
+      end
     else
       raise "Invalid outlier detection method: #{outlier_detection_method}"
     end
@@ -35,9 +47,15 @@ class Search::Result
 
   private
 
-  MIN_SCORE = 5
   def get_inliers_by_min_score
     hits.select { |hit| hit.score >= MIN_SCORE }
+  end
+
+  def get_inliers_by_avg
+    return [] if hits.empty?
+
+    avg_score = scores.sum / count
+    hits.select { |hit| hit.score >= avg_score }
   end
 
   def get_inliers_by_boxplot

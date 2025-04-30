@@ -1,4 +1,4 @@
-# Luma: Bengaluru, Dubai, Melbourne, Sydney, Seoul, Tokyo, Amsterdam, London, Lisbon, Madrid, Paris, Stockholm, Zurich, Vienna, Boston, New York City, San Francisco, Toronto, Vancouver, Los Angeles, Chicago, Miami, Philadelphia, Bangkok, Bali, Kuala Lumpur, Da Nang
+# Melbourne, Sydney, Seoul, Tokyo, Amsterdam, London, Lisbon, Madrid, Paris, Stockholm, Zurich, Boston, New York City, San Francisco, Toronto, Vancouver, Los Angeles, Chicago, Bangkok, Bali, Kuala Lumpur, Da Nang
 
 CITIES = [
   {
@@ -28,15 +28,7 @@ CITIES = [
     latitude: 52.516486,
     currency: "EUR",
     time_zone: "Europe/Berlin"
-  },
-  {
-    name: "Paderborn",
-    longitude: 8.753953,
-    latitude: 51.717229,
-    currency: "EUR",
-    time_zone: "Europe/Berlin"
   }
-  # { name: "Tokyo" }
 ]
 
 CITIES.each do |city_attributes|

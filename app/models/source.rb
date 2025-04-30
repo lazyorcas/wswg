@@ -1,9 +1,18 @@
 class Source < ApplicationRecord
+  scope :enabled, -> { where(enabled: true) }
+
+  has_many :city_sources
+
   validates :name, presence: true, uniqueness: true
   validates :template_url, presence: true
 
   validates :scraper_type, presence: true, inclusion: { in: %w[ BrowserScraper ApiScraper ] }
   validates :strategy_class, presence: true
+
+  def scrape(city_source)
+    scraper = scraper_class.new(self)
+    scraper.find_events_from_city_source(city_source)
+  end
 
   def scraper_class
     @scraper_class ||= "Source::Scraper::#{scraper_type}".constantize
