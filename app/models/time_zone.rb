@@ -11,6 +11,10 @@ class TimeZone
     @now ||= Time.current.in_time_zone(name)
   end
 
+  def current_hour
+    @current_hour ||= now.hour
+  end
+
   def current_date
     @current_date ||= now.to_date
   end
