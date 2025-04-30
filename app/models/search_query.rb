@@ -45,7 +45,7 @@ class SearchQuery < ApplicationRecord
     query_object = build_query_object(city: city)
 
     language_keywords = build_language_keywords(query_object)
-    conditions = build_conditions(query_object)
+    conditions = build_conditions(query_object, city: city)
 
     language_keywords.each do |language, keywords|
       begin
@@ -149,10 +149,10 @@ class SearchQuery < ApplicationRecord
     lks
   end
 
-  def build_conditions(query_object)
+  def build_conditions(query_object, city:)
     {
       location: {
-        near: query_object.dig("date_range", "start_date").presence,
+        near: city.coordinates_h,
         within: "#{Event::Locatable::MAX_DISTANCE_TO_CITY}#{Event::Locatable::DISTANCE_UNIT}"
       },
       end_date: {
