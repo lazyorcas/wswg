@@ -12,10 +12,10 @@ class Ticketmaster
     includeTBD: "no"
   }
 
-  def self.event_search(latitude:, longitude:, radius:, unit:, page: 0)
+  def self.event_search(lat:, lon:, radius:, unit:, page: 0)
     url = build_url(EVENT_SEARCH_PATH, {
       **EVENT_SEARCH_PARAMS,
-      geoPoint: "#{latitude},#{longitude}",
+      geoPoint: "#{lat},#{lon}",
       radius: radius,
       unit: unit,
       page: page

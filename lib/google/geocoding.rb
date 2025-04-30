@@ -12,8 +12,8 @@ class Google::Geocoding
     data = response_body["results"].first
     {
       full_address: data["formatted_address"],
-      latitude: data["geometry"]["location"]["lat"],
-      longitude: data["geometry"]["location"]["lng"]
+      lat: data["geometry"]["location"]["lat"],
+      lon: data["geometry"]["location"]["lng"]
     }
   end
 

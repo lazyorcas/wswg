@@ -65,8 +65,8 @@ class Mapbox::Geocoding
     properties = entry["features"].first["properties"]
     {
       full_address: properties["full_address"],
-      latitude: properties["coordinates"]["latitude"],
-      longitude: properties["coordinates"]["longitude"]
+      lat: properties["coordinates"]["latitude"],
+      lon: properties["coordinates"]["longitude"]
     }
   end
 end

@@ -5,8 +5,8 @@ class Source::Scraper::Strategy::Ticketmaster < Source::Scraper::Strategy::ApiBa
 
   def fetch_city_source(city_source, page_index:)
     Ticketmaster.event_search(
-      latitude: city_source.city.latitude,
-      longitude: city_source.city.longitude,
+      lat: city_source.city.lat,
+      lon: city_source.city.lon,
       radius: Event::Locatable::MAX_DISTANCE_TO_CITY,
       unit: Event::Locatable::DISTANCE_UNIT,
       page: page_index
