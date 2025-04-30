@@ -81,4 +81,8 @@ class Event < ApplicationRecord
 
     errors.add(:base, :duplicated, message: "already exists in this date time range, location, and title.")
   end
+
+  def today
+    city_source.city.time_zone.current_date
+  end
 end

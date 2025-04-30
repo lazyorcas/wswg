@@ -1,8 +1,6 @@
 class City < ApplicationRecord
   include HasCoordinates
 
-  belongs_to :time_zone
-
   has_many :users
 
   has_many :sources
@@ -13,12 +11,17 @@ class City < ApplicationRecord
 
   validates :name, presence: true
   validates :slug, presence: true, uniqueness: true
+  validates_associated :time_zone
 
   validates :currency,
     presence: true,
     inclusion: { in: Money::Currency.table.keys.map(&:to_s).map(&:upcase) }
 
   before_validation :set_slug
+
+  def time_zone
+    TimeZone.new(name: self[:time_zone])
+  end
 
   private
 

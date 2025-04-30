@@ -1,16 +1,21 @@
-class TimeZone < ApplicationRecord
-  has_many :cities
-  has_many :city_sources, through: :cities
+class TimeZone
+  include ActiveModel::Model
+
+  attr_accessor :name
 
   validates :name,
     presence: true,
     inclusion: { in: ActiveSupport::TimeZone.all.map(&:tzinfo).map(&:name) }
 
-  def today
-    @today ||= now.to_date
-  end
-
   def now
     @now ||= Time.current.in_time_zone(name)
+  end
+
+  def current_date
+    @current_date ||= now.to_date
+  end
+
+  def current_year
+    @current_year ||= now.year
   end
 end

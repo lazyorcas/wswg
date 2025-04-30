@@ -1,16 +1,16 @@
 module DateHelper
   def get_easy_date(date, time_zone:)
-    today = time_zone.today
+    current_date = time_zone.current_date
 
-    if date < today
+    if date < current_date
       date.strftime("%A, %B %d")
-    elsif date == today
+    elsif date == current_date
       "Today"
-    elsif date == today + 1.day
+    elsif date == current_date + 1.day
       "Tomorrow"
-    elsif date.beginning_of_week == today.beginning_of_week
+    elsif date.beginning_of_week == current_date.beginning_of_week
       "This #{date.strftime("%A")}"
-    elsif date.beginning_of_week == today.beginning_of_week + 7
+    elsif date.beginning_of_week == current_date.beginning_of_week + 7
       "Next #{date.strftime("%A")}"
     else
       date.strftime("%A, %B %d")

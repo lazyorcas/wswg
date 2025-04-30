@@ -26,7 +26,7 @@ module Event::Fetchable::Parseable
   private
 
   def parse
-    current_year = city_source.city.time_zone.now.year
+    current_year = city_source.city.current_year
 
     @json = markdown_expert.convert_to_json(
       markdown,
