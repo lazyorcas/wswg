@@ -49,6 +49,7 @@ class Source::Scraper::BrowserScraper < Source::Scraper::BaseScraper
   def go_to_url_from_browser(browser, url)
     page = browser.create_page(proxy: source.proxy?)
     page.go_to(url)
+    page
   end
 
   def page_count

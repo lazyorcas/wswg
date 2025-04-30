@@ -1,7 +1,7 @@
 class Source::Scraper::Strategy::BrowserBaseStrategy
   attr_reader :page_count
 
-  def initialize(page_count:)
+  def initialize(page_count: self.class.max_page_count)
     @page_count = page_count
   end
 
