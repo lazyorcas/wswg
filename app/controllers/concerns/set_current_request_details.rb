@@ -1,5 +1,3 @@
-# app/controllers/concerns/set_current_request_details.rb
-
 module SetCurrentRequestDetails
   extend ActiveSupport::Concern
 

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_04_29_073457) do
+ActiveRecord::Schema[8.0].define(version: 2025_04_30_070124) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -204,6 +204,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_29_073457) do
     t.boolean "proxy", default: false, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "scraper_type"
     t.index ["name"], name: "index_sources_on_name", unique: true
   end
 

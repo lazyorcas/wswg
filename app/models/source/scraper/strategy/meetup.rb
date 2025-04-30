@@ -1,13 +1,9 @@
-module Source::Meetup
-  include Source::EventsFindable
-
-  private
-
-  def max_page_count
+class SourceScraper::Strategy::Meetup < SourceScraper::Strategy::BrowserBase
+  def self.max_page_count
     100
   end
 
-  def get_event_urls(page:, city_source_url:, &block)
+  def add_event_urls(page, &block)
     els = page.css("[data-element-name=\"categoryResults-eventCard\"] a")
     # old selector
     els = page.css("a#event-card-in-search-results") if els.empty?
@@ -18,7 +14,7 @@ module Source::Meetup
     end
   end
 
-  def go_to_next_page(page:)
+  def go_to_next_page(page)
     page.scroll_to_load
   end
 
@@ -26,7 +22,7 @@ module Source::Meetup
     true
   end
 
-  def done_after_going_to_next_page?(page:)
+  def done_after_going_to_next_page?(page)
     page.end_of_page?
   end
 end

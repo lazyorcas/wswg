@@ -3,6 +3,8 @@ class City < ApplicationRecord
 
   belongs_to :time_zone
 
+  has_many :users
+
   has_many :sources
 
   has_many :city_languages
