@@ -5,11 +5,7 @@ class SessionsController < ApplicationController
 
   def create
     auth_hash = request.env["omniauth.auth"]
-    user = User.find_by(email: auth_hash[:info][:email])
-
-    if user.nil?
-      raise UserReadableError.new("Account not found")
-    end
+    user = User.find_or_create_by!(email: auth_hash[:info][:email])
 
     account = Account.find_or_initialize_by(
       provider: auth_hash[:provider],
