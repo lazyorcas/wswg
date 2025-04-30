@@ -1,6 +1,4 @@
 class SessionsController < ApplicationController
-  rate_limit to: 5, within: 1.day, only: :create
-
   def new; end
 
   def create
