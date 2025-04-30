@@ -20,6 +20,8 @@ module Source::EventsFindable
       page = browser.create_page(proxy: proxy)
       page.go_to(city_source_url)
 
+      max_page_count = Rails.env.development? ? 2 : max_page_count
+
       max_page_count.times do |page_index|
         timeout = page_index == 0 ? INITIAL_PAGE_TIMEOUT : SUBSEQUENT_PAGE_TIMEOUT
         page.wait_for_idle(timeout: timeout)
