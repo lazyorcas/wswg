@@ -1,6 +1,3 @@
-# TODO: ticketmaster, rausgegangen, kino.de
-# TODO: VisitSingapore, Esplanade
-
 class SourceAttributesBuilder
   def build_eventbrite_attributes(city_name, city_param)
     {

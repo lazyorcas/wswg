@@ -15,5 +15,7 @@ class User < ApplicationRecord
             uniqueness: { case_sensitive: false },
             format: { with: URI::MailTo::EMAIL_REGEXP }
 
-  # TODO: handle cases where email is x+something@gmail.com
+  def email=(value)
+    super(value.split("+").first)
+  end
 end
