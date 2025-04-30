@@ -14,6 +14,8 @@ class Event::CreateJob < ApplicationJob
 
     event.fetch
 
+    build_luma_event_url(event) if event.city_source.source.name == "Luma"
+
     if event.valid?
       event.save!
 
@@ -54,5 +56,9 @@ class Event::CreateJob < ApplicationJob
       archived_link.details = details
       archived_link.save!
     end
+  end
+
+  def build_luma_event_url(event)
+    event.url = Source::Luma.build_unique_url_for_event(event)
   end
 end

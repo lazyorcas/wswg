@@ -3,7 +3,6 @@ module Event::Createable
 
   class << self
     def get_createable_urls(urls)
-      # TODO: Luma urls are not unique
       existing_event_urls = Event.where(url: urls).pluck(:url)
       existing_archived_urls = ArchivedLink.where(url: urls).pluck(:url)
 

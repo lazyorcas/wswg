@@ -1,6 +1,13 @@
 module Source::Luma
   include Source::EventsFindable
 
+  def self.build_unique_url_for_event(event)
+    url = event.url
+    date = event.start_date
+
+    Url.get_parameterized_url(url, { date: date })
+  end
+
   private
 
   def max_page_count
