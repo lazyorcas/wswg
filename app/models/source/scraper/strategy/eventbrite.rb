@@ -1,4 +1,4 @@
-class Source::Scraper::Strategy::Eventbrite < Source::Scraper::Strategy::BrowserBase
+class Source::Scraper::Strategy::Eventbrite < Source::Scraper::Strategy::BrowserBaseStrategy
   def self.max_page_count
     50
   end

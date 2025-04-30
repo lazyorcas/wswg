@@ -1,4 +1,4 @@
-class Source::Scraper::Strategy::Meetup < Source::Scraper::Strategy::BrowserBase
+class Source::Scraper::Strategy::Meetup < Source::Scraper::Strategy::BrowserBaseStrategy
   def self.max_page_count
     100
   end
