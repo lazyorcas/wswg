@@ -1,16 +1,14 @@
 class Source::Scraper::BrowserScraper < Source::Scraper::BaseScraper
-  DEV_MAX_PAGE_COUNT = 2
-
   INITIAL_PAGE_TIMEOUT = 20
   SUBSEQUENT_PAGE_TIMEOUT = 5
 
-  def find_event_urls_from_url(url)
-    base_url = Url.get_base_url(url)
+  def find_events_from_city_source(city_source)
+    base_url = Url.get_base_url(city_source.url)
     event_urls = []
 
     begin
       browser = load_browser
-      page = go_to_url_from_browser(browser, url)
+      page = go_to_url_from_browser(browser, city_source.url)
 
       page_count.times do |page_index|
         wait_for_idle(page, page_index)
@@ -52,10 +50,6 @@ class Source::Scraper::BrowserScraper < Source::Scraper::BaseScraper
     page
   end
 
-  def page_count
-    Rails.env.development? ? DEV_MAX_PAGE_COUNT : strategy.page_count
-  end
-
   def get_timeout(page_index)
     page_index == 0 ? INITIAL_PAGE_TIMEOUT : SUBSEQUENT_PAGE_TIMEOUT
   end
@@ -65,7 +59,7 @@ class Source::Scraper::BrowserScraper < Source::Scraper::BaseScraper
     page.wait_for_idle(timeout: timeout)
   end
 
-  def build_event_url(url, base_url)
+  def build_event_url(url, base_url:)
     path?(url) ? Url.build_url(base_url, url) : url
   end
 

@@ -6,18 +6,26 @@ class FindAndCreateEventsJob < ApplicationJob
   queue_with_priority 2
 
   def perform
-    TimeZone.includes(city_sources: :city).find_each do |time_zone|
+    TimeZone.includes(cities: :city_sources).find_each do |time_zone|
       next if time_zone.now.hour != HOUR_TO_FETCH_EVENTS
 
-      time_zone.city_sources.find_each do |city_source|
-        CitySource::FindAndCreateEventsJob.perform_later(city_source.id)
+      time_zone.cities.each do |city|
+        city_score = calculate_city_score(city)
+        next if city_score.zero?
+
+        city.city_sources.find_each do |city_source|
+          CitySource::FindAndCreateEventsJob.perform_later(
+            city_source.id,
+            page_count_modifier: city_score
+          )
+        end
       end
     end
   end
 
   private
 
-  def calculate_popular_city_coefficient(city)
+  def calculate_city_score(city)
     Math.min(1, get_active_user_count(city) / POPULAR_CITY_MIN_USER_COUNT.to_f)
   end
 

@@ -69,6 +69,7 @@ class EventComponent < ViewComponent::Base
   end
 
   def source_icon_url
+    # TODO: change to underscored version of source name
     "/sources/#{source.name.downcase}.ico"
   end
 

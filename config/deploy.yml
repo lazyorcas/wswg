@@ -52,6 +52,7 @@ env:
     - GOOGLE_API_KEY
     - MAPBOX_ACCESS_TOKEN
     - OPENAI_ACCESS_TOKEN
+    - TICKETMASTER_API_KEY
     - PROXY_PASSWORD
   clear:
     # Run the Solid Queue Supervisor inside the web server's Puma process to do jobs.

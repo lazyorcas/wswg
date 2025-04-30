@@ -1,14 +1,4 @@
-class Source::Scraper::Strategy::BrowserBaseStrategy
-  attr_reader :page_count
-
-  def initialize(page_count: self.class.max_page_count)
-    @page_count = page_count
-  end
-
-  def self.max_page_count
-    raise NotImplementedError
-  end
-
+class Source::Scraper::Strategy::BrowserBaseStrategy < Source::Scraper::Strategy::BaseStrategy
   def add_event_urls(page, &block)
     raise NotImplementedError
   end

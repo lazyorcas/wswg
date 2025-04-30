@@ -6,6 +6,7 @@ class City < ApplicationRecord
   has_many :users
 
   has_many :sources
+  has_many :city_sources, through: :sources
 
   has_many :city_languages
   has_many :languages, through: :city_languages

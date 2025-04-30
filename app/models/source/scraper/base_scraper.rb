@@ -1,4 +1,6 @@
 class Source::Scraper::BaseScraper
+  DEV_MAX_PAGE_COUNT = 2
+
   attr_reader :source, :strategy
 
   def initialize(source, strategy: nil)
@@ -6,7 +8,11 @@ class Source::Scraper::BaseScraper
     @strategy = strategy || source.strategy_class.new
   end
 
-  def find_event_urls_from_url(url)
+  def find_events_from_city_source(city_source)
     raise NotImplementedError
+  end
+
+  def page_count
+    Rails.env.development? ? DEV_MAX_PAGE_COUNT : strategy.page_count
   end
 end

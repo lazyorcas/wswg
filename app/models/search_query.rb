@@ -2,7 +2,6 @@ class SearchQuery < ApplicationRecord
   include Broadcastable
 
   EVENT_COUNT_LIMIT = 1000
-  SEARCH_RADIUS_IN_KM = 30
 
   enum :status, {
     analyzing: 0,
@@ -154,7 +153,7 @@ class SearchQuery < ApplicationRecord
     {
       location: {
         near: query_object.dig("date_range", "start_date").presence,
-        within: "#{SEARCH_RADIUS_IN_KM}km"
+        within: "#{Event::Locatable::MAX_DISTANCE_TO_CITY}#{Event::Locatable::DISTANCE_UNIT}"
       },
       end_date: {
         gte: query_object.dig("date_range", "start_date").presence,
