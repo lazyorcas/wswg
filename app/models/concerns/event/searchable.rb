@@ -22,6 +22,6 @@ module Event::Searchable
   end
 
   def should_index?
-    end_date >= city_source.city.current_day.to_s
+    end_date >= city_source.city.time_zone.current_date.to_s
   end
 end
