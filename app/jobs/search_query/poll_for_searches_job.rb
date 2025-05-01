@@ -9,6 +9,7 @@ class SearchQuery::PollForSearchesJob < ApplicationJob
 
     search_query = SearchQuery.find(id)
 
+    # TODO: if some fail?
     if search_query.done_searching?
       search_query.broadcast_completed
       search_query.completed!
