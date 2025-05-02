@@ -21,13 +21,16 @@ class Possum::Browser < Ferrum::Browser
     )
   end
 
-  def create_page(proxy: false, **args)
+  def create_page(proxy: false, country_code: nil, **args)
     page = super(
       proxy: proxy ? {
         host: ENV["PROXY_HOST"],
         port: ENV["PROXY_PORT"],
         user: ENV["PROXY_USERNAME"],
-        password: ENV["PROXY_PASSWORD"]
+        password:
+          country_code.present? ?
+            "#{ENV['PROXY_PASSWORD']}_country-#{country_code}" :
+            ENV["PROXY_PASSWORD"]
       } : nil,
       **args
     )

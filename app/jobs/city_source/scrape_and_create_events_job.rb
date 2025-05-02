@@ -18,7 +18,8 @@ class CitySource::ScrapeAndCreateEventsJob < ApplicationJob
       ActiveJob.perform_all_later(create_event_jobs)
     end
 
-    city_source.update(last_fetched_at: Time.current)
+    # TODO: add new_event_count
+    city_source.update(last_fetched_at: Time.current, new_event_count: 0)
   end
 
   private

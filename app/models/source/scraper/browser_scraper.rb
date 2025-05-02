@@ -8,7 +8,7 @@ class Source::Scraper::BrowserScraper < Source::Scraper::BaseScraper
 
     begin
       browser = load_browser
-      page = go_to_url_from_browser(browser, city_source.url)
+      page = go_to_url_from_browser(browser, city_source.url, city_source.city.country_code)
 
       max_page_count.times do |page_index|
         wait_for_idle(page, page_index)
@@ -47,8 +47,8 @@ class Source::Scraper::BrowserScraper < Source::Scraper::BaseScraper
     Possum::Browser.new
   end
 
-  def go_to_url_from_browser(browser, url)
-    page = browser.create_page(proxy: source.proxy?)
+  def go_to_url_from_browser(browser, url, country_code)
+    page = browser.create_page(proxy: source.proxy?, country_code: country_code)
     page.go_to(url)
     page
   end

@@ -1,5 +1,5 @@
 class Event::LocateJob < ApplicationJob
-  MAX_DISTANCE_IN_KM = 100
+  MAX_DISTANCE_IN_KM = 50
 
   queue_with_priority 3
 

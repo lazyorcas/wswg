@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_04_30_155849) do
+ActiveRecord::Schema[8.0].define(version: 2025_05_02_042230) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -120,6 +120,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_30_155849) do
     t.datetime "last_fetched_at"
     t.bigint "source_id", null: false
     t.jsonb "url_params", default: {}
+    t.integer "new_event_count", default: 0
     t.index ["city_id"], name: "index_city_sources_on_city_id"
     t.index ["source_id"], name: "index_city_sources_on_source_id"
   end

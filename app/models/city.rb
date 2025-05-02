@@ -2,7 +2,7 @@ class City < ApplicationRecord
   include Scorable
   include HasCoordinates
 
-  scope :enabled, -> { where(enabled: true) }
+  default_scope { where(enabled: true) }
 
   has_many :users
 
@@ -18,6 +18,10 @@ class City < ApplicationRecord
   validates :currency,
     presence: true,
     inclusion: { in: Money::Currency.table.keys.map(&:to_s).map(&:upcase) }
+
+  validates :country_code,
+    presence: true,
+    inclusion: { in: ISO3166::Country.codes }
 
   before_validation :set_slug
 

@@ -1,20 +1,29 @@
 LANGUAGES_ATTRIBUTES = [
-  { name: "English", code: "en", city_names: City.pluck(:name) },
-  { name: "German", code: "de", city_names: [ "Munich", "Berlin", "Paderborn" ] },
-  { name: "Spanish", code: "es", city_names: [ "Barcelona" ] },
-  { name: "Catalan", code: "ca", city_names: [ "Barcelona" ] }
+  [ "Catalan", "ca", [ "Barcelona" ] ],
+  [ "Dutch", "nl", [ "Amsterdam" ] ],
+  [ "English", "en", City.unscoped.pluck(:name) ],
+  [ "French", "fr", [ "Montreal", "Paris" ] ],
+  [ "German", "de", [ "Munich", "Berlin" ] ],
+  [ "Spanish", "es", [ "Barcelona", "Madrid" ] ],
+  [ "Italian", "it", [] ]
 ]
 
-LANGUAGES_ATTRIBUTES.each do |language_attributes|
-  language = Language.find_or_initialize_by(code: language_attributes[:code])
+CITY_NAME_TO_ID = City.unscoped.pluck(:name, :id).to_h
+
+LANGUAGES_ATTRIBUTES.each do |attrs_array|
+  code = attrs_array[1]
+  language = Language.find_or_initialize_by(code: code)
+
   if language.new_record?
-    language.name = language_attributes[:name]
+    attrs = {
+      name: attrs_array[0],
+      code: code,
+      city_languages_attributes: attrs_array[2].map do |city_name|
+        { city_id: CITY_NAME_TO_ID[city_name] }
+      end
+    }
 
-    language_attributes[:city_names].each do |city_name|
-      city = City.find_by(name: city_name)
-      city.languages << language
-    end
-
+    language.attributes = attrs.slice(*Language.column_names)
     language.save!
   end
 end

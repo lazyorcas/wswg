@@ -1,5 +1,5 @@
 class Source < ApplicationRecord
-  scope :enabled, -> { where(enabled: true) }
+  default_scope { where(enabled: true) }
 
   has_many :city_sources
 
@@ -8,6 +8,10 @@ class Source < ApplicationRecord
 
   validates :scraper_type, presence: true, inclusion: { in: %w[ BrowserScraper ApiScraper ] }
   validates :strategy_class, presence: true
+
+  def proxy?
+    Rails.env.production ? @proxy : false
+  end
 
   def scrape(city_source)
     scraper = scraper_class.new(self)

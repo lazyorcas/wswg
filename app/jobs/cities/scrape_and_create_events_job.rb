@@ -19,12 +19,7 @@ class Cities::ScrapeAndCreateEventsJob < ApplicationJob
   queue_with_priority 2
 
   def perform
-    cities = City
-      .enabled
-      .includes(:city_sources)
-      .where(city_sources: { source: Source.enabled })
-
-      cities.find_each do |city|
+    City.includes(:city_sources).find_each do |city|
       next if city.time_zone.current_hour != HOUR_TO_FETCH_EVENTS
 
       city.city_sources.find_each do |city_source|
