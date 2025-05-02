@@ -69,9 +69,9 @@ class SearchQuery < ApplicationRecord
     save!
 
     if e.is_a?(UserReadableError)
-      broadcast_error(e.message)
+      broadcast_error([ user, :flash ], e.message)
     else
-      broadcast_error("Failed to search. Try again.")
+      broadcast_error([ user, :flash ], "Failed to search. Try again.")
     end
 
     broadcast_update_to(self, target: "search-results", html: "")

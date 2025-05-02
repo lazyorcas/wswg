@@ -1,7 +1,9 @@
 module Broadcastable
-  def broadcast_error(message)
+  extend ActiveSupport::Concern
+
+  def broadcast_error(broadcastable, message)
     broadcast_update_to(
-      self,
+      broadcastable,
       target: "flash",
       partial: "shared/flash",
       locals: {

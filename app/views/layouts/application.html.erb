@@ -28,6 +28,9 @@
   </head>
   <body class="min-h-dvh">
     <%= yield %>
+    <% if Current.user.present? %>
+      <%= turbo_stream_from [ Current.user, :flash ] %>
+    <% end %>
     <aside class="fixed bottom-8 right-8" data-controller="flash">
       <%= turbo_frame_tag "flash", class: "flex flex-col gap-y-2 items-end" do %>
         <%= render "shared/flash" %>
