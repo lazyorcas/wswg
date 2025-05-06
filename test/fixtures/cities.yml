@@ -1,0 +1,26 @@
+singapore:
+  name: Singapore
+  slug: singapore
+  lat: 1.283649
+  lon: 103.858892
+  currency: SGD
+  time_zone: Asia/Singapore
+  country_code: SG
+
+munich:
+  name: Munich
+  slug: munich
+  lat: 48.137356
+  lon: 11.574874
+  currency: EUR
+  time_zone: Europe/Berlin
+  country_code: DE
+
+london:
+  name: London
+  slug: london
+  lat: 51.513406
+  lon: -0.136436
+  currency: GBP
+  time_zone: Europe/London
+  country_code: GB

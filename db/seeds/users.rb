@@ -4,6 +4,4 @@ if user.new_record?
 
   user.assign_attributes(city_id: city.id, admin: true)
   user.save!
-
-  user.city.update(enabled: true)
 end

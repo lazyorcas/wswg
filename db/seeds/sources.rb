@@ -10,14 +10,11 @@ SOURCES_ATTRIBUTES.each do |attrs_array|
   source = Source.find_or_initialize_by(name: name)
 
   if source.new_record?
-    attrs = {
-      url: attrs_array[1],
+    source.attributes = {
+      template_url: attrs_array[1],
       scraper_type: attrs_array[2],
-      proxy: attrs_array[3],
-      enabled: true
+      proxy: attrs_array[3]
     }
-
-    source.attributes = attrs.slice(*Source.column_names)
     source.save!
   end
 end

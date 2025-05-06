@@ -1,0 +1,19 @@
+eventbrite:
+  name: Eventbrite
+  template_url: https://www.eventbrite.com/d/%{city_slug}/all-events/
+  scraper_type: BrowserScraper
+
+luma:
+  name: Luma
+  template_url: https://lu.ma/%{city_slug}
+  scraper_type: BrowserScraper
+
+meetup:
+  name: Meetup
+  template_url: https://www.meetup.com/find/?location=%{city_slug}&eventType=inPerson&source=EVENTS&sortField=DATETIME
+  scraper_type: BrowserScraper
+
+ticketmaster:
+  name: Ticketmaster
+  template_url: https://app.ticketmaster.com/discovery/v2/events.json
+  scraper_type: ApiScraper

@@ -13,6 +13,6 @@ class Source::Scraper::BaseScraper
   end
 
   def max_page_count
-    Rails.env.development? ? DEV_MAX_PAGE_COUNT : strategy.max_page_count
+    Rails.env.production? ? strategy.max_page_count : DEV_MAX_PAGE_COUNT
   end
 end

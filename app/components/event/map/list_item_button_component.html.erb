@@ -1,9 +1,9 @@
 <%= tag.li class: "shrink-0 group" do %>
   <%= tag.button class: "w-full cursor-pointer list-item", data: data do %>
     <span class="pointer-events-none flex gap-x-4 items-start">
-      <%= image_tag source_icon_url, class: "shrink-0 list-item__icon grayscale group-hover:grayscale-0 transition-all mt-[3px]" %>
+      <%= image_tag source_icon_url, class: "shrink-0 list-item__icon mt-[3px]" %>
       <span class="grow flex flex-col list-item__text">
-        <%= tag.span title, class: "text-sm text-primary line-clamp-1" %>
+        <%= tag.span @event.title, class: "text-sm text-primary line-clamp-1" %>
         <%= tag.span class: "text-xs text-secondary" do %>
           <%= date %> &#x2022; <%= time_range %>
         <% end %>

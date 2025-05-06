@@ -3,20 +3,35 @@ class BookmarksController < ApplicationController
 
   def create
     build_bookmark
-    @bookmark.save!
+    return if @bookmark.persisted?
 
-    flash.now[:success] = "Added <b>\"#{@bookmark.event.title}\"</b> to bookmarks".html_safe
+    begin
+      @bookmark.save!
+      flash.now[:success] = "Added \"#{@bookmark.event.title}\" to bookmarks"
+    rescue => e
+      Sentry.capture_exception(e)
+
+      flash.now[:error] = "Failed to add \"#{@bookmark.event.title}\" to bookmarks"
+      turbo_stream_flash
+    end
   end
 
   def update
     load_bookmark
     build_bookmark
-    @bookmark.save!
 
-    if @bookmark.removed?
-      flash.now[:info] = "Removed <b>\"#{@bookmark.event.title}\"</b> from bookmarks".html_safe
-    else
-      flash.now[:success] = "Added <b>\"#{@bookmark.event.title}\"</b> to bookmarks".html_safe
+    begin
+      @bookmark.save!
+      if @bookmark.removed?
+        flash.now[:info] = "Removed \"#{@bookmark.event.title}\" from bookmarks"
+      else
+        flash.now[:success] = "Added \"#{@bookmark.event.title}\" to bookmarks"
+      end
+    rescue => e
+      Sentry.capture_exception(e)
+
+      flash.now[:error] = "Failed to update \"#{@bookmark.event.title}\" in bookmarks"
+      turbo_stream_flash
     end
   end
 

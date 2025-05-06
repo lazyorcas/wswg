@@ -3,7 +3,11 @@ class SeensController < ApplicationController
 
   def create
     build_seen
-    @seen.save!
+    begin
+      @seen.save!
+    rescue => e
+      Sentry.capture_exception(e)
+    end
   end
 
   private

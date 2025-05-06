@@ -1,4 +1,4 @@
-class Source::Scraper::Strategy::Ticketmaster < Source::Scraper::Strategy::ApiBaseStrategy
+class Source::Scraper::Strategy::Ticketmaster < Source::Scraper::Strategy::BaseApiStrategy
   def self.max_page_count
     10
   end
@@ -13,10 +13,32 @@ class Source::Scraper::Strategy::Ticketmaster < Source::Scraper::Strategy::ApiBa
     )
   end
 
-  def add_event_urls(response, &block)
-    response["events"].each do |event|
-      url = event["url"]
-      yield url
+  def get_events_attributes(response, &block)
+    response["_embedded"]["events"].each do |data|
+      start_date = data.dig("dates", "start", "localDate")
+      end_date = data.dig("dates", "end", "localDate")
+
+      venue = data.dig("_embedded", "venues", 0)
+      address = venue["address"]["line1"]
+      postal_code = venue["postalCode"]
+      city = venue["city"]["name"]
+      country = venue["country"]["name"]
+
+      classifications = data["classifications"]
+
+      event_attributes = {
+        url: data["url"].split("?").first,
+        title: data["name"],
+        tags: classifications ? classifications.map { |c| c["segment"]["name"] }.uniq.join(" ") : nil,
+        image_url: data.dig("images", 0, "href"),
+        start_date: start_date,
+        end_date: end_date || start_date,
+        start_time: data.dig("dates", "start", "localTime"),
+        end_time: data.dig("dates", "end", "localTime"),
+        location_query: "#{address}, #{postal_code} #{city}, #{country}"
+      }
+
+      yield event_attributes
     end
   end
 

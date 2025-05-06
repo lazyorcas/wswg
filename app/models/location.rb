@@ -1,5 +1,5 @@
 class Location < ApplicationRecord
-  include HasCoordinates
+  include Locatable
 
   validates :full_address, presence: true, uniqueness: true
 end

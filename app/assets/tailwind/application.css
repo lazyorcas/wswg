@@ -16,11 +16,11 @@
   |
   |
   ============================================================================= */
-  .home-content {
+  .map-content {
     @apply w-full md:max-w-[600px] md:min-w-[320px] md:w-[40vw];
   }
 
-  .home-tab-button {
+  .map-tab-button {
     @apply h-8 md:h-10 px-2 md:px-4;
     @apply bg-white dark:bg-neutral-900;
     @apply border;
@@ -29,13 +29,13 @@
     @apply text-sm md:text-base;
   }
 
-  .home-tab-button--active {
+  .map-tab-button--active {
     @apply text-neutral-900 dark:text-neutral-100;
     @apply border-neutral-900 dark:border-neutral-100;
     @apply font-bold;
   }
 
-  .home-tab-button--inactive {
+  .map-tab-button--inactive {
     @apply hover:bg-neutral-800 dark:hover:bg-neutral-100;
     @apply border-neutral-300 dark:border-neutral-700;
     @apply text-neutral-500;

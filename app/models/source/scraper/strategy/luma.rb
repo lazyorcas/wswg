@@ -1,9 +1,9 @@
-class Source::Scraper::Strategy::Luma < Source::Scraper::Strategy::BrowserBaseStrategy
+class Source::Scraper::Strategy::Luma < Source::Scraper::Strategy::BaseBrowserStrategy
   def self.max_page_count
     10
   end
 
-  def add_event_urls(page, &block)
+  def get_event_urls(page, &block)
     page.css("a.event-link").each do |el|
       url = el.attribute("href")
       yield url

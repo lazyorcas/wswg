@@ -35,13 +35,17 @@ export default class extends Controller {
   }
 
   removeEventListeners() {
-    this.bottomSheetTarget.removeEventListener('touchstart', this.dragStart)
-    this.bottomSheetTarget.removeEventListener('touchmove', this.dragMove)
-    this.bottomSheetTarget.removeEventListener('touchend', this.dragEnd)
+    if (this.bottomSheetTarget) {
+      this.bottomSheetTarget.removeEventListener('touchstart', this.#dragStart)
+      this.bottomSheetTarget.removeEventListener('touchmove', this.#dragMove)
+      this.bottomSheetTarget.removeEventListener('touchend', this.#dragEnd)
+    }
 
-    this.nonDraggableTarget.removeEventListener('touchstart', this.#stopPropagationOnScroll)
-    this.nonDraggableTarget.removeEventListener('touchmove', this.#stopPropagationOnScroll)
-    this.nonDraggableTarget.removeEventListener('touchend', this.#stopPropagationOnScroll)
+    // if (this.nonDraggableTarget) {
+    //   this.nonDraggableTarget.removeEventListener('touchstart', this.#stopPropagationOnScroll)
+    //   this.nonDraggableTarget.removeEventListener('touchmove', this.#stopPropagationOnScroll)
+    //   this.nonDraggableTarget.removeEventListener('touchend', this.#stopPropagationOnScroll)
+    // }
   }
 
   collapse() {

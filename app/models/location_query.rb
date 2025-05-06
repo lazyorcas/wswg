@@ -2,23 +2,31 @@ class LocationQuery < ApplicationRecord
   # ordered by cost efficiency
   # Mapbox: 100,000 requests per month for free
   # Google: 10,000 requests per month for free
-  GEOCODERS = [ Mapbox::Geocoding, Google::Geocoding ]
+  GEOCODERS_CLASSES = [ Mapbox::GeocodingClient, Google::GeocodingClient ]
 
   belongs_to :location, optional: true
 
   validates :query, presence: true, uniqueness: true
 
-  before_validation -> { self.query = query.strip }
-  before_create :geocode!, if: -> { precise?(query) }
+  after_commit :query!, if: :should_query?
 
-  def geocode!
+  def query=(value)
+    super(value.strip)
+  end
+
+  def should_query?
+    (query_changed? || query_previously_changed?) && query.present? && precise?(query)
+  end
+
+  def query!
     location_attributes = nil
 
-    GEOCODERS.each do |geocoder|
-      entry = geocoder.lookup(query)
+    GEOCODERS_CLASSES.each do |geocoder_class|
+      geocoder = geocoder_class.new
+      _location_attributes = geocoder.lookup(query)
 
-      if entry.present? && precise?(entry[:full_address])
-        location_attributes = entry
+      if _location_attributes.present? && precise?(_location_attributes[:full_address])
+        location_attributes = _location_attributes
         break
       end
     end
@@ -33,6 +41,7 @@ class LocationQuery < ApplicationRecord
     end
 
     self.location = location
+    save!
   end
 
   private

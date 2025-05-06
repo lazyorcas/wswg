@@ -3,7 +3,7 @@
     <span class="pointer-events-none flex gap-x-4">
       <%= image_tag source_icon_url, class: "shrink-0 list-item__icon mt-[3px]" %>
       <span class="grow flex flex-col list-item__text">
-        <%= tag.h3 title, class: "text-sm text-primary line-clamp-1" %>
+        <%= tag.h3 @event.title, class: "text-sm text-primary line-clamp-1" %>
         <%= tag.span time_range, class: "text-xs text-secondary" %>
       </span>
     </span>

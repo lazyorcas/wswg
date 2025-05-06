@@ -1,6 +1,4 @@
-# frozen_string_literal: true
-
-class Ticketmaster
+module Ticketmaster
   BASE_URL = "https://app.ticketmaster.com"
   TIMEOUT = 20
 

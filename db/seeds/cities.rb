@@ -3,7 +3,7 @@ CITIES_ATTRIBUTES = [
   [ "Boston",         42.360082, -71.058880, "USD", "America/New_York", "US" ],
   [ "Chicago",        41.878113, -87.629798, "USD", "America/Chicago", "US" ],
   [ "Los Angeles",    34.052235, -118.243683, "USD", "America/Los_Angeles", "US" ],
-  [ "Montreal",       45.501689, -73.567256, "CAD", "America/Toronto", "CA" ],
+  [ "Montreal",       45.501689, -73.567256, "CAD", "America/New_York", "CA" ],
   [ "New York City",  40.712776, -74.005974, "USD", "America/New_York", "US" ],
   [ "San Francisco",  37.787281, -122.407132, "USD", "America/Los_Angeles", "US" ],
   [ "Toronto",        43.653225, -79.383186, "CAD", "America/New_York", "CA" ],
@@ -38,17 +38,14 @@ CITIES_ATTRIBUTES.each do |attrs_array|
   city = City.find_or_initialize_by(name: name)
 
   if city.new_record?
-    attrs = {
+    city.attributes = {
       name: name,
       lat: attrs_array[1],
       lon: attrs_array[2],
       currency: attrs_array[3],
       time_zone: attrs_array[4],
-      country_code: attrs_array[5],
-      enabled: false
+      country_code: attrs_array[5]
     }
-
-    city.attributes = attrs.slice(*City.column_names)
     city.save!
   end
 end

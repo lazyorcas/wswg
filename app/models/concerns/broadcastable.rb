@@ -1,6 +1,4 @@
 module Broadcastable
-  extend ActiveSupport::Concern
-
   def broadcast_error(broadcastable, message)
     broadcast_update_to(
       broadcastable,

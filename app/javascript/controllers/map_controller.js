@@ -1,5 +1,4 @@
-// https://docs.mapbox.com/mapbox-gl-js/api/
-// https://docs.mapbox.com/mapbox-gl-js/example/
+
 
 import { Controller } from "@hotwired/stimulus"
 
@@ -20,9 +19,9 @@ export default class extends Controller {
     this.map = new mapboxgl.Map({
       container: this.containerTarget,
       center: this.centerCoordinatesValue,
-      // https://docs.mapbox.com/api/maps/styles/
+    
       style: this.getMapStyle(),
-      // https://docs.mapbox.com/help/glossary/zoom-level/
+    
       zoom: 15,
       minZoom: 11,
       maxZoom: 17
@@ -89,7 +88,7 @@ export default class extends Controller {
   async #addLayer() {
     const imagePromises = this.itemSources.map(source => {
       return new Promise((resolve, reject) => {
-        this.map.loadImage(`/sources/${source.toLowerCase()}.ico`, (error, image) => {
+        this.map.loadImage(`/sources/${this.#underscore(source)}.ico`, (error, image) => {
           if (error) reject(error);
           this.map.addImage(source, image);
           resolve();
@@ -104,8 +103,8 @@ export default class extends Controller {
       "source": this.sourceId,
       "type": "symbol",
       "layout": {
-        // https://docs.mapbox.com/mapbox-gl-js/example/add-image/
-        // https://docs.mapbox.com/mapbox-gl-js/example/data-driven-circle-colors/
+      
+      
         "icon-image": [
           "get",
           "source_name"
@@ -115,9 +114,9 @@ export default class extends Controller {
           "source_icon_multiplier"
         ],
       },
-      // "paint": {
-      //   "icon-opacity": 0.5
-      // }
+    
+    
+    
     })
   }
 
@@ -187,7 +186,7 @@ export default class extends Controller {
     return ["xs", "sm"].includes(breakpoint)
   }
 
-  // https://tailwindcss.com/docs/responsive-design
+
   #getCurrentBreakpoint() {
     const breakpoints = {
       'sm': '40rem',
@@ -200,5 +199,12 @@ export default class extends Controller {
     return Object.entries(breakpoints)
       .reverse()
       .find(([_, width]) => window.matchMedia(`(min-width: ${width})`).matches)?.[0] || 'xs'
+  }
+
+  #underscore(str) {
+    return str
+      .replace(/([A-Z])/g, '_$1')
+      .replace(/^_/, '')         
+      .toLowerCase();
   }
 }

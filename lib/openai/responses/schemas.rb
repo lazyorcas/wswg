@@ -1,4 +1,4 @@
-class OpenAI::Responses::Schemas
+module OpenAI::Responses::Schemas
   def self.true_or_false_schema
     build_schema("true_or_false", {
       answer: {
@@ -19,12 +19,10 @@ class OpenAI::Responses::Schemas
       },
       image_url: {
         type: "string"
-        # # OpenAI hallucinates when it's not explicitly mentioned
-        # description: "Image URL of the event. If not mentioned, return an empty string."
       },
-      location_query: {
+      location: {
         type: "string",
-        description: "Location of the event. It can be a precise address or a general area. If not mentioned, return an empty string. If the location is online, return an empty string. If the location is to be determined / TBD, return an empty string."
+        description: "Location of the event. It can be a precise address or a general area. If not mentioned, return an empty string. If the location is online / virtual, return an empty string. If the location is to be determined / TBD, return an empty string."
       },
       start_date: {
         type: "string",
@@ -112,8 +110,6 @@ class OpenAI::Responses::Schemas
       }
     })
   end
-
-  private
 
   def self.build_schema(name, properties)
     JSON.parse({

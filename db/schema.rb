@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_05_02_042230) do
+ActiveRecord::Schema[8.0].define(version: 2025_04_04_035249) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -70,36 +70,38 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_02_042230) do
 
   create_table "archived_links", force: :cascade do |t|
     t.string "url", null: false
+    t.integer "reason", null: false
+    t.jsonb "metadata", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "reason", null: false
-    t.jsonb "details"
     t.index ["url"], name: "index_archived_links_on_url", unique: true
   end
 
   create_table "bookmarks", force: :cascade do |t|
     t.bigint "user_id", null: false
+    t.bigint "event_id", null: false
     t.boolean "removed"
     t.datetime "removed_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.bigint "event_id"
     t.index ["event_id"], name: "index_bookmarks_on_event_id"
     t.index ["removed"], name: "index_bookmarks_on_removed"
     t.index ["removed_at"], name: "index_bookmarks_on_removed_at"
+    t.index ["user_id", "event_id"], name: "index_bookmarks_on_user_id_and_event_id", unique: true
     t.index ["user_id"], name: "index_bookmarks_on_user_id"
   end
 
   create_table "cities", force: :cascade do |t|
     t.string "name", null: false
     t.string "slug", null: false
+    t.string "time_zone", null: false
+    t.string "country_code", null: false
     t.string "currency", null: false
     t.float "lat", null: false
     t.float "lon", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "time_zone", null: false
-    t.boolean "enabled", default: false
+    t.index ["name"], name: "index_cities_on_name", unique: true
     t.index ["slug"], name: "index_cities_on_slug", unique: true
   end
 
@@ -115,33 +117,37 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_02_042230) do
 
   create_table "city_sources", force: :cascade do |t|
     t.bigint "city_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.datetime "last_fetched_at"
     t.bigint "source_id", null: false
     t.jsonb "url_params", default: {}
-    t.integer "new_event_count", default: 0
+    t.datetime "last_fetched_at"
+    t.boolean "enabled", default: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["city_id"], name: "index_city_sources_on_city_id"
     t.index ["source_id"], name: "index_city_sources_on_source_id"
   end
 
   create_table "events", force: :cascade do |t|
     t.bigint "city_source_id", null: false
-    t.string "url", null: false
-    t.string "title", null: false
-    t.string "description"
-    t.string "image_url", null: false
-    t.string "start_date", null: false
-    t.string "end_date", null: false
-    t.string "start_time", null: false
-    t.string "end_time"
-    t.integer "price", null: false
     t.bigint "location_id"
+    t.string "url", null: false
+    t.text "markdown"
+    t.string "title"
+    t.string "description"
+    t.string "tags"
+    t.string "image_url"
+    t.string "start_date"
+    t.string "end_date"
+    t.string "start_time"
+    t.string "end_time"
+    t.integer "price"
+    t.string "location_query"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["city_source_id"], name: "index_events_on_city_source_id"
+    t.index ["location_id", "start_date", "end_date", "start_time", "end_time"], name: "idx_on_location_id_start_date_end_date_start_time_e_415cb0e2f4"
     t.index ["location_id"], name: "index_events_on_location_id"
-    t.index ["start_date", "end_date", "start_time", "end_time", "location_id"], name: "idx_on_start_date_end_date_start_time_end_time_loca_8ae687a5e3"
+    t.index ["url"], name: "index_events_on_url", unique: true
   end
 
   create_table "languages", force: :cascade do |t|
@@ -153,8 +159,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_02_042230) do
   end
 
   create_table "location_queries", force: :cascade do |t|
-    t.string "query", null: false
     t.bigint "location_id"
+    t.string "query", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["location_id"], name: "index_location_queries_on_location_id"
@@ -173,40 +179,41 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_02_042230) do
     t.bigint "user_id", null: false
     t.string "query", null: false
     t.integer "status", null: false
+    t.jsonb "result"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_search_queries_on_user_id"
   end
 
   create_table "searches", force: :cascade do |t|
+    t.bigint "search_query_id", null: false
+    t.string "searchable_event_type", null: false
     t.integer "status", null: false
-    t.string "keywords"
-    t.jsonb "conditions"
+    t.string "keywords", null: false
+    t.jsonb "conditions", null: false
     t.jsonb "result"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.bigint "search_query_id", null: false
-    t.string "searchable_type", null: false
     t.index ["search_query_id"], name: "index_searches_on_search_query_id"
   end
 
   create_table "seens", force: :cascade do |t|
     t.bigint "user_id", null: false
+    t.bigint "event_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.bigint "event_id"
     t.index ["event_id"], name: "index_seens_on_event_id"
+    t.index ["user_id", "event_id"], name: "index_seens_on_user_id_and_event_id", unique: true
     t.index ["user_id"], name: "index_seens_on_user_id"
   end
 
   create_table "sources", force: :cascade do |t|
     t.string "name", null: false
     t.string "template_url", null: false
-    t.boolean "proxy", default: false, null: false
+    t.string "scraper_type", null: false
+    t.boolean "proxy", default: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "scraper_type", null: false
-    t.boolean "enabled", default: false
     t.index ["name"], name: "index_sources_on_name", unique: true
   end
 
@@ -231,6 +238,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_02_042230) do
   add_foreign_key "events", "locations"
   add_foreign_key "location_queries", "locations"
   add_foreign_key "search_queries", "users"
+  add_foreign_key "searches", "search_queries"
   add_foreign_key "seens", "events"
   add_foreign_key "seens", "users"
   add_foreign_key "users", "cities"

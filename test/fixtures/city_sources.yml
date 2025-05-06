@@ -1,0 +1,22 @@
+eventbrite:
+  city: singapore
+  source: eventbrite
+  url_params: { city_slug: "singapore" }
+  enabled: true
+
+luma:
+  city: singapore
+  source: luma
+  url_params: { city_slug: "singapore" }
+  enabled: true
+
+meetup:
+  city: singapore
+  source: meetup
+  url_params: { city_slug: "sg--singapore" }
+  enabled: true
+
+ticketmaster:
+  city: munich
+  source: ticketmaster
+  enabled: true

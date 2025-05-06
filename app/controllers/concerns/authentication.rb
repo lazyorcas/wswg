@@ -3,10 +3,16 @@ module Authentication
 
   included do
     before_action :set_current_user
-    before_action :associate_current_user_with_visit, if: -> { Current.user.present? }
+    before_action :associate_current_user_with_visit, if: :signed_in?
+
+    helper_method :signed_in?
   end
 
   private
+
+  def signed_in?
+    Current.user.present?
+  end
 
   def associate_current_user_with_visit
     ahoy.authenticate(Current.user)
@@ -19,7 +25,7 @@ module Authentication
   end
 
   def require_user!
-    redirect_to(login_path) if Current.user.nil?
+    redirect_to(login_path) if Current.user.nil? || Current.user.account.token_expired?
   end
 
   def require_admin!

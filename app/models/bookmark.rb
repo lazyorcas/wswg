@@ -2,10 +2,10 @@ class Bookmark < ApplicationRecord
   belongs_to :user
   belongs_to :event, class_name: "::Event"
 
-  validates :user_id, uniqueness: { scope: :event_id }
+  validates :event_id, uniqueness: { scope: :user_id }
   validates :removed_at, presence: true, if: :removed?
 
-  before_validation :set_removed_at, on: :update
+  before_validation :set_removed_at, on: :update, if: :removed_changed?
 
   private
 

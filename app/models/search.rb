@@ -9,24 +9,28 @@ class Search < ApplicationRecord
   attribute :result, Search::Result.to_type
 
   validates :keywords, presence: true
-  validates :conditions, presence: true
   validates :status, presence: true
-  validates :searchable_type, presence: true
+  validates :searchable_event_type, presence: true
   validates :result, presence: true, if: :completed?
 
-  after_commit :queue_query, on: :create
+  after_initialize :set_default_conditions
+  after_commit :query!, on: :create
 
-  def searchable
-    @searchable ||= searchable_type.constantize
+  def set_default_conditions
+    self.conditions = {} if conditions.blank?
+  end
+
+  def searchable_event_model
+    @searchable_event_model ||= searchable_event_type.constantize
   end
 
   def query!
     self.result = Search::Result.new
 
-    searchkick_result = searchable.search(
+    searchkick_result = searchable_event_model.search(
       self.keywords,
-      fields: [ "title^3", "description" ],
-      where: self.conditions.deep_symbolize_keys,
+      fields: [ "title^3", "description", "tags" ],
+      where: conditions.deep_symbolize_keys,
       load: false
     )
 
@@ -47,9 +51,5 @@ class Search < ApplicationRecord
     self.result.error = e.message
     self.status = :failed
     save!
-  end
-
-  def queue_query
-    QueryJob.perform_later(id)
   end
 end

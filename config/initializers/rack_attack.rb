@@ -75,3 +75,7 @@ class Rack::Attack
   #    ['']] # body
   # end
 end
+
+if Rails.env.development?
+  Rack::Attack.enabled = false
+end

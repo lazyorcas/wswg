@@ -1,4 +1,4 @@
-class Url
+module Url
   def self.get_base_url(url)
     "https://#{URI(url).host}"
   end

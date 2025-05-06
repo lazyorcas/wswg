@@ -1,0 +1,13 @@
+oscar_visit:
+  user: oscar
+  started_at: <%= 1.day.ago %>
+
+lily_visit:
+  user: lily
+  started_at: <%= 1.month.ago %>
+
+<% ["finlay", "sasha", "darshana", "geeju", "cebo", "anton", "edwin", "michael", "rahul", "prajwal", "paulo"].each do |name| %>
+<%= name %>_visit:
+  user: <%= name %>
+  started_at: <%= rand(1..5).days.ago %>
+<% end %>

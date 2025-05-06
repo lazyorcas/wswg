@@ -7,9 +7,27 @@ module Event::Locatable
   included do
     belongs_to :location, optional: true
     scope :located, -> { where.not(location_id: nil) }
+
+    after_commit :queue_locate, on: :create
   end
 
-  def queue_locate(location_query)
-    Event::LocateJob.perform_later(id, location_query: location_query)
+  def queue_locate
+    LocateJob.perform_later(id)
+  end
+
+  def locate
+    _location_query = LocationQuery.find_or_create_by(query: location_query)
+    return if _location_query.location_id.blank?
+
+    coordinates = _location_query.location.coordinates
+    city_coordinates = city.coordinates
+
+    distance_from_city = Geospatial.distance_in_km_between(coordinates, city_coordinates)
+
+    if distance_from_city > MAX_DISTANCE_TO_CITY
+      raise StandardError.new("Event is too far away")
+    end
+
+    self.location_id = _location_query.location_id
   end
 end

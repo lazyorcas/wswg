@@ -1,9 +1,9 @@
-class Source::Scraper::Strategy::Meetup < Source::Scraper::Strategy::BrowserBaseStrategy
+class Source::Scraper::Strategy::Meetup < Source::Scraper::Strategy::BaseBrowserStrategy
   def self.max_page_count
     100
   end
 
-  def add_event_urls(page, &block)
+  def get_event_urls(page, &block)
     els = page.css("[data-element-name=\"categoryResults-eventCard\"] a")
     # old selector
     els = page.css("a#event-card-in-search-results") if els.empty?

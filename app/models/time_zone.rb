@@ -19,6 +19,10 @@ class TimeZone
     @current_date ||= now.to_date
   end
 
+  def current_date_without_year
+    @current_date_without_year ||= now.strftime("%m-%d")
+  end
+
   def current_year
     @current_year ||= now.year
   end

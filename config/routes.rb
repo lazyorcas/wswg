@@ -16,13 +16,14 @@ Rails.application.routes.draw do
   get "/login", to: "sessions#new"
   get "/auth/:provider/callback", to: "sessions#create"
 
-  resources :events, only: [ :index, :show ]
-  resources :search_queries, only: [ :index, :create, :show ]
-  resources :seens, only: [ :create ]
-  resources :bookmarks, only: [ :create, :update ]
-  namespace :bookmarks do
-    resources :events, only: [ :index ]
+  get "/map", to: "map#index", as: :map
+  namespace :map do
+    resources :events, only: [ :index, :show ]
+    resources :search_queries, only: [ :index, :create ]
+
+    get "bookmarks/events", to: "bookmarks/events#index", as: :bookmarked_events
   end
 
-  get "/changelog", to: "changelog#index", as: "changelog"
+  resources :seens, only: [ :create ]
+  resources :bookmarks, only: [ :create, :update ]
 end

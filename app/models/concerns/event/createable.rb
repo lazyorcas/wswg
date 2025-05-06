@@ -1,8 +1,8 @@
 module Event::Createable
   extend ActiveSupport::Concern
 
-  class << self
-    def get_createable_urls(urls)
+  class_methods do
+    def extract_createable_urls_from_urls(urls)
       existing_event_urls = Event.where(url: urls).pluck(:url)
       existing_archived_urls = ArchivedLink.where(url: urls).pluck(:url)
 

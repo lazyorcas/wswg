@@ -1,11 +1,11 @@
 class OpenAI::Assistants::LocalGuide
-  INSTRUCTIONS_TEMPLATE = <<-TEXT
+  INSTRUCTIONS_TEMPLATE = <<~TEXT
     You are a local guide who's passionate about helping people find the best things to do in their city.
 
     You are an expert in building search queries for Elasticsearch, which you use to search fast and efficiently.
   TEXT
 
-  BUILD_SEARCH_QUERY_INPUT_TEMPLATE = <<-TEXT
+  BUILD_SEARCH_QUERY_INPUT_TEMPLATE = <<~TEXT
     You are a polygot in %{languages}.
 
     Build a search query or multiple search queries from the following user input, context, facts, and rules below. The facts and rules are in English. It's safe to consider variations of these rules in %{languages}, but retain the semantic meaning.
@@ -33,10 +33,9 @@ class OpenAI::Assistants::LocalGuide
     If a time-sensitive keyword is mentioned, please use the section below to build the date time range.
 
     ### User's Context
-    - The current date is %{current_date}.
-    - The current day of the week is %{current_dow}.
+    - The current date (in YYYY-MM-DD format) is %{current_date}.
     - The current time is %{current_time}.
-    - The current year is %{current_year}.
+    - The current day of the week is %{current_dow}.
 
     ### Facts
     - Monday is the first day of the week with index 0.
@@ -62,17 +61,16 @@ class OpenAI::Assistants::LocalGuide
     @openai_responses_client = OpenAI::ResponsesClient.new
   end
 
-  def build_search_query(text, city:)
+  def build_search_query(text, now:, city_name:, languages:)
     instructions = INSTRUCTIONS_TEMPLATE
 
-    now = city.time_zone.now
     input = BUILD_SEARCH_QUERY_INPUT_TEMPLATE % {
       current_date: now.strftime("%Y-%m-%d"),
       current_dow: now.strftime("%A"),
       current_time: now.strftime("%H:%M"),
       current_year: now.year,
-      city_name: city.name,
-      languages: city.languages.pluck(:name),
+      city_name: city_name,
+      languages: languages,
       text: text
     }
 
@@ -84,7 +82,7 @@ class OpenAI::Assistants::LocalGuide
     )
   end
 
-  DETECT_CITY_INPUT_TEMPLATE = <<-TEXT
+  DETECT_CITY_INPUT_TEMPLATE = <<~TEXT
     From the user input below, detect the city that the user is looking for.
     It's fine if they are not mentioning the city.
 

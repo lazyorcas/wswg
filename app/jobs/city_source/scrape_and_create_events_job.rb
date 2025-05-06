@@ -1,4 +1,6 @@
 class CitySource::ScrapeAndCreateEventsJob < ApplicationJob
+  DEV_MAX_LIMIT = 10
+
   queue_with_priority 2
 
   retry_on Ferrum::TimeoutError, wait: 30.minutes, attempts: 3
@@ -7,9 +9,9 @@ class CitySource::ScrapeAndCreateEventsJob < ApplicationJob
   def perform(id, limit:)
     city_source = CitySource.find(id)
 
-    event_urls = city_source.source.scrape(city_source)
+    events_attributes = city_source.source.scrape(city_source)
     create_event_jobs = build_create_event_jobs(
-      event_urls,
+      events_attributes,
       city_source_id: id,
       limit: limit
     )
@@ -17,17 +19,21 @@ class CitySource::ScrapeAndCreateEventsJob < ApplicationJob
     if create_event_jobs.any?
       ActiveJob.perform_all_later(create_event_jobs)
     end
-
-    # TODO: add new_event_count
-    city_source.update(last_fetched_at: Time.current, new_event_count: 0)
   end
 
   private
 
-  def build_create_event_jobs(event_urls, city_source_id:, limit:)
-    urls = Event.get_createable_urls(event_urls).take(limit)
-    urls.map do |url|
-      Event::CreateJob.new(city_source_id: city_source_id, url: url)
+  def build_create_event_jobs(events_attributes, city_source_id:, limit:)
+    event_urls = events_attributes.map { |event_attributes| event_attributes[:url] }.compact
+
+    createable_urls = Event.extract_createable_urls_from_urls(event_urls).take(limit)
+
+    createable_events_attributes = events_attributes.select do |event_attributes|
+      createable_urls.include?(event_attributes[:url])
+    end
+
+    createable_events_attributes.map do |event_attributes|
+      Event::CreateJob.new(city_source_id: city_source_id, **event_attributes)
     end
   end
 end

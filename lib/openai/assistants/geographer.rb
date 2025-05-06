@@ -1,11 +1,11 @@
 class OpenAI::Assistants::Geographer
-  INSTRUCTIONS = "You are a helpful geographer. You know all of the cities in the world in any language. For each task, you will be given a location and a question.".freeze
+  INSTRUCTIONS = "You are a helpful geographer. You know all of the cities in the world in any language. For each task, you will be given a location and a question."
 
   def initialize
     @openai_responses_client = OpenAI::ResponsesClient.new
   end
 
-  TRUE_OR_FALSE_INPUT_TEMPLATE = <<-TEXT
+  TRUE_OR_FALSE_INPUT_TEMPLATE = <<~TEXT
     # Location
     %{location}
 

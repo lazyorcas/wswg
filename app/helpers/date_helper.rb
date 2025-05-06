@@ -1,5 +1,6 @@
 module DateHelper
-  def get_easy_date(date, time_zone:)
+  def relative_date(_date, time_zone:)
+    date = _date.class == String ? Date.parse(_date) : _date
     current_date = time_zone.current_date
 
     if date < current_date

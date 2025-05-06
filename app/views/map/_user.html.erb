@@ -1,0 +1,13 @@
+<section class="flex gap-x-2 items-center">
+  <%# <div class="flex gap-x-2 items-center bg-white dark:bg-neutral-900 rounded-full py-1 px-2 border border-neutral-300 dark:border-neutral-700 text-neutral-900 dark:text-neutral-100">
+    <i class="ph ph-coin"></i>
+    <span class="text-sm">10</span>
+  </div> %>
+  <% if Current.user.account.image_url.present? %>
+    <%= image_tag Current.user.account.image_url, class: "size-8 md:size-10 rounded-full border-2 border-white dark:border-neutral-900", referrerpolicy: "no-referrer" %>
+  <% else %>
+    <%= tag.div class: "size-8 md:size-10 rounded-full bg-white dark:bg-neutral-900 flex items-center justify-center" do %>
+      <i class="ph-bold ph-user text-neutral-900 dark:text-neutral-100"></i>
+    <% end %>
+  <% end %>
+</section>

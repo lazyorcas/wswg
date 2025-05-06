@@ -3,12 +3,11 @@ class User < ApplicationRecord
 
   has_one :account
   has_many :bookmarks
+  has_many :bookmarked_events, through: :bookmarks, source: :event
   has_many :seens
+  has_many :seen_events, through: :seens, source: :event
 
   has_many :visits, class_name: "Ahoy::Visit"
-
-  has_many :bookmarked_events, through: :bookmarks, source: :event
-  has_many :seen_events, through: :seens, source: :event
 
   validates :email,
             presence: true,

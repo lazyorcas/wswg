@@ -10,10 +10,10 @@ class Account < ApplicationRecord
   end
 
   def token_expires_at
-    Time.at(auth_hash["credentials"]["expires_at"])
+    Time.at(auth_hash.dig("credentials", "expires_at"))
   end
 
   def image_url
-    auth_hash["info"]["image"]
+    auth_hash.dig("info", "image")
   end
 end

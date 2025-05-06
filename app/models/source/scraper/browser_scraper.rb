@@ -4,7 +4,7 @@ class Source::Scraper::BrowserScraper < Source::Scraper::BaseScraper
 
   def find_events_from_city_source(city_source)
     base_url = Url.get_base_url(city_source.url)
-    event_urls = []
+    events_attributes = []
 
     begin
       browser = load_browser
@@ -18,9 +18,9 @@ class Source::Scraper::BrowserScraper < Source::Scraper::BaseScraper
           strategy.check_after_going_to_next_page? &&
           strategy.done_after_going_to_next_page?(page)
 
-        strategy.add_event_urls(page) do |url|
+        strategy.get_event_urls(page) do |url|
           event_url = build_event_url(url, base_url: base_url)
-          event_urls |= [ event_url ]
+          events_attributes << { url: event_url }
         end
 
         begin
@@ -38,7 +38,7 @@ class Source::Scraper::BrowserScraper < Source::Scraper::BaseScraper
       end
     end
 
-    event_urls.uniq
+    events_attributes.uniq { |event_attributes| event_attributes[:url] }
   end
 
   private

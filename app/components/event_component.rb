@@ -1,90 +1,43 @@
 class EventComponent < ViewComponent::Base
-  delegate :get_easy_date, to: :helpers
-  attr_reader :event
+  delegate :relative_date, to: :helpers
 
   def initialize(event)
     @event = event
   end
 
-  def city_source
-    event.city_source
-  end
-
-  def source
-    city_source.source
-  end
-
-  def city
-    event.city_source.city
-  end
-
-  def time_zone
-    city.time_zone
-  end
-
-  def url
-    event.url
-  end
-
-  def image_url
-    event.image_url
-  end
-
-  def title
-    event.title
-  end
-
-  def start_date
-    event.start_date
-  end
-
-  def end_date
-    event.end_date
-  end
-
   def date
-    if start_date == end_date
-      get_easy_date(Date.parse(start_date), time_zone: time_zone)
-    else
-      "#{get_easy_date(Date.parse(start_date), time_zone: time_zone)} - #{get_easy_date(Date.parse(end_date), time_zone: time_zone)}"
+    dates = [ @event.start_date, @event.end_date ].uniq.map do |date|
+      relative_date(date, time_zone: @event.time_zone)
     end
+
+    dates.join(" - ")
   end
 
   def start_time
-    event.start_time.to_time.strftime("%H:%M")
+    @event.start_time.to_time.strftime("%H:%M")
   end
 
   def end_time
-    return nil if event.end_time.blank?
+    return nil if @event.end_time.blank?
 
-    event.end_time.to_time.strftime("%H:%M")
+    @event.end_time.to_time.strftime("%H:%M")
   end
 
   def time_range
-    if end_time.blank?
-      "#{start_time}"
-    else
-      "#{start_time} - #{end_time}"
-    end
+    [ @event.start_time, @event.end_time ].compact.join(" - ")
   end
 
   def source_icon_url
-    "/sources/#{source.name.underscore}.ico"
-  end
-
-  def location
-    event.location
-  end
-
-  def price
-    event.price
+    "/sources/#{@event.source.name.underscore}.ico"
   end
 
   def price_label
+    price = @event.price
+
     if price.zero?
       "Free"
     else
-      Money.from_amount(price, city.currency).format(no_cents: true)
+      Money.from_amount(price, @event.city.currency).format(no_cents: true)
     end
   end
 end

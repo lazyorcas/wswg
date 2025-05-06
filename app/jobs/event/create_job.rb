@@ -1,64 +1,65 @@
 class Event::CreateJob < ApplicationJob
+  DATA_INCOMPLETE_MAX_ATTEMPTS = 3
+
   queue_with_priority 3
 
   retry_on Jina::TimeoutError, wait: :polynomially_longer, attempts: 3
 
   retry_on OpenAI::TooManyRequestsError, wait: 5.minutes, attempts: 3
-  retry_on OpenAI::ServerError, wait: 15.minutes, attempts: 3
+  retry_on OpenAI::ServerError, wait: 5.minutes, attempts: 3
 
-  retry_on ActiveRecord::RecordInvalid, wait: 1.hour, attempts: 3
+  retry_on Event::DataIncompleteError, attempts: DATA_INCOMPLETE_MAX_ATTEMPTS
 
-  def perform(city_source_id:, url:)
-    event = Event.find_or_initialize_by(city_source_id: city_source_id, url: url)
+  def perform(url:, **attributes)
+    event = Event.find_or_initialize_by(url: url)
     return if event.persisted?
 
-    event.fetch
+    event.attributes = attributes
 
-    build_luma_event_url(event) if event.city_source.source.name == "Luma"
+    unless event.data_completed?
+      event.fetch
+      event.parse
+    end
 
     if event.valid?
       event.save!
 
-    elsif should_retry?(reason: event.errors.first.type)
-      raise ActiveRecord::RecordInvalid.new(event)
+    elsif data_incomplete?(event.errors)
+      raise Event::DataIncompleteError.new(event)
 
-    else
-      create_archived_link(
-        event.url,
-        reason: event.errors.first.type,
-        details: event.errors.to_json
-      )
+    elsif url_taken?(event.errors)
+      nil
+
+    elsif duplicated?(event.errors)
+      create_archived_link_for_duplicated_event(event)
     end
   end
 
   private
 
-  def should_retry?(reason:)
-    return false if [ :not_found_or_expired, :duplicated ].include?(reason)
-
-    (exception_executions[ActiveRecord::RecordInvalid.to_s] || 0).zero?
+  def data_incomplete?(errors)
+    errors.any? { |error| error.type == :data_incomplete } &&
+      (exception_executions[Event::DataIncompleteError.to_s] || 0) < DATA_INCOMPLETE_MAX_ATTEMPTS
   end
 
-  def create_archived_link(url, reason:, details: nil)
-    archived_link = ArchivedLink.find_or_initialize_by(url: url)
+  def url_taken?(errors)
+    errors.any? { |error| error.attribute == :url && error.type == :taken }
+  end
+
+  def duplicated?(errors)
+    errors.any? { |error| error.type == :duplicated }
+  end
+
+  def create_archived_link_for_duplicated_event(event)
+    archived_link = ArchivedLink.find_or_initialize_by(url: event.url)
 
     if archived_link.new_record?
-      reason = case reason
-      when :not_found_or_expired
-        :not_found_or_expired
-      when :duplicated
-        :duplicated
-      else
-        :other
-      end
-
-      archived_link.reason = reason
-      archived_link.details = details
+      archived_link.reason = :duplicated
+      archived_link.metadata = {
+        attributes: event.attributes,
+        errors: event.errors.to_json
+      }
       archived_link.save!
     end
-  end
-
-  def build_luma_event_url(event)
-    event.url = Source::Luma.build_unique_url_for_event(event)
   end
 end

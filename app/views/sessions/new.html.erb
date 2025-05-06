@@ -1,12 +1,9 @@
+<% content_for :title, "Login | Where Should We Go" %>
 <div class="dark:bg-neutral-800">
-  <div class="h-dvh max-h-dvh flex flex-col justify-center gap-y-4 container mx-auto px-4">
-    <header class="text-primary">
-      <h1 class="text-3xl font-bold">Where Should We Go</h1>
-      <p>Thank you for being a beta tester.</p>
-    </header>
-    <%= button_to "/auth/google_oauth2", data: { turbo: false }, class: "cursor-pointer button button--secondary" do %>
-      <i class="ph ph-google-logo"></i>
-      Login with Google
-    <% end %>
+  <div class="h-dvh max-h-dvh flex flex-col container mx-auto px-4">
+    <div class="m-auto max-w-full flex flex-col gap-y-8" style="width: 400px;">
+      <h1 class="text-primary text-3xl font-bold">Login</h1>
+      <%= render "sessions/form" %>
+    </div>
   </div>
 </div>

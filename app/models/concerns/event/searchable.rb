@@ -1,27 +1,28 @@
 module Event::Searchable
   extend ActiveSupport::Concern
 
-  SEARCHABLE_FIELDS = [ :title, :description ]
+  SEARCHABLE_FIELDS = [ :title, :description, :tags ]
   FILTERABLE_FIELDS = [ :start_date, :end_date, :start_time, :end_time, :price ]
 
   included do
-    scope :search_import, -> { includes(:location, city_source: :city) }
+    scope :search_import, -> { includes(:location, :city) }
   end
 
   def search_data
     {
       title: title,
       description: description,
+      tags: tags,
       start_date: start_date,
       end_date: end_date,
       start_time: start_time,
       end_time: end_time,
       price: price,
-      location: location&.coordinates_h || city_source.city.coordinates_h
+      location: location&.coordinates || city.coordinates
     }
   end
 
   def should_index?
-    end_date >= city_source.city.time_zone.current_date.to_s
+    data_completed? && ongoing?
   end
 end

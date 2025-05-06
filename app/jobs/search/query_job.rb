@@ -1,8 +1,0 @@
-class Search::QueryJob < ApplicationJob
-  queue_with_priority 0
-
-  def perform(id)
-    search = Search.find(id)
-    search.query!
-  end
-end
