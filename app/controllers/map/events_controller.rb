@@ -1,7 +1,7 @@
 class Map::EventsController < ApplicationController
   before_action :require_user!
 
-  # after_action :add_event_to_seen_events, only: :show
+  after_action :add_event_to_seen_events, only: :show
 
   def index
     if sunday?
