@@ -403,7 +403,7 @@ GEM
     ruby-progressbar (1.13.0)
     rubyzip (2.4.1)
     safely_block (0.4.1)
-    searchkick (5.5.0)
+    searchkick (5.5.1)
       activemodel (>= 7.1)
       hashie
     securerandom (0.4.1)
