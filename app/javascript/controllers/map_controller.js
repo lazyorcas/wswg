@@ -103,8 +103,6 @@ export default class extends Controller {
       "source": this.sourceId,
       "type": "symbol",
       "layout": {
-      
-      
         "icon-image": [
           "get",
           "source_name"
@@ -114,9 +112,6 @@ export default class extends Controller {
           "source_icon_multiplier"
         ],
       },
-    
-    
-    
     })
   }
 

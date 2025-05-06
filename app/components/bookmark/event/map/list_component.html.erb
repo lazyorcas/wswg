@@ -4,7 +4,7 @@
       <%= tag.h2 relative_date(date, time_zone: @time_zone), class: "font-bold text-primary px-4" %>
       <ul class="flex flex-col">
         <% events.each do |event| %>
-          <%= render Bookmark::Event::Map::ListItemButtonComponent.new(event) %>
+          <%= render Event::Map::ListItemButtonComponent.new(event, bookmarked: true, seen: true) %>
         <% end %>
       </ul>
     </section>

@@ -181,10 +181,6 @@
     @apply transition ease-in-out;
   }
 
-  .list-item__icon {
-    @apply size-4;
-  }
-
   .list-item__text {
     @apply text-left;
   }
@@ -204,6 +200,26 @@
     @apply px-4 py-2 rounded-md;
     @apply text-sm;
     @apply shadow;
+  }
+
+  /* ==========================================================================
+  |
+  |
+  |
+  |  Event
+  |
+  |
+  |
+  ============================================================================= */
+  .event-image {
+    @apply size-16;
+    @apply object-cover;
+    @apply rounded;
+  }
+  
+  .event-source-icon {
+    @apply size-4;
+    @apply rounded;
   }
 }
   
