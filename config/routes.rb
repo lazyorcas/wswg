@@ -26,4 +26,8 @@ Rails.application.routes.draw do
 
   resources :seens, only: [ :create ]
   resources :bookmarks, only: [ :create, :update ]
+
+  namespace :user do
+    get "no_credits", to: "no_credits#index", as: :no_credits
+  end
 end

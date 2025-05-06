@@ -1,5 +1,8 @@
 class Map::SearchQueriesController < ApplicationController
+  include UserCreditsCheck
+
   before_action :require_user!
+  require_credits only: :create
 
   def index; end
 

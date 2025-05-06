@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_04_04_035249) do
+ActiveRecord::Schema[8.0].define(version: 2025_04_04_035250) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -127,6 +127,17 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_04_035249) do
     t.index ["source_id"], name: "index_city_sources_on_source_id"
   end
 
+  create_table "credit_transactions", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.integer "transaction_type", null: false
+    t.integer "amount", null: false
+    t.datetime "expires_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id", "transaction_type", "expires_at"], name: "idx_on_user_id_transaction_type_expires_at_4e012cbac4"
+    t.index ["user_id"], name: "index_credit_transactions_on_user_id"
+  end
+
   create_table "events", force: :cascade do |t|
     t.bigint "city_source_id", null: false
     t.bigint "location_id"
@@ -223,6 +234,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_04_035249) do
     t.boolean "admin", default: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "credits", default: 0, null: false
     t.index ["city_id"], name: "index_users_on_city_id"
     t.index ["email"], name: "index_users_on_email", unique: true
   end
@@ -234,6 +246,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_04_035249) do
   add_foreign_key "city_languages", "languages"
   add_foreign_key "city_sources", "cities"
   add_foreign_key "city_sources", "sources"
+  add_foreign_key "credit_transactions", "users"
   add_foreign_key "events", "city_sources"
   add_foreign_key "events", "locations"
   add_foreign_key "location_queries", "locations"

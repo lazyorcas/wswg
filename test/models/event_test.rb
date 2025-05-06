@@ -17,6 +17,7 @@ class EventTest < ActiveSupport::TestCase
 
   test "should be duplicated when title only changes slightly" do
     event = events(:first).dup
+    event.city_source = city_sources(:meetup)
     event.title = event.title + " (changed location)"
     assert_predicate event, :duplicated?
   end

@@ -1,4 +1,6 @@
 class User < ApplicationRecord
+  include Credits
+
   belongs_to :city
 
   has_one :account

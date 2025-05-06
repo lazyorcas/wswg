@@ -1,0 +1,5 @@
+usage:
+  user: lily
+  transaction_type: usage
+  amount: -1
+  expires_at: <%= 24.hours.from_now %>

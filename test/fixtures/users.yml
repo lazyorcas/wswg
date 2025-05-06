@@ -2,10 +2,12 @@
 <%= name %>:
   email: <%= name %>@example.com
   city: singapore
+  credits: 1
 <% end %>
 
 <% ["finlay", "sasha", "darshana", "geeju", "cebo", "anton", "edwin", "michael", "rahul", "prajwal"].each do |name| %>
 <%= name %>:
   email: <%= name %>@example.com
   city: munich
+  credits: 0
 <% end %>
