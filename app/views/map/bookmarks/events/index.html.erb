@@ -5,7 +5,7 @@
         <%= render Bookmark::Event::Map::ListComponent.new(@events, time_zone: Current.user.city.time_zone) %>
       </div>
     <% else %>
-      <p class="p-4 text-sm text-primary">
+      <p class="p-4 text-sm">
         No events bookmarked yet.
       </p>
     <% end %>

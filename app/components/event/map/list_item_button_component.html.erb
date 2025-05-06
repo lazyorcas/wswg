@@ -5,9 +5,9 @@
       <span class="grow flex flex-col list-item__text">
         <%= tag.span class: "mb-2 w-full flex items-center gap-x-1" do %>
           <%= image_tag source_icon_url, class: "inline-flex event-source-icon", loading: "lazy" %>
-          <span class="text-xs text-primary"><%= @event.source.name %></span>
+          <span class="text-xs"><%= @event.source.name %></span>
         <% end %>
-        <%= tag.span @event.title, class: "text-sm text-primary line-clamp-1" %>
+        <%= tag.span @event.title, class: "text-sm line-clamp-1" %>
         <%= tag.span class: "text-xs text-secondary" do %>
           <%= date %> &#x2022; <%= time_range %>
         <% end %>

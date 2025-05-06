@@ -2,9 +2,9 @@
   <%= tag.div class: "flex flex-col gap-y-4 popup p-4", data: { no_location: @event.location.nil? } do %>
     <div class="flex md:flex-col gap-x-4 md:gap-x-0 md:gap-y-4">
       <%= image_tag @event.image_url, class: "aspect-square object-contain rounded-lg w-20 md:w-80 max-w-20 md:max-w-80 h-fit", referrerpolicy: "no-referrer" %>
-      <h1 class="text-primary text-base/5 md:text-lg/6 font-bold line-clamp-4 md:line-clamp-3" style="word-break: break-word;"><%= @event.title %></h1>
+      <h1 class="text-base/5 md:text-lg/6 font-bold line-clamp-4 md:line-clamp-3" style="word-break: break-word;"><%= @event.title %></h1>
     </div>
-    <div class="flex flex-col gap-y-1 text-primary">
+    <div class="flex flex-col gap-y-1">
       <div class="text-sm">
         <%= tag.p date %>
         <%= tag.p time_range %>

@@ -1,7 +1,7 @@
 <%= turbo_frame_tag "search-results" do %>
   <% if @events.any? %>
     <%= tag.section class: "flex flex-col gap-y-2 h-full", data: { map_target: "source", bottom_sheet_target: "content", collapsed: true } do %>
-      <p class="shrink-0 text-primary text-sm pt-4 px-4">
+      <p class="shrink-0 text-sm pt-4 px-4">
         Here's what happening <%= sunday? ? "next week" : "this week" %> in <%= Current.user.city.name %>.
       </p>
       <div class="grow min-h-0">

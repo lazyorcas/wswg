@@ -1,5 +1,5 @@
 <%= tag.section class: "flex flex-col gap-y-2 h-full", data: { map_target: "source", bottom_sheet_target: "content" } do %>
-  <div class="shrink-0 text-primary text-sm">
+  <div class="shrink-0 text-sm">
     <% if events.any? %>
       <p class="px-4 pt-4">
         Found <%= events.size %> events in <%= pluralize(took_in_seconds, "second") %>.

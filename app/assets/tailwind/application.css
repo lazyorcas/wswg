@@ -18,6 +18,10 @@
   html {
     font-family: "Inter", sans-serif, system-ui;
   }
+
+  body {
+    @apply text-stone-900 dark:text-stone-100;
+  }
 }
 
 @layer components {

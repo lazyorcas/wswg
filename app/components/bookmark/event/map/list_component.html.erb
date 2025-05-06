@@ -1,7 +1,7 @@
 <section class="flex flex-col gap-y-4 h-full overflow-y-scroll no-scrollbar" data-bottom-sheet-target="nonDraggable">
   <% events_by_date.each_with_index do |(date, events), index| %>
     <section class="group">
-      <%= tag.h2 relative_date(date, time_zone: @time_zone), class: "font-bold text-primary px-4" %>
+      <%= tag.h2 relative_date(date, time_zone: @time_zone), class: "font-bold px-4" %>
       <ul class="flex flex-col">
         <% events.each do |event| %>
           <%= render Event::Map::ListItemButtonComponent.new(event, bookmarked: true, seen: true) %>
