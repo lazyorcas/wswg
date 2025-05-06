@@ -1,11 +1,15 @@
-<%= tag.section class: "flex flex-col gap-y-2 h-full py-4", data: { map_target: "source", bottom_sheet_target: "content" } do %>
-  <p class="shrink-0 text-secondary text-sm px-4">
+<%= tag.section class: "flex flex-col gap-y-2 h-full", data: { map_target: "source", bottom_sheet_target: "content" } do %>
+  <div class="shrink-0 text-secondary text-sm">
     <% if events.any? %>
-      Found <%= events.size %> events in <%= pluralize(took_in_seconds, "second") %>.
+      <p class="px-4 pt-4">
+        Found <%= events.size %> events in <%= pluralize(took_in_seconds, "second") %>.
+      </p>
     <% else %>
-      Nothing found. Try other keywords.
+      <p class="p-4">
+        Nothing found. Try other keywords.
+      </p>
     <% end %>
-  </p>
+  </div>
   <% if events.any? %>
     <div class="grow min-h-0">
       <%= render Event::Map::ListComponent.new(events, 
