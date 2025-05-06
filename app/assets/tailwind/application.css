@@ -1,5 +1,19 @@
 @import "tailwindcss";
 
+@theme {
+  --color-brand-white: #fef7db;
+  --color-brand-100: #fde8c4;
+  --color-brand-200: #fbd0a3;
+  --color-brand-300: #f8a77a;
+  --color-brand-400: #f3724c;
+  --color-brand-500: #ec4013;
+  --color-brand-600: #c63610;
+  --color-brand-700: #a02c0d;
+  --color-brand-800: #7a220a;
+  --color-brand-900: #541808;
+  --color-brand-black: #2f0d04;
+}
+
 @layer base {
   html {
     font-family: "Inter", sans-serif, system-ui;
@@ -22,7 +36,7 @@
 
   .map-tab-button {
     @apply h-8 md:h-10 px-2 md:px-4;
-    @apply bg-white dark:bg-neutral-900;
+    @apply bg-white dark:bg-stone-900;
     @apply border;
     @apply rounded-3xl;
     @apply flex items-center gap-x-1;
@@ -30,16 +44,16 @@
   }
 
   .map-tab-button--active {
-    @apply text-neutral-900 dark:text-neutral-100;
-    @apply border-neutral-900 dark:border-neutral-100;
+    @apply text-stone-900 dark:text-stone-100;
+    @apply border-stone-900 dark:border-stone-100;
     @apply font-bold;
   }
 
   .map-tab-button--inactive {
-    @apply hover:bg-neutral-800 dark:hover:bg-neutral-100;
-    @apply border-neutral-300 dark:border-neutral-700;
-    @apply text-neutral-500;
-    @apply hover:text-neutral-100 dark:hover:text-neutral-900;
+    @apply hover:bg-stone-800 dark:hover:bg-stone-100;
+    @apply border-stone-300 dark:border-stone-700;
+    @apply text-stone-500;
+    @apply hover:text-stone-100 dark:hover:text-stone-900;
     @apply transition ease-in-out;
   }
 
@@ -84,10 +98,16 @@
     @apply text-xl;
   }
 
+  .button--primary {
+    @apply bg-brand-500 dark:bg-brand-600;
+    @apply hover:bg-brand-600 dark:hover:bg-brand-500;
+    @apply text-brand-white dark:text-brand-white;
+  }
+
   .button--secondary {
-    @apply bg-neutral-200 dark:bg-neutral-700;
-    @apply hover:bg-neutral-300 dark:hover:bg-neutral-600;
-    @apply text-neutral-900 dark:text-neutral-100;
+    @apply bg-brand-200 dark:bg-brand-700;
+    @apply hover:bg-brand-300 dark:hover:bg-brand-600;
+    @apply text-brand-900 dark:text-brand-100;
   }
 
   /* ==========================================================================
@@ -102,8 +122,8 @@
   .input {
     @apply w-full h-11 px-4;
     @apply rounded-3xl;
-    @apply border border-neutral-300 dark:border-neutral-700;
-    @apply text-neutral-700 dark:text-neutral-300;
+    @apply border border-stone-300 dark:border-stone-700;
+    @apply text-stone-700 dark:text-stone-300;
   }
 
   /* ==========================================================================
@@ -118,8 +138,8 @@
   .tag {
     @apply w-fit px-2 py-1;
     @apply rounded-full;
-    @apply bg-neutral-200 dark:bg-neutral-700;
-    @apply text-neutral-700 dark:text-neutral-300;
+    @apply bg-stone-200 dark:bg-stone-700;
+    @apply text-stone-700 dark:text-stone-300;
     @apply text-xs;
   }
 
@@ -135,8 +155,8 @@
   .popup:has(*) {
     @apply z-10;
     @apply rounded-xl;
-    @apply border border-neutral-300 dark:border-neutral-700;
-    @apply bg-white dark:bg-neutral-900;
+    @apply border border-stone-300 dark:border-stone-700;
+    @apply bg-white dark:bg-stone-900;
     @apply overflow-hidden;
     @apply shadow;
   }
@@ -153,7 +173,7 @@
     .popup--bottom-sheet:has(*)::before {
       @apply absolute inset-x-0 mx-auto top-1;
       @apply h-1 w-16;
-      @apply bg-neutral-200 dark:bg-neutral-700;
+      @apply bg-stone-200 dark:bg-stone-700;
       @apply content-[''];
       @apply rounded-full;
     }
@@ -174,10 +194,10 @@
   ============================================================================= */
   .list-item {
     @apply py-2 px-4;
-    @apply bg-white dark:bg-neutral-900;
-    @apply hover:bg-neutral-200 dark:hover:bg-neutral-700;
+    @apply bg-white dark:bg-stone-900;
+    @apply hover:bg-stone-200 dark:hover:bg-stone-700;
     @apply flex;
-    @apply text-neutral-800 dark:text-neutral-200;
+    @apply text-stone-800 dark:text-stone-200;
     @apply transition ease-in-out;
   }
 
@@ -233,11 +253,11 @@
   |
   ============================================================================= */
   .text-primary {
-    @apply text-neutral-900 dark:text-neutral-100;
+    @apply text-stone-900 dark:text-stone-100;
   }
 
   .text-secondary {
-    @apply text-neutral-600 dark:text-neutral-400;
+    @apply text-stone-600 dark:text-stone-400;
   }
 
   /* ==========================================================================
@@ -267,11 +287,11 @@
   }
 
   .mapboxgl-popup-anchor-left .mapboxgl-popup-tip {
-    @apply dark:!border-r-neutral-900;
+    @apply dark:!border-r-stone-900;
   }
 
   .mapboxgl-popup-anchor-bottom .mapboxgl-popup-tip {
-    @apply dark:!border-t-neutral-900;
+    @apply dark:!border-t-stone-900;
   }
 
   .mapboxgl-popup:has([data-no-location="true"]) .mapboxgl-popup-tip {
