@@ -1,14 +1,17 @@
 <% links = [
-  ["Search", map_search_queries_path, current_page?(map_path)], 
-  ["Bookmarks", map_bookmarked_events_path, current_page?(map_bookmarked_events_path)]
+  ["Search", "ph-sparkle", map_search_queries_path, current_page?(map_path)], 
+  ["Bookmarks", "ph-bookmark-simple", map_bookmarked_events_path, current_page?(map_bookmarked_events_path)]
 ] %>
 <%= tag.nav class: "shrink-0 flex gap-x-1 md:gap-x-2", data: { controller: "home-nav" } do %>
   <% links.each do |link| %>
-    <%= link_to link[0], link[1], 
-      class: class_names("map-tab-button", link[2] ? "map-tab-button--active" : "map-tab-button--inactive"), 
+    <%= link_to link[2], 
+      class: class_names("map-tab-button", link[3] ? "map-tab-button--active" : "map-tab-button--inactive"), 
       data: { 
         turbo_frame: "content",
         home_nav_target: "link"
-      } %>
+      } do %>
+      <%= tag.i class: class_names(link[1], link[3] ? "ph-fill" : "ph") %>
+      <%= link[0] %>
+    <% end %>
   <% end %>
 <% end %>

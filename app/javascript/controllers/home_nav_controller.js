@@ -9,9 +9,15 @@ export default class extends Controller {
         this.linkTargets.forEach(otherLink => {
           otherLink.classList.remove("map-tab-button--active")
           otherLink.classList.add("map-tab-button--inactive")
+
+          otherLink.querySelector("i").classList.remove("ph-fill")
+          otherLink.querySelector("i").classList.add("ph")
         })
         link.classList.add("map-tab-button--active")
         link.classList.remove("map-tab-button--inactive")
+
+        link.querySelector("i").classList.remove("ph")
+        link.querySelector("i").classList.add("ph-fill")
       })
     })
   }
