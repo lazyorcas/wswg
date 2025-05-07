@@ -5,7 +5,7 @@ module SearchQuery::Broadcastable
   include Broadcastable
 
   included do
-    after_commit :broadcast_result_events, if: -> { status_previously_changed?(to: :completed) && user.present? }
+    after_commit :broadcast_result_events, if: -> { status_previously_changed?(to: :completed) }
   end
 
   def broadcast_result_events

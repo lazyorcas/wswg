@@ -16,7 +16,7 @@ class SearchQuery < ApplicationRecord
   validates :status, presence: true
   validates :result, presence: true, if: :completed?
 
-  after_commit :queue_query, on: :create, if: -> { user.present? }
+  after_commit :queue_query, on: :create
 
   def queue_query
     QueryJob.perform_later(id)
