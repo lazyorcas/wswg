@@ -7,12 +7,10 @@ module Event::Locatable
   included do
     belongs_to :location, optional: true
     scope :located, -> { where.not(location_id: nil) }
-
-    after_commit :queue_locate, on: :create
   end
 
-  def queue_locate
-    LocateJob.perform_later(id)
+  def locatable?
+    location_query.present?
   end
 
   def locate

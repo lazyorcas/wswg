@@ -21,6 +21,8 @@ class Event::CreateJob < ApplicationJob
       event.parse
     end
 
+    event.locate if event.locatable?
+
     if event.valid?
       event.save!
 
