@@ -10,7 +10,7 @@ export default class extends Controller {
   connect() {
     this.activePopup = null
     this.sourceId = "items"
-    this.itemSources = ["Meetup", "Luma", "Eventbrite", "MuenchenDe"]
+    this.itemSources = ["Meetup", "Luma", "Eventbrite", "MuenchenDe", "Ticketmaster"]
 
     mapboxgl.accessToken = this.accessTokenValue
 
@@ -205,7 +205,6 @@ export default class extends Controller {
       .find(([_, width]) => window.matchMedia(`(min-width: ${width})`).matches)?.[0] || 'xs'
   }
 
-  // TODO
   #underscore(str) {
     return str
       .replace(/([A-Z])/g, '_$1')
