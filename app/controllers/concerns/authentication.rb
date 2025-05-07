@@ -25,7 +25,7 @@ module Authentication
   end
 
   def require_user!
-    redirect_to(login_path) if Current.user.nil? || Current.user.account.token_expired?
+    redirect_to(login_path) unless signed_in?
   end
 
   def require_admin!
