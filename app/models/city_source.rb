@@ -1,12 +1,10 @@
 class CitySource < ApplicationRecord
+  include Scrapeable
+
   scope :enabled, -> { where(enabled: true) }
 
   belongs_to :city
   belongs_to :source
-
-  def self.enable_by_city_names!(city_names)
-    joins(:city).where(city: { name: city_names }).update_all(enabled: true)
-  end
 
   def self.find_by_names(city_name:, source_name:)
     city = City.find_by(name: city_name)

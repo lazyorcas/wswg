@@ -14,6 +14,8 @@ module Language::EventsIndexable
   end
 
   def define_searchable_event_class
+    return true if searchable_event_class_exists?
+
     eval <<-RUBY, binding, __FILE__, __LINE__ + 1
       class #{searchable_event_class_name} < Event
         include Event::Searchable
@@ -30,6 +32,10 @@ module Language::EventsIndexable
   end
 
   private
+
+  def searchable_event_class_exists?
+    @searchable_event_class_exists ||= Object.const_defined?(searchable_event_class_name)
+  end
 
   def searchable_event_class_name
     @searchable_event_class_name ||= "Searchable::#{name.capitalize}Event"

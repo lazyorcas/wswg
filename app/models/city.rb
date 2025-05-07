@@ -3,6 +3,7 @@ class City < ApplicationRecord
   include Locatable
   include Scorable
   include Availability
+  include Scrapeable
 
   has_many :city_sources
   has_many :city_languages

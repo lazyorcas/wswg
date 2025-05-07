@@ -14,7 +14,7 @@ class Source::Scraper::Strategy::Ticketmaster < Source::Scraper::Strategy::BaseA
   end
 
   def get_events_attributes(response, &block)
-    response["_embedded"]["events"].each do |data|
+    response.dig("_embedded", "events")&.each do |data|
       start_date = data.dig("dates", "start", "localDate")
       end_date = data.dig("dates", "end", "localDate")
 

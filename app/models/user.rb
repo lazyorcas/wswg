@@ -19,4 +19,9 @@ class User < ApplicationRecord
   def email=(value)
     super(value.split("+").first)
   end
+
+  def self.create_beta_user!(email:, city_name:)
+    city = City.find_by!(name: city_name)
+    create!(email: email, city: city, credits: 2)
+  end
 end
