@@ -13,12 +13,4 @@ class Source::Scraper::Strategy::Luma < Source::Scraper::Strategy::BaseBrowserSt
   def go_to_next_page(page)
     page.scroll_to_load
   end
-
-  def check_after_going_to_next_page?
-    true
-  end
-
-  def done_after_going_to_next_page?(page)
-    page.end_of_page?
-  end
 end
