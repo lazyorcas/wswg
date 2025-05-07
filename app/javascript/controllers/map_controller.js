@@ -1,5 +1,3 @@
-
-
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
@@ -32,7 +30,7 @@ export default class extends Controller {
       
       const features = this.#getFeaturesFromItemTargets()
       if (features.length > 0) {
-        this.#flyTo(features[0].geometry.coordinates)
+        this.#goTo(features[0].geometry.coordinates)
       }
     })
   }
@@ -66,7 +64,7 @@ export default class extends Controller {
 
       const features = this.#getFeaturesFromItemTargets()
       if (features.length > 0) {
-        this.#flyTo(features[0].geometry.coordinates)
+        this.#goTo(features[0].geometry.coordinates)
       }
     }
   }
@@ -124,7 +122,7 @@ export default class extends Controller {
 
     const coordinates = feature.geometry.coordinates || this.map.getCenter()
 
-    this.#flyTo(coordinates)
+    this.#goTo(coordinates)
 
     this.activePopup = new mapboxgl.Popup({
       anchor: this.#isMobile() ? "bottom" : "left",
@@ -160,14 +158,25 @@ export default class extends Controller {
     })
   }
 
-  #flyTo(coordinates) {
-    this.map.flyTo({
+  #goTo(coordinates) {
+    const distance = this.#calculateDistanceInKm(
+      this.map.getCenter().toArray(), 
+      coordinates
+    )
+
+    const options = {
       center: coordinates,
       padding: { 
         left: this.#isMobile() ? 0 : 256,
         top: this.#isMobile() ? 256 : 0
       }
-    })
+    }
+
+    if (distance > 100) {
+      this.map.jumpTo(options)
+    } else {
+      this.map.flyTo(options)
+    }
   }
 
   #closeActivePopup() {
@@ -196,10 +205,27 @@ export default class extends Controller {
       .find(([_, width]) => window.matchMedia(`(min-width: ${width})`).matches)?.[0] || 'xs'
   }
 
+  // TODO
   #underscore(str) {
     return str
       .replace(/([A-Z])/g, '_$1')
       .replace(/^_/, '')         
       .toLowerCase();
+  }
+
+  #calculateDistanceInKm(coords1, coords2) {
+    const lat1 = coords1[1] * Math.PI / 180
+    const lon1 = coords1[0] * Math.PI / 180
+    const lat2 = coords2[1] * Math.PI / 180
+    const lon2 = coords2[0] * Math.PI / 180
+
+    const dlat = lat2 - lat1
+    const dlon = lon2 - lon1
+
+    const a = Math.sin(dlat / 2) ** 2 + Math.cos(lat1) * Math.cos(lat2) * Math.sin(dlon / 2) ** 2
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
+    const d = 6371 * c
+
+    return d
   }
 }
