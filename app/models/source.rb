@@ -9,6 +9,6 @@ class Source < ApplicationRecord
   validates :template_url, presence: true
 
   def proxy?
-    Rails.env.production? ? @proxy : false
+    Rails.env.production? ? proxy : false
   end
 end
