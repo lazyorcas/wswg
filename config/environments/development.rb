@@ -87,7 +87,4 @@ Rails.application.configure do
 
   # ngrok
   config.hosts << ENV["NGROK_HOST"]
-
-  # HMR
-  config.hotwire.spark.html_paths += %w[ app/assets/stylesheets app/components ]
 end
