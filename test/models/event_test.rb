@@ -45,6 +45,7 @@ class EventTest < ActiveSupport::TestCase
       start_time: "18:00"
     }
     event.save!
+    event.reload
 
     assert_match(/date=/, event.url)
   end

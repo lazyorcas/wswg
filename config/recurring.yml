@@ -5,3 +5,6 @@ production:
   reindex_events_job:
     class: Events::ReindexJob
     schedule: "30 * * * *"  # Every hour at 30 minutes
+  free_credits_top_up_job:
+    class: User::FreeCreditsTopUpJob
+    schedule: "0 0 1 * *"  # Every month at 00:00 on the first day of the month

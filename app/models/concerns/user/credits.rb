@@ -23,18 +23,18 @@ module User::Credits
     has_credits? && !has_ongoing_usage_credit_transaction?
   end
 
-  def add_credits!(amount)
-    return true if admin?
+  def add_credits!(amount, transaction_type:)
+    return if admin?
 
     credit_transactions.create!(
-      transaction_type: :top_up,
+      transaction_type: transaction_type,
       amount: amount
     )
   end
 
   def use_credit!
-    return true if admin?
-    return true unless must_use_credit?
+    return nil if admin?
+    return nil unless must_use_credit?
 
     credit_transactions.create!(transaction_type: :usage)
   end

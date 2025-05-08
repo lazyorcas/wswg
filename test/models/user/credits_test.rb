@@ -12,7 +12,9 @@ class UserCreditsTest < ActiveSupport::TestCase
   test "should top up credits" do
     original_credits = users(:oscar).credits
 
-    users(:oscar).add_credits!(10)
+    users(:oscar).add_credits!(10, transaction_type: :paid_top_up)
+    users(:oscar).reload
+
     assert_equal original_credits + 10, users(:oscar).credits
   end
 
@@ -20,12 +22,20 @@ class UserCreditsTest < ActiveSupport::TestCase
     original_credits = users(:oscar).credits
 
     users(:oscar).use_credit!
+    users(:oscar).reload
+
     assert_equal original_credits - 1, users(:oscar).credits
   end
 
   test "should not deduct credits twice" do
     users(:oscar).use_credit!
-    assert users(:oscar).use_credit!
+    users(:oscar).reload
+    credits = users(:oscar).credits
+
+    users(:oscar).use_credit!
+    users(:oscar).reload
+
+    assert_equal credits, users(:oscar).credits
   end
 
   test "should deduct credits on usage after the last usage transaction expires" do
@@ -33,12 +43,16 @@ class UserCreditsTest < ActiveSupport::TestCase
 
     travel_to(credit_transactions(:usage).expires_at) do
       users(:oscar).use_credit!
+      users(:oscar).reload
+
       assert_equal original_credits - 1, users(:oscar).credits
     end
   end
 
   test "should not create credit transaction if user has ongoing usage transaction" do
     3.times { users(:oscar).use_credit! }
+    users(:oscar).reload
+
     assert_equal 1, users(:oscar).credit_transactions.ongoing.usage.count
   end
 end
