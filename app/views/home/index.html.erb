@@ -1,25 +1,15 @@
-<div class="dark:bg-stone-800">
-  <div class="h-dvh max-h-dvh flex flex-col container mx-auto px-4">
-    <div class="py-4 md:py-8 flex flex-col justify-between h-full">
-      <div class="grow flex flex-col gap-y-4 md:gap-y-8 justify-center">
-        <header class="flex flex-col md:gap-y-1">
-          <h1 class="text-3xl md:text-5xl font-bold">Where Should We Go</h1>
-          <p class="text-sm md:text-base">Find all local events in your city with one search.</p>
-        </header>
-        <div class="w-fit">
-          <% if signed_in? %>
-            <%= link_to map_path, class: "button button--primary", data: { turbo: false } do %>
-              <i class="ph-fill ph-sparkle"></i>
-              Find events
-            <% end %>
-          <% else %>
-            <%= render "sessions/form" %>
-          <% end %>
-        </div>
-      </div>
-      <div class="shrink-0">
-        <%= render "shared/footer" %>
-      </div>
+<div class="grow">
+  <header class="flex flex-col gap-y-8 md:gap-y-10 items-center pt-20 pb-10">
+    <div class="flex flex-col items-center text-center gap-y-2 md:gap-y-4">
+      <h1 class="text-3xl md:text-4xl font-bold">Discover all local events with one search</h1>
+      <p class="md:max-w-150">Search for events, meetups, and concerts from Luma, Meetup, Eventbrite, and Ticketmaster using natural language. All in one place.</p>
     </div>
+    <% unless signed_in? %>
+      <%= link_to "Get Started", new_user_path, class: "w-full md:w-fit button button--primary" %>
+    <% end %>
+  </header>
+  <div class="w-full">
+    <img src="/hero-light.webp" alt="Where Should We Go Hero Light" class="w-full rounded-2xl block dark:hidden" loading="lazy">
+    <img src="/hero-dark.webp" alt="Where Should We Go Hero Dark" class="w-full rounded-2xl hidden dark:block" loading="lazy">
   </div>
 </div>

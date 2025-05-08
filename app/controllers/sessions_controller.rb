@@ -1,5 +1,8 @@
 class SessionsController < ApplicationController
+  layout "home"
+
   def new
+    # TODO: check for origin
     redirect_to(root_path) if signed_in?
   end
 

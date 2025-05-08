@@ -13,8 +13,12 @@ Rails.application.routes.draw do
   # Defines the root path route ("/")
   root "home#index"
 
+  resources :users, only: [ :new ]
+
   get "/login", to: "sessions#new"
   get "/auth/:provider/callback", to: "sessions#create"
+
+  get "user/no_credits", to: "user#no_credits", as: :user_no_credits
 
   get "/map", to: "map#index", as: :map
   namespace :map do
@@ -28,5 +32,4 @@ Rails.application.routes.draw do
   resources :bookmarks, only: [ :create, :update ]
 
   post "stripe/webhook", to: "stripe#webhook"
-  get "user/no_credits", to: "user#no_credits", as: :user_no_credits
 end
