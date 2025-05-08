@@ -1,5 +1,5 @@
 class SearchQuery < ApplicationRecord
-  include Searches
+  include SearchesBuildable
   include Broadcastable
 
   enum :status, {
@@ -10,6 +10,8 @@ class SearchQuery < ApplicationRecord
   }, default: :analyzing
 
   belongs_to :user
+  has_many :searches
+
   attribute :result, SearchQuery::Result.to_type
 
   validates :query, presence: true
@@ -23,7 +25,21 @@ class SearchQuery < ApplicationRecord
   end
 
   def query!
-    create_searches!
+    build_searches
+    queue_poll_for_searches_results
+    searching!
+
+  rescue => e
+    Sentry.capture_exception(e)
+    broadcast_exception(e)
+    failed!
+  end
+
+  def complete?
+    searches.all?(&:completed?)
+  end
+
+  def complete!
     build_result
     completed!
 
@@ -35,12 +51,16 @@ class SearchQuery < ApplicationRecord
 
   def build_result
     self.result = SearchQuery::Result.new
-    result.build(searches_results)
+    result.build(completed_searches_results)
   end
 
   private
 
-  def searches_results
-    @searches_results ||= searches.map(&:result)
+  def completed_searches_results
+    searches.completed.map(&:result)
+  end
+
+  def queue_poll_for_searches_results
+    PollForSearchesResultsJob.perform_later(id)
   end
 end

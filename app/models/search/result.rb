@@ -10,6 +10,10 @@ class Search::Result
   attribute :took, :integer
   attribute :error, :string
 
+  def successful?
+    error.blank?
+  end
+
   def took_in_seconds
     took / 1000.0
   end

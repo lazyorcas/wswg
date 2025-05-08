@@ -1,4 +1,4 @@
-module SearchQuery::Searches::Buildable
+module SearchQuery::SearchesBuildable
   extend ActiveSupport::Concern
 
   def build_searches

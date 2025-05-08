@@ -14,7 +14,7 @@ class Search < ApplicationRecord
   validates :result, presence: true, if: :completed?
 
   after_initialize :set_default_conditions
-  after_commit :query!, on: :create
+  after_commit :queue_query, on: :create
 
   def set_default_conditions
     self.conditions = {} if conditions.blank?
@@ -22,6 +22,10 @@ class Search < ApplicationRecord
 
   def searchable_event_model
     @searchable_event_model ||= searchable_event_type.constantize
+  end
+
+  def queue_query
+    QueryJob.perform_later(id)
   end
 
   def query!
