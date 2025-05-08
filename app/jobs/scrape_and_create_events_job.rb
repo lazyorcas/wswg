@@ -14,7 +14,6 @@ class ScrapeAndCreateEventsJob < ApplicationJob
         next unless city_source.enabled?
 
         limit_modifier = calculate_limit_modifier(city, city_source)
-
         limit = (limit_modifier * NEW_EVENT_LIMIT_PER_CITY_SOURCE).floor
         next if limit.zero?
 

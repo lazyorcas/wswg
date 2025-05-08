@@ -9,4 +9,8 @@ class Searchable::DutchEvent < Event
     locations: [ :location ],
     callbacks: false
   )
+
+  def language
+    Language.find_by(code: "nl")
+  end
 end

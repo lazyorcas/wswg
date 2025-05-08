@@ -14,7 +14,7 @@ class Search < ApplicationRecord
   validates :result, presence: true, if: :completed?
 
   after_initialize :set_default_conditions
-  after_commit :queue_query, on: :create
+  after_commit :queue_query, on: :create, unless: :completed?
 
   def set_default_conditions
     self.conditions = {} if conditions.blank?

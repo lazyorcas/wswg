@@ -5,7 +5,7 @@ module Event::Searchable
   FILTERABLE_FIELDS = [ :start_date, :end_date, :start_time, :end_time, :price ]
 
   included do
-    scope :search_import, -> { includes(:location, :city) }
+    scope :search_import, -> { includes(:location, city: :languages) }
   end
 
   def search_data
@@ -23,6 +23,10 @@ module Event::Searchable
   end
 
   def should_index?
-    data_completed? && ongoing?
+    data_completed? && ongoing? && city.languages.include?(language)
+  end
+
+  def language
+    raise NotImplementedError
   end
 end

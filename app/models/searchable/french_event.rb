@@ -9,4 +9,8 @@ class Searchable::FrenchEvent < Event
     locations: [ :location ],
     callbacks: false
   )
+
+  def language
+    Language.find_by(code: "fr")
+  end
 end

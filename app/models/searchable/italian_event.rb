@@ -9,4 +9,8 @@ class Searchable::ItalianEvent < Event
     locations: [ :location ],
     callbacks: false
   )
+
+  def language
+    Language.find_by(code: "it")
+  end
 end

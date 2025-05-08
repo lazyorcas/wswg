@@ -3,12 +3,11 @@ class City < ApplicationRecord
   include Locatable
   include Scorable
   include Availability
-  include Scrapeable
 
   has_many :city_sources
+  has_many :events, through: :city_sources
   has_many :city_languages
   has_many :languages, through: :city_languages
-  has_many :events, through: :city_sources
   has_many :users
 
   validates :name, presence: true
