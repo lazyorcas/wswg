@@ -36,7 +36,7 @@ class StripeController < ActionController::Base
       return
     end
 
-    checkout_session = retrieve_checkout_session(payment_intent.id)
+    checkout_session = Stripe::Checkout::Session.retrieve(payment_intent.id)
 
     if checkout_session.nil?
       Sentry.capture_message("Checkout session not found for payment intent #{payment_intent.id}")
@@ -45,12 +45,5 @@ class StripeController < ActionController::Base
 
     amount = checkout_session.metadata["credits"].to_i
     user.add_credits!(amount, transaction_type: :paid_top_up)
-  end
-
-  def retrieve_checkout_session(payment_intent_id)
-    Stripe::Checkout::Session.list(
-      payment_intent: payment_intent_id,
-      limit: 1
-    ).data.first
   end
 end
