@@ -8,7 +8,7 @@
         </header>
         <div class="w-fit">
           <% if signed_in? %>
-            <%= link_to map_path, class: "button button--primary" do %>
+            <%= link_to map_path, class: "button button--primary", data: { turbo: false } do %>
               <i class="ph-fill ph-sparkle"></i>
               Find events
             <% end %>
