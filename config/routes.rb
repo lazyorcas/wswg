@@ -27,5 +27,6 @@ Rails.application.routes.draw do
   resources :seens, only: [ :create ]
   resources :bookmarks, only: [ :create, :update ]
 
+  post "stripe/webhook", to: "stripe#webhook"
   get "user/no_credits", to: "user#no_credits", as: :user_no_credits
 end

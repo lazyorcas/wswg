@@ -10,7 +10,10 @@
         </p>
       </header>
       <div class="py-4 md:py-8 w-fit">
-        <button class="button button--primary">Contact me</button>
+        <%= link_to build_stripe_payment_link(Current.user.email), class: "button button--primary" do %>
+          <i class="ph-fill ph-coin"></i>
+          Top up
+        <% end %>
       </div>
     </div>
   </div>

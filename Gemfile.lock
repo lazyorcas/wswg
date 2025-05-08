@@ -451,6 +451,7 @@ GEM
     store_model (4.2.1)
       activerecord (>= 7.0)
     stringio (3.1.7)
+    stripe (15.1.0)
     sync (0.5.0)
     tailwindcss-rails (4.2.3)
       railties (>= 7.0.0)
@@ -569,6 +570,7 @@ DEPENDENCIES
   stackprof
   stimulus-rails
   store_model
+  stripe
   tailwindcss-rails (~> 4.2)
   thruster
   tiktoken_ruby

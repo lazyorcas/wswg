@@ -15,7 +15,7 @@ module UserCreditsCheck
         redirect_to(user_no_credits_path)
 
       else
-        flash.now[:error] = "You don't have enough credits. Contact me to top up."
+        flash.now[:error] = "You don't have enough credits. Top up to continue."
         render turbo_stream: turbo_stream.append("flash", partial: "shared/flash")
       end
 

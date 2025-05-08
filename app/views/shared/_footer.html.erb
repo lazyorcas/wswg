@@ -1,7 +1,7 @@
 <footer class="text-sm text-secondary flex items-center justify-between">
-  <div class="flex items-center gap-x-4 divide-x divide-primary [&>*]:[&:not(:last-child)]:pr-4">
-    <%= link_to "Terms of Service", "/terms" %>
-    <%= link_to "Privacy Policy", "/privacy" %>
+  <div class="flex items-center gap-x-2 md:gap-x-4 divide-x divide-primary [&>*]:[&:not(:last-child)]:pr-2 md:[&>*]:[&:not(:last-child)]:pr-4">
+    <%= link_to "Terms of Service", "/terms", target: "_blank" %>
+    <%= link_to "Privacy Policy", "/privacy", target: "_blank" %>
   </div>
-  <%= link_to "Contact us", "https://www.linkedin.com/company/where-should-we-go/", class: "ml-auto" %>
+  <%= link_to "Contact", "https://www.linkedin.com/company/where-should-we-go/", target: "_blank", class: "ml-auto" %>
 </footer>

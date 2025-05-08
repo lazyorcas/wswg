@@ -33,8 +33,8 @@ module User::Credits
   end
 
   def use_credit!
-    return nil if admin?
-    return nil unless must_use_credit?
+    return if admin?
+    return unless must_use_credit?
 
     credit_transactions.create!(transaction_type: :usage)
   end

@@ -1,8 +1,8 @@
 <section class="flex gap-x-1 md:gap-x-2 items-center">
-  <div class="flex gap-x-2 items-center bg-white dark:bg-stone-900 rounded-full py-1 px-2 border border-stone-300 dark:border-stone-700 text-stone-900 dark:text-stone-100">
+  <%= link_to build_stripe_payment_link(Current.user.email), class: "flex gap-x-2 items-center bg-white dark:bg-stone-900 rounded-full py-1 px-2 border border-stone-300 dark:border-stone-700 text-stone-900 dark:text-stone-100", title: "Top up" do %>
     <i class="ph ph-coin"></i>
     <span class="text-sm"><%= Current.user.credits %></span>
-  </div>
+  <% end %>
   <% if Current.user.account.image_url.present? %>
     <%= image_tag Current.user.account.image_url, class: "size-8 md:size-10 rounded-full border-2 border-white dark:border-stone-900", referrerpolicy: "no-referrer" %>
   <% else %>

@@ -1,0 +1,3 @@
+module Stripe
+  PAYMENT_LINK = ENV["STRIPE_PAYMENT_LINK"]
+end
