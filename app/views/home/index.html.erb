@@ -1,12 +1,17 @@
 <div class="dark:bg-stone-800">
   <div class="h-dvh max-h-dvh flex flex-col container mx-auto px-4">
-    <div class="my-auto">
-      <header class="flex flex-col md:gap-y-1">
-        <h1 class="text-3xl md:text-5xl font-bold">Where Should We Go?</h1>
-        <p class="text-sm md:text-base">Find all local events in your city with one search.</p>
-      </header>
-      <div class="py-4 md:py-8 w-fit">
-        <%= render "sessions/form" %>
+    <div class="py-4 md:py-8 flex flex-col justify-between h-full">
+      <div class="grow flex flex-col gap-y-4 md:gap-y-8 justify-center">
+        <header class="flex flex-col md:gap-y-1">
+          <h1 class="text-3xl md:text-5xl font-bold">Where Should We Go</h1>
+          <p class="text-sm md:text-base">Find all local events in your city with one search.</p>
+        </header>
+        <div class="w-fit">
+          <%= render "sessions/form" %>
+        </div>
+      </div>
+      <div class="shrink-0">
+        <%= render "shared/footer" %>
       </div>
     </div>
   </div>

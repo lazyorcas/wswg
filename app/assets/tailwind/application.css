@@ -22,6 +22,10 @@
   body {
     @apply text-stone-900 dark:text-stone-100;
   }
+
+  .divide-primary {
+    @apply divide-stone-300 dark:divide-stone-700;
+  }
 }
 
 @layer components {
