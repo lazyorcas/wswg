@@ -1,0 +1,5 @@
+<aside class="fixed top-8 inset-x-8 md:top-[unset] md:inset-x-[unset] md:bottom-8 md:right-8" data-controller="flash">
+  <%= turbo_frame_tag "flash", class: "flex flex-col gap-y-2 items-center md:items-end" do %>
+    <%= render "shared/flash" %>
+  <% end %>
+</aside>
