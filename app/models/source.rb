@@ -1,6 +1,5 @@
 class Source < ApplicationRecord
   include Scrapeable
-  include Availability
 
   has_many :city_sources
   has_many :events, through: :city_sources

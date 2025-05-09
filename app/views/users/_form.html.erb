@@ -1,7 +1,7 @@
 <%= form_with url: "/auth/google_oauth2", data: { turbo: false }, html: { class: "flex flex-col gap-y-8" } do |form|  %>
   <div class="flex flex-col gap-y-4">
     <%= form.select :origin, 
-        City.order(:name).map { |city| [city.name, map_path(city_id: city.id)] },
+        City.enabled.order(:name).map { |city| [city.name, map_path(city_id: city.id)] },
         { prompt: "Select your home city", required: true },
         { class: "input" } %>
     <div class="flex items-start gap-x-2">

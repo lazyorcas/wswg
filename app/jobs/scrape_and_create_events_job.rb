@@ -7,7 +7,7 @@ class ScrapeAndCreateEventsJob < ApplicationJob
   queue_with_priority 2
 
   def perform
-    City.includes(:city_sources).find_each do |city|
+    City.enabled.includes(:city_sources).find_each do |city|
       next if city.time_zone.current_hour != HOUR_TO_FETCH_EVENTS
 
       city.city_sources.find_each do |city_source|

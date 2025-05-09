@@ -99,7 +99,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_04_035249) do
     t.string "currency", null: false
     t.float "lat", null: false
     t.float "lon", null: false
-    t.boolean "enabled", default: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["name"], name: "index_cities_on_name", unique: true
@@ -224,7 +223,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_04_035249) do
     t.string "template_url", null: false
     t.string "scraper_type", null: false
     t.boolean "proxy", default: false
-    t.boolean "enabled", default: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["name"], name: "index_sources_on_name", unique: true

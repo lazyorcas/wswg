@@ -2,7 +2,8 @@ class City < ApplicationRecord
   include Sluggish
   include Locatable
   include Scorable
-  include Availability
+
+  scope :enabled, -> { joins(:city_sources).where(city_sources: { enabled: true }) }
 
   has_many :city_sources
   has_many :events, through: :city_sources

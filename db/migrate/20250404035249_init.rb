@@ -99,7 +99,6 @@ class Init < ActiveRecord::Migration[8.0]
       t.string :currency, null: false
       t.float :lat, null: false
       t.float :lon, null: false
-      t.boolean :enabled, default: false
 
       t.timestamps
     end
@@ -151,7 +150,6 @@ class Init < ActiveRecord::Migration[8.0]
       t.string :template_url, null: false
       t.string :scraper_type, null: false
       t.boolean :proxy, default: false
-      t.boolean :enabled, default: false
 
       t.timestamps
     end
