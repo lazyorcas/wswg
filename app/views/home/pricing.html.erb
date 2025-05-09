@@ -1,0 +1,54 @@
+<% content_for :title, "Pricing | Where Should We Go" %>
+<div class="grow">
+  <header class="flex flex-col gap-y-8 md:gap-y-10 items-center pt-20 pb-10">
+    <div class="flex flex-col items-center text-center gap-y-2 md:gap-y-4">
+      <h1 class="text-3xl md:text-4xl font-bold">Pricing</h1>
+      <p class="md:max-w-xl">Choose the right plan based on your need.</p>
+    </div>
+  </header>
+  <div class="grid grid-cols-1 gap-4 md:gap-8 md:grid-cols-2 w-full md:max-w-3xl mx-auto">
+    <%= render "pricing_plan",
+      title: "Free",
+      price: "$0",
+      period: "/month",
+      description: "Perfect for occasional searches",
+      features: [
+        "#{User::Credits::MONTHLY_FREE_CREDITS} free credits per month",
+        "Access to all cities",
+        "Save for later"
+      ],
+      cta: "Get Started",
+      cta_path: signed_in? ? nil : new_user_path
+    %>
+    <%= render "pricing_plan",
+      title: "Pay As You Go",
+      price: "$3.85",
+      period: "/10 credits",
+      description: "Perfect for bi-weekly searches",
+      features: [
+        "#{User::Credits::MONTHLY_FREE_CREDITS} free credits per month",
+        "Access to all cities",
+        "Save for later"
+      ],
+      cta: signed_in? ? "Top up" : "Get Started",
+      cta_path: signed_in? ? build_stripe_payment_link(Current.user.email) : new_user_path
+    %>
+  </div>
+  <section class="w-full md:max-w-3xl mx-auto py-20">
+    <h2 class="text-2xl font-bold text-center mb-8">Frequently Asked Questions</h2>
+    <div class="flex flex-col gap-y-4">
+      <%= render "faq_item",
+        question: "What is a credit?",
+        answer: "A credit is required to use our search engine uninterrupted. One credit is consumed when you use our search engine within a 24-hour window. Only one credit is counted within this period, regardless of how many searches you perform."
+      %>
+      <%= render "faq_item",
+        question: "How can I get free credits?",
+        answer: "Users with zero credits at the beginning of each month will automatically receive #{User::Credits::MONTHLY_FREE_CREDITS} free credits."
+      %>
+      <%= render "faq_item",
+        question: "How do I get more credits?",
+        answer: "You can purchase additional credits through our \"Pay As You\" Go plan."
+      %>
+    </div>
+  </section>
+</div>

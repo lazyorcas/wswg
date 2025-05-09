@@ -1,0 +1,19 @@
+<div class="flex flex-col rounded-2xl border border-primary p-8">
+  <h3 class="text-xl font-semibold"><%= title %></h3>
+  <p class="mt-4 flex items-baseline">
+    <span class="text-5xl font-bold tracking-tight"><%= price %></span>
+    <span class="ml-1 text-xl font-semibold"><%= period %></span>
+  </p>
+  <p class="mt-6 text-base text-secondary"><%= description %></p>
+  <ul class="mt-8 flex flex-col gap-y-3 text-sm text-secondary">
+    <% features.each do |feature| %>
+      <li class="flex gap-x-3 items-center">
+        <i class="ph-bold ph-check text-brand-500"></i>
+        <%= feature %>
+      </li>
+    <% end %>
+  </ul>
+  <% if cta_path %>
+    <%= link_to cta, cta_path, class: "button button--primary mt-8" %>
+  <% end %>
+</div>

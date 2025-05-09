@@ -22,10 +22,6 @@
   body {
     @apply text-stone-900 dark:text-stone-100;
   }
-
-  .divide-primary {
-    @apply divide-stone-300 dark:divide-stone-700;
-  }
 }
 
 @layer components {
@@ -257,7 +253,7 @@
   |
   |
   |
-  |  Text
+  |  Colors
   |
   |
   ============================================================================= */
@@ -267,6 +263,14 @@
 
   .text-secondary {
     @apply text-stone-600 dark:text-stone-400;
+  }
+
+  .border-primary {
+    @apply border-stone-300 dark:border-stone-700;
+  }
+
+  .divide-primary {
+    @apply divide-stone-300 dark:divide-stone-700;
   }
 
   /* ==========================================================================

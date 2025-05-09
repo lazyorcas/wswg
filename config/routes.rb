@@ -12,6 +12,7 @@ Rails.application.routes.draw do
 
   # Defines the root path route ("/")
   root "home#index"
+  get "/pricing", to: "home#pricing", as: :pricing
 
   resources :users, only: [ :new ]
 
