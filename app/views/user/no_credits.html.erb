@@ -5,7 +5,7 @@
       <header class="flex flex-col md:gap-y-1 text-center">
         <h1 class="text-2xl md:text-3xl font-bold">No credits left.</h1>
         <p class="text-sm md:text-base">
-          You have 2 free credits every month.<br/>
+          You have <%= User::Credits::MONTHLY_FREE_CREDITS %> free credits every month.<br/>
           Each credit lasts <%= CreditTransaction::USAGE_EXPIRATION_TIME.in_hours.to_i %> hours.
         </p>
       </header>

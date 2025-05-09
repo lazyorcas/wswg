@@ -44,6 +44,6 @@ class StripeController < ActionController::Base
     end
 
     amount = checkout_session.metadata["credits"].to_i
-    user.add_credits!(amount, transaction_type: :paid_top_up)
+    user.add_paid_credits!(amount)
   end
 end

@@ -1,6 +1,6 @@
 require "test_helper"
 
-class UserCreditsTest < ActiveSupport::TestCase
+class User::CreditsTest < ActiveSupport::TestCase
   test "should have credits" do
     assert users(:oscar).has_credits?
   end
@@ -9,13 +9,32 @@ class UserCreditsTest < ActiveSupport::TestCase
     assert users(:lily).has_credits?
   end
 
-  test "should top up credits" do
+  test "should top up paid credits" do
     original_credits = users(:oscar).credits
 
-    users(:oscar).add_credits!(10, transaction_type: :paid_top_up)
+    users(:oscar).add_paid_credits!(10)
     users(:oscar).reload
 
     assert_equal original_credits + 10, users(:oscar).credits
+  end
+
+  test "should top up free credits" do
+    original_credits = users(:oscar).credits
+
+    users(:oscar).add_free_credits!
+    users(:oscar).reload
+
+    assert_equal original_credits + 2, users(:oscar).credits
+  end
+
+  test "should not top up free credits twice for the same month" do
+    original_credits = users(:oscar).credits
+
+    users(:oscar).add_free_credits!
+    users(:oscar).add_free_credits!
+    users(:oscar).reload
+
+    assert_equal original_credits + 2, users(:oscar).credits
   end
 
   test "should deduct credits on usage" do
