@@ -8,10 +8,11 @@ class CitySource::ScrapeAndCreateEventsJob < ApplicationJob
     city_source = CitySource.find(id)
 
     events_attributes = city_source.scrape
+    events_attributes = events_attributes.take(limit)
+
     create_event_jobs = Event.build_create_event_jobs(
       events_attributes,
-      city_source_id: id,
-      limit: limit
+      city_source_id: id
     )
 
     if create_event_jobs.any?
