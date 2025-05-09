@@ -54,6 +54,8 @@ env:
     - OPENAI_ACCESS_TOKEN
     - TICKETMASTER_API_KEY
     - PROXY_PASSWORD
+    - STRIPE_SECRET_KEY
+    - STRIPE_WEBHOOK_SECRET
   clear:
     # Run the Solid Queue Supervisor inside the web server's Puma process to do jobs.
     # When you start using multiple servers, you should split out job processing to a dedicated machine.
@@ -85,6 +87,8 @@ env:
     PROXY_HOST: <%= ENV["PROXY_HOST"] %>
     PROXY_PORT: <%= ENV["PROXY_PORT"] %>
     PROXY_USERNAME: <%= ENV["PROXY_USERNAME"] %>
+    STRIPE_PAYMENT_LINK: <%= ENV["STRIPE_PAYMENT_LINK"] %>
+    STRIPE_PUBLISHABLE_KEY: <%= ENV["STRIPE_PUBLISHABLE_KEY"] %>
 
 # Aliases are triggered with "bin/kamal <alias>". You can overwrite arguments on invocation:
 # "bin/kamal logs -r job" will tail logs from the first server in the job section.
