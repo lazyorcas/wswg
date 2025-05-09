@@ -3,7 +3,9 @@ class City < ApplicationRecord
   include Locatable
   include Scorable
 
-  scope :enabled, -> { joins(:city_sources).where(city_sources: { enabled: true }) }
+  scope :enabled, -> {
+    joins(:city_sources).where(city_sources: { enabled: true }).distinct
+  }
 
   has_many :city_sources
   has_many :events, through: :city_sources

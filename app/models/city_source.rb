@@ -12,7 +12,7 @@ class CitySource < ApplicationRecord
     find_by(city: city, source: source)
   end
 
-  def self.enable(city_names:, source_names:)
+  def self.enable(city_names: nil, source_names: nil)
     city_ids = city_names.present? ?
       City.where(name: city_names).pluck(:id) :
       City.pluck(:id)
@@ -28,7 +28,7 @@ class CitySource < ApplicationRecord
     end
   end
 
-  def self.disable(city_names:, source_names:)
+  def self.disable(city_names: nil, source_names: nil)
     city_ids = city_names.present? ?
       City.where(name: city_names).pluck(:id) :
       City.pluck(:id)
