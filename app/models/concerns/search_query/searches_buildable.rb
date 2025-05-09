@@ -42,7 +42,8 @@ module SearchQuery::SearchesBuildable
       end
 
       if lks.select { |_, keywords| keywords == "*" }.length == lks.length
-        lks = { "English" => "*" }
+        k, v = lks.first
+        lks = { k => v }
 
       elsif lks.select { |_, keywords| keywords == "*" }.length > 1
         Sentry.capture_message(
