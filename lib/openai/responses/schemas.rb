@@ -56,7 +56,7 @@ module OpenAI::Responses::Schemas
       city: {
         type: "string",
         description: "City name. If not mentioned, return an empty string. If the city isn't in the list of supported cities, return \"NOT_SUPPORTED\".",
-        enum: [ *City.pluck(:name), "NOT_SUPPORTED", "" ]
+        enum: [ *City.enabled.pluck(:name), "NOT_SUPPORTED", "" ]
       }
     })
   end

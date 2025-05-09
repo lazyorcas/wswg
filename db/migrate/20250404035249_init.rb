@@ -16,6 +16,7 @@ class Init < ActiveRecord::Migration[8.0]
 
     create_users
     create_accounts
+    create_credit_transactions
 
     create_search_queries
     create_searches
@@ -35,7 +36,7 @@ class Init < ActiveRecord::Migration[8.0]
       # simply remove any you don't want
 
       # user
-      t.references :user
+      t.belongs_to :user
 
       # standard
       t.string :ip
@@ -77,8 +78,8 @@ class Init < ActiveRecord::Migration[8.0]
 
   def create_ahoy_events
     create_table :ahoy_events do |t|
-      t.references :visit
-      t.references :user
+      t.belongs_to :ahoy_visit
+      t.belongs_to :user
 
       t.string :name
       t.jsonb :properties
@@ -98,6 +99,7 @@ class Init < ActiveRecord::Migration[8.0]
       t.string :currency, null: false
       t.float :lat, null: false
       t.float :lon, null: false
+      t.boolean :enabled, default: false
 
       t.timestamps
     end
@@ -149,6 +151,7 @@ class Init < ActiveRecord::Migration[8.0]
       t.string :template_url, null: false
       t.string :scraper_type, null: false
       t.boolean :proxy, default: false
+      t.boolean :enabled, default: false
 
       t.timestamps
     end
@@ -207,6 +210,7 @@ class Init < ActiveRecord::Migration[8.0]
 
       t.string :email, null: false, index: { unique: true }
       t.boolean :admin, default: false
+      t.integer :credits, default: 0, null: false
 
       t.timestamps
     end
@@ -224,6 +228,20 @@ class Init < ActiveRecord::Migration[8.0]
     end
 
     add_index :accounts, [ :provider, :uid ], unique: true
+  end
+
+  def create_credit_transactions
+    create_table :credit_transactions do |t|
+      t.belongs_to :user, null: false, foreign_key: true, index: true
+
+      t.integer :transaction_type, null: false
+      t.integer :amount, null: false
+      t.datetime :expires_at
+
+      t.timestamps
+    end
+
+    add_index :credit_transactions, [ :user_id, :transaction_type, :expires_at ]
   end
 
   def create_search_queries

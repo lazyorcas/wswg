@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_04_04_035250) do
+ActiveRecord::Schema[8.0].define(version: 2025_04_04_035249) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -26,15 +26,15 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_04_035250) do
   end
 
   create_table "ahoy_events", force: :cascade do |t|
-    t.bigint "visit_id"
+    t.bigint "ahoy_visit_id"
     t.bigint "user_id"
     t.string "name"
     t.jsonb "properties"
     t.datetime "time"
+    t.index ["ahoy_visit_id"], name: "index_ahoy_events_on_ahoy_visit_id"
     t.index ["name", "time"], name: "index_ahoy_events_on_name_and_time"
     t.index ["properties"], name: "index_ahoy_events_on_properties", opclass: :jsonb_path_ops, using: :gin
     t.index ["user_id"], name: "index_ahoy_events_on_user_id"
-    t.index ["visit_id"], name: "index_ahoy_events_on_visit_id"
   end
 
   create_table "ahoy_visits", force: :cascade do |t|
@@ -99,6 +99,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_04_035250) do
     t.string "currency", null: false
     t.float "lat", null: false
     t.float "lon", null: false
+    t.boolean "enabled", default: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["name"], name: "index_cities_on_name", unique: true
@@ -223,6 +224,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_04_035250) do
     t.string "template_url", null: false
     t.string "scraper_type", null: false
     t.boolean "proxy", default: false
+    t.boolean "enabled", default: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["name"], name: "index_sources_on_name", unique: true
@@ -232,9 +234,9 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_04_035250) do
     t.bigint "city_id", null: false
     t.string "email", null: false
     t.boolean "admin", default: false
+    t.integer "credits", default: 0, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "credits", default: 0, null: false
     t.index ["city_id"], name: "index_users_on_city_id"
     t.index ["email"], name: "index_users_on_email", unique: true
   end

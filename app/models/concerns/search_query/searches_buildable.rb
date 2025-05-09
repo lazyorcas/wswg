@@ -94,7 +94,7 @@ module SearchQuery::SearchesBuildable
         )
 
         raise UserReadableError.new(
-          "This location is not supported yet. Only #{City.pluck(:name).to_sentence} are currently supported."
+          "This location is not supported yet. Only #{City.enabled.pluck(:name).to_sentence} are currently supported."
         )
       end
 

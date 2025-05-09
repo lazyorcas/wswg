@@ -2,10 +2,16 @@ module Source::Availability
   extend ActiveSupport::Concern
 
   def enable!
-    city_sources.update_all(enabled: true)
+    transaction do
+      city_sources.update_all(enabled: true)
+      update!(enabled: true)
+    end
   end
 
   def disable!
-    city_sources.update_all(enabled: false)
+    transaction do
+      city_sources.update_all(enabled: false)
+      update!(enabled: false)
+    end
   end
 end

@@ -66,8 +66,7 @@ CITY_SOURCES_ATTRIBUTES.each do |attrs_array|
 
   city_source = CitySource.find_or_initialize_by(
     city_id: city_id,
-    source_id: source_id,
-    enabled: false
+    source_id: source_id
   )
 
   if city_source.new_record?
