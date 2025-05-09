@@ -11,6 +11,6 @@ class Source::Scraper::Strategy::Eventbrite < Source::Scraper::Strategy::BaseBro
   end
 
   def go_to_next_page(page)
-    page.click_on("[aria-label=\"Next Page\"]")
+    page.click_on("button[aria-label=\"Next Page\"]")
   end
 end
