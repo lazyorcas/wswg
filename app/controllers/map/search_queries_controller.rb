@@ -4,6 +4,14 @@ class Map::SearchQueriesController < ApplicationController
   before_action :require_user!
   require_credits only: :create
 
+  rate_limit to: 10,
+    within: 1.minute,
+    only: :create,
+    with: -> do
+      flash.now[:error] = "Too many requests. Please try again in 1 minute."
+      turbo_stream_flash
+    end
+
   def index; end
 
   def create
