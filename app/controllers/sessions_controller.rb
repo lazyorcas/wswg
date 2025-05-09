@@ -1,25 +1,31 @@
 class SessionsController < ApplicationController
   layout "home"
 
-  def new
-    # TODO: check for origin
-    redirect_to(root_path) if signed_in?
-  end
+  before_action -> { redirect_to(map_path) }, if: :signed_in?, only: [ :new ]
+
+  def new; end
 
   def create
     auth_hash = request.env["omniauth.auth"]
+    user = User.find_or_initialize_by(email: auth_hash[:info][:email])
 
-    user = User.find_by(email: auth_hash[:info][:email])
-    if user.nil?
-      redirect_to(login_path, flash: { error: "User not found. Please contact me for access." })
-      return
+    if user.new_record?
+      origin = request.env["omniauth.origin"]
+      city_id = Url.extract_query_param(origin, "city_id")&.to_i
+
+      if city_id.nil?
+        raise UserReadableError.new("User account not found.")
+      end
+
+      user.city_id = city_id
+      user.save!
     end
 
-    account = find_or_create_account(auth_hash, user)
+    create_or_update_account!(user, auth_hash)
+    session[:user_id] = user.id
 
-    session[:user_id] = account.user.id
+    redirect_to(map_path)
 
-    redirect_to(root_path)
   rescue => e
     Sentry.capture_exception(e)
 
@@ -32,18 +38,13 @@ class SessionsController < ApplicationController
     turbo_stream_flash
   end
 
-  private
-
-  def find_or_create_account(auth_hash, user)
+  def create_or_update_account!(user, auth_hash)
     account = Account.find_or_initialize_by(
       provider: auth_hash[:provider],
       uid: auth_hash[:uid]
     )
-
-    account.user = user
+    account.user_id = user.id
     account.auth_hash = auth_hash
     account.save!
-
-    account
   end
 end

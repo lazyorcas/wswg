@@ -20,4 +20,12 @@ class UrlTest < ActiveSupport::TestCase
     params = { new: "value" }
     assert_equal "https://example.com/search?new=value", Url.get_parameterized_url(url_with_query, params)
   end
+
+  test "extract_query_param" do
+    url = "https://example.com/?mode=search"
+    assert_equal "search", Url.extract_query_param(url, "mode")
+
+    path = "/?mode=search"
+    assert_equal "search", Url.extract_query_param(path, "mode")
+  end
 end

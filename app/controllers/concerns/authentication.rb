@@ -11,7 +11,7 @@ module Authentication
   private
 
   def signed_in?
-    Current.user.present?
+    Current.user.present? && Current.user.account.present?
   end
 
   def associate_current_user_with_visit

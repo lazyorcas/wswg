@@ -8,8 +8,14 @@ module Url
   end
 
   def self.get_parameterized_url(url, params)
-    url = URI(url)
-    url.query = URI.encode_www_form(params)
-    url.to_s
+    uri = URI(url)
+    uri.query = URI.encode_www_form(params)
+    uri.to_s
+  end
+
+  def self.extract_query_param(url, key)
+    uri = URI(url)
+    query_params = URI.decode_www_form(uri.query)
+    query_params.to_h[key]
   end
 end

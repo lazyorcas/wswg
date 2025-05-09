@@ -63,6 +63,6 @@ module User::Credits
   private
 
   def set_default_credits
-    self.credits ||= DEFAULT_CREDITS
+    self.credits = DEFAULT_CREDITS if credits.zero?
   end
 end

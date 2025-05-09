@@ -1,6 +1,6 @@
 <%= form_with url: "/auth/google_oauth2", data: { turbo: false }, html: { class: "flex flex-col gap-y-8" } do |form|  %>
   <%= form.select :origin, 
-      City.order(:name).map { |city| [city.name, root_path(city_id: city.id)] },
+      City.order(:name).map { |city| [city.name, map_path(city_id: city.id)] },
       { prompt: "Select your home city", required: true },
       { class: "input" } %>
   <%= form.button class: "cursor-pointer button button--primary" do %>
