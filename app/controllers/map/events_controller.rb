@@ -9,6 +9,7 @@ class Map::EventsController < ApplicationController
     else
       load_events_this_week
     end
+    order_events
     @events = @events.includes(:location, :source, :city)
   end
 
@@ -27,6 +28,10 @@ class Map::EventsController < ApplicationController
     next_monday = current_date.end_of_week.next_occurring(:monday)
     next_sunday = current_date.end_of_week.next_occurring(:sunday)
     @events = event_scope.where(end_date: next_monday..next_sunday)
+  end
+
+  def order_events
+    @events = @events.order(:start_date, :start_time)
   end
 
   def load_event
