@@ -22,10 +22,8 @@ module Event::Locatable
 
     distance_from_city = Geospatial.distance_in_km_between(coordinates, city_coordinates)
 
-    if distance_from_city > MAX_DISTANCE_TO_CITY
-      raise StandardError.new("Event is too far away")
+    if distance_from_city <= MAX_DISTANCE_TO_CITY
+      self.location_id = _location_query.location_id
     end
-
-    self.location_id = _location_query.location_id
   end
 end
