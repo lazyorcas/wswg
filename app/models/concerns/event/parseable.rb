@@ -31,14 +31,16 @@ module Event::Parseable
     )
 
     if json["not_found"]
-      ArchivedLink.create!(
-        url: url,
-        reason: :not_found_or_expired,
-        metadata: {
+      archived_link = ArchivedLink.find_or_initialize_by(url: url)
+
+      if archived_link.new_record?
+        archived_link.reason = :not_found_or_expired
+        archived_link.metadata = {
           markdown: markdown,
           json: json
         }
-      )
+        archived_link.save!
+      end
       return
     end
 
