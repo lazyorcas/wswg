@@ -2,8 +2,6 @@ class CitySource < ApplicationRecord
   include Availability
   include Scrapeable
 
-  scope :enabled, -> { where(enabled: true) }
-
   belongs_to :city
   belongs_to :source
 
