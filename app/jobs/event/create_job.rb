@@ -5,7 +5,7 @@ class Event::CreateJob < ApplicationJob
 
   retry_on Jina::TimeoutError, wait: :polynomially_longer, attempts: 3
 
-  retry_on OpenAI::TooManyRequestsError, wait: 1.minute, attempts: 3
+  retry_on OpenAI::TooManyRequestsError, wait: 5.minutes, attempts: 3
   retry_on OpenAI::ServerError, wait: 5.minutes, attempts: 3
 
   retry_on Event::DataIncompleteError, attempts: DATA_INCOMPLETE_MAX_ATTEMPTS
