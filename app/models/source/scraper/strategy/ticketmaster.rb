@@ -30,7 +30,7 @@ class Source::Scraper::Strategy::Ticketmaster < Source::Scraper::Strategy::BaseA
         url: data["url"].split("?").first,
         title: data["name"],
         tags: classifications ? classifications.map { |c| c["segment"]["name"] }.uniq.join(" ") : nil,
-        image_url: data.dig("images", 0, "href"),
+        image_url: data.dig("images", 0, "url") || data.dig("images", 0, "href"),
         start_date: start_date,
         end_date: end_date || start_date,
         start_time: data.dig("dates", "start", "localTime"),
