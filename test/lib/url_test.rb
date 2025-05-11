@@ -5,6 +5,7 @@ class UrlTest < ActiveSupport::TestCase
     assert_equal "https://example.com", Url.get_base_url("https://example.com/")
     assert_equal "https://example.com", Url.get_base_url("http://example.com/foo/bar")
     assert_equal "https://example.com", Url.get_base_url("https://example.com/?city=münchen")
+    assert_equal "https://münchen.de", Url.get_base_url("https://münchen.de/")
   end
 
   test "build_url" do
