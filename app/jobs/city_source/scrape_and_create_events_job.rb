@@ -9,18 +9,16 @@ class CitySource::ScrapeAndCreateEventsJob < ApplicationJob
   retry_on Ferrum::NodeNotFoundError, wait: 1.minute, attempts: 3
   retry_on NoEventsFoundError, wait: 5.minutes, attempts: NO_EVENTS_FOUND_MAX_ATTEMPTS
 
-  rescue_from NoEventsFoundError do |exception|
-    if (exception_executions[NoEventsFoundError.to_s] || 0) >= NO_EVENTS_FOUND_MAX_ATTEMPTS
-      return
-    end
-    raise exception
-  end
-
   def perform(id, limit:)
     city_source = CitySource.find(id)
 
     events_attributes = city_source.scrape
-    raise NoEventsFoundError if events_attributes.empty?
+    if events_attributes.empty?
+      if (exception_executions[NoEventsFoundError.to_s] || 0) >= NO_EVENTS_FOUND_MAX_ATTEMPTS
+        return
+      end
+      raise NoEventsFoundError
+    end
 
     events_attributes = events_attributes.take(limit)
 
