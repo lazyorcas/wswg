@@ -8,7 +8,7 @@ class Event::CreateJob < ApplicationJob
   retry_on OpenAI::TooManyRequestsError, wait: 5.minutes, attempts: 3
   retry_on OpenAI::ServerError, wait: 5.minutes, attempts: 3
 
-  retry_on Event::DataIncompleteError, attempts: DATA_INCOMPLETE_MAX_ATTEMPTS
+  retry_on Event::DataIncompleteError, wait: 5.minutes, attempts: DATA_INCOMPLETE_MAX_ATTEMPTS
 
   def perform(url:, **attributes)
     event = Event.find_or_initialize_by(url: url)
