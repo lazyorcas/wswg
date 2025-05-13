@@ -9,7 +9,7 @@ module User::Credits
 
     validates :credits, presence: true
 
-    after_initialize :set_default_credits
+    before_create :set_default_credits, if: -> { credits.zero? }
   end
 
   def has_credits?
@@ -26,11 +26,11 @@ module User::Credits
     credit_transactions.free_top_up.where(created_at: current_date.beginning_of_month..current_date.end_of_month).exists?
   end
 
-  def add_paid_credits!(amount)
+  def add_credits!(amount, transaction_type)
     return if admin?
 
     credit_transactions.create!(
-      transaction_type: :paid_top_up,
+      transaction_type: transaction_type,
       amount: amount
     )
   end
@@ -63,6 +63,6 @@ module User::Credits
   private
 
   def set_default_credits
-    self.credits = DEFAULT_CREDITS if credits.zero?
+    self.credits = DEFAULT_CREDITS
   end
 end

@@ -12,7 +12,7 @@ class User::CreditsTest < ActiveSupport::TestCase
   test "should top up paid credits" do
     original_credits = users(:oscar).credits
 
-    users(:oscar).add_paid_credits!(10)
+    users(:oscar).add_credits!(10, :paid_top_up)
     users(:oscar).reload
 
     assert_equal original_credits + 10, users(:oscar).credits

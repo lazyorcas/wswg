@@ -9,7 +9,8 @@ class CreditTransaction < ApplicationRecord
   enum :transaction_type, {
     usage: -1,
     free_top_up: 0,
-    paid_top_up: 1
+    paid_top_up: 1,
+    admin_top_up: 2
   }
 
   validates :transaction_type, presence: true
