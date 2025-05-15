@@ -7,6 +7,8 @@ class CitySource < ApplicationRecord
 
   has_many :events
 
+  validates :source, uniqueness: { scope: :city }
+
   def self.find_by_names(city_name:, source_name:)
     city = City.find_by(name: city_name)
     source = Source.find_by(name: source_name)
