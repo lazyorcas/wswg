@@ -14,7 +14,6 @@
       description: "Perfect for occasional searches",
       features: [
         "#{User::Credits::MONTHLY_FREE_CREDITS} free credits per month",
-        "Access to all cities",
         "Save for later"
       ],
       cta: "Get Started",
@@ -22,12 +21,11 @@
     %>
     <%= render "pricing_plan",
       title: "Pay As You Go",
-      price: "S$5.00",
+      price: "S$5",
       period: "/10 credits",
       description: "Perfect for bi-weekly searches",
       features: [
         "#{User::Credits::MONTHLY_FREE_CREDITS} free credits per month",
-        "Access to all cities",
         "Save for later"
       ],
       cta: signed_in? ? "Top up" : "Get Started",
