@@ -5,7 +5,8 @@ LANGUAGES_ATTRIBUTES = [
   [ "French", "fr", [ "Montreal", "Paris" ] ],
   [ "German", "de", [ "Munich", "Berlin" ] ],
   [ "Spanish", "es", [ "Barcelona", "Madrid" ] ],
-  [ "Italian", "it", [] ]
+  [ "Italian", "it", [] ],
+  [ "Portuguese", "pt", [] ]
 ]
 
 LANGUAGES_ATTRIBUTES.each do |attrs_array|
