@@ -1,4 +1,6 @@
 class Map::EventsController < ApplicationController
+  EVENT_LIMIT = 100
+
   before_action :require_user!
 
   after_action :add_event_to_seen_events, only: :show
@@ -10,6 +12,7 @@ class Map::EventsController < ApplicationController
       load_events_this_week
     end
     order_events
+    limit_events
     @events = @events.includes(:location, :source, :city)
   end
 
@@ -32,6 +35,10 @@ class Map::EventsController < ApplicationController
 
   def order_events
     @events = @events.order(:start_date, :start_time)
+  end
+
+  def limit_events
+    @events = @events.limit(EVENT_LIMIT)
   end
 
   def load_event

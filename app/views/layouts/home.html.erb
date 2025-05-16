@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <title><%= content_for?(:title) ? yield(:title) : "Where Should We Go" %></title>
-    <meta name="description" content="Where Should We Go is a search engine designed to make discovering local events faster and easier, using one simple search bar.">
+    <meta name="description" content="<%= content_for?(:description) ? yield(:description) : "Where Should We Go is a search engine designed to make discovering local events faster and easier, using one simple search bar." %>">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="mobile-web-app-capable" content="yes">
@@ -16,7 +16,7 @@
     <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
     <%= Sentry.get_trace_propagation_meta.html_safe %>
   </head>
-  <body class="min-h-dvh dark:bg-stone-800 container mx-auto flex flex-col px-4 py-4 md:py-8">
+  <body class="min-h-dvh dark:bg-stone-900 container mx-auto flex flex-col px-4 py-4 md:py-8">
     <header class="flex items-center gap-x-2 justify-between">
       <%= link_to root_path do %>
         <%= image_tag "/logo.webp", class: "size-10 rounded", alt: "Where Should We Go Logo" %>
