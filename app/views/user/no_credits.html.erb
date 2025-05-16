@@ -7,7 +7,7 @@
         <%= link_to "View pricing", pricing_path, class: "text-sm text-secondary hover:underline" %>
       </header>
       <div class="py-4 md:py-8 w-fit">
-        <%= link_to build_stripe_payment_link(Current.user.email), class: "button button--primary" do %>
+        <%= link_to user_top_up_credits_path, class: "button button--primary" do %>
           <i class="ph-fill ph-coin"></i>
           Top up
         <% end %>

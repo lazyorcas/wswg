@@ -25,6 +25,7 @@ Rails.application.routes.draw do
   get "/auth/:provider/callback", to: "sessions#create"
 
   get "user/no_credits", to: "user#no_credits", as: :user_no_credits
+  get "user/top_up_credits", to: "user#top_up_credits", as: :user_top_up_credits
 
   get "/map", to: "map#index", as: :map
   namespace :map do

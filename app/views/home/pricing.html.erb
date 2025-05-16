@@ -29,7 +29,7 @@
         "Save for later"
       ],
       cta: signed_in? ? "Top up" : "Get Started",
-      cta_path: signed_in? ? build_stripe_payment_link(Current.user.email) : new_user_path
+      cta_path: signed_in? ? user_top_up_credits_path : new_user_path
     %>
   </div>
   <section class="w-full md:max-w-3xl mx-auto py-20">
