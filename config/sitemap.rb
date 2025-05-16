@@ -1,4 +1,5 @@
 SitemapGenerator::Sitemap.default_host = "https://#{ENV["HOST_NAME"]}"
+SitemapGenerator::Sitemap.compress = false
 SitemapGenerator::Sitemap.create do
   # Put links creation logic here.
   #
