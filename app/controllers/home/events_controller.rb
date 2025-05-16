@@ -14,6 +14,12 @@ class Home::EventsController < ApplicationController
     build_time_period_text
     build_title
     build_description
+
+    ahoy.track "Viewed events", city: @city.name, time_period: @time_period_text
+
+    if @events.empty?
+      Sentry.capture_message("No events found for #{@city.name} #{@time_period_text}")
+    end
   end
 
   private
