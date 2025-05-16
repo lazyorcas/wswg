@@ -2,7 +2,7 @@ module City::Scorable
   extend ActiveSupport::Concern
 
   POPULAR_CITY_MIN_USER_COUNT = 10
-  ACTIVE_USER_VISIT_TIME_WINDOW = 1.week
+  ACTIVE_USER_VISIT_TIME_WINDOW = 2.weeks
 
   def current_score
     (1.0 * active_user_count / POPULAR_CITY_MIN_USER_COUNT).round(2)
