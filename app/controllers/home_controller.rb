@@ -6,7 +6,7 @@ class HomeController < ApplicationController
   end
 
   def pricing
-    ahoy.track("Visited Pricing Page")
+    ahoy.track("Visited pricing page")
   end
 
   private
