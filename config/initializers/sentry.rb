@@ -20,4 +20,6 @@ Sentry.init do |config|
   config.profiles_sample_rate = 1.0
 
   config.enabled_environments = %w[production]
+
+  config.enable_logs = true
 end
