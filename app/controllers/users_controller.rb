@@ -3,5 +3,7 @@ class UsersController < ApplicationController
 
   before_action -> { redirect_to(map_path) }, if: :signed_in?
 
-  def new; end
+  def new
+    ahoy.track("Visited Sign Up Page")
+  end
 end
