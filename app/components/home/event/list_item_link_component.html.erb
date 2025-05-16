@@ -2,10 +2,10 @@
   <span class="w-full list-item rounded-xl">
     <span class="flex gap-x-4">
       <%= link_to @event.url, class: "grow flex gap-x-4", target: "_blank" do %>
-        <%= image_tag @event.image_url, class: "shrink-0 event-image", loading: "lazy", referrerpolicy: "no-referrer" %>
+        <%= image_tag @event.image_url, class: "shrink-0 event-image", loading: "lazy", referrerpolicy: "no-referrer", alt: "Event image" %>
         <span class="grow flex flex-col list-item__text">
           <%= tag.span class: "mb-2 w-full flex items-center gap-x-1" do %>
-            <%= image_tag source_icon_url, class: "inline-flex event-source-icon", loading: "lazy" %>
+            <%= image_tag source_icon_url, class: "inline-flex event-source-icon", loading: "lazy", alt: "Event source icon" %>
             <span class="text-xs"><%= @event.source.name %></span>
           <% end %>
           <%= tag.h2 @event.title, class: "text-sm line-clamp-1" %>
