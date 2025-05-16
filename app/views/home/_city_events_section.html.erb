@@ -1,10 +1,17 @@
 <section class="flex-1 flex flex-col gap-y-2 md:gap-y-4 items-center">
-  <h3 class="text-xl font-semibold"><%= title %></h3>
+  <h3 class="text-xl font-semibold">Events in <%= city.name %></h3>
   <ol class="flex flex-col">
-    <% @enabled_cities.each do |city| %>
-      <li>
-        <%= link_to "#{title} in #{city.name}", send(path_helper, city_name: city.name.parameterize), class: "link" %>
-      </li>
-    <% end %>
+    <li>
+      <%= link_to "Events today in #{city.name}", events_today_path(city_name: city.name.parameterize), class: "link" %>
+    </li>
+    <li>
+      <%= link_to "Events tomorrow in #{city.name}", events_tomorrow_path(city_name: city.name.parameterize), class: "link" %>
+    </li>
+    <li>
+      <%= link_to "Events this week in #{city.name}", events_this_week_path(city_name: city.name.parameterize), class: "link" %>
+    </li>
+    <li>
+      <%= link_to "Events next week in #{city.name}", events_next_week_path(city_name: city.name.parameterize), class: "link" %>
+    </li>
   </ol>
 </section>
