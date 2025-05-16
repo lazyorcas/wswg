@@ -9,6 +9,8 @@ module SearchQuery::Broadcastable
   end
 
   def broadcast_result_events
+    return if user.search_queries.excluding(self).exists?(created_at: created_at..)
+
     broadcast_update_to(
       self,
       target: "search-results",

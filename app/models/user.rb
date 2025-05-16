@@ -8,6 +8,7 @@ class User < ApplicationRecord
   has_many :bookmarked_events, through: :bookmarks, source: :event
   has_many :seens
   has_many :seen_events, through: :seens, source: :event
+  has_many :search_queries
 
   has_many :visits, class_name: "Ahoy::Visit"
 
