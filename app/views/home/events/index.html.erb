@@ -25,8 +25,13 @@
     <% end %>
     <p class="px-4 text-sm">
       <% if @events.any? %>
-        <%= @events.count %>/<%= @all_events_count %> events are shown. <%= link_to "Create an account", new_user_path(city_id: @city.id), class: "link" %> to see all events.
-        <br>
+        <%= @events.count %>/<%= @all_events_count %> events are shown.
+        <% if signed_in? %>
+          <%= link_to "See all events", map_path, class: "link" %>.
+        <% else %>
+          <%= link_to "Create an account", new_user_path(city_id: @city.id), class: "link" %> to see all events.
+        <% end %>
+        <br />
       <% end %>
       <% if today? %>
         Additionally, you can view <%= link_to "events today in #{@city.name}", events_today_path(city_name: @city.name.parameterize), class: "link" %>.
