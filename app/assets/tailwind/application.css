@@ -227,6 +227,22 @@
     @apply shadow;
   }
 
+  .flash--info {
+    @apply bg-blue-200 dark:bg-blue-800 text-blue-900 dark:text-blue-100;
+  }
+
+  .flash--success {
+    @apply bg-green-200 dark:bg-green-800 text-green-900 dark:text-green-100;
+  }
+
+  .flash--warning {
+    @apply bg-yellow-200 dark:bg-yellow-800 text-yellow-900 dark:text-yellow-100
+  }
+
+  .flash--error {
+    @apply bg-red-200 dark:bg-red-800 text-red-900 dark:text-red-100;
+  }
+
   /* ==========================================================================
   |
   |
@@ -271,6 +287,13 @@
 
   .divide-primary {
     @apply divide-stone-300 dark:divide-stone-700;
+  }
+
+  .link {
+    @apply text-blue-600 dark:text-blue-400;
+    @apply hover:text-blue-800 dark:hover:text-blue-200;
+    @apply visited:text-purple-700 dark:visited:text-purple-300;
+    @apply transition ease-in-out;
   }
 
   /* ==========================================================================

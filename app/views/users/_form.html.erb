@@ -1,8 +1,8 @@
 <%= form_with url: "/auth/google_oauth2", data: { turbo: false }, html: { class: "flex flex-col gap-y-8" } do |form|  %>
   <div class="flex flex-col gap-y-4">
     <%= form.select :origin, 
-        City.enabled.order(:name).map { |city| [city.name, map_path(city_id: city.id)] },
-        { prompt: "Select your home city", required: true },
+        City.enabled.order(:name).map { |city| [city.name, map_path(city_id: city.id, query: params[:query], bookmark_event_id: params[:bookmark_event_id])] },
+        { prompt: "Select your home city", required: true, selected: map_path(city_id: params[:city_id], query: params[:query], bookmark_event_id: params[:bookmark_event_id]) },
         { class: "input" } %>
     <div class="flex items-start gap-x-2">
       <%= form.check_box :terms_of_service_and_privacy_policy_accepted, required: true, class: "mt-1" %>

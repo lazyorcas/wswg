@@ -1,0 +1,26 @@
+<%= tag.li class: "shrink-0" do %>
+  <span class="w-full list-item rounded-xl">
+    <span class="flex gap-x-4">
+      <%= link_to @event.url, class: "grow flex gap-x-4", target: "_blank" do %>
+        <%= image_tag @event.image_url, class: "shrink-0 event-image", loading: "lazy", referrerpolicy: "no-referrer" %>
+        <span class="grow flex flex-col list-item__text">
+          <%= tag.span class: "mb-2 w-full flex items-center gap-x-1" do %>
+            <%= image_tag source_icon_url, class: "inline-flex event-source-icon", loading: "lazy" %>
+            <span class="text-xs"><%= @event.source.name %></span>
+          <% end %>
+          <%= tag.h2 @event.title, class: "text-sm line-clamp-1" %>
+          <%= tag.p class: "text-xs text-secondary" do %>
+            <%= date %> &#x2022; <%= time_range %>
+          <% end %>
+        </span>
+      <% end %>
+      <%= form_with url: new_user_path, method: :get, class: "shrink-0" do |form| %>
+        <%= form.hidden_field :city_id, value: @event.city.id %>
+        <%= form.hidden_field :bookmark_event_id, value: @event.id %>
+        <%= form.button type: :submit, class: "icon-button icon-button--base button--secondary", alt: "Save for later", title: "Save for later" do %>
+          <i class="ph ph-bookmark-simple"></i>
+        <% end %>
+      <% end %>
+    </span>
+  </span>
+<% end %>

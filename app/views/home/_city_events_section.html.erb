@@ -1,0 +1,10 @@
+<section class="flex-1 flex flex-col gap-y-2 md:gap-y-4 items-center">
+  <h3 class="text-xl font-semibold"><%= title %></h3>
+  <ol class="flex flex-col">
+    <% @enabled_cities.each do |city| %>
+      <li>
+        <%= link_to "#{title} in #{city.name}", send(path_helper, city_name: city.name.parameterize), class: "link" %>
+      </li>
+    <% end %>
+  </ol>
+</section>

@@ -11,14 +11,31 @@ class SessionsController < ApplicationController
 
     if user.new_record?
       origin = request.env["omniauth.origin"]
+
       city_id = Url.extract_query_param(origin, "city_id")&.to_i
-
       if city_id.nil?
-        raise UserReadableError.new("User account not found.")
+        raise UserReadableError.new("You didn't select a city.")
       end
-
       user.city_id = city_id
       user.save!
+
+      bookmark_event_id = Url.extract_query_param(origin, "bookmark_event_id")&.to_i
+      if bookmark_event_id.present?
+        begin
+          Bookmark.create!(user: user, event_id: bookmark_event_id)
+        rescue => e
+          Sentry.capture_exception(e)
+        end
+      end
+
+      query = Url.extract_query_param(origin, "query")
+      if query.present?
+        begin
+          user.search_queries.create!(query: query)
+        rescue => e
+          Sentry.capture_exception(e)
+        end
+      end
     end
 
     create_or_update_account!(user, auth_hash)

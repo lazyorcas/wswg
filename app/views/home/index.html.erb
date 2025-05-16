@@ -12,4 +12,13 @@
     <img src="/hero-light.webp" alt="Where Should We Go Hero Light" class="w-full rounded-2xl block dark:hidden" loading="lazy">
     <img src="/hero-dark.webp" alt="Where Should We Go Hero Dark" class="w-full rounded-2xl hidden dark:block" loading="lazy">
   </section>
+  <section class="w-full flex flex-col items-center gap-y-8 py-10 md:pt-20 text-center">
+    <h2 class="text-2xl md:text-3xl font-semibold">Local Events Directory</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 w-full">
+      <%= render "city_events_section", title: "Events today", path_helper: :events_today_path %>
+      <%= render "city_events_section", title: "Events tomorrow", path_helper: :events_tomorrow_path %>
+      <%= render "city_events_section", title: "Events this week", path_helper: :events_this_week_path %>
+      <%= render "city_events_section", title: "Events next week", path_helper: :events_next_week_path %>
+    </div>
+  </section>
 </div>

@@ -14,6 +14,11 @@ Rails.application.routes.draw do
   root "home#index"
   get "/pricing", to: "home#pricing", as: :pricing
 
+  get "/events-today-in-:city_name", to: "home/events#index", as: :events_today
+  get "/events-tomorrow-in-:city_name", to: "home/events#index", as: :events_tomorrow
+  get "/events-this-week-in-:city_name", to: "home/events#index", as: :events_this_week
+  get "/events-next-week-in-:city_name", to: "home/events#index", as: :events_next_week
+
   resources :users, only: [ :new ]
 
   get "/login", to: "sessions#new"
