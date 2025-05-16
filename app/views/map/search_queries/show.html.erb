@@ -1,0 +1,21 @@
+<%= turbo_frame_tag "content" do %>
+  <%= tag.section class: "flex flex-col gap-y-2 h-full", data: { controller: "search" } do %>
+    <div class="shrink-0">
+      <%= render "form", search_query: SearchQuery.new(query: @search_query.query) %>
+    </div>
+    <%= turbo_frame_tag "search-results", 
+      class: "grow md:min-h-0 popup popup--bottom-sheet bottom-sheet-transition",
+      data: { controller: "bottom-sheet", bottom_sheet_target: "bottomSheet", search_target: "results" } do %>
+      <% if @search_query.ongoing? %>
+        <%= render "searching_status" %>
+      <% elsif @search_query.completed? %>
+        <%= render "result", 
+          events: @search_query.result.events, 
+          took: @search_query.result.took, 
+          user: @search_query.user 
+        %>
+      <% end %>
+    <% end %>
+  <% end %>
+  <%= turbo_stream_from @search_query if @search_query.ongoing? %>
+<% end %>

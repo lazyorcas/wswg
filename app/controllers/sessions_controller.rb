@@ -31,7 +31,7 @@ class SessionsController < ApplicationController
       query = Url.extract_query_param(origin, "query")
       if query.present?
         begin
-          user.search_queries.create!(query: query)
+          @search_query = user.search_queries.create!(query: query)
         rescue => e
           Sentry.capture_exception(e)
         end
@@ -41,7 +41,11 @@ class SessionsController < ApplicationController
     create_or_update_account!(user, auth_hash)
     session[:user_id] = user.id
 
-    redirect_to(map_path)
+    if @search_query.present?
+      redirect_to(map_path(search_query_id: @search_query.id))
+    else
+      redirect_to(map_path)
+    end
 
   rescue => e
     Sentry.capture_exception(e)

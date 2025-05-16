@@ -10,6 +10,7 @@ class SearchQuery::PollForSearchesResultsJob < ApplicationJob
     MAX_ATTEMPTS.times do
       break if search_query.complete?
       sleep SLEEP_TIME
+      search_query.reload
     end
 
     search_query.complete!

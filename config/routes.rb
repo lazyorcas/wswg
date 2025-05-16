@@ -30,7 +30,7 @@ Rails.application.routes.draw do
   get "/map", to: "map#index", as: :map
   namespace :map do
     resources :events, only: [ :index, :show ]
-    resources :search_queries, only: [ :index, :create ]
+    resources :search_queries, only: [ :index, :create, :show ]
 
     get "bookmarks/events", to: "bookmarks/events#index", as: :bookmarked_events
   end

@@ -3,14 +3,14 @@ class User < ApplicationRecord
 
   belongs_to :city
 
-  has_one :account
-  has_many :bookmarks
+  has_one :account, dependent: :destroy
+  has_many :bookmarks, dependent: :destroy
   has_many :bookmarked_events, through: :bookmarks, source: :event
-  has_many :seens
+  has_many :seens, dependent: :destroy
   has_many :seen_events, through: :seens, source: :event
-  has_many :search_queries
+  has_many :search_queries, dependent: :destroy
 
-  has_many :visits, class_name: "Ahoy::Visit"
+  has_many :visits, class_name: "Ahoy::Visit", dependent: :nullify
 
   validates :email,
             presence: true,

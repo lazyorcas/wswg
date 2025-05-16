@@ -10,7 +10,7 @@ class SearchQuery < ApplicationRecord
   }, default: :analyzing
 
   belongs_to :user
-  has_many :searches
+  has_many :searches, dependent: :destroy
 
   attribute :result, SearchQuery::Result.to_type
 
@@ -19,6 +19,10 @@ class SearchQuery < ApplicationRecord
   validates :result, presence: true, if: :completed?
 
   after_commit :queue_query, on: :create, unless: :completed?
+
+  def ongoing?
+    analyzing? || searching?
+  end
 
   def queue_query
     QueryJob.perform_later(id)

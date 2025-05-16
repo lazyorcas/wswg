@@ -1,7 +1,4 @@
 <%= turbo_stream.update "search-results" do %>
-  <div class="flex items-center gap-x-2 p-4">
-    <i class="ph ph-spinner animate-spin"></i>
-    <p class="text-sm">Searching...</p>
-  </div>
+  <%= render "searching_status" %>
 <% end %>
 <%= turbo_stream_from @search_query %>

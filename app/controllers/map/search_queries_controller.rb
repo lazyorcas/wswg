@@ -26,7 +26,18 @@ class Map::SearchQueriesController < ApplicationController
     end
   end
 
+  def show
+    load_search_query
+    if @search_query.failed?
+      flash.now[:error] = "Failed to search."
+    end
+  end
+
   private
+
+  def load_search_query
+    @search_query = search_query_scope.find(params[:id])
+  end
 
   def build_search_query
     @search_query ||= search_query_scope.build

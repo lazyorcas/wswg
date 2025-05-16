@@ -6,5 +6,9 @@ class MapController < ApplicationController
 
   before_action :require_user!
 
-  def index; end
+  def index
+    @content_path = params[:search_query_id].present? ?
+      map_search_query_path(id: params[:search_query_id]) :
+      map_search_queries_path
+  end
 end
