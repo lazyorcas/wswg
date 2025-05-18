@@ -15,6 +15,13 @@ class Map::SearchQueriesController < ApplicationController
   def index; end
 
   def create
+    load_last_search_query
+    if @last_search_query.present? &&
+        @last_search_query.created_at > 1.minute.ago &&
+        @last_search_query.query == search_query_params[:query]
+      head(:ok) and return
+    end
+
     build_search_query
     begin
       @search_query.save!
@@ -34,6 +41,10 @@ class Map::SearchQueriesController < ApplicationController
   end
 
   private
+
+  def load_last_search_query
+    @last_search_query = search_query_scope.order(created_at: :desc).first
+  end
 
   def load_search_query
     @search_query = search_query_scope.find(params[:id])
