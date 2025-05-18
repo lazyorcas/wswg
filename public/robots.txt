@@ -5,6 +5,8 @@ Allow: /terms
 Allow: /privacy
 Allow: /login
 Allow: /users/new
+Allow: /events-today
+Allow: /events-tomorrow
 Allow: /events-this-week
 Allow: /events-next-week
 Disallow: /
