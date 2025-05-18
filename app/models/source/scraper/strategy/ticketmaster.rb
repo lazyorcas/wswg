@@ -15,6 +15,9 @@ class Source::Scraper::Strategy::Ticketmaster < Source::Scraper::Strategy::BaseA
 
   def get_events_attributes(response, &block)
     response.dig("_embedded", "events")&.each do |data|
+      url = data["url"]
+      next if url.blank?
+
       start_date = data.dig("dates", "start", "localDate")
       end_date = data.dig("dates", "end", "localDate")
 
@@ -27,7 +30,7 @@ class Source::Scraper::Strategy::Ticketmaster < Source::Scraper::Strategy::BaseA
       classifications = data["classifications"]
 
       event_attributes = {
-        url: data["url"].split("?").first,
+        url: url.split("?").first,
         title: data["name"],
         tags: classifications ? classifications.map { |c| c["segment"]["name"] }.uniq.join(" ") : nil,
         image_url: data.dig("images", 0, "url") || data.dig("images", 0, "href"),
