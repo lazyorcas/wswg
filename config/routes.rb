@@ -18,6 +18,7 @@ Rails.application.routes.draw do
   get "/events-tomorrow-in-:city_slug", to: "home/events#index", as: :events_tomorrow
   get "/events-this-week-in-:city_slug", to: "home/events#index", as: :events_this_week
   get "/events-next-week-in-:city_slug", to: "home/events#index", as: :events_next_week
+  get "/events/:id/redirect", to: "home/events#redirect", as: :event_redirect
 
   resources :users, only: [ :new ]
 

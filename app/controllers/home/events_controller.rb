@@ -3,6 +3,8 @@ class Home::EventsController < ApplicationController
 
   layout "home"
 
+  after_action :create_seen, only: :redirect
+
   helper_method :today?, :tomorrow?, :this_week?, :next_week?
 
   def index
@@ -27,7 +29,20 @@ class Home::EventsController < ApplicationController
     end
   end
 
+  def redirect
+    load_event
+    redirect_to(@event.url, allow_other_host: true)
+  end
+
   private
+
+  def load_event
+    @event = Event.find(params[:id])
+  end
+
+  def create_seen
+    Seen.create!(event: @event, user: Current.user)
+  end
 
   def build_title
     @title = "Events #{@time_period_text} in #{@city.name}"
