@@ -38,7 +38,7 @@
       <% elsif tomorrow? %>
         Additionally, you can view <%= link_to "events this week in #{@city.name}", events_this_week_path(city_slug: @city.slug), class: "link" %>.
       <% elsif this_week? %>
-        Additionally, you can view <%= link_to "events next week in #{@city.name}", events_next_week_path(city_slug: @city.slug), class: "link" %>.
+        Additionally, you can view <%= link_to "events next week in #{@city.name}", events_next_week_path(city_slug: @city.slug), class: "link" %>, <%= link_to "events today in #{@city.name}", events_today_path(city_slug: @city.slug), class: "link" %>, and <%= link_to "events tomorrow in #{@city.name}", events_tomorrow_path(city_slug: @city.slug), class: "link" %>.
       <% elsif next_week? %>
         Additionally, you can view <%= link_to "events this week in #{@city.name}", events_this_week_path(city_slug: @city.slug), class: "link" %>.
       <% end %>
