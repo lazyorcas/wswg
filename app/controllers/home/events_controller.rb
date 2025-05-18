@@ -34,7 +34,14 @@ class Home::EventsController < ApplicationController
   end
 
   def build_description
-    @description = "What's happening in #{@city.name} #{@time_period_text} (#{@start_date.beginning_of_week.strftime("%B %d")} - #{@end_date.end_of_week.strftime("%B %d")})? Discover local events from Luma, Meetup, Eventbrite, and Ticketmaster."
+    date_range_text = if today? || tomorrow?
+      @start_date.strftime("%B %d")
+
+    elsif this_week? || next_week?
+      "#{@start_date.beginning_of_week.strftime("%B %d")} - #{@end_date.end_of_week.strftime("%B %d")}"
+    end
+
+    @description = "What's happening in #{@city.name} #{@time_period_text} (#{date_range_text})? Discover local events from Luma, Meetup, Eventbrite, and Ticketmaster."
   end
 
   def load_city
