@@ -11,6 +11,9 @@ class SessionsController < ApplicationController
 
     if user.new_record?
       origin = request.env["omniauth.origin"]
+      if origin.nil?
+        raise UserReadableError.new("You don't have an account yet. Please sign up first.")
+      end
 
       city_id = Url.extract_query_param(origin, "city_id")&.to_i
       if city_id.nil?
