@@ -34,13 +34,13 @@
         <br />
       <% end %>
       <% if today? %>
-        Additionally, you can view <%= link_to "events tomorrow in #{@city.name}", events_tomorrow_path(city_name: @city.name.parameterize), class: "link" %> or <%= link_to "events this week in #{@city.name}", events_this_week_path(city_name: @city.name.parameterize), class: "link" %>.
+        Additionally, you can view <%= link_to "events tomorrow in #{@city.name}", events_tomorrow_path(city_slug: @city.slug), class: "link" %> or <%= link_to "events this week in #{@city.name}", events_this_week_path(city_slug: @city.slug), class: "link" %>.
       <% elsif tomorrow? %>
-        Additionally, you can view <%= link_to "events this week in #{@city.name}", events_this_week_path(city_name: @city.name.parameterize), class: "link" %>.
+        Additionally, you can view <%= link_to "events this week in #{@city.name}", events_this_week_path(city_slug: @city.slug), class: "link" %>.
       <% elsif this_week? %>
-        Additionally, you can view <%= link_to "events next week in #{@city.name}", events_next_week_path(city_name: @city.name.parameterize), class: "link" %>.
+        Additionally, you can view <%= link_to "events next week in #{@city.name}", events_next_week_path(city_slug: @city.slug), class: "link" %>.
       <% elsif next_week? %>
-        Additionally, you can view <%= link_to "events this week in #{@city.name}", events_this_week_path(city_name: @city.name.parameterize), class: "link" %>.
+        Additionally, you can view <%= link_to "events this week in #{@city.name}", events_this_week_path(city_slug: @city.slug), class: "link" %>.
       <% end %>
     </p>
   </section>

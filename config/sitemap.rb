@@ -16,9 +16,9 @@ SitemapGenerator::Sitemap.create do
     .enabled
     .order(:name)
     .each do |city|
-      add events_today_path(city_name: city.name.parameterize), priority: 0.9, changefreq: "daily"
-      add events_tomorrow_path(city_name: city.name.parameterize), priority: 0.9, changefreq: "daily"
-      add events_this_week_path(city_name: city.name.parameterize), priority: 0.9, changefreq: "daily"
-      add events_next_week_path(city_name: city.name.parameterize), priority: 0.9, changefreq: "daily"
+      add events_today_path(city_slug: city.slug), priority: 0.9, changefreq: "daily"
+      add events_tomorrow_path(city_slug: city.slug), priority: 0.9, changefreq: "daily"
+      add events_this_week_path(city_slug: city.slug), priority: 0.9, changefreq: "daily"
+      add events_next_week_path(city_slug: city.slug), priority: 0.9, changefreq: "daily"
     end
 end

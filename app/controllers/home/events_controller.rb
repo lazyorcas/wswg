@@ -7,6 +7,11 @@ class Home::EventsController < ApplicationController
 
   def index
     load_city
+    if @city.nil?
+      head :not_found
+      return
+    end
+
     load_date_range
     load_events
     load_all_events_count
@@ -33,7 +38,7 @@ class Home::EventsController < ApplicationController
   end
 
   def load_city
-    @city = City.find_by(name: params[:city_name].titleize)
+    @city = City.find_by(slug: params[:city_slug])
   end
 
   def load_current_date
