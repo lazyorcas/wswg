@@ -58,7 +58,7 @@ class AnalyticsController < ApplicationController
       .where(name: "Visited sign up page")
       .where("properties->'params'->>'query' IS NOT NULL")
       .where("ahoy_events.time >= ?", start_date)
-      .group_by { |event| event.properties["params"]["query"] }
+      .group("properties->'params'->>'query'")
       .count
 
     @aggregated_users = User
