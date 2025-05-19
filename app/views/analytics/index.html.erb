@@ -1,0 +1,49 @@
+<% content_for :title, "Analytics | Where Should We Go" %>
+<main class="dark:bg-stone-900 min-h-dvh p-4 md:p-8">
+  <h1 class="text-3xl font-bold mb-8">Analytics</h1>
+  <div class="flex flex-col gap-y-8">
+    <%= render "charts", title: "Web Traffic" do %>
+      <%= render "chart", title: "Ahoy Visits" do %>
+        <%= line_chart @visits %>
+      <% end %>
+      <%= render "chart", title: "Ahoy Events - Sign Up Page" do %>
+        <%= line_chart @sign_up_page_events %>
+      <% end %>
+      <%= render "chart", title: "Ahoy Events - Pricing Page" do %>
+        <%= line_chart @pricing_page_events %>
+      <% end %>
+    <% end %>
+    <%= render "charts", title: "SEO - Popularity of City Events Pages" do %>
+      <%= render "chart", title: "By City" do %>
+        <%= line_chart @city_views %>
+      <% end %>
+      <%= render "chart", title: "By Time Period" do %>
+        <%= line_chart @time_period_views %>
+      <% end %>
+      <%= render "chart", title: "By City & Time Period" do %>
+        <%= line_chart @city_time_period_views, legend: false %>
+      <% end %>
+    <% end %>
+    <%= render "charts", title: "SEO - City Events Pages" do %>
+      <%= render "chart", title: "Seens" do %>
+        <%= line_chart @seens %>
+      <% end %>
+    <% end %>
+    <%= render "charts", title: "SEO - City Events Page -> Sign Up Page" do %>
+      <%= render "chart", title: "Queries" do %>
+        <%= pie_chart @sign_up_page_queries %>
+      <% end %>
+      <%= render "chart", title: "Cities" do %>
+        <%= pie_chart @sign_up_page_cities %>
+      <% end %>
+    <% end %>
+    <%= render "charts", title: "Product" do %>
+      <%= render "chart", title: "Users" do %>
+        <%= line_chart @aggregated_users, curve: false %>
+      <% end %>
+      <%= render "chart", title: "Search Queries" do %>
+        <%= line_chart @search_queries %>
+      <% end %>
+    <% end %>
+  </div>
+</main>

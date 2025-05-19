@@ -13,6 +13,7 @@ Rails.application.routes.draw do
   # Defines the root path route ("/")
   root "home#index"
   get "/pricing", to: "home#pricing", as: :pricing
+  get "/analytics", to: "analytics#index", as: :analytics
 
   get "/events-today-in-:city_slug", to: "home/events#index", as: :events_today
   get "/events-tomorrow-in-:city_slug", to: "home/events#index", as: :events_tomorrow
