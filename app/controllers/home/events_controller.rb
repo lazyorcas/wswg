@@ -1,5 +1,5 @@
 class Home::EventsController < ApplicationController
-  EVENT_LIMIT = 20
+  EVENT_LIMIT = 50
 
   layout "home"
 
