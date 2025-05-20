@@ -10,7 +10,6 @@ Allow: /events-tomorrow
 Allow: /events-this-week
 Allow: /events-next-week
 Allow: /sitemap.xml
-Allow: /sitemap.xml$
 Disallow: /
 
 Sitemap: https://whereshouldwego.co/sitemap.xml
