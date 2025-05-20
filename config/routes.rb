@@ -37,7 +37,6 @@ Rails.application.routes.draw do
     get "/bookmarks/events", to: "bookmarks/events#index", as: :bookmarked_events
   end
 
-  resources :seens, only: [ :create ]
   resources :bookmarks, only: [ :create, :update ]
 
   post "/stripe/webhook", to: "stripe#webhook"
