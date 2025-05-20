@@ -1,16 +1,5 @@
 User-agent: *
-Allow: /$
-Allow: /pricing
-Allow: /terms
-Allow: /privacy
-Allow: /login
-Allow: /users/new
-Allow: /events-today
-Allow: /events-tomorrow
-Allow: /events-this-week
-Allow: /events-next-week
-Allow: /sitemap.xml
-Allow: /sitemap.xml$
-Disallow: /
 
 Sitemap: https://whereshouldwego.co/sitemap.xml
+
+Disallow: /auth
