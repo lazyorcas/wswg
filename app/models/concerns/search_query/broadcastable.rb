@@ -17,7 +17,6 @@ module SearchQuery::Broadcastable
       partial: "map/search_queries/result",
       locals: {
         events: result.events,
-        took_in_seconds: result.took_in_seconds,
         user: user
       }
     )

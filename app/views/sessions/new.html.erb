@@ -1,7 +1,13 @@
 <% content_for :title, "Login | Where Should We Go" %>
 <div class="grow flex flex-col justify-center items-center gap-y-8 w-full">
   <h1 class="text-3xl font-bold">Login</h1>
-  <div class="w-full md:max-w-100">
-    <%= render "form" %>
+  <div class="w-full md:max-w-100 flex flex-col gap-y-8 md:gap-y-16">
+    <%= render "passwordless/sessions/form", session: @passwordless_session %>
+    <div class="flex items-center gap-x-2">
+      <hr class="grow border-primary" />
+      <span class="shrink-0 text-sm text-secondary self-center">Or, faster:</span>
+      <hr class="grow border-primary" />
+    </div>
+    <%= render "omniauth_sessions/form" %>
   </div>
 </div>

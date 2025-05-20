@@ -38,28 +38,46 @@ class Rack::Attack
 
   # Throttle POST requests to /login by IP address
   #
-  # Key: "rack::attack:#{Time.now.to_i/:period}:logins/ip:#{req.ip}"
-  throttle("logins/ip", limit: 5, period: 20.seconds) do |req|
-    if (req.path == "/login" || req.path == "users/new") && req.post?
+  # Key: "rack::attack:#{Time.now.to_i/:period}:login/ip:#{req.ip}"
+  throttle("login/ip", limit: 5, period: 20.seconds) do |req|
+    if req.path == "/login"  && req.post?
       req.ip
     end
   end
 
-  # Throttle POST requests to /login by email param
+  # Throttle POST requests to /users by IP address
   #
-  # Key: "rack::attack:#{Time.now.to_i/:period}:logins/email:#{normalized_email}"
+  # Key: "rack::attack:#{Time.now.to_i/:period}:users/ip:#{req.ip}"
+  throttle("users/ip", limit: 5, period: 20.seconds) do |req|
+    if req.path == "/users"  && req.post?
+      req.ip
+    end
+  end
+
+  # Throttle POST requests to /passwordless/sign_in by email param
+  #
+  # Key: "rack::attack:#{Time.now.to_i/:period}:passwordless_sign_in/email:#{normalized_email}"
   #
   # Note: This creates a problem where a malicious user could intentionally
   # throttle logins for another user and force their login requests to be
   # denied, but that's not very common and shouldn't happen to you. (Knock
   # on wood!)
-  # throttle("logins/email", limit: 5, period: 20.seconds) do |req|
-  #   if req.path == "/login" && req.post?
-  #     # Normalize the email, using the same logic as your authentication process, to
-  #     # protect against rate limit bypasses. Return the normalized email if present, nil otherwise.
-  #     req.params["email"].to_s.downcase.gsub(/\s+/, "").presence
-  #   end
-  # end
+  throttle("passwordless_sign_in/email", limit: 5, period: 20.seconds) do |req|
+    if req.path == "/passwordless/sign_in" && req.post?
+      # Normalize the email, using the same logic as your authentication process, to
+      # protect against rate limit bypasses. Return the normalized email if present, nil otherwise.
+      req.params["email"].to_s.downcase.gsub(/\s+/, "").presence
+    end
+  end
+
+  # Throttle PATCH requests to /passwordless/sign_in by IP
+  # #
+  # Key: "rack::attack:#{Time.now.to_i/:period}:confirm_passwordless_sign_in/ip:ip"
+  throttle("confirm_passwordless_sign_in/ip", limit: 5, period: 20.seconds) do |req|
+    if req.path.start_with?("/passwordless/sign_in/") && req.patch?
+      req.ip
+    end
+  end
 
   ### Custom Throttle Response ###
 

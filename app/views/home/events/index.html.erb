@@ -30,7 +30,7 @@
           <% if signed_in? %>
             <%= link_to "See all events", map_path, class: "link" %>.
           <% else %>
-            <%= link_to "Create an account", new_user_path(city_id: @city.id), class: "link" %> to see all events.
+            <%= link_to "Create an account", new_user_path("user[city_id]" => @city.id), class: "link" %> to see all events.
           <% end %>
           <br />
         <% end %>
@@ -48,7 +48,7 @@
     <section class="shrink-0 h-fit xl:max-w-2xl relative xl:sticky xl:top-16">
       <img src="/hero-light.webp" alt="Where Should We Go's Hero Light" class="w-full rounded-xl block dark:hidden blur-[2px]" loading="lazy">
       <img src="/hero-dark.webp" alt="Where Should We Go's Hero Dark" class="w-full rounded-xl hidden dark:block blur-[2px]" loading="lazy">
-      <%= link_to signed_in? ? map_path : new_user_path(city_id: @city.id), class: "button button--secondary absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2" do %>
+      <%= link_to signed_in? ? map_path : new_user_path("user[city_id]" => @city.id), class: "button button--secondary absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2" do %>
         <i class="ph ph-map-trifold"></i>
         Open map
       <% end %>

@@ -21,10 +21,10 @@ Rails.application.routes.draw do
   get "/events-next-week-in-:city_slug", to: "home/events#index", as: :events_next_week
   get "/events/:id/redirect", to: "home/events#redirect", as: :event_redirect
 
-  resources :users, only: [ :new ]
-
+  resources :users, only: [ :new, :create ]
   get "/login", to: "sessions#new"
-  get "/auth/:provider/callback", to: "sessions#create"
+  get "/auth/:provider/callback", to: "omniauth_sessions#create"
+  passwordless_for :users, controller: "passwordless_sessions", as: "passwordless", at: "passwordless"
 
   get "/user/no_credits", to: "user#no_credits", as: :user_no_credits
   get "/user/top_up_credits", to: "user#top_up_credits", as: :user_top_up_credits

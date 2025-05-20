@@ -1,0 +1,18 @@
+<% content_for :title, "Verify email | Where Should We Go" %>
+<div class="grow flex flex-col justify-center items-center gap-y-8 w-full">
+  <h1 class="text-3xl font-bold">Email Verification</h1>
+  <div class="w-full md:max-w-100">
+    <%= form_with(model: @session, url: url_for(action: 'update'), scope: 'passwordless', method: 'patch', data: { turbo: false }, class: "flex flex-col gap-y-4") do |form| %>
+      <div class="flex flex-col gap-y-1">
+        <%= form.label :token, "Login code (sent to your email)", class: "text-sm text-secondary" %>
+        <%= form.text_field :token,
+      required: true,
+      autofocus: true,
+      autocomplete: "one-time-code",
+      placeholder: "Enter your login code",
+      class: "input" %>
+      </div>
+      <%= form.submit "Confirm", class: "button button--primary" %>
+    <% end %>
+  </div>
+</div>

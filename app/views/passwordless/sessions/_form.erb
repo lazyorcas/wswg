@@ -1,0 +1,12 @@
+<%= form_with(model: session, url: passwordless_sign_in_path, data: { turbo: 'false' }, class: "flex flex-col gap-y-4") do |form| %>
+  <div class="flex flex-col gap-y-1">
+    <%= label_tag "passwordless[email]", "Email", class: "text-sm text-secondary" %>
+    <%= email_field_tag "passwordless[email]",
+      params.fetch("email", nil),
+      required: true,
+      autofocus: true,
+      placeholder: "Enter your email",
+      class: "input" %>
+  </div>
+  <%= form.submit "Receive login code via email", class: "button button--secondary" %>
+<% end %>
