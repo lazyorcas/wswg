@@ -14,11 +14,13 @@ class AnalyticsController < ApplicationController
       .count
     @visits_by_device = Ahoy::Visit
       .where(user_id: nil)
+      .where.not(device_type: nil)
       .group(:device_type)
       .group_by_week(:started_at, range: start_date..)
       .count
     @visits_by_referring_domain = Ahoy::Visit
       .where(user_id: nil)
+      .where.not(referring_domain: nil)
       .group(:referring_domain)
       .group_by_week(:started_at, range: start_date..)
       .count
