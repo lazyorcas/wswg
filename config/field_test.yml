@@ -5,9 +5,9 @@ experiments:
       Test if sign-up rate increases by not having the pricing page shown to visitors.
     started_at: May 21, 2025 3 pm SGT
     variants:
-      - true
-      - false
-    # winner: false
+      - t
+      - f
+    # winner: f
 
 exclude:
   bots: true
