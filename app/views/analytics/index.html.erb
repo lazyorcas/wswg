@@ -6,6 +6,9 @@
       <%= render "chart", title: "Ahoy Visits" do %>
         <%= line_chart @visits %>
       <% end %>
+      <%= render "chart", title: "Ahoy Visits by Device" do %>
+        <%= line_chart @visits_by_device %>
+      <% end %>
       <%= render "chart", title: "Ahoy Events - Sign Up Page" do %>
         <%= line_chart @sign_up_page_events %>
       <% end %>
