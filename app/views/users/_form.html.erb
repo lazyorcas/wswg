@@ -2,7 +2,7 @@
   <div class="flex flex-col gap-y-4">
     <div class="flex flex-col gap-y-1">
       <%= form.label :email, "Email", class: "text-sm text-secondary" %>
-      <%= form.email_field :email, required: true, class: "input", placeholder: "Enter your email" %>
+      <%= form.email_field :email, required: true, class: "input", placeholder: "Enter your email", autocomplete: "email" %>
     </div>
     <div class="flex flex-col gap-y-1">
       <%= form.label :city_id, "City", class: "text-sm text-secondary" %>

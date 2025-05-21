@@ -16,7 +16,7 @@ module UserCreditsCheck
 
       else
         flash.now[:error] = "You don't have enough credits. Top up to continue."
-        render turbo_stream: turbo_stream.append("flash", partial: "shared/flash")
+        render turbo_stream: turbo_stream.append("flash", partial: "shared/flash"), status: :payment_required
       end
 
       return

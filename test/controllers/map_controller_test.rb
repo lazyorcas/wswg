@@ -7,11 +7,4 @@ class MapControllerTest < ActionDispatch::IntegrationTest
     get map_url
     assert_response :success
   end
-
-  # test "should redirect to no credits page if user has no credits" do
-  #   login_as(users(:finlay))
-
-  #   get map_url
-  #   assert_redirected_to user_no_credits_url
-  # end
 end

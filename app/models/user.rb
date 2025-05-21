@@ -19,7 +19,7 @@ class User < ApplicationRecord
             presence: true,
             uniqueness: { case_sensitive: false },
             format: { with: URI::MailTo::EMAIL_REGEXP }
-  validates :terms_of_service_and_privacy_policy_accepted, acceptance: true, if: :new_record?
+  validates :terms_of_service_and_privacy_policy_accepted, inclusion: { in: [ true, "true", 1, "1" ] }, if: :new_record?
 
   accepts_nested_attributes_for :bookmarks, :search_queries
 

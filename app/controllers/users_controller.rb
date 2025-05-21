@@ -15,12 +15,12 @@ class UsersController < ApplicationController
 
   def create
     build_user
-    if @user.save
-      redirect_to(login_path(email: @user.email))
-    else
-      Sentry.capture_exception(@user.errors.full_messages)
-      render(new, status: :unprocessable_entity)
-    end
+    @user.save!
+    redirect_to(login_path(email: @user.email))
+
+  rescue => e
+    Sentry.capture_exception(e)
+    redirect_to(new_user_path, error: "Failed to create account. Please try again.")
   end
 
   private
