@@ -9,14 +9,14 @@
       <%= render "chart", title: "Ahoy Visits by Device" do %>
         <%= line_chart @visits_by_device %>
       <% end %>
-      <%= render "chart", title: "Ahoy Visits by Referring Domain" do %>
-        <%= line_chart @visits_by_referring_domain %>
-      <% end %>
       <%= render "chart", title: "Ahoy Events - Sign Up Page" do %>
         <%= line_chart @sign_up_page_events %>
       <% end %>
       <%= render "chart", title: "Ahoy Events - Pricing Page" do %>
         <%= line_chart @pricing_page_events %>
+      <% end %>
+      <%= render "chart", title: "Ahoy Visits by Referring Domain" do %>
+        <%= column_chart @visits_by_referring_domain, stacked: true %>
       <% end %>
     <% end %>
     <%= render "charts", title: "SEO - Popularity of City Events Pages" do %>
