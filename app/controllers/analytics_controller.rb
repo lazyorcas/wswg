@@ -17,6 +17,11 @@ class AnalyticsController < ApplicationController
       .group(:device_type)
       .group_by_week(:started_at, range: start_date..)
       .count
+    @visits_by_referring_domain = Ahoy::Visit
+      .where(user_id: nil)
+      .group(:referring_domain)
+      .group_by_week(:started_at, range: start_date..)
+      .count
     @sign_up_page_events = build_ahoy_events_page_events_data(
       "Visited sign up page",
       start_date: start_date
