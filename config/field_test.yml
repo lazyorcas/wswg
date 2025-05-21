@@ -1,0 +1,15 @@
+experiments:
+  pricing_page_shown:
+    name: Pricing Page Shown > Sign Up Rate
+    description: >
+      Test if sign-up rate increases by not having the pricing page shown to visitors.
+    started_at: May 21, 2025 3 pm SGT
+    variants:
+      - true
+      - false
+    # winner: false
+
+exclude:
+  bots: true
+
+cookies: false

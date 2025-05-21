@@ -95,7 +95,7 @@ GEM
     brakeman (7.0.2)
       racc
     brotli (0.6.0)
-    browser (6.0.0)
+    browser (6.2.0)
     builder (3.3.0)
     capybara (3.40.0)
       addressable
@@ -106,26 +106,28 @@ GEM
       rack-test (>= 0.6.3)
       regexp_parser (>= 1.5, < 3.0)
       xpath (~> 3.2)
-    chartkick (5.1.4)
+    chartkick (5.1.5)
     concurrent-ruby (1.3.4)
     connection_pool (2.5.3)
     countries (7.1.1)
       unaccent (~> 0.3)
     crass (1.0.6)
-    csv (3.3.3)
+    csv (3.3.4)
     date (3.4.1)
     debug (1.10.0)
       irb (~> 1.10)
       reline (>= 0.3.8)
     device_detector (1.1.3)
+    distribution (0.8.0)
     dotenv (3.1.8)
     drb (2.2.1)
     ed25519 (1.4.0)
+    erb (5.0.1)
     erubi (1.13.1)
     et-orbi (1.2.11)
       tzinfo
     event_stream_parser (1.0.0)
-    faraday (2.12.2)
+    faraday (2.13.1)
       faraday-net_http (>= 2.0, < 3.5)
       json
       logger
@@ -139,6 +141,12 @@ GEM
       concurrent-ruby (~> 1.1)
       webrick (~> 1.7)
       websocket-driver (~> 0.7)
+    field_test (0.4.1)
+      activerecord (>= 5)
+      browser (>= 2.0)
+      distribution
+      railties (>= 5)
+    forwardable (1.3.3)
     fugit (1.11.1)
       et-orbi (~> 1, >= 1.2.11)
       raabro (~> 1.4)
@@ -211,12 +219,12 @@ GEM
       i18n (>= 0.6.4, <= 2)
     msgpack (1.8.0)
     multi_json (1.15.0)
-    multi_xml (0.7.1)
+    multi_xml (0.7.2)
       bigdecimal (~> 3.1)
     multipart-post (2.4.1)
     net-http (0.6.0)
       uri
-    net-imap (0.5.6)
+    net-imap (0.5.8)
       date
       net-protocol
     net-pop (0.1.2)
@@ -248,13 +256,14 @@ GEM
       racc (~> 1.4)
     nokogiri (1.18.8-x86_64-linux-musl)
       racc (~> 1.4)
-    oauth2 (2.0.9)
-      faraday (>= 0.17.3, < 3.0)
-      jwt (>= 1.0, < 3.0)
+    oauth2 (2.0.10)
+      faraday (>= 0.17.3, < 4.0)
+      jwt (>= 1.0, < 4.0)
+      logger (~> 1.2)
       multi_xml (~> 0.5)
       rack (>= 1.2, < 4)
       snaky_hash (~> 2.0)
-      version_gem (~> 1.1)
+      version_gem (>= 1.1.8, < 3)
     oj (3.16.10)
       bigdecimal (>= 3.0)
       ostruct (>= 0.2)
@@ -288,6 +297,9 @@ GEM
     pp (0.6.2)
       prettyprint
     prettyprint (0.2.0)
+    prime (0.1.3)
+      forwardable
+      singleton
     prism (1.4.0)
     propshaft (1.1.0)
       actionpack (>= 7.0.0)
@@ -330,7 +342,7 @@ GEM
       activesupport (= 8.0.2)
       bundler (>= 1.15.0)
       railties (= 8.0.2)
-    rails-dom-testing (2.2.0)
+    rails-dom-testing (2.3.0)
       activesupport (>= 5.0.0)
       minitest
       nokogiri (>= 1.6)
@@ -350,7 +362,8 @@ GEM
       zeitwerk (~> 2.6)
     rainbow (3.1.1)
     rake (13.2.1)
-    rdoc (6.13.1)
+    rdoc (6.14.0)
+      erb
       psych (>= 4.0.0)
     redcarpet (3.6.1)
     regexp_parser (2.10.0)
@@ -371,9 +384,9 @@ GEM
     rubocop-ast (1.44.1)
       parser (>= 3.3.7.2)
       prism (~> 1.4)
-    rubocop-performance (1.24.0)
+    rubocop-performance (1.25.0)
       lint_roller (~> 1.1)
-      rubocop (>= 1.72.1, < 2.0)
+      rubocop (>= 1.75.0, < 2.0)
       rubocop-ast (>= 1.38.0, < 2.0)
     rubocop-rails (2.32.0)
       activesupport (>= 4.2.0)
@@ -392,7 +405,7 @@ GEM
     ruby-progressbar (1.13.0)
     rubyzip (2.4.1)
     safely_block (0.4.1)
-    searchkick (5.5.1)
+    searchkick (5.5.2)
       activemodel (>= 7.1)
       hashie
     securerandom (0.4.1)
@@ -408,6 +421,7 @@ GEM
     sentry-ruby (5.24.0)
       bigdecimal
       concurrent-ruby (~> 1.0, >= 1.0.2)
+    singleton (0.3.0)
     sitemap_generator (6.3.0)
       builder (~> 3.0)
     snaky_hash (2.0.1)
@@ -447,13 +461,13 @@ GEM
     tailwindcss-rails (4.2.3)
       railties (>= 7.0.0)
       tailwindcss-ruby (~> 4.0)
-    tailwindcss-ruby (4.1.5)
-    tailwindcss-ruby (4.1.5-aarch64-linux-gnu)
-    tailwindcss-ruby (4.1.5-aarch64-linux-musl)
-    tailwindcss-ruby (4.1.5-arm64-darwin)
-    tailwindcss-ruby (4.1.5-x86_64-darwin)
-    tailwindcss-ruby (4.1.5-x86_64-linux-gnu)
-    tailwindcss-ruby (4.1.5-x86_64-linux-musl)
+    tailwindcss-ruby (4.1.7)
+    tailwindcss-ruby (4.1.7-aarch64-linux-gnu)
+    tailwindcss-ruby (4.1.7-aarch64-linux-musl)
+    tailwindcss-ruby (4.1.7-arm64-darwin)
+    tailwindcss-ruby (4.1.7-x86_64-darwin)
+    tailwindcss-ruby (4.1.7-x86_64-linux-gnu)
+    tailwindcss-ruby (4.1.7-x86_64-linux-musl)
     thor (1.3.2)
     thruster (0.1.13)
     thruster (0.1.13-aarch64-linux)
@@ -481,7 +495,7 @@ GEM
     unicode-emoji (4.0.4)
     uri (1.0.3)
     useragent (0.16.11)
-    version_gem (1.1.6)
+    version_gem (1.1.8)
     view_component (3.22.0)
       activesupport (>= 5.2.0, < 8.1)
       concurrent-ruby (= 1.3.4)
@@ -499,7 +513,7 @@ GEM
     websocket-extensions (0.1.5)
     xpath (3.2.0)
       nokogiri (~> 1.8)
-    zeitwerk (2.7.2)
+    zeitwerk (2.7.3)
     zstd-ruby (1.5.6.6)
 
 PLATFORMS
@@ -528,6 +542,7 @@ DEPENDENCIES
   debug
   dotenv
   ferrum
+  field_test (< 0.5)
   groupdate
   htmlbeautifier
   httparty
@@ -545,6 +560,7 @@ DEPENDENCIES
   opensearch-ruby
   passwordless
   pg (~> 1.1)
+  prime
   propshaft
   puma (>= 5.0)
   rack-attack

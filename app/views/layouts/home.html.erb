@@ -22,7 +22,9 @@
         <%= image_tag "/logo.webp", class: "size-10 rounded", alt: "Where Should We Go Logo" %>
       <% end %>
       <nav class="flex items-center gap-x-4 md:gap-x-8">
-        <%= link_to "Pricing", pricing_path %>
+        <% if Current.user.present? || field_test(:pricing_page_shown) %>
+          <%= link_to "Pricing", pricing_path %>
+        <% end %>
         <% if signed_in? %>
           <%= link_to map_path, class: "button button--primary", data: { turbo: false } do %>
             <i class="ph-fill ph-sparkle"></i>
