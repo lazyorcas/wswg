@@ -1,8 +1,8 @@
 <% flash.each do |key, value| %>
   <%= tag.p value, class: class_names("flash", {
-    "flash--info": key == "info",
+    "flash--info": key == "info" || key == "notice",
     "flash--success": key == "success",
     "flash--warning": key == "warning",
-    "flash--error": key == "error"
+    "flash--error": key == "error" || key == "alert"
   }), data: { flash_target: "message" } %>
 <% end %>
