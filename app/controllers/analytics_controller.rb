@@ -10,19 +10,19 @@ class AnalyticsController < ApplicationController
 
     @visits = Ahoy::Visit
       .where(user_id: nil)
-      .group_by_week(:started_at, range: start_date..)
+      .group_by_day(:started_at, range: start_date..)
       .count
     @visits_by_device = Ahoy::Visit
       .where(user_id: nil)
       .where.not(device_type: nil)
       .group(:device_type)
-      .group_by_week(:started_at, range: start_date..)
+      .group_by_day(:started_at, range: start_date..)
       .count
     @visits_by_referring_domain = Ahoy::Visit
       .where(user_id: nil)
       .where.not(referring_domain: nil)
       .group(:referring_domain)
-      .group_by_week(:started_at, range: start_date..)
+      .group_by_day(:started_at, range: start_date..)
       .count
     @sign_up_page_events = build_ahoy_events_page_events_data(
       "Visited sign up page",
@@ -52,7 +52,7 @@ class AnalyticsController < ApplicationController
     @seens = Seen
       .left_joins(:user)
       .where(user: { id: nil })
-      .group_by_week(:created_at, range: start_date..)
+      .group_by_day(:created_at, range: start_date..)
       .count
 
     @sign_up_page_cities = Ahoy::Event
@@ -77,10 +77,10 @@ class AnalyticsController < ApplicationController
       .joins(:city_source)
       .joins(:city)
       .group("cities.name")
-      .group_by_week(:created_at, range: start_date..)
+      .group_by_day(:created_at, range: start_date..)
       .count
     @aggregated_users = User
-      .group_by_week(:created_at, range: start_date..)
+      .group_by_day(:created_at, range: start_date..)
       .count
       .transform_values { |v| v }
       .transform_keys { |k| k.to_date }
@@ -89,7 +89,7 @@ class AnalyticsController < ApplicationController
         hash[date] = (hash.values.last || 0) + count
       }
     @search_queries = SearchQuery
-      .group_by_week(:created_at, range: start_date..)
+      .group_by_day(:created_at, range: start_date..)
       .count
       .transform_values { |v| v }
       .transform_keys { |k| k.to_date }
@@ -103,7 +103,7 @@ class AnalyticsController < ApplicationController
       .left_joins(:user)
       .where(user: { id: nil })
       .where(name: event_name)
-      .group_by_week(:time, range: start_date..)
+      .group_by_day(:time, range: start_date..)
       .count
   end
 
@@ -115,7 +115,7 @@ class AnalyticsController < ApplicationController
       .where(user: { id: nil })
       .where(name: "Viewed events")
       .group(*Array(group_by_columns))
-      .group_by_week(:time, range: start_date..)
+      .group_by_day(:time, range: start_date..)
       .count
       .group_by { |values, _| label_format.call(*values[0...-1]) }
       .map { |label, data|
