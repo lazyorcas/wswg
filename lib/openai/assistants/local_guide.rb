@@ -84,7 +84,7 @@ class OpenAI::Assistants::LocalGuide
 
   DETECT_CITY_INPUT_TEMPLATE = <<~TEXT
     From the user input below, detect the city that the user is looking for.
-    It's fine if they are not mentioning the city.
+    It's fine (and likely) if they are not mentioning the city.
 
     ## User Input
     %{text}
@@ -97,7 +97,8 @@ class OpenAI::Assistants::LocalGuide
     @openai_responses_client.ask(
       input: input,
       instructions: instructions,
-      response_schema: OpenAI::Responses::Schemas.city_schema
+      response_schema: OpenAI::Responses::Schemas.city_schema,
+      model: "gpt-4.1-mini"
     )
   end
 end
