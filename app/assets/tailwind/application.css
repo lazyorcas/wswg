@@ -22,6 +22,15 @@
   body {
     @apply text-stone-900 dark:text-stone-100;
   }
+
+  ::backdrop {
+    @apply bg-stone-900/25 dark:bg-white/25;
+    @apply backdrop-blur-xs;
+  }
+
+  .ph, .ph-bold, .ph-fill {
+    @apply flex items-center justify-center;
+  }
 }
 
 @layer components {
@@ -241,6 +250,23 @@
 
   .flash--error {
     @apply bg-red-200 dark:bg-red-800 text-red-900 dark:text-red-100;
+  }
+
+  /* ==========================================================================
+  |
+  |
+  |
+  |  Modal
+  |
+  |
+  |
+  ============================================================================= */
+  .modal {
+    @apply fixed m-auto z-100;
+    @apply bg-white dark:bg-stone-900;
+    @apply rounded-xl;
+    @apply border border-stone-300 dark:border-stone-700;
+    @apply shadow;
   }
 
   /* ==========================================================================

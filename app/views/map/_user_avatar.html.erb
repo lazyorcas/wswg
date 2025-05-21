@@ -1,0 +1,7 @@
+<% if Current.user.account.present? && Current.user.account.image_url.present? %>
+  <%= image_tag Current.user.account.image_url, class: "size-8 md:size-10 rounded-full border-2 border-white dark:border-stone-900", referrerpolicy: "no-referrer" %>
+<% else %>
+  <%= tag.div class: "size-8 md:size-10 rounded-full bg-white dark:bg-stone-900 flex items-center justify-center" do %>
+    <i class="ph-bold ph-user"></i>
+  <% end %>
+<% end %>

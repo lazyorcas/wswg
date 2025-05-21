@@ -3,11 +3,26 @@
     <i class="ph ph-coin"></i>
     <span class="text-sm"><%= Current.user.credits %></span>
   <% end %>
-  <% if Current.user.account.present? && Current.user.account.image_url.present? %>
-    <%= image_tag Current.user.account.image_url, class: "size-8 md:size-10 rounded-full border-2 border-white dark:border-stone-900", referrerpolicy: "no-referrer" %>
-  <% else %>
-    <%= tag.div class: "size-8 md:size-10 rounded-full bg-white dark:bg-stone-900 flex items-center justify-center" do %>
-      <i class="ph-bold ph-user"></i>
-    <% end %>
-  <% end %>
+  <button popovertarget="menu" class="cursor-pointer">
+    <%= render "user_avatar" %>
+  </button>
+  <div popover id="menu" class="modal p-4 w-xs max-w-full">
+    <h2 class="text-lg font-bold mb-2">Menu</h2>
+    <ol class="flex flex-col gap-y-1">
+      <li class="flex items-center gap-x-2">
+        <i class="ph ph-house size-4"></i>
+        <%= link_to "Go to homepage", root_path, class: "text-sm link" %>
+      </li>
+      <li class="flex items-center gap-x-2">
+        <i class="ph ph-coins size-4"></i>
+        <%= link_to "View pricing", pricing_path, class: "text-sm link" %>
+      </li>
+      <li class="flex items-center gap-x-2 text-sm">
+        <i class="ph ph-envelope size-4"></i>
+        <p>
+          Contact us via <%= link_to "email", "mailto:#{ENV["GMAIL_SENDER_EMAIL"]}", class: "link" %> or <%= link_to "Linkedin", "https://www.linkedin.com/company/where-should-we-go/", class: "link" %>
+        </p>
+      </li>
+    </ol>
+  </div>
 </section>
