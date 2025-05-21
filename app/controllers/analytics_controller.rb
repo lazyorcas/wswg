@@ -66,6 +66,12 @@ class AnalyticsController < ApplicationController
       .group("properties->'params'->>'query'")
       .count
 
+    @events = Event
+      .joins(:city_source)
+      .joins(:city)
+      .group("cities.name")
+      .group_by_week(:created_at, range: start_date..)
+      .count
     @aggregated_users = User
       .group_by_week(:created_at, range: start_date..)
       .count

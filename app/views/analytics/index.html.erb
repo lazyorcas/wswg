@@ -28,24 +28,27 @@
       <% end %>
     <% end %>
     <%= render "charts", title: "SEO - City Events Pages" do %>
-      <%= render "chart", title: "Seens" do %>
+      <%= render "chart", title: "Non-user Seens" do %>
         <%= line_chart @seens %>
       <% end %>
     <% end %>
     <%= render "charts", title: "SEO - City Events Page -> Sign Up Page" do %>
-      <%= render "chart", title: "Queries" do %>
+      <%= render "chart", title: "Which queries upon arriving at the sign up page?" do %>
         <%= pie_chart @sign_up_page_queries %>
       <% end %>
-      <%= render "chart", title: "Cities" do %>
+      <%= render "chart", title: "Which cities upon arriving at the sign up page?" do %>
         <%= pie_chart @sign_up_page_cities %>
       <% end %>
     <% end %>
     <%= render "charts", title: "Product" do %>
-      <%= render "chart", title: "Users" do %>
+      <%= render "chart", title: "User Growth" do %>
         <%= line_chart @aggregated_users, curve: false %>
       <% end %>
-      <%= render "chart", title: "Search Queries" do %>
+      <%= render "chart", title: "Search Queries created" do %>
         <%= line_chart @search_queries %>
+      <% end %>
+      <%= render "chart", title: "Events created" do %>
+        <%= line_chart @events %>
       <% end %>
     <% end %>
   </div>
