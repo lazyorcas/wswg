@@ -48,7 +48,7 @@
         <%= line_chart @search_queries %>
       <% end %>
       <%= render "chart", title: "Events created" do %>
-        <%= line_chart @events %>
+        <%= area_chart @events %>
       <% end %>
     <% end %>
   </div>
