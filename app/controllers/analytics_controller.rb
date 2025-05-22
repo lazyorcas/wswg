@@ -78,7 +78,6 @@ class AnalyticsController < ApplicationController
       .where(name: "Visited sign up page")
       .where("properties->'params'->>'bookmark_event_id' IS NOT NULL")
       .where("ahoy_events.time >= ?", start_date)
-      .group("properties->'params'->>'bookmark_event_id'")
       .group_by_day(:time, range: start_date..)
       .count
 
