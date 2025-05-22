@@ -73,12 +73,6 @@ class AnalyticsController < ApplicationController
       .group("properties->'params'->>'query'")
       .count
 
-    @events = Event
-      .joins(:city_source)
-      .joins(:city)
-      .group("cities.name")
-      .group_by_day(:created_at, range: start_date..)
-      .count
     @aggregated_users = User
       .group_by_day(:created_at, range: start_date..)
       .count
@@ -94,6 +88,18 @@ class AnalyticsController < ApplicationController
       .transform_values { |v| v }
       .transform_keys { |k| k.to_date }
       .sort
+    @events_by_city = Event
+      .joins(:city_source)
+      .joins(:city)
+      .group("cities.name")
+      .group_by_day(:created_at, range: start_date..)
+      .count
+    @events_by_source = Event
+      .joins(:city_source)
+      .joins(:source)
+      .group("source.name")
+      .group_by_day(:created_at, range: start_date..)
+      .count
   end
 
   private

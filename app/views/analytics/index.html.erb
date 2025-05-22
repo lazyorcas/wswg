@@ -50,8 +50,11 @@
       <%= render "chart", title: "Search Queries created" do %>
         <%= line_chart @search_queries %>
       <% end %>
-      <%= render "chart", title: "Events created" do %>
-        <%= area_chart @events, stacked: true %>
+      <%= render "chart", title: "Events created by city" do %>
+        <%= area_chart @events_by_city, stacked: true %>
+      <% end %>
+      <%= render "chart", title: "Events created by source" do %>
+        <%= area_chart @events_by_source, stacked: true %>
       <% end %>
     <% end %>
   </div>
