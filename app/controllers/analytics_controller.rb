@@ -72,6 +72,15 @@ class AnalyticsController < ApplicationController
       .where("ahoy_events.time >= ?", start_date)
       .group("properties->'params'->>'query'")
       .count
+    @sign_up_page_bookmarks = Ahoy::Event
+      .left_joins(:user)
+      .where(user: { id: nil })
+      .where(name: "Visited sign up page")
+      .where("properties->'params'->>'bookmark_event_id' IS NOT NULL")
+      .where("ahoy_events.time >= ?", start_date)
+      .group("properties->'params'->>'bookmark_event_id'")
+      .group_by_day(:time, range: start_date..)
+      .count
 
     @aggregated_users = User
       .group_by_day(:created_at, range: start_date..)

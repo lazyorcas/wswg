@@ -42,6 +42,9 @@
       <%= render "chart", title: "Which cities upon arriving at the sign up page?" do %>
         <%= pie_chart @sign_up_page_cities %>
       <% end %>
+      <%= render "chart", title: "How many bookmarks led to sign ups?" do %>
+        <%= line_chart @sign_up_page_bookmarks %>
+      <% end %>
     <% end %>
     <%= render "charts", title: "Product" do %>
       <%= render "chart", title: "User Growth" do %>
