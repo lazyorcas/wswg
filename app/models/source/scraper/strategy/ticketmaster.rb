@@ -27,12 +27,13 @@ class Source::Scraper::Strategy::Ticketmaster < Source::Scraper::Strategy::BaseA
       city = venue["city"]["name"]
       country = venue["country"]["name"]
 
-      classifications = data["classifications"]
+      classification = data.dig("classifications", 0)
+      tags = classification&.values_at("segment", "genre", "subGenre")&.map { |c| c["name"] }&.compact&.select { |tag| tag != "Undefined" }&.join(" ")
 
       event_attributes = {
         url: url.split("?").first,
         title: data["name"],
-        tags: classifications ? classifications.map { |c| c["segment"]["name"] }.uniq.join(" ") : nil,
+        tags: tags,
         image_url: data.dig("images", 0, "url") || data.dig("images", 0, "href"),
         start_date: start_date,
         end_date: end_date || start_date,
