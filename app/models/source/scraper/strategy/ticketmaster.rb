@@ -28,7 +28,7 @@ class Source::Scraper::Strategy::Ticketmaster < Source::Scraper::Strategy::BaseA
       country = venue["country"]["name"]
 
       classification = data.dig("classifications", 0)
-      tags = classification&.values_at("segment", "genre", "subGenre")&.map { |c| c["name"] }&.compact&.select { |tag| tag != "Undefined" }&.join(" ")
+      tags = classification&.values_at("segment", "genre", "subGenre")&.compact&.map { |c| c["name"] }&.select { |tag| tag != "Undefined" }&.join(" ")
 
       event_attributes = {
         url: url.split("?").first,
