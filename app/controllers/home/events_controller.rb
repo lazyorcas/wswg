@@ -3,7 +3,7 @@ class Home::EventsController < ApplicationController
 
   layout "home"
 
-  after_action :create_seen, only: :redirect
+  after_action :create_seen, only: :redirect, unless: -> { browser.bot? }
 
   helper_method :today?, :tomorrow?, :this_week?, :next_week?
 
