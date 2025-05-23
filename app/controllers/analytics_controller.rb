@@ -54,8 +54,7 @@ class AnalyticsController < ApplicationController
     )
 
     @seens = Seen
-      .left_joins(:user)
-      .where(user: { id: nil })
+      .where(user_id: nil)
       .group_by_day(:created_at, range: start_date..)
       .count
 
