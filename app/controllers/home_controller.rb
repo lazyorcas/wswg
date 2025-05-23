@@ -3,6 +3,8 @@ class HomeController < ApplicationController
 
   def index
     load_enabled_cities
+
+    ahoy.track "Visited homepage"
   end
 
   def pricing

@@ -18,6 +18,9 @@
       <%= render "chart", title: "Ahoy Events - City Events Page" do %>
         <%= line_chart @city_events_page_events %>
       <% end %>
+      <%= render "chart", title: "Ahoy Events - Homepage" do %>
+        <%= line_chart @homepage_events %>
+      <% end %>
       <%= render "chart", title: "Ahoy Visits by Referring Domain" do %>
         <%= column_chart @visits_by_referring_domain, stacked: true %>
       <% end %>

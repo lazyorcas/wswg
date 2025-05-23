@@ -36,6 +36,10 @@ class AnalyticsController < ApplicationController
       "Viewed events",
       start_date: start_date
     )
+    @homepage_events = build_ahoy_events_page_events_data(
+      "Viewed homepage",
+      start_date: start_date
+    )
 
     @city_views = build_ahoy_events_popularity_data(
       "properties->>'city'",
