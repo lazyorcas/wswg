@@ -12,7 +12,7 @@ class TimePeriodTest < ActiveSupport::TestCase
       assert_equal "2025-05-22", time_period.start_date.to_s
       assert_equal "2025-05-22", time_period.end_date.to_s
       assert_equal "12:00", time_period.start_time
-      assert_equal "today", time_period.parameterize
+      assert_equal "today", time_period.slug
     end
   end
 
@@ -22,7 +22,7 @@ class TimePeriodTest < ActiveSupport::TestCase
       assert_equal "2025-05-22", time_period.start_date.to_s
       assert_equal "2025-05-22", time_period.end_date.to_s
       assert_equal "18:00", time_period.start_time
-      assert_equal "tonight", time_period.parameterize
+      assert_equal "tonight", time_period.slug
     end
   end
 
@@ -32,7 +32,7 @@ class TimePeriodTest < ActiveSupport::TestCase
       assert_equal "2025-05-23", time_period.start_date.to_s
       assert_equal "2025-05-23", time_period.end_date.to_s
       assert_nil time_period.start_time
-      assert_equal "tomorrow", time_period.parameterize
+      assert_equal "tomorrow", time_period.slug
     end
   end
 
@@ -42,7 +42,7 @@ class TimePeriodTest < ActiveSupport::TestCase
       assert_equal "2025-05-22", time_period.start_date.to_s
       assert_equal "2025-05-25", time_period.end_date.to_s
       assert_equal "12:00", time_period.start_time
-      assert_equal "this-week", time_period.parameterize
+      assert_equal "this-week", time_period.slug
     end
   end
 
@@ -52,7 +52,7 @@ class TimePeriodTest < ActiveSupport::TestCase
       assert_equal "2025-05-24", time_period.start_date.to_s
       assert_equal "2025-05-25", time_period.end_date.to_s
       assert_nil time_period.start_time
-      assert_equal "this-weekend", time_period.parameterize
+      assert_equal "this-weekend", time_period.slug
     end
   end
 
@@ -62,7 +62,7 @@ class TimePeriodTest < ActiveSupport::TestCase
       assert_equal "2025-05-26", time_period.start_date.to_s
       assert_equal "2025-06-01", time_period.end_date.to_s
       assert_nil time_period.start_time
-      assert_equal "next-week", time_period.parameterize
+      assert_equal "next-week", time_period.slug
     end
   end
 
@@ -72,7 +72,7 @@ class TimePeriodTest < ActiveSupport::TestCase
       assert_equal "2025-05-31", time_period.start_date.to_s
       assert_equal "2025-06-01", time_period.end_date.to_s
       assert_nil time_period.start_time
-      assert_equal "next-weekend", time_period.parameterize
+      assert_equal "next-weekend", time_period.slug
     end
   end
 
@@ -82,7 +82,7 @@ class TimePeriodTest < ActiveSupport::TestCase
       assert_equal "2025-05-22", time_period.start_date.to_s
       assert_nil time_period.end_date
       assert_equal "12:00", time_period.start_time
-      assert_nil time_period.parameterize
+      assert_nil time_period.slug
     end
   end
 end
