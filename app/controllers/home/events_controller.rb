@@ -114,7 +114,11 @@ class Home::EventsController < ApplicationController
   end
 
   def create_seen
-    Current.user.seen_events << @event
-    Current.user.save!
+    if Current.user.present?
+      Current.user.seen_events << @event
+      Current.user.save!
+    else
+      Seen.create!(event: @event)
+    end
   end
 end
