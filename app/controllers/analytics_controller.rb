@@ -9,17 +9,17 @@ class AnalyticsController < ApplicationController
       START_DATE
 
     @visits = Ahoy::Visit
-      .where(user_id: nil)
+      .non_user
       .group_by_day(:started_at, range: start_date..)
       .count
     @visits_by_device = Ahoy::Visit
-      .where(user_id: nil)
+      .non_user
       .where.not(device_type: nil)
       .group(:device_type)
       .group_by_day(:started_at, range: start_date..)
       .count
     @visits_by_referring_domain = Ahoy::Visit
-      .where(user_id: nil)
+      .non_user
       .where.not(referring_domain: nil)
       .group(:referring_domain)
       .group_by_day(:started_at, range: start_date..)
@@ -56,25 +56,22 @@ class AnalyticsController < ApplicationController
       .count
 
     @sign_up_page_cities = Ahoy::Event
-      .left_joins(:user)
+      .non_user
       .joins("INNER JOIN cities ON cities.id = (ahoy_events.properties->'params'->>'city_id')::integer")
-      .where(user: { id: nil })
       .where(name: "Visited sign up page")
       .where("properties->'params'->>'city_id' IS NOT NULL")
       .where("ahoy_events.time >= ?", start_date)
       .group("cities.name")
       .count
     @sign_up_page_queries = Ahoy::Event
-      .left_joins(:user)
-      .where(user: { id: nil })
+      .non_user
       .where(name: "Visited sign up page")
       .where("properties->'params'->>'query' IS NOT NULL")
       .where("ahoy_events.time >= ?", start_date)
       .group("properties->'params'->>'query'")
       .count
     @sign_up_page_bookmarks = Ahoy::Event
-      .left_joins(:user)
-      .where(user: { id: nil })
+      .non_user
       .where(name: "Visited sign up page")
       .where("properties->'params'->>'bookmark_event_id' IS NOT NULL")
       .where("ahoy_events.time >= ?", start_date)
@@ -114,8 +111,7 @@ class AnalyticsController < ApplicationController
 
   def build_ahoy_events_page_events_data(event_name, start_date:)
     Ahoy::Event
-      .left_joins(:user)
-      .where(user: { id: nil })
+      .non_user
       .where(name: event_name)
       .group_by_day(:time, range: start_date..)
       .count
@@ -125,8 +121,7 @@ class AnalyticsController < ApplicationController
     label_format ||= ->(*values) { values.first }
 
     Ahoy::Event
-      .left_joins(:user)
-      .where(user: { id: nil })
+      .non_user
       .where(name: "Viewed events")
       .group(*Array(group_by_columns))
       .group_by_day(:time, range: start_date..)
