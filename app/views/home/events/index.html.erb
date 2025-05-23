@@ -30,7 +30,7 @@
           <% if signed_in? %>
             <%= link_to "See all events", map_path, class: "link" %>.
           <% else %>
-            <%= link_to sign_up_cta, new_user_path("user[city_id]" => @city.id), class: "link" %> to see all events.
+            <%= link_to "Create an account", new_user_path("user[city_id]" => @city.id), class: "link" %> to see all events.
           <% end %>
           <br />
         <% end %>

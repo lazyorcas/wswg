@@ -1,9 +1,5 @@
 module SignUpHelper
   def sign_up_page_title
-    sign_up_cta
-  end
-
-  def sign_up_cta
     if sign_up_page_field_test.include?("free_word")
       "Create a free account"
     else
