@@ -108,7 +108,7 @@ class TimePeriod
     elsif this_week?
       current_date.end_of_week
     elsif this_weekend?
-      current_date.beginning_of_week.next_occurring(:sunday)
+      current_date.end_of_week
     elsif next_week?
       current_date.end_of_week.next_occurring(:sunday)
     elsif next_weekend?

@@ -114,6 +114,7 @@ class Home::EventsController < ApplicationController
   end
 
   def create_seen
-    Seen.create!(event: @event, user: Current.user)
+    Current.user.seen_events << @event
+    Current.user.save!
   end
 end
