@@ -15,6 +15,10 @@ class TimeZone
     @current_hour ||= now.hour
   end
 
+  def current_time
+    @current_time ||= now.strftime("%H:%M")
+  end
+
   def current_date
     @current_date ||= now.to_date
   end
