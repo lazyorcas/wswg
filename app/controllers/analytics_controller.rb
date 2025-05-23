@@ -32,6 +32,10 @@ class AnalyticsController < ApplicationController
       "Visited pricing page",
       start_date: start_date
     )
+    @city_events_page_events = build_ahoy_events_page_events_data(
+      "Viewed events",
+      start_date: start_date
+    )
 
     @city_views = build_ahoy_events_popularity_data(
       "properties->>'city'",
@@ -78,7 +82,9 @@ class AnalyticsController < ApplicationController
       .group_by_day(:time, range: start_date..)
       .count
 
+    # Usage
     @aggregated_users = User
+      .where.not(id: 1)
       .group_by_day(:created_at, range: start_date..)
       .count
       .transform_values { |v| v }
@@ -87,7 +93,22 @@ class AnalyticsController < ApplicationController
       .each_with_object({}) { |(date, count), hash|
         hash[date] = (hash.values.last || 0) + count
       }
+    @sign_ins = Ahoy::Visit
+      .where.not(user_id: [ nil, 1 ])
+      .group_by_day(:started_at, range: start_date..)
+      .distinct.count(:user_id)
+      .transform_values { |v| v }
+      .transform_keys { |k| k.to_date }
+      .sort
     @search_queries = SearchQuery
+      .where.not(user_id: 1)
+      .group_by_day(:created_at, range: start_date..)
+      .count
+      .transform_values { |v| v }
+      .transform_keys { |k| k.to_date }
+      .sort
+    @bookmarks = Bookmark
+      .where.not(user_id: 1)
       .group_by_day(:created_at, range: start_date..)
       .count
       .transform_values { |v| v }

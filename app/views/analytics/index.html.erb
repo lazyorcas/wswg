@@ -15,6 +15,9 @@
       <%= render "chart", title: "Ahoy Events - Pricing Page" do %>
         <%= line_chart @pricing_page_events %>
       <% end %>
+      <%= render "chart", title: "Ahoy Events - City Events Page" do %>
+        <%= line_chart @city_events_page_events %>
+      <% end %>
       <%= render "chart", title: "Ahoy Visits by Referring Domain" do %>
         <%= column_chart @visits_by_referring_domain, stacked: true %>
       <% end %>
@@ -50,8 +53,14 @@
       <%= render "chart", title: "User Growth" do %>
         <%= line_chart @aggregated_users, curve: false %>
       <% end %>
+      <%= render "chart", title: "Sign Ins" do %>
+        <%= line_chart @sign_ins %>
+      <% end %>
       <%= render "chart", title: "Search Queries created" do %>
         <%= line_chart @search_queries %>
+      <% end %>
+      <%= render "chart", title: "Bookmarks created" do %>
+        <%= line_chart @bookmarks %>
       <% end %>
       <%= render "chart", title: "Events created by city" do %>
         <%= area_chart @events_by_city, stacked: true %>
