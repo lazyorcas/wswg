@@ -1,5 +1,5 @@
 <%= form_with url: new_user_path, method: :get, class: "flex flex-col md:flex-row gap-y-2 md:gap-x-2 md:items-center md:gap-y-0" do |form| %>
-  <%= form.search_field "user[search_queries_attributes][0][query]", placeholder: "e.g. comedy shows this Sunday in Barcelona", class: "input", required: true %>
+  <%= form.search_field "user[search_queries_attributes][0][query]", placeholder: "e.g. comedy shows this Sunday in Barcelona", class: "input input--accent", required: true %>
   <%= form.button type: :submit, class: "button button--primary" do %>
     <i class="ph-bold ph-magnifying-glass"></i>
     Search

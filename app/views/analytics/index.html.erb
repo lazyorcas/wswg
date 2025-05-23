@@ -3,9 +3,9 @@
   <header class="flex flex-col md:flex-row md:justify-between gap-y-2 md:gap-y-0 mb-8">
     <h1 class="text-3xl font-bold">Analytics</h1>
     <%= form_with method: :get, html: { class: "flex flex-wrap gap-2" } do |form| %>
-      <%= form.date_field :start_date, value: @start_date, class: "input w-fit" %>
-      <%= form.date_field :end_date, value: @end_date, class: "input w-fit" %>
-      <%= form.select :time_interval, options_for_select([["Day", "day"], ["Week", "week"]], @time_interval), {}, class: "input w-fit" %>
+      <%= form.date_field :start_date, value: @start_date, class: "whitespace-nowrap shrink-0 input input--accent w-fit" %>
+      <%= form.date_field :end_date, value: @end_date, class: "whitespace-nowrap shrink-0 input input--accent  w-fit" %>
+      <%= form.select :time_interval, options_for_select([["Day", "day"], ["Week", "week"]], @time_interval), {}, class: "whitespace-nowrap shrink-0 input input--accent w-fit" %>
       <%= form.submit "Filter", class: "button button--secondary" %>
     <% end %>
   </header>

@@ -2,14 +2,14 @@
   <div class="flex flex-col gap-y-4">
     <div class="flex flex-col gap-y-1">
       <%= form.label :email, "Email", class: "text-sm text-secondary" %>
-      <%= form.email_field :email, required: true, class: "input", placeholder: "Enter your email", autocomplete: "email" %>
+      <%= form.email_field :email, required: true, class: "input input--accent", placeholder: "Enter your email", autocomplete: "email" %>
     </div>
     <div class="flex flex-col gap-y-1">
       <%= form.label :city_id, "City", class: "text-sm text-secondary" %>
       <%= form.select :city_id, 
           City.enabled.order(:name).map { |city| [city.name, city.id] },
           { include_blank: "Select your home city", required: true, selected: user.city_id },
-          { class: "input" } %>
+          { class: "input input--accent" } %>
     </div>
     <%= form.fields_for :bookmarks do |bookmark_form| %>
       <%= bookmark_form.hidden_field :event_id %>
