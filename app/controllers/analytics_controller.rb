@@ -51,11 +51,32 @@ class AnalyticsController < ApplicationController
       label_format: ->(period) { period },
       start_date: start_date
     )
-    @wday_views = build_ahoy_events_popularity_data_by_wday(
-      "properties->>'time_period'",
-      label_format: ->(period) { period },
-      start_date: start_date
-    )
+    @wday_views = Ahoy::Event
+      .non_user
+      .joins("INNER JOIN cities ON cities.name = ahoy_events.properties->>'city'")
+      .where(name: "Viewed events")
+      .where(time: start_date..)
+      .group("COALESCE(properties->>'time_period', 'all')", Arel.sql("EXTRACT(DOW FROM ahoy_events.time AT TIME ZONE cities.time_zone)"))
+      .count
+      .group_by { |(period, _), _| period }
+      .map { |period, data|
+        {
+          name: period,
+          data: data.each_with_object({}) do |((_, dow), count), hash|
+            day = Date::DAYNAMES[(dow.to_i + 6) % 7]
+            hash[day] = count
+          end
+        }
+      }
+      .map { |series|
+        {
+          name: series[:name],
+          data: Date::DAYNAMES.rotate(1).each_with_object({}) do |day, hash|
+            hash[day] = series[:data][day] || 0
+          end
+        }
+      }
+      .sort_by { |h| h[:name].to_s }
     @city_time_period_views = build_ahoy_events_popularity_data(
       [ "properties->>'city'", "properties->>'time_period'" ],
       label_format: ->(city, period) { "#{city} - #{period}" },
@@ -161,26 +182,6 @@ class AnalyticsController < ApplicationController
         {
           name: label,
           data: data.each_with_object({}) { |((*_, date), count), hash| hash[date.to_date] = count }
-        }
-      }
-  end
-
-  def build_ahoy_events_popularity_data_by_wday(group_by_columns, label_format: nil, start_date:)
-    label_format ||= ->(*values) { values.first }
-
-    Ahoy::Event
-      .non_user
-      .where(name: "Viewed events")
-      .group(*Array(group_by_columns))
-      .group_by_day_of_week(:time, range: start_date..Time.now)
-      .count
-      .group_by { |values, _| label_format.call(*values[0...-1]) }
-      .map { |label, data|
-        {
-          name: label,
-          data: data.each_with_object({}) do |((*_, wday), count), hash|
-            hash[Date::DAYNAMES[(wday + 1) % 7]] = count
-          end
         }
       }
   end
