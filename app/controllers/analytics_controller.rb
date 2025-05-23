@@ -65,6 +65,7 @@ class AnalyticsController < ApplicationController
       .where("properties->'params'->>'city_id' IS NOT NULL")
       .where("ahoy_events.time >= ?", start_date)
       .group("cities.name")
+      .group_by_day(:time, range: start_date..)
       .count
     @sign_up_page_queries = Ahoy::Event
       .non_user
