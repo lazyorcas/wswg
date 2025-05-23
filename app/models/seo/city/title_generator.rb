@@ -13,10 +13,12 @@ class SEO::City::TitleGenerator
   TITLE_DICTIONARY = {
     "San Francisco" => {
       all: "San Francisco events",
-      today: "San Francisco events today"
+      today: "San Francisco events today",
+      this_week: "Things to do this week in San Francisco",
+      this_weekend: "San Francisco events this weekend"
     },
     "London" => {
-      today: "Happenings in London today",
+      today: "Events in London today",
       tomorrow: "London events tomorrow",
       this_week: "Events in London this week",
       next_week: "Events in London next week"
@@ -26,6 +28,7 @@ class SEO::City::TitleGenerator
       today: "NYC events today",
       tomorrow: "NYC things to do tomorrow",
       this_week: "Events in New York this week",
+      this_weekend: "New York City happenings this weekend",
       next_week: "Next week in New York"
     },
     "Singapore" => {
