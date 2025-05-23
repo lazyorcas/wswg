@@ -8,6 +8,16 @@ experiments:
       - t
       - f
     # winner: f
+  sign_up_page:
+    name: Sign Up Rate
+    description: >
+      Test if sign-up rate increases by either having the word "free" in the sign up page or by having a hero image of the app.
+    started_at: May 23, 2025 2 pm SGT
+    variants:
+      - control
+      - has_free_word
+      - has_hero_image
+      - has_free_word_and_hero_image
 
 exclude:
   bots: true

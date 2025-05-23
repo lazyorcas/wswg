@@ -1,7 +1,15 @@
 <% content_for :title, "Create an account | Where Should We Go" %>
-<div class="grow flex flex-col justify-center items-center gap-y-8 w-full">
-  <h1 class="text-3xl font-bold">Create an account</h1>
-  <div class="w-full md:max-w-100">
-    <%= render "form", user: @user %>
-  </div>
+<div class="py-10 lg:py-0 grow flex flex-col lg:flex-row items-center gap-y-8 lg:gap-y-0 lg:gap-x-8">
+  <% if show_hero_image_in_sign_up_page? %>
+    <div class="shrink-0 lg:max-w-1/2 w-full h-fit" id="hero-image-container">
+      <img src="/hero-light.webp" alt="Where Should We Go's Hero Light" class="size-full block dark:hidden object-contain rounded-xl" loading="lazy">
+      <img src="/hero-dark.webp" alt="Where Should We Go's Hero Dark" class="size-full hidden dark:block object-contain rounded-xl" loading="lazy">
+    </div>
+  <% end %>
+  <%= tag.div class: class_names("grow flex flex-col lg:justify-center items-center gap-y-8 backdrop-blur-xs", !show_hero_image_in_sign_up_page? && "justify-center") do %>
+    <h1 class="text-3xl font-bold"><%= sign_up_page_title %></h1>
+    <div class="w-full md:max-w-100">
+      <%= render "form", user: @user %>
+    </div>
+  <% end %>
 </div>
