@@ -4,11 +4,17 @@
       <%= link_to event_redirect_path(@event), class: "grow flex gap-x-4", target: "_blank" do %>
         <%= image_tag @event.image_url, class: "shrink-0 event-image", loading: "lazy", referrerpolicy: "no-referrer", alt: "Event image" %>
         <span class="grow flex flex-col list-item__text">
-          <%= tag.span class: "mb-2 w-full flex items-center gap-x-1" do %>
+          <%= tag.span class: class_names("w-full flex items-center gap-x-1", @event.seen_count.positive? ? "mb-1" : "mb-2") do %>
             <%= image_tag source_icon_url, class: "inline-flex event-source-icon", loading: "lazy", alt: "Event source icon" %>
             <span class="text-xs"><%= @event.source.name %></span>
+            <% if @event.seen_count.positive? %>
+              <span class="ml-auto md:ml-2 tag tag--hot font-semibold flex items-center gap-x-1">
+                <i class="ph-fill ph-fire"></i>
+                Popular
+              </span>
+            <% end %>
           <% end %>
-          <%= tag.h2 @event.title, class: "text-sm line-clamp-1" %>
+          <%= tag.h2 @event.title, class: "text-sm line-clamp-2 md:line-clamp-1" %>
           <%= tag.p class: "text-xs text-secondary" do %>
             <%= date %> &#x2022; <%= time_range %>
           <% end %>

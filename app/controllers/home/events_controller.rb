@@ -25,6 +25,7 @@ class Home::EventsController < ApplicationController
     load_time_period
     load_events
     count_events
+    order_events
     limit_events
     build_alternate_link_attributes
 
@@ -54,9 +55,9 @@ class Home::EventsController < ApplicationController
   def load_events
     @events = Event
       .joins(:city_source)
-      .where(city_sources: { city_id: @city.id })
+      .left_joins(:seens)
+      .where(city_source: { city_id: @city.id })
       .where(end_date: @time_period.start_date..@time_period.end_date)
-      .order(:start_date, :start_time)
 
     if @time_period.start_time.present?
       @events = @events.where("start_time >= ?", @time_period.start_time)
@@ -65,6 +66,13 @@ class Home::EventsController < ApplicationController
 
   def count_events
     @all_events_count = @events.count
+  end
+
+  def order_events
+    @events = @events
+      .select("events.*, COUNT(seens.id) as seen_count")
+      .group("events.id")
+      .order("seen_count DESC, events.start_date, events.start_time")
   end
 
   def limit_events

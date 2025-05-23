@@ -157,6 +157,10 @@
     @apply text-xs;
   }
 
+  .tag--hot {
+    @apply bg-red-600 dark:bg-red-300 text-white dark:text-red-900;
+  }
+
   /* ==========================================================================
   |
   |
