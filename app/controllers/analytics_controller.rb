@@ -51,6 +51,11 @@ class AnalyticsController < ApplicationController
       label_format: ->(period) { period },
       start_date: start_date
     )
+    @wday_views = build_ahoy_events_popularity_data_by_wday(
+      "properties->>'time_period'",
+      label_format: ->(period) { period },
+      start_date: start_date
+    )
     @city_time_period_views = build_ahoy_events_popularity_data(
       [ "properties->>'city'", "properties->>'time_period'" ],
       label_format: ->(city, period) { "#{city} - #{period}" },
@@ -150,6 +155,24 @@ class AnalyticsController < ApplicationController
       .where(name: "Viewed events")
       .group(*Array(group_by_columns))
       .group_by_day(:time, range: start_date..Time.now, expand_range: true)
+      .count
+      .group_by { |values, _| label_format.call(*values[0...-1]) }
+      .map { |label, data|
+        {
+          name: label,
+          data: data.each_with_object({}) { |((*_, date), count), hash| hash[date.to_date] = count }
+        }
+      }
+  end
+
+  def build_ahoy_events_popularity_data_by_wday(group_by_columns, label_format: nil, start_date:)
+    label_format ||= ->(*values) { values.first }
+
+    Ahoy::Event
+      .non_user
+      .where(name: "Viewed events")
+      .group(*Array(group_by_columns))
+      .group_by_day_of_week(:time, range: start_date..Time.now, expand_range: true)
       .count
       .group_by { |values, _| label_format.call(*values[0...-1]) }
       .map { |label, data|
