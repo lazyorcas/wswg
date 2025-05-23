@@ -37,7 +37,7 @@ class AnalyticsController < ApplicationController
       start_date: start_date
     )
     @homepage_events = build_ahoy_events_page_events_data(
-      "Viewed homepage",
+      "Visited homepage",
       start_date: start_date
     )
 
