@@ -18,31 +18,35 @@ class Source::Scraper::Strategy::Ticketmaster < Source::Scraper::Strategy::BaseA
       url = data["url"]
       next if url.blank?
 
-      start_date = data.dig("dates", "start", "localDate")
-      end_date = data.dig("dates", "end", "localDate")
+      begin
+        start_date = data.dig("dates", "start", "localDate")
+        end_date = data.dig("dates", "end", "localDate")
 
-      venue = data.dig("_embedded", "venues", 0)
-      address = venue["address"]["line1"]
-      postal_code = venue["postalCode"]
-      city = venue["city"]["name"]
-      country = venue["country"]["name"]
+        venue = data.dig("_embedded", "venues", 0)
+        address = venue["address"]["line1"]
+        postal_code = venue["postalCode"]
+        city = venue["city"]["name"]
+        country = venue["country"]["name"]
 
-      classification = data.dig("classifications", 0)
-      tags = classification&.values_at("segment", "genre", "subGenre")&.compact&.map { |c| c["name"] }&.select { |tag| tag != "Undefined" }&.join(" ")
+        classification = data.dig("classifications", 0)
+        tags = classification&.values_at("segment", "genre", "subGenre")&.compact&.map { |c| c["name"] }&.select { |tag| tag != "Undefined" }&.join(" ")
 
-      event_attributes = {
-        url: url.split("?").first,
-        title: data["name"],
-        tags: tags,
-        image_url: data.dig("images", 0, "url") || data.dig("images", 0, "href"),
-        start_date: start_date,
-        end_date: end_date || start_date,
-        start_time: data.dig("dates", "start", "localTime"),
-        end_time: data.dig("dates", "end", "localTime"),
-        location_query: "#{address}, #{postal_code} #{city}, #{country}"
-      }
+        event_attributes = {
+          url: url.split("?").first,
+          title: data["name"],
+          tags: tags,
+          image_url: data.dig("images", 0, "url") || data.dig("images", 0, "href"),
+          start_date: start_date,
+          end_date: end_date || start_date,
+          start_time: data.dig("dates", "start", "localTime"),
+          end_time: data.dig("dates", "end", "localTime"),
+          location_query: "#{address}, #{postal_code} #{city}, #{country}"
+        }
 
-      yield event_attributes
+        yield event_attributes
+      rescue
+        next
+      end
     end
   end
 

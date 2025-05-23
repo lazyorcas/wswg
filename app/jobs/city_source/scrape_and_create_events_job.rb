@@ -7,6 +7,7 @@ class CitySource::ScrapeAndCreateEventsJob < ApplicationJob
 
   retry_on Ferrum::TimeoutError, wait: 30.minutes, attempts: 3
   retry_on Ferrum::NodeNotFoundError, wait: 1.minute, attempts: 3
+  retry_on Ferrum::JavaScriptError, wait: 15.minutes, attempts: 3
   retry_on NoEventsFoundError, wait: 5.minutes, attempts: NO_EVENTS_FOUND_MAX_ATTEMPTS
 
   def perform(id, limit:)
