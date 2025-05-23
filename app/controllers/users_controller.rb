@@ -24,6 +24,9 @@ class UsersController < ApplicationController
   rescue => e
     Sentry.capture_exception(e)
     redirect_to(new_user_path, error: "Failed to create account. Please try again.")
+
+  ensure
+    field_test_converted(:sign_up_page)
   end
 
   private
