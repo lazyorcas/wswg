@@ -24,7 +24,7 @@ class EventComponent < ViewComponent::Base
   end
 
   def time_range
-    [ @event.start_time, @event.end_time ].compact.join(" - ")
+    [ start_time, end_time ].compact.join(" - ")
   end
 
   def source_icon_url
