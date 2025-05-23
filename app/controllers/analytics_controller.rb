@@ -172,13 +172,15 @@ class AnalyticsController < ApplicationController
       .non_user
       .where(name: "Viewed events")
       .group(*Array(group_by_columns))
-      .group_by_day_of_week(:time, range: start_date..Time.now, expand_range: true)
+      .group_by_day_of_week(:time, range: start_date..Time.now)
       .count
       .group_by { |values, _| label_format.call(*values[0...-1]) }
       .map { |label, data|
         {
           name: label,
-          data: data.each_with_object({}) { |((*_, date), count), hash| hash[date.to_date] = count }
+          data: data.each_with_object({}) do |((*_, wday), count), hash|
+            hash[Date::DAYNAMES[(wday + 1) % 7]] = count
+          end
         }
       }
   end
