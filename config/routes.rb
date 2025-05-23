@@ -16,10 +16,8 @@ Rails.application.routes.draw do
   get "/pricing", to: "home#pricing", as: :pricing
   get "/analytics", to: "analytics#index", as: :analytics
 
-  get "/events-today-in-:city_slug", to: "home/events#index", as: :events_today
-  get "/events-tomorrow-in-:city_slug", to: "home/events#index", as: :events_tomorrow
-  get "/events-this-week-in-:city_slug", to: "home/events#index", as: :events_this_week
-  get "/events-next-week-in-:city_slug", to: "home/events#index", as: :events_next_week
+  get "/:city_slug-events", to: "home/events#index", time_period_slug: "all", as: :all_city_events
+  get "/events-:time_period_slug-in-:city_slug", to: "home/events#index", as: :city_events
   get "/events/:id/redirect", to: "home/events#redirect", as: :event_redirect
 
   resources :users, only: [ :new, :create ]

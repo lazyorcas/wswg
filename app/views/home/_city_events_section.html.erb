@@ -1,17 +1,10 @@
 <section class="flex-1 flex flex-col gap-y-2 md:gap-y-4 items-center">
   <h3 class="text-xl font-semibold">Events in <%= city.name %></h3>
   <ol class="flex flex-col">
-    <li>
-      <%= link_to "Events today in #{city.name}", events_today_path(city_slug: city.slug), class: "link" %>
-    </li>
-    <li>
-      <%= link_to "Events tomorrow in #{city.name}", events_tomorrow_path(city_slug: city.slug), class: "link" %>
-    </li>
-    <li>
-      <%= link_to "Events this week in #{city.name}", events_this_week_path(city_slug: city.slug), class: "link" %>
-    </li>
-    <li>
-      <%= link_to "Events next week in #{city.name}", events_next_week_path(city_slug: city.slug), class: "link" %>
-    </li>
+    <% TimePeriod::SYMBOLS.each do |time_period_symbol| %>
+      <li>
+        <%= link_to build_city_meta_title(city, time_period_symbol), build_city_events_path(city_slug: city.slug, time_period_slug: TimePeriod.slugify(time_period_symbol)), class: "link" %>
+      </li>
+    <% end %>
   </ol>
 </section>

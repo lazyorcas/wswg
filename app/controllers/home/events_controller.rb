@@ -1,31 +1,37 @@
 class Home::EventsController < ApplicationController
-  EVENT_LIMIT = 50
+  include CityHelper
+
+  EVENT_LIMIT_MAPPING = {
+    today: 20,
+    tonight: 10,
+    tomorrow: 20,
+    this_week: 50,
+    this_weekend: 20,
+    next_week: 50,
+    next_weekend: 20,
+    all: 100
+  }
 
   layout "home"
 
   after_action :create_seen, only: :redirect, unless: -> { browser.bot? }
 
-  helper_method :today?, :tomorrow?, :this_week?, :next_week?
-
   def index
     load_city
     if @city.nil?
-      head :not_found
-      return
+      return head(:not_found)
     end
 
-    load_date_range
+    load_time_period
     load_events
-    load_all_events_count
+    count_events
+    limit_events
+    build_alternate_link_attributes
 
-    build_time_period_text
-    build_title
-    build_description
-
-    ahoy.track "Viewed events", city: @city.name, time_period: @time_period_text
+    ahoy.track "Viewed events", city: @city.name, time_period: @time_period.to_s
 
     if @events.empty?
-      Sentry.capture_message("No events found for #{@city.name} #{@time_period_text}")
+      Sentry.capture_message("No events found for #{@city.name} #{@time_period}")
     end
   end
 
@@ -36,104 +42,70 @@ class Home::EventsController < ApplicationController
 
   private
 
+  def load_city
+    @city = City.find_by(slug: params[:city_slug])
+  end
+
+  def load_time_period
+    time_period_symbol = TimePeriod::SLUG_TO_SYMBOL_MAPPING[params[:time_period_slug]] || :all
+    @time_period = TimePeriod.new(@city.time_zone, time_period_symbol)
+  end
+
+  def load_events
+    @events = Event
+      .joins(:city_source)
+      .where(city_sources: { city_id: @city.id })
+      .where(end_date: @time_period.start_date..@time_period.end_date)
+      .order(:start_date, :start_time)
+
+    if @time_period.start_time.present?
+      @events = @events.where("start_time >= ?", @time_period.start_time)
+    end
+  end
+
+  def count_events
+    @all_events_count = @events.count
+  end
+
+  def limit_events
+    @events = @events.limit(EVENT_LIMIT_MAPPING[@time_period.to_sym])
+  end
+
+  def build_alternate_link_attributes
+    alternate_time_periods_symbols = if @time_period.today?
+      [ :tonight, :tomorrow, :this_week, :this_weekend ]
+    elsif @time_period.tonight?
+      [ :tomorrow, :this_week, :this_weekend ]
+    elsif @time_period.tomorrow?
+      [ :this_week, :this_weekend ]
+    elsif @time_period.this_week?
+      [ :this_weekend, :next_week ]
+    elsif @time_period.this_weekend?
+      [ :next_weekend, :next_week ]
+    elsif @time_period.next_week?
+      [ :next_weekend ]
+    elsif @time_period.next_weekend?
+      [ :all ]
+    elsif @time_period.all?
+      [ :today, :tonight, :tomorrow, :this_week, :this_weekend, :next_week, :next_weekend ]
+    end
+
+    @alternate_link_attributes = alternate_time_periods_symbols.map do |time_period_symbol|
+      time_period = TimePeriod.new(@city.time_zone, time_period_symbol)
+      title = build_city_meta_title(@city, time_period_symbol)
+
+      {
+        href: build_city_events_path(time_period_slug: time_period.slug),
+        title: title.split(" ").first == @city.name ? title : title.uncapitalize
+      }
+    end
+  end
+
   def load_event
     @event = Event.find(params[:id])
   end
 
   def create_seen
     Seen.create!(event: @event, user: Current.user)
-  end
-
-  def build_title
-    @title = "Events #{@time_period_text} in #{@city.name}"
-  end
-
-  def build_description
-    date_range_text = if today? || tomorrow?
-      @start_date.strftime("%B %d")
-
-    elsif this_week? || next_week?
-      "#{@start_date.beginning_of_week.strftime("%B %d")} - #{@end_date.end_of_week.strftime("%B %d")}"
-    end
-
-    @description = "What's happening in #{@city.name} #{@time_period_text} (#{date_range_text})? Discover local events from Luma, Meetup, Eventbrite, and Ticketmaster."
-  end
-
-  def load_city
-    @city = City.find_by(slug: params[:city_slug])
-  end
-
-  def load_current_date
-    @current_date = Time.current.in_time_zone(@city.time_zone.name).to_date
-  end
-
-  def load_date_range
-    load_current_date
-
-    if today?
-      @start_date = @current_date
-      @end_date = @current_date
-
-    elsif tomorrow?
-      tomorrow = @current_date + 1.day
-
-      @start_date = tomorrow
-      @end_date = tomorrow
-
-    elsif this_week?
-      @start_date = @current_date
-      @end_date = @current_date.end_of_week
-
-    elsif next_week?
-      @start_date = @current_date.end_of_week.next_occurring(:monday)
-      @end_date = @current_date.end_of_week.next_occurring(:sunday)
-
-    end
-  end
-
-  def load_events
-    @events = Event
-      .joins(:city_source)
-      .where(city_sources: { city: @city })
-      .where(end_date: @start_date..@end_date)
-      .order(:start_date, :start_time)
-      .limit(EVENT_LIMIT)
-      .includes(:city)
-  end
-
-  def load_all_events_count
-    @all_events_count = Event
-      .joins(:city_source)
-      .where(city_sources: { city: @city })
-      .where(end_date: @start_date..@end_date)
-      .count
-  end
-
-  def build_time_period_text
-    @time_period_text = if today?
-      "today"
-    elsif tomorrow?
-      "tomorrow"
-    elsif this_week?
-      "this week"
-    elsif next_week?
-      "next week"
-    end
-  end
-
-  def today?
-    request.path.include?("today")
-  end
-
-  def tomorrow?
-    request.path.include?("tomorrow")
-  end
-
-  def this_week?
-    request.path.include?("this-week")
-  end
-
-  def next_week?
-    request.path.include?("next-week")
   end
 end

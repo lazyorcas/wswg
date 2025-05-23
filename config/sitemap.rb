@@ -1,3 +1,5 @@
+SitemapGenerator::Interpreter.send :include, CityHelper
+
 SitemapGenerator::Sitemap.default_host = "https://#{ENV["HOST_NAME"]}"
 SitemapGenerator::Sitemap.compress = false
 SitemapGenerator::Sitemap.create do
@@ -16,9 +18,8 @@ SitemapGenerator::Sitemap.create do
     .enabled
     .order(:name)
     .each do |city|
-      add events_today_path(city_slug: city.slug), priority: 0.9, changefreq: "daily"
-      add events_tomorrow_path(city_slug: city.slug), priority: 0.9, changefreq: "daily"
-      add events_this_week_path(city_slug: city.slug), priority: 0.9, changefreq: "daily"
-      add events_next_week_path(city_slug: city.slug), priority: 0.9, changefreq: "daily"
+      TimePeriod::SYMBOLS.each do |time_period_symbol|
+        add build_city_events_path(city_slug: city.slug, time_period_slug: TimePeriod.slugify(time_period_symbol)), priority: 0.9, changefreq: "daily"
+      end
     end
 end

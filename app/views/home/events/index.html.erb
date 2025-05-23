@@ -1,10 +1,10 @@
-<% content_for :title, @title %>
-<% content_for :description, @description %>
+<% content_for :title, build_city_meta_title(@city, @time_period.to_sym) %>
+<% content_for :description, build_city_description(@city, @time_period) %>
 <main class="grow">
   <header class="flex flex-col gap-y-8 md:gap-y-10 items-center pt-20 pb-10">
     <div class="flex flex-col items-center text-center gap-y-2 md:gap-y-4">
-      <h1 class="text-3xl md:text-4xl font-bold"><%= @title %></h1>
-      <p class="md:max-w-xl"><%= @description %></p>
+      <h1 class="text-3xl md:text-4xl font-bold"><%= build_city_title(@city, @time_period.to_sym) %></h1>
+      <p class="md:max-w-xl"><%= build_city_description(@city, @time_period) %></p>
     </div>
   </header>
   <% unless signed_in? %>
@@ -14,7 +14,7 @@
   <% end %>
   <section class="py-10 w-full flex flex-col xl:flex-row gap-y-8 xl:gap-y-0 xl:gap-x-8">
     <section class="grow -mx-4 xl:mx-auto flex flex-col">
-      <% if (today? || this_week?) && @events.any? %>
+      <% if (@time_period.today? || @time_period.tonight? || @time_period.this_week? || @time_period.this_weekend?) && @events.any? %>
         <p class="px-4 text-sm text-secondary">Past events are not shown.</p>
       <% end %>
       <% if @events.any? %>
@@ -34,15 +34,7 @@
           <% end %>
           <br />
         <% end %>
-        <% if today? %>
-          Additionally, you can view <%= link_to "events tomorrow in #{@city.name}", events_tomorrow_path(city_slug: @city.slug), class: "link" %> or <%= link_to "events this week in #{@city.name}", events_this_week_path(city_slug: @city.slug), class: "link" %>.
-        <% elsif tomorrow? %>
-          Additionally, you can view <%= link_to "events this week in #{@city.name}", events_this_week_path(city_slug: @city.slug), class: "link" %>.
-        <% elsif this_week? %>
-          Additionally, you can view <%= link_to "events next week in #{@city.name}", events_next_week_path(city_slug: @city.slug), class: "link" %>, <%= link_to "events today in #{@city.name}", events_today_path(city_slug: @city.slug), class: "link" %>, and <%= link_to "events tomorrow in #{@city.name}", events_tomorrow_path(city_slug: @city.slug), class: "link" %>.
-        <% elsif next_week? %>
-          Additionally, you can view <%= link_to "events this week in #{@city.name}", events_this_week_path(city_slug: @city.slug), class: "link" %>.
-        <% end %>
+        Additionally, you can view <%= @alternate_link_attributes.map { |link| link_to link[:title], link[:href], class: "link" }.to_sentence.html_safe %>.
       </p>
     </section>
     <section class="shrink-0 h-fit xl:max-w-2xl relative xl:sticky xl:top-16">
