@@ -47,7 +47,7 @@ class AnalyticsController < ApplicationController
         {
           name: period,
           data: data.each_with_object({}) do |((_, dow), count), hash|
-            day = Date::DAYNAMES[(dow.to_i + 6) % 7]
+            day = Date::DAYNAMES[dow.to_i]
             hash[day] = count
           end
         }
