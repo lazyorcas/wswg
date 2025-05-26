@@ -66,8 +66,8 @@ class AnalyticsController < ApplicationController
       label_format: ->(city, period) { "#{city} - #{period}" },
     ).map { |series| [ series[:name], series[:data].values.sum ] }
     .sort_by { |(_, count)| count }
-    .filter { |(_, count)| count > 1 }
     .reverse
+    .take(20)
     .to_h
 
     @seens = Seen

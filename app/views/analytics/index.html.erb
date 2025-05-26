@@ -43,7 +43,7 @@
       <%= render "chart", title: "By Day of Week" do %>
         <%= line_chart @wday_views %>
       <% end %>
-      <%= render "chart", title: "By City & Time Period" do %>
+      <%= render "chart", title: "By City & Time Period (Top 20)" do %>
         <%= pie_chart @city_time_period_views, legend: "right" %>
       <% end %>
     <% end %>
