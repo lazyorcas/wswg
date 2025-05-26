@@ -117,7 +117,7 @@ class TimePeriod
   end
 
   def start_time
-    @start_time ||= if today? || this_week? || all?
+    @start_time ||= if today?
       current_time
     elsif tonight?
       NIGHT_START_TIME
