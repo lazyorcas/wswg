@@ -32,6 +32,9 @@
       <%= render "chart", title: "Ahoy Visits by Referring Domain" do %>
         <%= column_chart @visits_by_referring_domain, stacked: true, legends: false %>
       <% end %>
+      <%= render "chart", title: "Visitor Retention" do %>
+        <%= line_chart @visitor_retention %>
+      <% end %>
     <% end %>
     <%= render "charts", title: "SEO - Popularity of City Events Pages" do %>
       <%= render "chart", title: "By City" do %>

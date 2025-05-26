@@ -10,6 +10,28 @@ class AnalyticsController < ApplicationController
       .non_user
       .group_by_period(@time_interval, :started_at, range: @time_range, expand_range: true)
       .count
+
+    @visitor_retention = Ahoy::Visit
+      .non_user
+      .where(started_at: @time_range)
+      .group(:visitor_token)
+      .group_by_period(@time_interval, :started_at, range: @time_range, expand_range: true)
+      .count
+      .group_by { |(visitor_token, _), _| visitor_token }
+      .transform_values { |visits| visits.map { |(_, date), count| [ date.to_date, count ] }.to_h }
+      .values
+      .group_by { |visits| visits.keys.min }
+      .transform_values { |visits|
+        visits.map { |visit| visit.values.sum }.sum
+      }
+      .sort
+      .to_h
+      .tap { |h|
+        (@start_date.to_date..@end_date.to_date).step(@time_interval == "day" ? 1 : 7) do |date|
+          h[date] ||= 0
+        end
+      }
+
     @visits_by_device = Ahoy::Visit
       .non_user
       .where.not(device_type: nil)
