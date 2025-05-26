@@ -64,10 +64,23 @@ class AnalyticsController < ApplicationController
     @city_time_period_views = build_ahoy_events_popularity_data(
       [ "properties->>'city'", "properties->>'time_period'" ],
       label_format: ->(city, period) { "#{city} - #{period}" },
-    )
+    ).map { |series| [ series[:name], series[:data].values.sum ] }
+    .sort_by { |(_, count)| count }
+    .filter { |(_, count)| count > 1 }
+    .reverse
+    .to_h
 
     @seens = Seen
       .where(user_id: nil)
+      .group_by_period(@time_interval, :created_at, range: @time_range, expand_range: true)
+      .count
+
+    @seens_by_city = Seen
+      .where(user_id: nil)
+      .joins("INNER JOIN events ON events.id = seens.event_id")
+      .joins("INNER JOIN city_sources ON city_sources.id = events.city_source_id")
+      .joins("INNER JOIN cities ON cities.id = city_sources.city_id")
+      .group("cities.name")
       .group_by_period(@time_interval, :created_at, range: @time_range, expand_range: true)
       .count
 
