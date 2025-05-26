@@ -1,8 +1,8 @@
 experiments:
   pricing_page_shown:
-    name: Pricing Page Shown > Sign Up Rate
+    name: Pricing Page Shown
     description: >
-      Test if sign-up rate increases by not having the pricing page shown to visitors.
+      Test if more visitors go to the sign-up page to the site when the pricing page is not shown.
     started_at: May 21, 2025 3 pm SGT
     variants:
       - t
