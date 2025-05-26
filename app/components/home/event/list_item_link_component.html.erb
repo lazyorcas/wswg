@@ -1,7 +1,7 @@
 <%= tag.li class: "shrink-0" do %>
   <span class="w-full list-item rounded-xl">
     <span class="flex gap-x-4">
-      <%= link_to event_redirect_path(@event), class: "grow flex gap-x-4", target: "_blank" do %>
+      <%= link_to event_redirect_path(@event), class: "grow flex gap-x-4", target: "_blank", rel: "nofollow" do %>
         <%= image_tag @event.image_url, class: "shrink-0 event-image", loading: "lazy", referrerpolicy: "no-referrer", alt: "Event image" %>
         <span class="grow flex flex-col list-item__text">
           <%= tag.span class: class_names("w-full flex items-center gap-x-1", @event.seen_count.positive? ? "mb-1" : "mb-2") do %>
