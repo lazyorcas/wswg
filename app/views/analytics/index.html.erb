@@ -30,7 +30,7 @@
         <%= line_chart @homepage_events %>
       <% end %>
       <%= render "chart", title: "Ahoy Visits by Referring Domain" do %>
-        <%= column_chart @visits_by_referring_domain, stacked: true %>
+        <%= column_chart @visits_by_referring_domain, stacked: true, legends: false %>
       <% end %>
     <% end %>
     <%= render "charts", title: "SEO - Popularity of City Events Pages" do %>

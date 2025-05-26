@@ -15,6 +15,7 @@ class AnalyticsController < ApplicationController
       .where.not(device_type: nil)
       .group(:device_type)
       .group_by_period(@time_interval, :started_at, range: @time_range, expand_range: true)
+      .order("device_type ASC")
       .count
     @visits_by_referring_domain = Ahoy::Visit
       .non_user
@@ -82,6 +83,7 @@ class AnalyticsController < ApplicationController
       .joins("INNER JOIN cities ON cities.id = city_sources.city_id")
       .group("cities.name")
       .group_by_period(@time_interval, :created_at, range: @time_range, expand_range: true)
+      .order("cities.name ASC")
       .count
 
     @sign_up_page_cities = Ahoy::Event
@@ -92,6 +94,7 @@ class AnalyticsController < ApplicationController
       .where("ahoy_events.time >= ?", @start_date)
       .group("cities.name")
       .group_by_period(@time_interval, :time, range: @time_range, expand_range: true)
+      .order("cities.name ASC")
       .count
     @sign_up_page_queries = Ahoy::Event
       .non_user
@@ -144,12 +147,14 @@ class AnalyticsController < ApplicationController
       .joins(:city_source)
       .joins(:city)
       .group("cities.name")
+      .order("cities.name ASC")
       .group_by_period(@time_interval, :created_at, range: @time_range, expand_range: true)
       .count
     @events_by_source = Event
       .joins(:city_source)
       .joins(:source)
-      .group("source.name")
+      .group("sources.name")
+      .order("sources.name ASC")
       .group_by_period(@time_interval, :created_at, range: @time_range, expand_range: true)
       .count
   end
