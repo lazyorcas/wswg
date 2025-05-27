@@ -21,6 +21,9 @@ class AnalyticsController < ApplicationController
     (visit_counts.min..visit_counts.max).each do |day|
       @visitor_retention << [ "#{day - 1}#{ordinal_suffix(day - 1)} #{@time_interval}", visit_counts.count { |count| count >= day } ]
     end
+    @visitor_retention.each do |day|
+      day[1] = day[1].to_f / visits_h.size * 100
+    end
 
     @visits_by_device = Ahoy::Visit
       .non_user
