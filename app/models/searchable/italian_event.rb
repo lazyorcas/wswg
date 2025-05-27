@@ -1,6 +1,10 @@
 class Searchable::ItalianEvent < Event
   include Event::Searchable
 
+  def self.synonyms
+    @synonyms ||= YAML.load_file("config/synonyms/italian_synonyms.yml")
+  end
+
   searchkick(
     language: "italian",
     index_name: "events_italian_#{Rails.env}",
@@ -8,7 +12,7 @@ class Searchable::ItalianEvent < Event
     filterable: Event::Searchable::FILTERABLE_FIELDS,
     locations: [ :location ],
     callbacks: false,
-    search_synonyms: YAML.load_file("config/synonyms/italian_synonyms.yml")
+    search_synonyms: synonyms
   )
 
   def language
