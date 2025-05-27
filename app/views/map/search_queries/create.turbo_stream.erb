@@ -1,4 +1,4 @@
 <%= turbo_stream.update "search-results" do %>
-  <%= render "searching_status" %>
+  <%= render "status", search_query: @search_query %>
 <% end %>
 <%= turbo_stream_from @search_query %>

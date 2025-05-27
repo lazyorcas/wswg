@@ -7,7 +7,7 @@
       class: "grow md:min-h-0 popup popup--bottom-sheet bottom-sheet-transition",
       data: { controller: "bottom-sheet", bottom_sheet_target: "bottomSheet", search_target: "results" } do %>
       <% if @search_query.ongoing? %>
-        <%= render "searching_status" %>
+        <%= render "status", search_query: @search_query %>
       <% elsif @search_query.completed? %>
         <%= render "result", 
           events: @search_query.result.events, 
