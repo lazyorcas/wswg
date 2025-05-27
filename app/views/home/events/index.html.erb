@@ -14,16 +14,6 @@
   <% end %>
   <section class="py-10 w-full flex flex-col xl:flex-row gap-y-8 xl:gap-y-0 xl:gap-x-8">
     <section class="grow -mx-4 xl:mx-auto flex flex-col">
-      <% if (@time_period.today? || @time_period.tonight? || @time_period.this_week? || @time_period.this_weekend?) && @events.any? %>
-        <p class="px-4 text-sm text-secondary">Past events are not shown.</p>
-      <% end %>
-      <% if @events.any? %>
-        <ol class="my-4 flex flex-col">
-          <%= render @events %>
-        </ol>
-      <% else %>
-        <p class="flash flash--warning mb-8 mx-auto">No events yet. Come back tomorrow.</p>
-      <% end %>
       <p class="px-4 text-sm">
         <% if @events.any? %>
           <%= @events.size %>/<%= @all_events_count %> events are shown.
@@ -34,8 +24,18 @@
           <% end %>
           <br />
         <% end %>
-        Additionally, you can view <%= @alternate_link_attributes.map { |link| link_to link[:title], link[:href], class: "link" }.to_sentence.html_safe %>.
+        Alternatively, you can view <%= @alternate_link_attributes.map { |link| link_to link[:title], link[:href], class: "link" }.to_sentence.html_safe %>.
       </p>
+      <% if (@time_period.today? || @time_period.tonight?) && @events.any? %>
+        <p class="mt-4 px-4 text-sm text-secondary italic">Past events are not shown.</p>
+      <% end %>
+      <% if @events.any? %>
+        <ol class="my-4 flex flex-col">
+          <%= render @events %>
+        </ol>
+      <% else %>
+        <p class="flash flash--warning mt-8 mx-auto">No events yet. Come back tomorrow.</p>
+      <% end %>
     </section>
     <section class="shrink-0 h-fit xl:max-w-2xl relative xl:sticky xl:top-16">
       <img src="/hero-light.webp" alt="Where Should We Go's Hero Light" class="w-full rounded-xl block dark:hidden blur-[2px]" loading="lazy">

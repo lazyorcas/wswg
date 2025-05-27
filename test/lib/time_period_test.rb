@@ -41,7 +41,7 @@ class TimePeriodTest < ActiveSupport::TestCase
       time_period = TimePeriod.new(@time_zone, :this_week)
       assert_equal "2025-05-22", time_period.start_date.to_s
       assert_equal "2025-05-25", time_period.end_date.to_s
-      assert_equal "12:00", time_period.start_time
+      assert_nil time_period.start_time
       assert_equal "this-week", time_period.slug
     end
   end
@@ -81,7 +81,7 @@ class TimePeriodTest < ActiveSupport::TestCase
       time_period = TimePeriod.new(@time_zone, :all)
       assert_equal "2025-05-22", time_period.start_date.to_s
       assert_nil time_period.end_date
-      assert_equal "12:00", time_period.start_time
+      assert_nil time_period.start_time
       assert_nil time_period.slug
     end
   end

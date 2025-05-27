@@ -27,6 +27,7 @@ class Home::EventsController < ApplicationController
     count_events
     order_events
     limit_events
+    @events = @events.to_a
     build_alternate_link_attributes
 
     ahoy.track "Viewed events", city: @city.name, time_period: @time_period.to_s
