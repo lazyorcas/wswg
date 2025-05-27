@@ -18,7 +18,7 @@ class OpenAI::Assistants::LocalGuide
     - The keywords must exclude information related to date, time, location, and price (including "free").
     - The keywords must exclude determiner words like "every", "all".
     - The keywords must exclude adjectives.
-    - The keywords must exclude generic words such as "event", "thing to do", and their plural forms.
+    - The keywords must exclude generic words such as "event", "thing to do", "activity", and their plural forms.
     - The keywords must exclude the city name: %{city_name}.
     - The keywords must not include information that is not in the user input.
     - It's perfectly fine for the keywords to be empty.

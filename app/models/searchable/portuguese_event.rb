@@ -7,7 +7,8 @@ class Searchable::PortugueseEvent < Event
     searchable: Event::Searchable::SEARCHABLE_FIELDS,
     filterable: Event::Searchable::FILTERABLE_FIELDS,
     locations: [ :location ],
-    callbacks: false
+    callbacks: false,
+    search_synonyms: YAML.load_file("config/synonyms/portuguese_synonyms.yml")
   )
 
   def language
