@@ -6,11 +6,7 @@ class AnalyticsController < ApplicationController
   before_action :load_filters
 
   def index
-    @visits = Ahoy::Visit
-      .non_user
-      .group_by_period(@time_interval, :started_at, range: @time_range, expand_range: true)
-      .count
-
+    # Experiments
     @visitor_retention_pricing_page_shown = []
     visits_h = Ahoy::Visit
       .non_user
@@ -19,13 +15,17 @@ class AnalyticsController < ApplicationController
       .where(started_at: @time_range)
       .group(:visitor_token)
       .count("DISTINCT EXTRACT(#{@time_interval.upcase} FROM started_at)")
-    if visits_h.present?
-      visit_counts = visits_h.values
+    visit_counts = visits_h.values
+    if visit_counts.present?
       (visit_counts.min..visit_counts.max).each do |day|
-        @visitor_retention_pricing_page_shown << [ "#{day - 1}#{ordinal_suffix(day - 1)} #{@time_interval}", visit_counts.count { |count| count >= day } ]
+        @visitor_retention_pricing_page_shown << [ "#{day}#{ordinal_suffix(day)}", visit_counts.count { |count| count >= day } ]
       end
-      @visitor_retention_pricing_page_shown.each do |day|
-        day[1] = (day[1].to_f / visits_h.size * 100).round
+      @visitor_retention_pricing_page_shown_total = @visitor_retention_pricing_page_shown.first[1]
+      @visitor_retention_pricing_page_shown.each_with_index do |day, index|
+        if index == 0
+          day[0] = "#{day[0]} (#{@visitor_retention_pricing_page_shown_total})"
+        end
+        day[1] = (day[1].to_f / @visitor_retention_pricing_page_shown_total * 100).round
       end
     end
 
@@ -37,16 +37,25 @@ class AnalyticsController < ApplicationController
       .where(started_at: @time_range)
       .group(:visitor_token)
       .count("DISTINCT EXTRACT(#{@time_interval.upcase} FROM started_at)")
-    if visits_h.present?
-      visit_counts = visits_h.values
+    visit_counts = visits_h.values
+    if visit_counts.present?
       (visit_counts.min..visit_counts.max).each do |day|
-        @visitor_retention_pricing_page_not_shown << [ "#{day - 1}#{ordinal_suffix(day - 1)} #{@time_interval}", visit_counts.count { |count| count >= day } ]
+        @visitor_retention_pricing_page_not_shown << [ "#{day}#{ordinal_suffix(day)}", visit_counts.count { |count| count >= day } ]
       end
-      @visitor_retention_pricing_page_not_shown.each do |day|
-        day[1] = (day[1].to_f / visits_h.size * 100).round
+      @visitor_retention_pricing_page_not_shown_total = @visitor_retention_pricing_page_not_shown.first[1]
+      @visitor_retention_pricing_page_not_shown.each_with_index do |day, index|
+        if index == 0
+          day[0] = "#{day[0]} (#{@visitor_retention_pricing_page_not_shown_total})"
+        end
+        day[1] = (day[1].to_f / @visitor_retention_pricing_page_not_shown_total * 100).round
       end
     end
 
+    # Web Traffic
+    @visits = Ahoy::Visit
+      .non_user
+      .group_by_period(@time_interval, :started_at, range: @time_range, expand_range: true)
+      .count
     @visits_by_device = Ahoy::Visit
       .non_user
       .where.not(device_type: nil)
@@ -64,6 +73,25 @@ class AnalyticsController < ApplicationController
     @pricing_page_events = build_ahoy_events_page_events_data("Visited pricing page")
     @city_events_page_events = build_ahoy_events_page_events_data("Viewed events")
     @homepage_events = build_ahoy_events_page_events_data("Visited homepage")
+    @visitor_retention = []
+    visits_h = Ahoy::Visit
+      .non_user
+      .where(started_at: @time_range)
+      .group(:visitor_token)
+      .count("DISTINCT EXTRACT(#{@time_interval.upcase} FROM started_at)")
+    visit_counts = visits_h.values
+    if visit_counts.present?
+      (visit_counts.min..visit_counts.max).each do |day|
+        @visitor_retention << [ "#{day}#{ordinal_suffix(day)}", visit_counts.count { |count| count >= day } ]
+      end
+      @visitor_retention_total = @visitor_retention.first[1]
+      @visitor_retention.each_with_index do |day, index|
+        if index == 0
+          day[0] = "#{day[0]} (#{@visitor_retention_total})"
+        end
+        day[1] = (day[1].to_f / @visitor_retention_total * 100).round
+      end
+    end
 
     @city_views = build_ahoy_events_popularity_data(
       "properties->>'city'",
