@@ -11,26 +11,16 @@ class AnalyticsController < ApplicationController
       .group_by_period(@time_interval, :started_at, range: @time_range, expand_range: true)
       .count
 
-    @visitor_retention = Ahoy::Visit
+    @visitor_retention = []
+    visits_h = Ahoy::Visit
       .non_user
       .where(started_at: @time_range)
       .group(:visitor_token)
-      .group_by_period(@time_interval, :started_at, range: @time_range, expand_range: true)
-      .count
-      .group_by { |(visitor_token, _), _| visitor_token }
-      .transform_values { |visits| visits.map { |(_, date), count| [ date.to_date, count ] }.to_h }
-      .values
-      .group_by { |visits| visits.keys.min }
-      .transform_values { |visits|
-        visits.map { |visit| visit.values.sum }.sum
-      }
-      .sort
-      .to_h
-      .tap { |h|
-        (@start_date.to_date..@end_date.to_date).step(@time_interval == "day" ? 1 : 7) do |date|
-          h[date] ||= 0
-        end
-      }
+      .count("DISTINCT EXTRACT(#{@time_interval.upcase} FROM started_at)")
+    visit_counts = visits_h.values
+    (visit_counts.min..visit_counts.max).each do |day|
+      @visitor_retention << [ "#{day - 1}#{ordinal_suffix(day - 1)} #{@time_interval}", visit_counts.count { |count| count >= day } ]
+    end
 
     @visits_by_device = Ahoy::Visit
       .non_user
@@ -223,5 +213,14 @@ class AnalyticsController < ApplicationController
           data: data.each_with_object({}) { |((*_, date), count), hash| hash[date.to_date] = count }
         }
       }
+  end
+
+  def ordinal_suffix(day)
+    case day
+    when 1 then "st"
+    when 2 then "nd"
+    when 3 then "rd"
+    else "th"
+    end
   end
 end

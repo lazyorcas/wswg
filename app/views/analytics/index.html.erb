@@ -32,7 +32,7 @@
       <%= render "chart", title: "Ahoy Visits by Referring Domain" do %>
         <%= column_chart @visits_by_referring_domain, stacked: true, legends: false %>
       <% end %>
-      <%= render "chart", title: "Visitor Retention" do %>
+      <%= render "chart", title: "Ahoy Visitor Retention (Return On Or After)" do %>
         <%= line_chart @visitor_retention %>
       <% end %>
     <% end %>
