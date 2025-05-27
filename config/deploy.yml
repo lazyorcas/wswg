@@ -181,7 +181,7 @@ accessories:
       clear:
         TIMEOUT: 900000 # 15 minutes
   opensearch:
-    image: opensearchproject/opensearch:2
+    image: opensearchproject/opensearch:3.0.0
     roles:
       - web
     env:
