@@ -25,7 +25,7 @@ class AnalyticsController < ApplicationController
         if index == 0
           day[0] = "#{day[0]} (#{@visitor_retention_pricing_page_shown_total})"
         end
-        day[1] = (day[1].to_f / @visitor_retention_pricing_page_shown_total * 100).round
+        day[1] = (day[1].to_f / @visitor_retention_pricing_page_shown_total * 100).ceil
       end
     end
 
@@ -47,7 +47,7 @@ class AnalyticsController < ApplicationController
         if index == 0
           day[0] = "#{day[0]} (#{@visitor_retention_pricing_page_not_shown_total})"
         end
-        day[1] = (day[1].to_f / @visitor_retention_pricing_page_not_shown_total * 100).round
+        day[1] = (day[1].to_f / @visitor_retention_pricing_page_not_shown_total * 100).ceil
       end
     end
 
@@ -89,7 +89,7 @@ class AnalyticsController < ApplicationController
         if index == 0
           day[0] = "#{day[0]} (#{@visitor_retention_total})"
         end
-        day[1] = (day[1].to_f / @visitor_retention_total * 100).round
+        day[1] = (day[1].to_f / @visitor_retention_total * 100).ceil
       end
     end
 
