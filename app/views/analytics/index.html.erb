@@ -35,12 +35,12 @@
       <%= render "chart", title: "Ahoy Visitor Retention (Return On Or After)" do %>
         <%= line_chart @visitor_retention, suffix: "%", xtitle: "nth #{@time_interval}" %>
       <% end %>
-    <% end %>
-    <%= render "chart", title: "Ahoy Visitor Retention (Return On Or After) - Pricing Page Shown" do %>
-      <%= line_chart @visitor_retention_pricing_page_shown, suffix: "%", xtitle: "nth #{@time_interval}" %>
-    <% end %>
-    <%= render "chart", title: "Ahoy Visitor Retention (Return On Or After) - Pricing Page Not Shown" do %>
-      <%= line_chart @visitor_retention_pricing_page_not_shown, suffix: "%", xtitle: "nth #{@time_interval}" %>
+      <%= render "chart", title: "Ahoy Visitor Retention (Return On Or After) - Pricing Page Shown" do %>
+        <%= line_chart @visitor_retention_pricing_page_shown, suffix: "%", xtitle: "nth #{@time_interval}" %>
+      <% end %>
+      <%= render "chart", title: "Ahoy Visitor Retention (Return On Or After) - Pricing Page Not Shown" do %>
+        <%= line_chart @visitor_retention_pricing_page_not_shown, suffix: "%", xtitle: "nth #{@time_interval}" %>
+      <% end %>
     <% end %>
     <%= render "charts", title: "SEO - Popularity of City Events Pages" do %>
       <%= render "chart", title: "By City" do %>
