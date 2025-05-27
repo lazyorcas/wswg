@@ -1,7 +1,8 @@
 <% content_for :title, build_city_meta_title(@city, @time_period.to_sym) %>
 <% content_for :description, build_city_description(@city, @time_period) %>
+<% mobile_map_shown_at_index = 5 %>
 <main class="grow">
-  <header class="flex flex-col gap-y-8 md:gap-y-10 items-center pt-20 pb-10">
+  <header class="flex flex-col gap-y-8 md:gap-y-10 items-center py-10 md:pt-20">
     <div class="flex flex-col items-center text-center gap-y-2 md:gap-y-4">
       <h1 class="text-3xl md:text-4xl font-bold"><%= build_city_title(@city, @time_period.to_sym) %></h1>
       <p class="md:max-w-xl"><%= build_city_description(@city, @time_period) %></p>
@@ -31,20 +32,19 @@
       <% end %>
       <% if @events.any? %>
         <ol class="my-4 flex flex-col">
-          <%= render @events %>
+          <%= render @events.first(mobile_map_shown_at_index) %>
+          <% if browser.device.mobile? %>
+            <%= render "map" %>
+          <% end %>
+          <%= render @events[mobile_map_shown_at_index..] %>
         </ol>
       <% else %>
         <p class="flash flash--warning mt-8 mx-auto">No events yet. Come back tomorrow.</p>
       <% end %>
     </section>
-    <section class="shrink-0 h-fit xl:max-w-2xl relative xl:sticky xl:top-16">
-      <img src="/hero-light.webp" alt="Where Should We Go's Hero Light" class="w-full rounded-xl block dark:hidden blur-[2px]" loading="lazy">
-      <img src="/hero-dark.webp" alt="Where Should We Go's Hero Dark" class="w-full rounded-xl hidden dark:block blur-[2px]" loading="lazy">
-      <%= link_to signed_in? ? map_path : new_user_path("user[city_id]" => @city.id), class: "button button--secondary absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2" do %>
-        <i class="ph ph-map-trifold"></i>
-        Open map
-      <% end %>
-    </section>
+    <% unless browser.device.mobile? %>
+      <%= render "map" %>
+    <% end %>
   </section>
 </section>
 </main>
