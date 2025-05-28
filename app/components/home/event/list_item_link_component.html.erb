@@ -20,12 +20,12 @@
           <% end %>
         </span>
       <% end %>
-      <% if Current.user.nil? %>
+      <% if Current.user.nil? && !helpers.browser.device.mobile? %>
         <%= form_with url: new_user_path, method: :get, class: "shrink-0" do |form| %>
           <%= form.hidden_field "source", value: "Bookmark button in event listing" %>
           <%= form.hidden_field "user[city_id]", value: @event.city.id %>
           <%= form.hidden_field "user[bookmarks_attributes][0][event_id]", value: @event.id %>
-          <%= form.button type: :submit, class: "icon-button icon-button--base button--secondary", alt: "Save for later", title: "Save for later" do %>
+          <%= form.button type: :submit, class: "icon-button icon-button--base button--secondary", title: "Save for later" do %>
             <i class="ph ph-bookmark-simple"></i>
           <% end %>
         <% end %>
