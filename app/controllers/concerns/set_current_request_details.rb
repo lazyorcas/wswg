@@ -23,9 +23,9 @@ module SetCurrentRequestDetails
         Current.country = request.location.country_code
         Current.city = request.location.city
         Current.coordinates = request.location.coordinates
-        Current.currency =
-          COUNTRY_TO_CURRENCY[request.location.country_code] || FALLBACK_CURRENCY
       end
+
+      Current.currency = COUNTRY_TO_CURRENCY[Current.country] || FALLBACK_CURRENCY
     end
   end
 end
