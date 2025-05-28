@@ -74,6 +74,9 @@
       <%= render "chart", title: "How many bookmarks led to sign ups?" do %>
         <%= line_chart @sign_up_page_bookmarks %>
       <% end %>
+      <%= render "chart", title: "Which sources led to sign ups?" do %>
+        <%= pie_chart @sign_up_page_sources %>
+      <% end %>
     <% end %>
     <%= render "charts", title: "Product" do %>
       <%= render "chart", title: "User Growth" do %>

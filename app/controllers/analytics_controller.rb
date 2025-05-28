@@ -129,6 +129,13 @@ class AnalyticsController < ApplicationController
       .where("ahoy_events.time >= ?", @start_date)
       .group_by_period(@time_interval, :time, range: @time_range, expand_range: true)
       .count
+    @sign_up_page_sources = Ahoy::Event
+      .non_user
+      .where(name: "Visited sign up page")
+      .where("properties->'params'->>'source' IS NOT NULL")
+      .where("ahoy_events.time >= ?", @start_date)
+      .group("properties->'params'->>'source'")
+      .count
 
     # Usage
     @aggregated_users = User

@@ -12,7 +12,8 @@ class UsersController < ApplicationController
       city_id: user_params[:city_id],
       bookmark_event_id: user_params.dig(:bookmarks_attributes, "0", :event_id),
       query: user_params.dig(:search_queries_attributes, "0", :query),
-      referrer: request.referer
+      referrer: request.referer,
+      source: params[:source]
     }
   end
 
