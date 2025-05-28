@@ -24,7 +24,7 @@ class Source::Scraper::BrowserScraper < Source::Scraper::BaseScraper
           break
         end
       end
-    rescue Ferrum::DeadBrowserError, Ferrum::TimeoutError => e
+    rescue => e
       raise e if events_attributes.empty?
     ensure
       begin
