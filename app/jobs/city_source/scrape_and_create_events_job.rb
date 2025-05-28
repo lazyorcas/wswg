@@ -31,5 +31,7 @@ class CitySource::ScrapeAndCreateEventsJob < ApplicationJob
     if create_event_jobs.any?
       ActiveJob.perform_all_later(create_event_jobs)
     end
+
+    city_source.update(last_fetched_at: Time.current)
   end
 end

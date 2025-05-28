@@ -1,6 +1,6 @@
 class ScrapeAndCreateEventsJob < ApplicationJob
   HOUR_TO_FETCH_EVENTS = 4
-  NEW_EVENT_LIMIT_PER_CITY_SOURCE = 1_000
+  EVENT_LIMIT_PER_CITY_SOURCE = 1_000
   INITIAL_LIMIT_MODIFIER = 0.2
   MIN_LIMIT_MODIFIER = 0.05
   MAX_LIMIT_MODIFIER = 1.0
@@ -15,8 +15,7 @@ class ScrapeAndCreateEventsJob < ApplicationJob
         next unless city_source.enabled?
 
         limit_modifier = calculate_limit_modifier(city, city_source)
-        limit = (limit_modifier * NEW_EVENT_LIMIT_PER_CITY_SOURCE).floor
-        next if limit.zero?
+        limit = (limit_modifier * EVENT_LIMIT_PER_CITY_SOURCE).floor
 
         CitySource::ScrapeAndCreateEventsJob.perform_later(city_source.id, limit: limit)
       end
