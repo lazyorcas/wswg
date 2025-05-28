@@ -30,6 +30,7 @@
 
   .ph, .ph-bold, .ph-fill {
     @apply flex items-center justify-center;
+    @apply shrink-0;
   }
 }
 
@@ -106,10 +107,12 @@
 
   .button i, .icon-button--base i {
     @apply text-2xl;
+    @apply size-6;
   }
 
   .icon-button--small i {
     @apply text-xl;
+    @apply size-5;
   }
 
   .button--primary {
@@ -163,6 +166,10 @@
 
   .tag--hot {
     @apply bg-red-600 dark:bg-red-300 text-white dark:text-red-900;
+  }
+
+  .tag i {
+    @apply size-3;
   }
 
   /* ==========================================================================
