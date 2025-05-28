@@ -1,7 +1,7 @@
 <section class="py-8 self-center xl:self-start md:p-0 shrink-0 h-fit xl:max-w-xl relative xl:sticky xl:top-16 flex flex-col gap-y-4">
   <%= render "map"%>
-  <hr class="px-4 border-primary" />
   <% unless signed_in? %>
+    <hr class="border-primary" />
     <%= render "get_notified_form" %>
   <% end %>
 </section>
