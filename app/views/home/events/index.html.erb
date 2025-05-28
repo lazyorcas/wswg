@@ -37,6 +37,21 @@
             <%= render "map" %>
           <% end %>
           <%= render partial: "event", collection: @events[mobile_map_shown_at_index..] %>
+          <% if @all_events_count > @events.size %>
+            <li class="shrink-0 relative">
+              <div class="blur-[2px]">
+                <%= render "skeleton_event_item_link" %>
+                <%= render "skeleton_event_item_link" %>
+                <%= render "skeleton_event_item_link" %>
+                <%= render "skeleton_event_item_link" %>
+                <%= render "skeleton_event_item_link" %>
+              </div>
+              <%= link_to new_user_path("user[city_id]" => @city.id, source: "See other events button in city events page"), class: "absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 button button--secondary" do %>
+                <i class="ph ph-list-bullets"></i>
+                See <%= @all_events_count - @events.size %> more events
+              <% end %>
+            </li>
+          <% end %>
         </ol>
       <% else %>
         <p class="flash flash--warning mt-8 mx-auto">No events yet. Come back tomorrow.</p>
