@@ -17,13 +17,7 @@
     <%= form.fields_for :search_queries do |search_query_form| %>
       <%= search_query_form.hidden_field :query %>
     <% end %>
-    <div class="flex items-start gap-x-2">
-      <%= form.check_box :terms_of_service_and_privacy_policy_accepted, required: true, class: "mt-1" %>
-      <%= form.label :terms_of_service_and_privacy_policy_accepted, class: "text-sm text-secondary" do %>
-        I agree to the <%= link_to "Terms of Service", "/terms", class: "font-bold hover:underline", target: "_blank" %> and 
-        <%= link_to "Privacy Policy", "/privacy", class: "font-bold hover:underline", target: "_blank" %>
-      <% end %>
-    </div>
+    <%= render "terms_of_service_and_privacy_policy_accepted_input", form: form %>
   </div>
   <%= form.button class: "cursor-pointer button button--primary" do %>
     Continue

@@ -1,0 +1,26 @@
+<section class="px-4 flex flex-col gap-y-4">
+  <header class="flex flex-col">
+    <h2 class="text-xl font-semibold">New event notifications</h2>
+    <p class="text-sm text-secondary">
+      Get notified when new events are added to your city.
+    </p>
+  </header>
+  <%= form_for User.new, html: { class: "flex flex-col gap-y-8" } do |form| %>
+    <%= form.hidden_field :city_id, value: @city.id %>
+    <div class="flex flex-col gap-y-4">
+      <div class="flex flex-col gap-y-1">
+        <%= form.label :email, "Email", class: "text-sm text-secondary" %>
+        <%= form.email_field :email, required: true, class: "input input--accent", placeholder: "Enter your email", autocomplete: "email" %>
+      </div>
+      <div class="flex flex-col gap-y-1">
+        <%= form.label :notification_frequency, "Frequency", class: "text-sm text-secondary" %>
+        <%= form.select :notification_frequency, User.notification_frequencies.keys.map { |key| [key.humanize, key] }, { include_blank: "Select frequency" }, class: "input input--accent", required: true %>
+      </div>
+      <%= render "users/terms_of_service_and_privacy_policy_accepted_input", form: form %>
+    </div>
+    <%= form.button type: :submit, class: "button button--primary" do %>
+      <i class="ph-fill ph-bell"></i>
+      Notify me via email
+    <% end %>
+  <% end %>
+</section>

@@ -20,7 +20,10 @@ class UsersController < ApplicationController
   def create
     build_user
     @user.save!
-    redirect_to(login_path(email: @user.email))
+    redirect_to(
+      login_path(email: @user.email),
+      flash: { success: "Account created successfully. You can now login to your account." }
+    )
 
   rescue => e
     Sentry.capture_exception(e)
@@ -42,6 +45,7 @@ class UsersController < ApplicationController
     user_params ? user_params.permit(
       :email,
       :city_id,
+      :notification_frequency,
       :terms_of_service_and_privacy_policy_accepted,
       bookmarks_attributes: [ :event_id ],
       search_queries_attributes: [ :query ]

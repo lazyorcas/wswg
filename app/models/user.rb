@@ -4,6 +4,12 @@ class User < ApplicationRecord
   passwordless_with :email
   attr_accessor :terms_of_service_and_privacy_policy_accepted
 
+  enum :notification_frequency, {
+    daily: 0,
+    weekly: 1,
+    monthly: 2
+  }
+
   belongs_to :city
 
   has_one :account, dependent: :destroy

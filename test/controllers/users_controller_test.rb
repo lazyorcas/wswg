@@ -8,7 +8,7 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
 
   test "should create user" do
     assert_difference "User.count" do
-      post users_url, params: { user: { email: "test@example.com", city_id: cities(:singapore).id, terms_of_service_and_privacy_policy_accepted: "1" } }
+      post users_url, params: { user: { email: "test@example.com", city_id: cities(:singapore).id, terms_of_service_and_privacy_policy_accepted: "1", notification_frequency: "daily" } }
     end
   end
 
