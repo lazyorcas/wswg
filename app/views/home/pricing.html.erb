@@ -9,7 +9,7 @@
   <div class="grid grid-cols-1 gap-4 md:gap-8 md:grid-cols-2 w-full md:max-w-3xl mx-auto">
     <%= render "pricing_plan",
       title: "Free",
-      price: "S$0",
+      price: Money.from_amount(0).exchange_to(Current.currency).format(no_cents: true),
       period: "/month",
       description: "Perfect for occasional searches",
       features: [
@@ -21,7 +21,7 @@
     %>
     <%= render "pricing_plan",
       title: "Pay As You Go",
-      price: "S$5",
+      price: Money.from_amount(5).exchange_to(Current.currency).format(no_cents: true),
       period: "/10 days",
       description: "Perfect for frequent searches",
       features: [

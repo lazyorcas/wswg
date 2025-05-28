@@ -157,6 +157,9 @@ GEM
     fugit (1.11.1)
       et-orbi (~> 1, >= 1.2.11)
       raabro (~> 1.4)
+    geocoder (1.8.5)
+      base64 (>= 0.1.0)
+      csv (>= 3.0.0)
     globalid (1.2.1)
       activesupport (>= 6.1)
     groupdate (6.6.0)
@@ -222,8 +225,15 @@ GEM
       stimulus-rails
       turbo-rails
     mize (0.6.1)
+    monetize (1.13.0)
+      money (~> 6.12)
     money (6.19.0)
       i18n (>= 0.6.4, <= 2)
+    money-rails (1.15.0)
+      activesupport (>= 3.0)
+      monetize (~> 1.9)
+      money (~> 6.13)
+      railties (>= 3.0)
     msgpack (1.8.0)
     multi_json (1.15.0)
     multi_xml (0.7.2)
@@ -551,6 +561,7 @@ DEPENDENCIES
   dotenv
   ferrum
   field_test (< 0.5)
+  geocoder
   groupdate
   htmlbeautifier
   httparty
@@ -559,6 +570,7 @@ DEPENDENCIES
   kamal
   mission_control-jobs
   money
+  money-rails
   niceql
   nokogiri
   oj

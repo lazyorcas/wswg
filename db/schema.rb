@@ -25,6 +25,14 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_28_043426) do
     t.index ["user_id"], name: "index_accounts_on_user_id"
   end
 
+  create_table "active_currency_rates", id: :serial, force: :cascade do |t|
+    t.string "from"
+    t.string "to"
+    t.float "value"
+    t.datetime "created_at", precision: nil
+    t.index ["from", "to", "created_at"], name: "index_active_currency_rates"
+  end
+
   create_table "ahoy_events", force: :cascade do |t|
     t.bigint "visit_id"
     t.bigint "user_id"
