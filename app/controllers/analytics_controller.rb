@@ -63,7 +63,7 @@ class AnalyticsController < ApplicationController
       .count
       .sort_by { |(_, count)| count }
       .reverse
-      .take(50)
+      .take(30)
       .to_h
     @failed_to_create_account = Ahoy::Event
       .non_user
@@ -161,6 +161,7 @@ class AnalyticsController < ApplicationController
       .where("ahoy_events.time >= ?", @start_date)
       .group("properties->'params'->>'source'")
       .count
+      .sort_by { |(_, count)| count }
 
     # Usage
     @aggregated_users = User
