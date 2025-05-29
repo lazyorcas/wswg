@@ -21,7 +21,7 @@ module City::Scorable
     @active_user_count ||= users
       .joins(:visits)
       .where(visits: { started_at: TIME_WINDOW.ago.. })
-      .count
+      .count("DISTINCT users.id")
   end
 
   def visitor_count
