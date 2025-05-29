@@ -1,6 +1,6 @@
 class ApplicationController < ActionController::Base
   include SetCurrentRequestDetails
   include Authentication
-  include Dateful
+  include Temporal
   include Flash
 end

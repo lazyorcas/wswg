@@ -56,7 +56,13 @@
           <% end %>
         </ol>
       <% else %>
-        <p class="flash flash--warning mt-8 mx-auto">No events yet. Come back tomorrow.</p>
+        <p class="flash flash--warning mt-8 mx-auto">
+          <% if current_hour < 6 %>
+            Events are being fetched. Come back in 1-2 hours.
+          <% else %>
+            No ongoing events found for <%= @time_period.to_s.downcase %>. Come back tomorrow.
+          <% end %>
+        </p>
       <% end %>
     </section>
     <% unless browser.device.mobile? %>
