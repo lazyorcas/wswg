@@ -2,7 +2,6 @@ class User < ApplicationRecord
   include Credits
 
   passwordless_with :email
-  attr_accessor :terms_of_service_and_privacy_policy_accepted
 
   enum :notification_frequency, {
     daily: 0,
@@ -25,7 +24,6 @@ class User < ApplicationRecord
             presence: true,
             uniqueness: { case_sensitive: false },
             format: { with: URI::MailTo::EMAIL_REGEXP }
-  validates :terms_of_service_and_privacy_policy_accepted, inclusion: { in: [ true, "true", 1, "1" ] }, if: :new_record?
 
   accepts_nested_attributes_for :bookmarks, :search_queries
 

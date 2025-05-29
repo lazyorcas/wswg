@@ -1,8 +1,13 @@
 <% flash.each do |key, value| %>
-  <%= tag.p value, class: class_names("flash", {
+  <%= tag.span class: class_names("flash", {
     "flash--info": key == "info" || key == "notice",
     "flash--success": key == "success",
     "flash--warning": key == "warning",
     "flash--error": key == "error" || key == "alert"
-  }), data: { flash_target: "message" } %>
+  }), data: { flash_target: "message" } do %>
+    <% if key == "error" %>
+      <i class="ph-fill ph-warning"></i>
+    <% end %>
+    <%= value %>
+  <% end %>
 <% end %>

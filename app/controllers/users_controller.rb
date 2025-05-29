@@ -27,7 +27,17 @@ class UsersController < ApplicationController
 
   rescue => e
     Sentry.capture_exception(e)
-    redirect_to(new_user_path, error: "Failed to create account. Please try again.")
+
+    error_message = if @user.email.blank?
+      "Email is required."
+    elsif @user.city_id.blank?
+      "Your home city is required."
+    elsif User.find_by(email: @user.email).present?
+      "Email already exists."
+    else
+      "Failed to create account. Please try again."
+    end
+    redirect_to(new_user_path, error: error_message)
 
   ensure
     field_test_converted(:sign_up_page)
@@ -38,6 +48,7 @@ class UsersController < ApplicationController
   def build_user
     @user ||= User.build
     @user.attributes = user_params
+    @user.city_id ||= Current.city&.id
   end
 
   def user_params
@@ -46,7 +57,6 @@ class UsersController < ApplicationController
       :email,
       :city_id,
       :notification_frequency,
-      :terms_of_service_and_privacy_policy_accepted,
       bookmarks_attributes: [ :event_id ],
       search_queries_attributes: [ :query ]
     ) : {}

@@ -245,10 +245,11 @@
   ============================================================================= */
   .flash {
     max-width: 512px;
-    @apply w-fit;
+    @apply w-full md:w-fit;
     @apply px-4 py-2 rounded-md;
     @apply text-sm;
-    @apply shadow;
+    @apply shadow-lg;
+    @apply flex items-center gap-x-2;
   }
 
   .flash--info {
@@ -265,6 +266,10 @@
 
   .flash--error {
     @apply bg-red-200 dark:bg-red-800 text-red-900 dark:text-red-100;
+  }
+
+  .flash i {
+    @apply size-4 shrink-0;
   }
 
   /* ==========================================================================

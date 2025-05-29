@@ -1,1 +1,4 @@
-<%= button_to "Login with Google", "/auth/google_oauth2", class: "w-full cursor-pointer button button--primary", data: { turbo: false } %>
+<%= button_to "/auth/google_oauth2", class: "w-full cursor-pointer button button--secondary", data: { turbo: false } do %>
+  <%= image_tag "/sources/google.ico", class: "w-6 h-6" %>
+  Login with Google
+<% end %>

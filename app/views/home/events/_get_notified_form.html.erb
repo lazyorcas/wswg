@@ -16,7 +16,6 @@
         <%= form.label :notification_frequency, "Frequency", class: "text-sm text-secondary" %>
         <%= form.select :notification_frequency, User.notification_frequencies.keys.map { |key| [key.humanize, key] }, { include_blank: "Select frequency" }, class: "input input--accent", required: true %>
       </div>
-      <%= render "users/terms_of_service_and_privacy_policy_accepted_input", form: form %>
     </div>
     <%= form.button type: :submit, class: "button button--primary" do %>
       <i class="ph-fill ph-bell"></i>

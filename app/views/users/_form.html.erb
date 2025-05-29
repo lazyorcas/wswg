@@ -2,24 +2,38 @@
   <div class="flex flex-col gap-y-4">
     <div class="flex flex-col gap-y-1">
       <%= form.label :email, "Email", class: "text-sm text-secondary" %>
-      <%= form.email_field :email, required: true, class: "input input--accent", placeholder: "Enter your email", autocomplete: "email" %>
+      <%= form.email_field :email, class: "input input--accent", placeholder: "Enter your email", autocomplete: "email" %>
     </div>
-    <div class="flex flex-col gap-y-1">
-      <%= form.label :city_id, "City", class: "text-sm text-secondary" %>
-      <%= form.select :city_id, 
+    <% if browser.bot? || user.city_id.blank? %>
+      <div class="flex flex-col gap-y-1">
+        <%= form.label :city_id, "City", class: "text-sm text-secondary" %>
+        <%= form.select :city_id, 
           City.enabled.order(:name).map { |city| [city.name, city.id] },
-          { include_blank: "Select your home city", required: true, selected: user.city_id },
+          { include_blank: "Select your home city", selected: user.city_id },
           { class: "input input--accent" } %>
-    </div>
+      </div>
+    <% else %>
+      <%= form.hidden_field :city_id %>
+    <% end %>
     <%= form.fields_for :bookmarks do |bookmark_form| %>
       <%= bookmark_form.hidden_field :event_id %>
     <% end %>
     <%= form.fields_for :search_queries do |search_query_form| %>
       <%= search_query_form.hidden_field :query %>
     <% end %>
-    <%= render "terms_of_service_and_privacy_policy_accepted_input", form: form %>
   </div>
-  <%= form.button class: "cursor-pointer button button--primary" do %>
-    Continue
-  <% end %>
+  <div class="flex flex-col gap-y-8 md:gap-y-16">
+    <%= form.button class: "cursor-pointer button button--primary" do %>
+      Continue
+    <% end %>
+    <div class="flex items-center gap-x-2">
+      <hr class="grow border-primary" />
+      <span class="shrink-0 text-sm text-secondary self-center">Or</span>
+      <hr class="grow border-primary" />
+    </div>
+    <%= form.button class: "cursor-pointer button button--secondary" do %>
+      <%= image_tag "/sources/google.ico", class: "w-6 h-6" %>
+      Continue with Google
+    <% end %>
+  </div>
 <% end %>

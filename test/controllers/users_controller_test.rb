@@ -8,13 +8,13 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
 
   test "should create user" do
     assert_difference "User.count" do
-      post users_url, params: { user: { email: "test@example.com", city_id: cities(:singapore).id, terms_of_service_and_privacy_policy_accepted: "1", notification_frequency: "daily" } }
+      post users_url, params: { user: { email: "test@example.com", city_id: cities(:singapore).id, notification_frequency: "daily" } }
     end
   end
 
   test "should create user with bookmark" do
     assert_difference "User.count" do
-      post users_url, params: { user: { email: "test@example.com", city_id: cities(:singapore).id, terms_of_service_and_privacy_policy_accepted: "1", bookmarks_attributes: { 0 => { event_id: events(:first).id } } } }
+      post users_url, params: { user: { email: "test@example.com", city_id: cities(:singapore).id, bookmarks_attributes: { 0 => { event_id: events(:first).id } } } }
     end
 
     user = User.last
@@ -23,7 +23,7 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
 
   test "should create user with search query" do
     assert_difference "User.count" do
-      post users_url, params: { user: { email: "test@example.com", city_id: cities(:singapore).id, terms_of_service_and_privacy_policy_accepted: "1", search_queries_attributes: { 0 => { query: "test" } } } }
+      post users_url, params: { user: { email: "test@example.com", city_id: cities(:singapore).id, search_queries_attributes: { 0 => { query: "test" } } } }
     end
 
     user = User.last
@@ -32,7 +32,7 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
 
   test "should redirect to login page after creating user" do
     email = "test@example.com"
-    post users_url, params: { user: { email: email, city_id: cities(:singapore).id, terms_of_service_and_privacy_policy_accepted: "1" } }
+    post users_url, params: { user: { email: email, city_id: cities(:singapore).id } }
     assert_redirected_to(login_path(email: email))
   end
 
@@ -67,12 +67,6 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
 
     assert_no_difference "User.count" do
       post users_url, params: { user: { email: email, city_id: cities(:singapore).id } }
-    end
-  end
-
-  test "should not create user if terms of service and privacy policy are not accepted" do
-    assert_no_difference "User.count" do
-      post users_url, params: { user: { email: "test@example.com", city_id: cities(:singapore).id } }
     end
   end
 end
