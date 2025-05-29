@@ -22,6 +22,8 @@ class Home::EventsController < ApplicationController
       return head(:not_found)
     end
 
+    load_current_time
+
     load_time_period
     load_events
     count_events
@@ -46,6 +48,10 @@ class Home::EventsController < ApplicationController
 
   def load_city
     @city = City.find_by(slug: params[:city_slug])
+  end
+
+  def load_current_time
+    @current_time = Time.current.in_time_zone(@city.time_zone.name)
   end
 
   def load_time_period

@@ -7,5 +7,7 @@ class SessionsController < ApplicationController
 
   def new
     @passwordless_session = Passwordless::Session.new
+
+    ahoy.track "Visited login page"
   end
 end

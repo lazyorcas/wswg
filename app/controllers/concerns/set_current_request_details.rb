@@ -14,7 +14,7 @@ module SetCurrentRequestDetails
   FALLBACK_CURRENCY = "USD".freeze
 
   included do
-    before_action do
+    before_action unless: -> { browser.bot? } do
       Current.request_id = request.uuid
       Current.user_agent = request.user_agent
       Current.ip_address = request.ip

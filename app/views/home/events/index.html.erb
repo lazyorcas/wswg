@@ -57,7 +57,7 @@
         </ol>
       <% else %>
         <p class="flash flash--warning mt-8 mx-auto">
-          <% if current_hour < 6 %>
+          <% if @current_time.hour < 6 %>
             Events are being fetched. Come back in 1-2 hours.
           <% else %>
             No ongoing events found for <%= @time_period.to_s.downcase %>. Come back tomorrow.
