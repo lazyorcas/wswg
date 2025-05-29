@@ -32,8 +32,8 @@
       <%= render "chart", title: "Ahoy Visits by Referring Domain" do %>
         <%= column_chart @visits_by_referring_domain, stacked: true, legends: false %>
       <% end %>
-      <%= render "chart", title: "Ahoy Visits by City" do %>
-        <%= column_chart @visits_by_city, stacked: true %>
+      <%= render "chart", title: "Ahoy Visits by City (Top 50)" do %>
+        <%= pie_chart @visits_by_city, legend: "right" %>
       <% end %>
       <%= render "chart", title: "Ahoy Visitor Retention - Pricing Page Shown" do %>
         <%= line_chart @visitor_retention_pricing_page_shown, suffix: "%", xtitle: "nth #{@time_interval}" %>

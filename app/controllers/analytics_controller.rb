@@ -48,9 +48,14 @@ class AnalyticsController < ApplicationController
     end
     @visits_by_city = Ahoy::Visit
       .non_user
+      .where.not(city: nil)
       .group(:city)
-      .group_by_period(@time_interval, :started_at, range: @time_range, expand_range: true)
+      .where(started_at: @time_range)
       .count
+      .sort_by { |(_, count)| count }
+      .reverse
+      .take(50)
+      .to_h
 
     @city_views = build_ahoy_events_popularity_data(
       "properties->>'city'",
