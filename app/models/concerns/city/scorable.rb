@@ -6,7 +6,7 @@ module City::Scorable
   POPULAR_CITY_MIN_VISITOR_COUNT = 500
 
   def current_score
-    active_user_score + visit_score
+    active_user_score + visitor_score
   end
 
   def active_user_score
@@ -14,7 +14,7 @@ module City::Scorable
   end
 
   def visitor_score
-    (1.0 * visit_count / POPULAR_CITY_MIN_VISITOR_COUNT).round(2)
+    (1.0 * visitor_count / POPULAR_CITY_MIN_VISITOR_COUNT).round(2)
   end
 
   def active_user_count
