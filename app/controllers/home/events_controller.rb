@@ -72,7 +72,7 @@ class Home::EventsController < ApplicationController
   end
 
   def count_events
-    @all_events_count = @events.count
+    @all_events_count = @events.count("DISTINCT events.id")
   end
 
   def order_events
