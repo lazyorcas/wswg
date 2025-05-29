@@ -23,6 +23,10 @@
     @apply text-stone-900 dark:text-stone-100;
   }
 
+  * {
+    font-display: swap;
+  }
+
   ::backdrop {
     @apply bg-stone-900/25 dark:bg-white/25;
     @apply backdrop-blur-xs;
