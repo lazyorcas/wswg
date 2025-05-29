@@ -162,6 +162,7 @@ class AnalyticsController < ApplicationController
       .group("properties->'params'->>'source'")
       .count
       .sort_by { |(_, count)| count }
+      .reverse
 
     # Usage
     @aggregated_users = User
