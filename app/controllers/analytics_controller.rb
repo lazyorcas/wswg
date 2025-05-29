@@ -46,6 +46,11 @@ class AnalyticsController < ApplicationController
         day[1] = (day[1].to_f / @visitor_retention_total * 100).ceil
       end
     end
+    @visits_by_city = Ahoy::Visit
+      .non_user
+      .group(:city)
+      .group_by_period(@time_interval, :started_at, range: @time_range, expand_range: true)
+      .count
 
     @city_views = build_ahoy_events_popularity_data(
       "properties->>'city'",
