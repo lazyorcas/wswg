@@ -2,7 +2,7 @@ module Temporal
   extend ActiveSupport::Concern
 
   included do
-    helper_method :current_date
+    helper_method :current_date, :current_time
   end
 
   def time_zone
@@ -11,5 +11,9 @@ module Temporal
 
   def current_date
     @current_date ||= time_zone.current_date
+  end
+
+  def current_time
+    @current_time ||= time_zone.current_time
   end
 end

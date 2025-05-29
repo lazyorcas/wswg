@@ -70,16 +70,6 @@ class TimePeriod
     time_period_symbol
   end
 
-  def date_range_s
-    if today? || tonight? || tomorrow?
-      start_date.strftime("%B %d")
-    elsif all?
-      nil
-    else
-      "#{start_date.strftime("%B %d")} - #{end_date.strftime("%B %d")}"
-    end
-  end
-
   def slug
     @slug ||= self.class.slugify(time_period_symbol)
   end

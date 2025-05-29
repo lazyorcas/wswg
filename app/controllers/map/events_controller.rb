@@ -22,7 +22,10 @@ class Map::EventsController < ApplicationController
   private
 
   def load_events_this_week
-    @events = event_scope.where(end_date: current_date..current_date.end_of_week)
+    @events = event_scope.where(
+      end_date: current_date..current_date.end_of_week,
+      start_time: current_time..
+    )
   end
 
   def order_events
