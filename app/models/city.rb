@@ -1,5 +1,6 @@
 class City < ApplicationRecord
   include Sluggish
+  include Currency
   include Locatable
   include Scorable
 
@@ -18,9 +19,8 @@ class City < ApplicationRecord
   validates :country_code,
     presence: true,
     inclusion: { in: ISO3166::Country.codes }
-  validates :currency,
-    presence: true,
-    inclusion: { in: Money::Currency.table.keys.map(&:to_s).map(&:upcase) }
+
+  before_validation :set_currency
 
   def time_zone
     TimeZone.new(name: self[:time_zone])

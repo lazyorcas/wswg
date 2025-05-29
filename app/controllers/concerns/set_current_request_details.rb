@@ -1,18 +1,6 @@
 module SetCurrentRequestDetails
   extend ActiveSupport::Concern
 
-  COUNTRY_TO_CURRENCY = {
-    "SG" => "SGD",
-    "US" => "USD",
-    "GB" => "GBP",
-    # Europe
-    "DE" => "EUR",
-    "FR" => "EUR",
-    "IT" => "EUR",
-    "ES" => "EUR"
-  }.freeze
-  FALLBACK_CURRENCY = "USD".freeze
-
   included do
     before_action unless: -> { browser.bot? } do
       Current.request_id = request.uuid
@@ -20,12 +8,20 @@ module SetCurrentRequestDetails
       Current.ip_address = request.ip
 
       if request.location.present?
-        Current.country = request.location.country_code
-        Current.city = request.location.city
-        Current.coordinates = request.location.coordinates
+        begin
+          city_name = request.location.city
+          coordinates = Geocoder.search(city_name).first.coordinates
+          Current.city = City.find_or_create_by!(
+            name: city_name,
+            lat: coordinates[0],
+            lon: coordinates[1],
+            country_code: request.location.country_code,
+            time_zone: request.location.time_zone
+          )
+        rescue => e
+          Sentry.capture_exception(e, extra: { location: request.location })
+        end
       end
-
-      Current.currency = COUNTRY_TO_CURRENCY[Current.country] || FALLBACK_CURRENCY
     end
   end
 end
