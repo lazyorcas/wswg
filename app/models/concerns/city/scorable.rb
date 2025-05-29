@@ -3,7 +3,7 @@ module City::Scorable
 
   TIME_WINDOW = 1.week
   POPULAR_CITY_MIN_USER_COUNT = 10
-  POPULAR_CITY_MIN_VISITOR_COUNT = 500
+  POPULAR_CITY_MIN_VISITOR_COUNT = 250
 
   def current_score
     active_user_score + visitor_score

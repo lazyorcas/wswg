@@ -9,7 +9,7 @@ class AnalyticsController < ApplicationController
     @city_scores = City.enabled
       .sort_by(&:current_score)
       .reverse
-      .map { |city| [ city.name, city.current_score ] }
+      .map { |city| [ "#{city.name} (#{city.current_score})", city.current_score ] }
 
     @visits = Ahoy::Visit
       .non_user
