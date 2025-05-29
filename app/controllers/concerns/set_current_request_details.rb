@@ -6,7 +6,11 @@ module SetCurrentRequestDetails
       Current.request_id = request.uuid
       Current.user_agent = request.user_agent
       Current.ip_address = request.ip
-      Current.city = City.find_by(name: request.location.city)
+      begin
+        Current.city = City.find_by(name: request.location.city)
+      rescue => e
+        Sentry.capture_exception(e, extra: { location: request.location })
+      end
     end
   end
 end
