@@ -2,3 +2,5 @@ User-agent: *
 Sitemap: https://whereshouldwego.co/sitemap.xml
 
 Disallow: /events/*/redirect
+Disallow: /terms
+Disallow: /privacy
