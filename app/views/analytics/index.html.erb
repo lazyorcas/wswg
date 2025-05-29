@@ -44,6 +44,9 @@
       <%= render "chart", title: "Ahoy Visitor Retention" do %>
         <%= line_chart @visitor_retention, suffix: "%", xtitle: "nth #{@time_interval}" %>
       <% end %>
+      <%= render "chart", title: "Ahoy Events - Failed to create account" do %>
+        <%= pie_chart @failed_to_create_account, legend: "right" %>
+      <% end %>
     <% end %>
     <%= render "charts", title: "SEO - Popularity of City Events Pages" do %>
       <%= render "chart", title: "By City" do %>

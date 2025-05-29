@@ -29,14 +29,20 @@ class UsersController < ApplicationController
     Sentry.capture_exception(e)
 
     error_message = if @user.email.blank?
+      ahoy.track "Failed to create account", error: "Missing email"
       "Email is required."
+
     elsif @user.city_id.blank?
+      ahoy.track "Failed to create account", error: "Missing city"
       "Your home city is required."
+
     elsif User.find_by(email: @user.email).present?
       "Email already exists."
+
     else
       "Failed to create account. Please try again."
     end
+
     redirect_to(new_user_path, error: error_message)
 
   ensure
