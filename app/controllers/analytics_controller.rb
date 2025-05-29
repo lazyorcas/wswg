@@ -6,10 +6,14 @@ class AnalyticsController < ApplicationController
   before_action :load_filters
 
   def index
-    @city_scores = City.enabled
-      .sort_by(&:current_score)
+    @city_active_user_scores = City.enabled
+      .sort_by(&:active_user_score)
       .reverse
-      .map { |city| [ "#{city.name} (#{city.current_score})", city.current_score ] }
+      .map { |city| [ "#{city.name} (#{city.active_user_score})", city.active_user_score ] }
+    @city_visitor_scores = City.enabled
+      .sort_by(&:visitor_score)
+      .reverse
+      .map { |city| [ "#{city.name} (#{city.visitor_score})", city.visitor_score ] }
 
     @visits = Ahoy::Visit
       .non_user

@@ -10,9 +10,6 @@
     <% end %>
   </header>
   <div class="flex flex-col gap-y-8">
-    <%= render "chart", title: "City Scores" do %>
-      <%= bar_chart @city_scores %>
-    <% end %>
     <%= render "charts", title: "Web Traffic" do %>
       <%= render "chart", title: "Ahoy Visits" do %>
         <%= line_chart @visits %>
@@ -49,6 +46,14 @@
       <% end %>
       <%= render "chart", title: "Ahoy Events - Failed to create account" do %>
         <%= pie_chart @failed_to_create_account, legend: "right" %>
+      <% end %>
+    <% end %>
+    <%= render "charts", title: "City Popularity" do %>
+      <%= render "chart", title: "Active User Scores" do %>
+        <%= bar_chart @city_active_user_scores %>
+      <% end %>
+      <%= render "chart", title: "Visitor Scores" do %>
+        <%= bar_chart @city_visitor_scores %>
       <% end %>
     <% end %>
     <%= render "charts", title: "SEO - Popularity of City Events Pages" do %>
