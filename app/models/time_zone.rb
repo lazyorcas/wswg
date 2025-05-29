@@ -27,6 +27,11 @@ class TimeZone
     @current_date_without_year ||= now.strftime("%m-%d")
   end
 
+  # Monday is 0, Sunday is 6
+  def current_wday
+    @current_wday ||= (now.wday + 6) % 7
+  end
+
   def current_year
     @current_year ||= now.year
   end
