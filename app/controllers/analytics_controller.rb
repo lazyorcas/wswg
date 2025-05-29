@@ -6,6 +6,11 @@ class AnalyticsController < ApplicationController
   before_action :load_filters
 
   def index
+    @city_scores = City.enabled
+      .sort_by(&:current_score)
+      .reverse
+      .map { |city| [ city.name, city.current_score ] }
+
     @visits = Ahoy::Visit
       .non_user
       .group_by_period(@time_interval, :started_at, range: @time_range, expand_range: true)
