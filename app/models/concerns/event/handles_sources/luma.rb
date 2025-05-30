@@ -2,7 +2,7 @@ module Event::HandlesSources::Luma
   extend ActiveSupport::Concern
 
   included do
-    before_validation :build_unique_url_for_luma, if: -> { from_luma? && start_date.present? }
+    before_validation :build_unique_url_for_luma, if: -> { from_luma? && start_date.present? }, on: :create
   end
 
   def from_luma?
