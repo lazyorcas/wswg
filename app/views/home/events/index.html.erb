@@ -56,15 +56,17 @@
           <% end %>
         </ol>
       <% else %>
-        <p class="flash flash--warning mt-8 mx-auto">
-          <% if @current_time.hour <= 6 %>
-            Events are being fetched. Come back in 1-2 hours.
-          <% elsif @time_period.all? %>
-            No events found. Come back tomorrow.
-          <% else %>
-            No ongoing events found for <%= @time_period.to_s.downcase %>. Come back tomorrow.
-          <% end %>
-        </p>
+        <div class="px-4 md:px-0">
+          <p class="flash flash--warning mt-8 mx-auto">
+            <% if @current_time.hour <= 6 %>
+              Events are being fetched. Come back in 1-2 hours.
+            <% elsif @time_period.all? %>
+              No events found. Come back tomorrow.
+            <% else %>
+              No ongoing events found for <%= @time_period.to_s.downcase %>. Come back tomorrow.
+            <% end %>
+          </p>
+        </div>
       <% end %>
     </section>
     <% unless browser.device.mobile? %>
