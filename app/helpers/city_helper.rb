@@ -11,8 +11,15 @@ module CityHelper
     title_generator.generate_default_title(city, time_period_symbol)
   end
 
+  def build_city_meta_description(city, time_period)
+    description = "What's happening in #{city.name} #{time_period.to_s}? Discover local events from Luma, Meetup, Eventbrite, and Ticketmaster in one place." # rubocop:disable Lint/RedundantStringCoercion
+    description.gsub!(/  +/, " ")
+    description.gsub!(/ \?/, "?")
+    description
+  end
+
   def build_city_description(city, time_period)
-    description = "What's happening in #{city.name} #{time_period.to_s} #{build_time_range(time_period)}? Discover local events from Luma, Meetup, Eventbrite, and Ticketmaster." # rubocop:disable Lint/RedundantStringCoercion
+    description = "What's happening in #{city.name} #{time_period.to_s} #{build_time_range(time_period)}? Discover local events from Luma, Meetup, Eventbrite, and Ticketmaster in one place." # rubocop:disable Lint/RedundantStringCoercion
     description.gsub!(/  +/, " ")
     description.gsub!(/ \?/, "?")
     description
