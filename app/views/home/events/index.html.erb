@@ -32,13 +32,13 @@
       <% end %>
       <% if @events.any? %>
         <ol class="my-4 flex flex-col">
-          <%= render partial: "event", collection: @events.first(mobile_map_shown_at_index) %>
+          <%= render partial: "event", collection: @events.first(mobile_map_shown_at_index), cached: true %>
           <% if browser.device.mobile? %>
             <li class="shrink-0">
               <%= render "action_box" %>
             </li>
           <% end %>
-          <%= render partial: "event", collection: @events[mobile_map_shown_at_index..] %>
+          <%= render partial: "event", collection: @events[mobile_map_shown_at_index..], cached: true %>
           <% if @all_events_count > @events.size %>
             <li class="shrink-0 relative">
               <div class="blur-[2px]">
