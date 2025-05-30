@@ -45,9 +45,9 @@ class OpenAI::Assistants::LocalGuide
     ### Full-Day Rules
     It's safe to consider variations of these rules.
     - "today", "tomorrow", "yesterday" should have a date time range that covers the entire day.
-    - "this week", "next week" should have a date time range that covers the entire week.
-    - "this month", "next month" should have a date time range that covers the entire month.
-    - "this year", "next year" should have a date time range that covers the entire year.
+    - "this week", "next week" should have a date time range that covers the entire week from Monday to Sunday.
+    - "this month", "next month" should have a date time range that covers the entire month from the first day of the month to the last day of the month.
+    - "this year", "next year" should have a date time range that covers the entire year from the first day of the year to the last day of the year.
     - Start time should be 00:00:00 and end time should be 23:59:59.
 
     ### Partial-Day Rules
