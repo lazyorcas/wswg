@@ -34,7 +34,7 @@ class Home::EventsController < ApplicationController
 
     ahoy.track "Viewed events", city: @city.name, time_period: @time_period.to_s
 
-    if @events.empty?
+    if @events.empty? && @current_time.hour > 6
       Sentry.capture_message("No events found for #{@city.name} #{@time_period}")
     end
   end
