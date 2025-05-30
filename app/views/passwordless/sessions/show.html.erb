@@ -6,11 +6,11 @@
       <div class="flex flex-col gap-y-1">
         <%= form.label :token, "Login code (sent to your email)", class: "text-sm text-secondary" %>
         <%= form.text_field :token,
-      required: true,
-      autofocus: true,
-      autocomplete: "one-time-code",
-      placeholder: "Enter your login code",
-      class: "input input--accent" %>
+              required: true,
+              autofocus: true,
+              autocomplete: "one-time-code",
+              placeholder: "Enter your login code",
+              class: "input input--accent" %>
       </div>
       <%= form.submit "Confirm", class: "button button--primary" %>
     <% end %>
