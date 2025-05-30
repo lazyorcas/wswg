@@ -3,7 +3,7 @@ class Event < ApplicationRecord
   include Parseable
   include Duplicable
   include Locatable
-  include Dateful
+  include Temporal
   include Createable
   include HandlesSources
   include DataCompleteness

@@ -1,4 +1,4 @@
-module Event::Dateful
+module Event::Temporal
   extend ActiveSupport::Concern
 
   included do
