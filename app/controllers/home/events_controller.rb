@@ -111,7 +111,7 @@ class Home::EventsController < ApplicationController
 
       {
         href: build_city_events_path(time_period_slug: time_period.slug),
-        title: title.split(" ").first == @city.name ? title : title.uncapitalize
+        title: @city.name.include?(title.split(" ").first) ? title : title.uncapitalize
       }
     end
   end
