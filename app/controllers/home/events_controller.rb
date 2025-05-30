@@ -107,11 +107,10 @@ class Home::EventsController < ApplicationController
 
     @alternate_link_attributes = alternate_time_periods_symbols.map do |time_period_symbol|
       time_period = TimePeriod.new(@city.time_zone, time_period_symbol)
-      title = build_city_meta_title(@city, time_period_symbol)
 
       {
         href: build_city_events_path(time_period_slug: time_period.slug),
-        title: @city.name.include?(title.split(" ").first) ? title : title.uncapitalize
+        title: build_city_meta_title(@city, time_period_symbol)
       }
     end
   end
