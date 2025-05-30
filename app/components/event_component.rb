@@ -7,7 +7,7 @@ class EventComponent < ViewComponent::Base
 
   def date
     dates = [ @event.start_date, @event.end_date ].uniq.map do |date|
-      relative_date(date, time_zone: @event.time_zone)
+      relative_date(date, @event.start_time, time_zone: @event.time_zone)
     end
 
     dates.join(" - ")
