@@ -20,7 +20,7 @@ SitemapGenerator::Sitemap.create do
     .each do |city|
       TimePeriod::SYMBOLS.each do |time_period_symbol|
         change_freq = case time_period_symbol
-        when :today, :tonight, :tomorrow, :this_week
+        when :all, :today, :tonight, :tomorrow, :this_week
           "hourly"
         when :this_weekend, :next_week, :next_weekend
           "daily"
