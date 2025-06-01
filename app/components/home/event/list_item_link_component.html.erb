@@ -18,7 +18,7 @@
               </span>
             <% end %>
           <% end %>
-          <%= tag.h2 @event.title, class: "text-sm line-clamp-2 md:line-clamp-1" %>
+          <%= tag.h2 @event.title, class: "text-sm line-clamp-2 md:line-clamp-1 link" %>
           <%= tag.p class: "text-xs text-secondary" do %>
             <%= tag.time datetime: "#{@event.start_date} #{@event.start_time}" do %>
               <%= date %> &#x2022; <%= time_range %>
