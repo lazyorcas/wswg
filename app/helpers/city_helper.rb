@@ -45,4 +45,12 @@ module CityHelper
       "(<time datetime=\"#{start_date.strftime("%Y-%m-%d")}\">#{start_date.strftime("%B %d")}</time> - <time datetime=\"#{end_date.strftime("%Y-%m-%d")}\">#{end_date.strftime("%B %d")}</time>)"
     end
   end
+
+  def build_event_cache_key(event)
+    key_array = [ dom_id(event), @city.time_zone.current_date.to_s ]
+    if browser.bot?
+      key_array << "bot"
+    end
+    key_array
+  end
 end
