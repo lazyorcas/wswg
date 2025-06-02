@@ -4,10 +4,11 @@ experiments:
     description: >
       Test if more visitors go to the sign-up page to the site when the pricing page is not shown.
     started_at: May 21, 2025 3 pm SGT
+    ended_at: June 2, 2025 1 pm SGT
     variants:
       - t
       - f
-    # winner: f
+    winner: t
   sign_up_page:
     name: Sign Up Rate
     description: >

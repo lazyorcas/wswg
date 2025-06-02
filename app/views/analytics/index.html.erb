@@ -35,12 +35,6 @@
       <%= render "chart", title: "Ahoy Visits by City (Top 30)" do %>
         <%= pie_chart @visits_by_city, legend: "right" %>
       <% end %>
-      <%= render "chart", title: "Ahoy Visitor Retention - Pricing Page Shown" do %>
-        <%= line_chart @visitor_retention_pricing_page_shown, suffix: "%", xtitle: "nth #{@time_interval}" %>
-      <% end %>
-      <%= render "chart", title: "Ahoy Visitor Retention - Pricing Page Not Shown" do %>
-        <%= line_chart @visitor_retention_pricing_page_not_shown, suffix: "%", xtitle: "nth #{@time_interval}" %>
-      <% end %>
       <%= render "chart", title: "Ahoy Visitor Retention" do %>
         <%= line_chart @visitor_retention, suffix: "%", xtitle: "nth #{@time_interval}" %>
       <% end %>

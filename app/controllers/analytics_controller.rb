@@ -203,51 +203,6 @@ class AnalyticsController < ApplicationController
       .order("sources.name ASC")
       .group_by_period(@time_interval, :created_at, range: @time_range, expand_range: true)
       .count
-
-    # Experiments
-    @visitor_retention_pricing_page_shown = []
-    visits_h = Ahoy::Visit
-      .non_user
-      .joins("INNER JOIN field_test_memberships ON field_test_memberships.participant_id = ahoy_visits.visitor_token")
-      .where(field_test_memberships: { experiment: "pricing_page_shown", variant: "t" })
-      .where(started_at: @time_range)
-      .group(:visitor_token)
-      .count("DISTINCT EXTRACT(#{@time_interval.upcase} FROM started_at)")
-    visit_counts = visits_h.values
-    if visit_counts.present?
-      (visit_counts.min..visit_counts.max).each do |day|
-        @visitor_retention_pricing_page_shown << [ "#{day}#{ordinal_suffix(day)}", visit_counts.count { |count| count >= day } ]
-      end
-      @visitor_retention_pricing_page_shown_total = @visitor_retention_pricing_page_shown.first[1]
-      @visitor_retention_pricing_page_shown.each_with_index do |day, index|
-        if index == 0
-          day[0] = "#{day[0]} (#{@visitor_retention_pricing_page_shown_total})"
-        end
-        day[1] = (day[1].to_f / @visitor_retention_pricing_page_shown_total * 100).ceil
-      end
-    end
-
-    @visitor_retention_pricing_page_not_shown = []
-    visits_h = Ahoy::Visit
-      .non_user
-      .joins("INNER JOIN field_test_memberships ON field_test_memberships.participant_id = ahoy_visits.visitor_token")
-      .where(field_test_memberships: { experiment: "pricing_page_shown", variant: "f" })
-      .where(started_at: @time_range)
-      .group(:visitor_token)
-      .count("DISTINCT EXTRACT(#{@time_interval.upcase} FROM started_at)")
-    visit_counts = visits_h.values
-    if visit_counts.present?
-      (visit_counts.min..visit_counts.max).each do |day|
-        @visitor_retention_pricing_page_not_shown << [ "#{day}#{ordinal_suffix(day)}", visit_counts.count { |count| count >= day } ]
-      end
-      @visitor_retention_pricing_page_not_shown_total = @visitor_retention_pricing_page_not_shown.first[1]
-      @visitor_retention_pricing_page_not_shown.each_with_index do |day, index|
-        if index == 0
-          day[0] = "#{day[0]} (#{@visitor_retention_pricing_page_not_shown_total})"
-        end
-        day[1] = (day[1].to_f / @visitor_retention_pricing_page_not_shown_total * 100).ceil
-      end
-    end
   end
 
   private

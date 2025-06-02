@@ -4,8 +4,6 @@ class UsersController < ApplicationController
   before_action :require_unauth!, only: :new
 
   def new
-    field_test_converted(:pricing_page_shown)
-
     build_user
 
     ahoy.track "Visited sign up page", params: {

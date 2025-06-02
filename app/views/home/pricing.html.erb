@@ -13,7 +13,8 @@
       period: "/month",
       description: "Perfect for occasional searches",
       features: [
-        "#{User::Credits::MONTHLY_FREE_CREDITS} free days per month",
+        "No credit card needed",
+        "#{User::Credits::MONTHLY_FREE_CREDITS} free day credits per month",
         "Bookmark / Save for later"
       ],
       cta: "Get Started",
@@ -22,11 +23,11 @@
     <%= render "pricing_plan",
       title: "Pay As You Go",
       price: Money.from_amount(5).exchange_to(Current.city&.currency || "USD").format,
-      period: "/10 days",
       description: "Perfect for frequent searches",
       features: [
-        "#{User::Credits::MONTHLY_FREE_CREDITS} free days per month",
-        "Bookmark / Save for later"
+        "10 day credits. No expiration.",
+        "#{User::Credits::MONTHLY_FREE_CREDITS} free day credits per month",
+        "Bookmark / Save for later",
       ],
       cta: signed_in? ? "Top up" : "Get Started",
       cta_path: signed_in? ? user_top_up_credits_path : new_user_path(source: "Pricing page")

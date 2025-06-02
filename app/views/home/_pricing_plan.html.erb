@@ -2,7 +2,9 @@
   <h3 class="text-xl font-semibold"><%= title %></h3>
   <p class="mt-4 flex items-baseline">
     <span class="text-5xl font-bold tracking-tight"><%= price %></span>
-    <span class="ml-1 text-xl font-semibold"><%= period %></span>
+    <% if local_assigns[:period] %>
+      <span class="ml-1 text-xl font-semibold"><%= period %></span>
+    <% end %>
   </p>
   <p class="mt-6 text-base text-secondary"><%= description %></p>
   <ul class="mt-8 flex flex-col gap-y-3 text-sm text-secondary">

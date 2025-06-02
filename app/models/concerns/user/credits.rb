@@ -1,8 +1,8 @@
 module User::Credits
   extend ActiveSupport::Concern
 
-  DEFAULT_CREDITS = 2
-  MONTHLY_FREE_CREDITS = 2
+  DEFAULT_CREDITS = 5
+  MONTHLY_FREE_CREDITS = 5
 
   included do
     has_many :credit_transactions, dependent: :destroy
