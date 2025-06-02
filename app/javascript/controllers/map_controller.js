@@ -25,12 +25,25 @@ export default class extends Controller {
       maxZoom: 17
     })
 
+    this.geolocateControl = new mapboxgl.GeolocateControl({
+      positionOptions: {
+        enableHighAccuracy: true
+      },
+      showUserHeading: true,
+      trackUserLocation: true,
+    })
+    this.map.addControl(this.geolocateControl)
+
     this.map.on("load", async () => {
       this.#addSource()
-      
-      const features = this.#getFeaturesFromItemTargets()
-      if (features.length > 0) {
-        this.#goTo(features[0].geometry.coordinates)
+
+      if (await this.#getGeolocationPermission()) {
+        this.geolocateControl.trigger()
+      } else {
+        const features = this.#getFeaturesFromItemTargets()
+        if (features.length > 0) {
+          this.#goTo(features[0].geometry.coordinates)
+        }
       }
     })
   }
@@ -62,10 +75,10 @@ export default class extends Controller {
         features: this.#getFeaturesFromItemTargets()
       })
 
-      const features = this.#getFeaturesFromItemTargets()
-      if (features.length > 0) {
-        this.#goTo(features[0].geometry.coordinates)
-      }
+      // const features = this.#getFeaturesFromItemTargets()
+      // if (features.length > 0) {
+      //   this.#goTo(features[0].geometry.coordinates)
+      // }
     }
   }
 
@@ -226,5 +239,13 @@ export default class extends Controller {
     const d = 6371 * c
 
     return d
+  }
+
+  #getGeolocationPermission() {
+    return new Promise((resolve, reject) => {
+      navigator.permissions.query({ name: "geolocation" }).then(result => {
+        resolve(result.state === "granted")
+      })
+    })
   }
 }

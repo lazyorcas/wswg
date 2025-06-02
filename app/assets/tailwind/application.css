@@ -389,6 +389,10 @@
     @apply !hidden;
   }
 
+  .mapboxgl-control-container {
+    @apply !hidden;
+  }
+
   /* ==========================================================================
   |
   |  Scroll
