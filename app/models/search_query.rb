@@ -19,6 +19,7 @@ class SearchQuery < ApplicationRecord
   validates :result, presence: true, if: :completed?
 
   after_commit :queue_query, on: :create, unless: :completed?
+  after_commit :queue_poll_for_searches_results, on: :update, if: -> { status_previously_changed?(to: :searching) }
 
   def ongoing?
     analyzing? || searching?
@@ -30,7 +31,6 @@ class SearchQuery < ApplicationRecord
 
   def query!
     build_searches
-    queue_poll_for_searches_results
     searching!
 
   rescue => e
