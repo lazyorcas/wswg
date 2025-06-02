@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_06_02_095225) do
+ActiveRecord::Schema[8.0].define(version: 2025_06_02_100034) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -129,17 +129,15 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_02_095225) do
   end
 
   create_table "credit_transactions", force: :cascade do |t|
-    t.bigint "user_id", null: false
     t.integer "transaction_type", null: false
     t.integer "amount", null: false
     t.datetime "expires_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "creditable_type"
-    t.bigint "creditable_id"
+    t.string "creditable_type", null: false
+    t.bigint "creditable_id", null: false
+    t.index ["creditable_type", "creditable_id", "transaction_type", "expires_at"], name: "idx_on_creditable_type_creditable_id_transaction_ty_d26d242ca4"
     t.index ["creditable_type", "creditable_id"], name: "index_credit_transactions_on_creditable"
-    t.index ["user_id", "transaction_type", "expires_at"], name: "idx_on_user_id_transaction_type_expires_at_4e012cbac4"
-    t.index ["user_id"], name: "index_credit_transactions_on_user_id"
   end
 
   create_table "events", force: :cascade do |t|
@@ -276,7 +274,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_02_095225) do
   add_foreign_key "city_languages", "languages"
   add_foreign_key "city_sources", "cities"
   add_foreign_key "city_sources", "sources"
-  add_foreign_key "credit_transactions", "users"
   add_foreign_key "events", "city_sources"
   add_foreign_key "events", "locations"
   add_foreign_key "location_queries", "locations"

@@ -5,7 +5,7 @@ module User::Credits
   MONTHLY_FREE_CREDITS = 5
 
   included do
-    has_many :credit_transactions, dependent: :destroy
+    has_many :credit_transactions, as: :creditable, dependent: :destroy
 
     validates :credits, presence: true
 

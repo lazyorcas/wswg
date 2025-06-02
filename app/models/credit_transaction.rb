@@ -1,10 +1,10 @@
 class CreditTransaction < ApplicationRecord
-  USAGE_EXPIRATION_TIME = 24.hours
   USAGE_AMOUNT = -1
+  USAGE_EXPIRATION_TIME = 24.hours
 
   scope :ongoing, -> { where("expires_at > ?", Time.current) }
 
-  belongs_to :user
+  belongs_to :creditable, polymorphic: true
 
   enum :transaction_type, {
     usage: -1,
@@ -15,38 +15,25 @@ class CreditTransaction < ApplicationRecord
 
   validates :transaction_type, presence: true
   validates :amount, presence: true, numericality: { other_than: 0 }
-  validates :expires_at, presence: true, if: :usage?
-  validate :validate_user_does_not_have_ongoing_usage_transaction, if: :usage?
 
-  before_validation :set_amount
-  before_validation :set_expires_at
-  after_create :update_user_balance!
+  with_options if: :usage? do
+    validates :expires_at, presence: true
+    validates :creditable_id, uniqueness: {
+      scope: [ :creditable_type, :transaction_type ],
+      conditions: -> { ongoing },
+      message: "already has an ongoing usage transaction"
+    }
 
-  def user_has_ongoing_usage_transaction?
-    user.has_ongoing_usage_credit_transaction?
+    before_validation { self.amount ||= USAGE_AMOUNT }
+    before_validation { self.expires_at ||= USAGE_EXPIRATION_TIME.from_now }
   end
+
+  after_create :update_credits!
 
   private
 
-  def set_amount
-    if usage?
-      self.amount ||= USAGE_AMOUNT
-    end
-  end
-
-  def set_expires_at
-    if usage?
-      self.expires_at ||= USAGE_EXPIRATION_TIME.from_now
-    end
-  end
-
-  def update_user_balance!
-    user.credits += amount
-    user.save!
-  end
-
-  def validate_user_does_not_have_ongoing_usage_transaction
-    return unless user_has_ongoing_usage_transaction?
-    errors.add(:base, "User already has an ongoing usage transaction")
+  def update_credits!
+    creditable.credits += amount
+    creditable.save!
   end
 end
