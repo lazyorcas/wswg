@@ -4,7 +4,7 @@ class CitySource::ScrapeAndCreateEventsJob < ApplicationJob
   NO_EVENTS_FOUND_MAX_ATTEMPTS = 3
 
   queue_with_priority 2
-  limits_concurrency to: 2, key: -> { self.class.name }
+  limits_concurrency to: 2, key: ->(*) { self.class.name }
 
   retry_on Ferrum::TimeoutError, wait: 30.minutes, attempts: 3
   retry_on Ferrum::NodeNotFoundError, wait: 1.minute, attempts: 3
