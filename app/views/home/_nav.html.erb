@@ -1,0 +1,16 @@
+<nav class="flex flex-col md:flex-row md:items-center gap-y-4 md:gap-y-0 md:gap-x-8">
+  <% if ["true", "t", true].include?(field_test(:pricing_page_shown, exclude: signed_in?)) %>
+    <%= link_to "Pricing", pricing_path %>
+  <% end %>
+  <% if signed_in? %>
+    <%= link_to map_path, class: "button button--primary", data: { turbo: false } do %>
+      <i class="ph-fill ph-sparkle"></i>
+      Discover
+    <% end %>
+  <% else %>
+    <div class="flex items-center gap-x-2">
+      <%= link_to "Login", login_path, class: "flex-1 button button--secondary" %>
+      <%= link_to "Sign up", new_user_path("user[city_id]" => @city&.id, source: "Sign up button in navbar"), class: "flex-1 button button--primary" %>
+    </div>
+  <% end %>
+</nav>

@@ -131,6 +131,12 @@
     @apply text-brand-900 dark:text-brand-200;
   }
 
+  .button--ghost {
+    @apply bg-transparent;
+    @apply hover:bg-stone-200 dark:hover:bg-stone-700;
+    @apply text-stone-900 dark:text-stone-100;
+  }
+
   /* ==========================================================================
   |
   |
