@@ -1,4 +1,5 @@
 <nav class="flex flex-col md:flex-row md:items-center gap-y-4 md:gap-y-0 md:gap-x-8">
+  <%= link_to "About", "https://www.linkedin.com/company/where-should-we-go/", target: "_blank" %>
   <%= link_to "Pricing", pricing_path %>
   <% if signed_in? %>
     <%= link_to map_path, class: "button button--primary", data: { turbo: false } do %>
