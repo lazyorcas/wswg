@@ -25,6 +25,8 @@ Rails.application.routes.draw do
   get "/auth/:provider/callback", to: "omniauth_sessions#create"
   passwordless_for :users, controller: "passwordless_sessions", as: "passwordless", at: "passwordless"
 
+  get "/user/edit", to: "current_user#edit", as: :edit_current_user
+  patch "/user", to: "current_user#update", as: :current_user
   get "/user/no_credits", to: "user#no_credits", as: :user_no_credits
   get "/user/top_up_credits", to: "user#top_up_credits", as: :user_top_up_credits
 

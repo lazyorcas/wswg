@@ -36,12 +36,6 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to(login_path(email: email))
   end
 
-  test "should not create user if city is not selected" do
-    assert_no_difference "User.count" do
-      post users_url, params: { user: { email: "test@example.com" } }
-    end
-  end
-
   test "should not create user if city is not found" do
     assert_no_difference "User.count" do
       post users_url, params: { user: { email: "test@example.com", city_id: "not-a-city" } }

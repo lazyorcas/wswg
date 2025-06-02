@@ -5,6 +5,7 @@ class MapController < ApplicationController
     with: -> { redirect_to(root_path, flash: { error: "Too many requests. Please try again in 1 minute." }) }
 
   before_action :require_user!
+  before_action :require_city!
 
   def index
     @content_path = params[:search_query_id].present? ?

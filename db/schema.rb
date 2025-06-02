@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_05_28_043426) do
+ActiveRecord::Schema[8.0].define(version: 2025_06_02_033340) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -23,14 +23,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_28_043426) do
     t.datetime "updated_at", null: false
     t.index ["provider", "uid"], name: "index_accounts_on_provider_and_uid", unique: true
     t.index ["user_id"], name: "index_accounts_on_user_id"
-  end
-
-  create_table "active_currency_rates", id: :serial, force: :cascade do |t|
-    t.string "from"
-    t.string "to"
-    t.float "value"
-    t.datetime "created_at", precision: nil
-    t.index ["from", "to", "created_at"], name: "index_active_currency_rates"
   end
 
   create_table "ahoy_events", force: :cascade do |t|
@@ -263,7 +255,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_28_043426) do
   end
 
   create_table "users", force: :cascade do |t|
-    t.bigint "city_id", null: false
+    t.bigint "city_id"
     t.string "email", null: false
     t.boolean "admin", default: false
     t.integer "credits", default: 0, null: false

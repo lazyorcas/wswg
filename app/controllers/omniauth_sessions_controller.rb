@@ -1,10 +1,7 @@
 class OmniauthSessionsController < ApplicationController
   def create
     load_auth_hash
-    load_user
-    if @user.nil?
-      raise UserReadableError.new("User not found. Please make sure to sign up first.")
-    end
+    find_or_create_user!
     create_or_update_account!
     store_session
     load_recent_search_query
@@ -29,8 +26,8 @@ class OmniauthSessionsController < ApplicationController
     @auth_hash = request.env["omniauth.auth"]
   end
 
-  def load_user
-    @user = User.find_by(email: @auth_hash.dig(:info, :email))
+  def find_or_create_user!
+    @user = User.find_or_create_by!(email: @auth_hash.dig(:info, :email))
   end
 
   def create_or_update_account!

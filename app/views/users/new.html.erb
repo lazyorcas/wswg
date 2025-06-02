@@ -6,7 +6,7 @@
       <img src="/hero-dark.webp" alt="Where Should We Go's Hero Dark" class="size-full hidden dark:block object-contain rounded-xl" loading="lazy">
     </div>
   <% end %>
-  <%= tag.div class: class_names("grow flex flex-col lg:justify-center items-center gap-y-8 backdrop-blur-xs", !show_hero_image_in_sign_up_page? && "justify-center") do %>
+  <%= tag.div class: class_names("grow flex flex-col lg:justify-center items-center gap-y-8", !show_hero_image_in_sign_up_page? && "justify-center") do %>
     <h1 class="text-3xl font-bold"><%= sign_up_page_title %></h1>
     <div class="w-full md:max-w-100">
       <%= render "form", user: @user %>

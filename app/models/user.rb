@@ -9,7 +9,7 @@ class User < ApplicationRecord
     monthly: 2
   }
 
-  belongs_to :city
+  belongs_to :city, optional: true
 
   has_one :account, dependent: :destroy
   has_many :bookmarks, dependent: :destroy
