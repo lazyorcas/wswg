@@ -37,14 +37,14 @@ export default class extends Controller {
     this.map.on("load", async () => {
       this.#addSource()
 
-      if (await this.#getGeolocationPermission()) {
+      navigator.geolocation.getCurrentPosition(() => {
         this.geolocateControl.trigger()
-      } else {
+      }, () => {
         const features = this.#getFeaturesFromItemTargets()
         if (features.length > 0) {
           this.#goTo(features[0].geometry.coordinates)
         }
-      }
+      })
     })
   }
 
@@ -239,13 +239,5 @@ export default class extends Controller {
     const d = 6371 * c
 
     return d
-  }
-
-  #getGeolocationPermission() {
-    return new Promise((resolve, reject) => {
-      navigator.permissions.query({ name: "geolocation" }).then(result => {
-        resolve(result.state === "granted")
-      })
-    })
   }
 }
