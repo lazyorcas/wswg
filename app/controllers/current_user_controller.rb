@@ -1,4 +1,6 @@
 class CurrentUserController < ApplicationController
+  include StripeHelper
+
   before_action :require_user!
 
   def edit
@@ -8,6 +10,14 @@ class CurrentUserController < ApplicationController
     Current.user.update!(user_params)
     redirect_to(map_path)
   end
+
+  def top_up_credits
+    ahoy.track "Visited top up page"
+
+    redirect_to(build_stripe_payment_link(Current.user.email), allow_other_host: true)
+  end
+
+  def no_credits; end
 
   private
 

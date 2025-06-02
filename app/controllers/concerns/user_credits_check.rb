@@ -12,7 +12,7 @@ module UserCreditsCheck
   def require_credits!
     unless Current.user.can_use_credits?
       if request.get?
-        redirect_to(user_no_credits_path)
+        redirect_to(current_user_no_credits_path)
 
       else
         flash.now[:error] = "You don't have enough credits. Top up to continue."

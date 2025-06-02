@@ -2,6 +2,7 @@ class Map::SearchQueriesController < ApplicationController
   include UserCreditsCheck
 
   before_action :require_user!
+  before_action :require_city!
   require_credits only: :create
 
   rate_limit to: 10,

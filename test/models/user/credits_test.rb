@@ -24,7 +24,7 @@ class User::CreditsTest < ActiveSupport::TestCase
     users(:oscar).add_free_credits!
     users(:oscar).reload
 
-    assert_equal original_credits + 2, users(:oscar).credits
+    assert_equal original_credits + 5, users(:oscar).credits
   end
 
   test "should not top up free credits twice for the same month" do
@@ -34,7 +34,7 @@ class User::CreditsTest < ActiveSupport::TestCase
     users(:oscar).add_free_credits!
     users(:oscar).reload
 
-    assert_equal original_credits + 2, users(:oscar).credits
+    assert_equal original_credits + 5, users(:oscar).credits
   end
 
   test "should deduct credits on usage" do

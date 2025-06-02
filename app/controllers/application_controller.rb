@@ -11,7 +11,11 @@ class ApplicationController < ActionController::Base
     if Current.city.present?
       Current.user.update(city_id: Current.city.id)
     else
-      redirect_to(edit_current_user_path)
+      if request.get?
+        redirect_to(edit_current_user_path)
+      else
+        head(:unprocessable_entity)
+      end
     end
   end
 end

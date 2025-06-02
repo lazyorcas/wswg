@@ -4,6 +4,7 @@ class Map::EventsController < ApplicationController
   EVENT_LIMIT = 100
 
   before_action :require_user!
+  before_action :require_city!
 
   after_action :add_event_to_seen_events, only: :show
 
