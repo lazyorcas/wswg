@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_06_02_033340) do
+ActiveRecord::Schema[8.0].define(version: 2025_06_02_095225) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -135,6 +135,9 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_02_033340) do
     t.datetime "expires_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "creditable_type"
+    t.bigint "creditable_id"
+    t.index ["creditable_type", "creditable_id"], name: "index_credit_transactions_on_creditable"
     t.index ["user_id", "transaction_type", "expires_at"], name: "idx_on_user_id_transaction_type_expires_at_4e012cbac4"
     t.index ["user_id"], name: "index_credit_transactions_on_user_id"
   end
