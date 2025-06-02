@@ -3,14 +3,16 @@ module City::Scorable
 
   TIME_WINDOW = 1.week
   POPULAR_CITY_MIN_USER_COUNT = 10
-  POPULAR_CITY_MIN_VISITOR_COUNT = 350
+  POPULAR_CITY_MIN_VISITOR_COUNT = 100
+  ACTIVE_USER_SCORE_MODIFIER = 1.0
+  VISITOR_SCORE_MODIFIER = 0.8 # decrease this when there are more users
 
   def current_score
     @current_score ||= active_user_score + visitor_score
   end
 
   def active_user_score
-    @active_user_score ||= (1.0 * active_user_count / POPULAR_CITY_MIN_USER_COUNT).round(2)
+    @active_user_score ||= (ACTIVE_USER_SCORE_MODIFIER * active_user_count / POPULAR_CITY_MIN_USER_COUNT).round(2)
   end
 
   def visitor_score
