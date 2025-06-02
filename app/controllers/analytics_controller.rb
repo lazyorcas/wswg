@@ -65,12 +65,6 @@ class AnalyticsController < ApplicationController
       .reverse
       .take(30)
       .to_h
-    @failed_to_create_account = Ahoy::Event
-      .non_user
-      .where(name: "Failed to create account")
-      .where(time: @time_range)
-      .group("properties->>'error'")
-      .count
 
     @city_views = build_ahoy_events_popularity_data(
       "properties->>'city'",
