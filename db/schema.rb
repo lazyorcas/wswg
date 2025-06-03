@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_06_02_100034) do
+ActiveRecord::Schema[8.0].define(version: 2025_06_03_024634) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -220,6 +220,9 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_02_100034) do
     t.jsonb "result"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "searcher_type"
+    t.bigint "searcher_id"
+    t.index ["searcher_type", "searcher_id"], name: "index_search_queries_on_searcher"
     t.index ["user_id"], name: "index_search_queries_on_user_id"
   end
 
