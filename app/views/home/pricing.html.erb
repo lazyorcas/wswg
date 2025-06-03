@@ -14,7 +14,7 @@
       description: "Perfect for occasional searches",
       features: [
         "No credit card needed",
-        "#{User::Credits::MONTHLY_FREE_CREDITS} free day credits per month",
+        "#{Credits::MONTHLY_FREE_CREDITS} free day credits per month",
         "Bookmark / Save for later"
       ],
       cta: "Get Started",
@@ -26,7 +26,7 @@
       description: "Perfect for frequent searches",
       features: [
         "10 day credits. No expiration.",
-        "#{User::Credits::MONTHLY_FREE_CREDITS} free day credits per month",
+        "#{Credits::MONTHLY_FREE_CREDITS} free day credits per month",
         "Bookmark / Save for later",
       ],
       cta: signed_in? ? "Top up" : "Get Started",
@@ -42,7 +42,7 @@
       %>
       <%= render "faq_item",
         question: "When do I receive free day credits?",
-        answer: "Users with zero day credits at the beginning of each month will automatically receive #{User::Credits::MONTHLY_FREE_CREDITS} free day credits."
+        answer: "Users with zero day credits at the beginning of each month will automatically receive #{Credits::MONTHLY_FREE_CREDITS} free day credits."
       %>
       <%= render "faq_item",
         question: "How do I get more day credits?",
