@@ -8,4 +8,6 @@ class Visitor < ApplicationRecord
   has_many :search_queries, as: :searcher, dependent: :destroy
 
   has_many :visits, class_name: "Ahoy::Visit", primary_key: "visitor_token", foreign_key: "visitor_token"
+
+  validates :visitor_token, presence: true, uniqueness: true
 end
