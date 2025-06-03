@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_06_03_043206) do
+ActiveRecord::Schema[8.0].define(version: 2025_06_03_045021) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -269,6 +269,16 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_03_043206) do
     t.index ["email"], name: "index_users_on_email", unique: true
   end
 
+  create_table "visitors", force: :cascade do |t|
+    t.bigint "city_id", null: false
+    t.string "visitor_token", null: false
+    t.integer "credits", default: 0, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["city_id"], name: "index_visitors_on_city_id"
+    t.index ["visitor_token"], name: "index_visitors_on_visitor_token", unique: true
+  end
+
   add_foreign_key "accounts", "users"
   add_foreign_key "bookmarks", "events"
   add_foreign_key "bookmarks", "users"
@@ -282,4 +292,5 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_03_043206) do
   add_foreign_key "searches", "search_queries"
   add_foreign_key "seens", "events"
   add_foreign_key "users", "cities"
+  add_foreign_key "visitors", "cities"
 end
