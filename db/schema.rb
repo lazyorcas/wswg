@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_06_03_024807) do
+ActiveRecord::Schema[8.0].define(version: 2025_06_03_042411) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -241,7 +241,10 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_03_024807) do
     t.bigint "event_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "seenable_type"
+    t.bigint "seenable_id"
     t.index ["event_id"], name: "index_seens_on_event_id"
+    t.index ["seenable_type", "seenable_id"], name: "index_seens_on_seenable"
     t.index ["user_id", "event_id"], name: "index_seens_on_user_id_and_event_id", unique: true
     t.index ["user_id"], name: "index_seens_on_user_id"
   end
