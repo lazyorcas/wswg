@@ -2,7 +2,7 @@ class Event::CreateJob < ApplicationJob
   DATA_INCOMPLETE_MAX_ATTEMPTS = 3
 
   queue_with_priority 3
-  limits_concurrency to: 3, key: ->(*) { self.class.name }
+  limits_concurrency to: 5, key: ->(*) { self.class.name }
 
   retry_on Jina::TimeoutError, wait: :polynomially_longer, attempts: 3
 
