@@ -1,3 +1,7 @@
+# June 3rd 2025, each event's markdown has ~4000 tokens.
+# OpenAI gives 2.5M daily free credits.
+# 2.5M / 4000 = 625 free events per day.
+
 class ScrapeAndCreateEventsJob < ApplicationJob
   HOUR_TO_FETCH_EVENTS = 4
   EVENT_LIMIT_PER_CITY_SOURCE = 1_000
