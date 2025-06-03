@@ -6,6 +6,11 @@ class HomeControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
+  test "should get pricing" do
+    get pricing_url
+    assert_response :success
+  end
+
   test "every city_events url" do
     City.all.each do |city|
       TimePeriod::SYMBOLS.each do |time_period_symbol|
