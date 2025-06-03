@@ -5,6 +5,7 @@ module Authentication
 
   included do
     before_action :set_current_user
+    before_action :set_current_person
     before_action :associate_current_user_with_visit, if: :signed_in?
     before_action :set_sentry_user_context, if: :signed_in?
 
@@ -27,6 +28,10 @@ module Authentication
 
   def set_current_user
     Current.user = User.find_by(id: session[:user_id]) || authenticate_by_session(User)
+  end
+
+  def set_current_person
+    Current.person = Current.user || Current.visitor
   end
 
   def require_user!

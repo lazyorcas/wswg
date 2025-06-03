@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_06_03_045021) do
+ActiveRecord::Schema[8.0].define(version: 2025_06_03_052710) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -270,7 +270,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_03_045021) do
   end
 
   create_table "visitors", force: :cascade do |t|
-    t.bigint "city_id", null: false
+    t.bigint "city_id"
     t.string "visitor_token", null: false
     t.integer "credits", default: 0, null: false
     t.datetime "created_at", null: false

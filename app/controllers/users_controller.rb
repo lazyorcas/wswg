@@ -40,7 +40,7 @@ class UsersController < ApplicationController
   def build_user
     @user ||= User.build
     @user.attributes = user_params
-    @user.city_id ||= Current.city&.id
+    @user.city_id ||= City.find_by(name: request.location.city)&.id
   end
 
   def user_params
