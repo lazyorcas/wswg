@@ -92,6 +92,15 @@ class Rack::Attack
   #    {},   # headers
   #    ['']] # body
   # end
+
+  # Throttle POST requests to /map/search_queries by IP address
+  #
+  # Key: "rack::attack:#{Time.now.to_i/:period}:map/search_queries/ip:#{req.ip}"
+  throttle("map/search_queries/ip", limit: 100, period: 5.minutes) do |req|
+    if req.path.start_with?("/map/search_queries") && req.post?
+      req.ip
+    end
+  end
 end
 
 if Rails.env.development?

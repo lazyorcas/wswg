@@ -29,7 +29,7 @@ module SearchQuery::Broadcastable
       partial: "map/search_queries/result",
       locals: {
         events: result.events,
-        user: user
+        searcher: searcher
       }
     )
   end
@@ -37,13 +37,14 @@ module SearchQuery::Broadcastable
   private
 
   def should_broadcast?
-    !user.search_queries.excluding(self).exists?(created_at: created_at..)
+    !searcher.search_queries.excluding(self).exists?(created_at: created_at..)
   end
 
   def broadcast_exception(exception)
     message = exception.is_a?(UserReadableError) ? exception.message : "Failed to search. Try again."
 
-    broadcast_error([ user, :flash ], message)
+    # TODO: handle for visitor
+    broadcast_error([ searcher, :flash ], message)
     broadcast_update_to(self, target: "search-results", html: "")
   end
 end

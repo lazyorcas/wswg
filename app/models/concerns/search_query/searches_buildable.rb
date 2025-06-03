@@ -98,7 +98,7 @@ module SearchQuery::SearchesBuildable
         )
       end
 
-      City.find_by(name: city_name) || user.city
+      City.find_by(name: city_name) || searcher.city
     end
   end
 

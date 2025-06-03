@@ -11,7 +11,7 @@
       <% elsif @search_query.completed? %>
         <%= render "result", 
           events: @search_query.result.events, 
-          user: @search_query.user 
+          searcher: @search_query.searcher 
         %>
       <% end %>
     <% end %>

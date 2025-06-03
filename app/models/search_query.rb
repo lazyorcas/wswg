@@ -9,7 +9,7 @@ class SearchQuery < ApplicationRecord
     searching: 2
   }, default: :analyzing
 
-  belongs_to :user
+  belongs_to :searcher, polymorphic: true
   has_many :searches, dependent: :destroy
 
   attribute :result, SearchQuery::Result.to_type

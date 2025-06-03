@@ -9,7 +9,7 @@ class Map::SearchQueriesController < ApplicationController
     within: 1.minute,
     only: :create,
     with: -> do
-      flash.now[:error] = "Too many requests. Please try again in 1 minute."
+      flash.now[:error] = "Too many requests. Please wait a moment and try again."
       turbo_stream_flash
     end
 
@@ -57,7 +57,7 @@ class Map::SearchQueriesController < ApplicationController
   end
 
   def search_query_scope
-    SearchQuery.where(user: Current.user)
+    SearchQuery.where(searcher: Current.user)
   end
 
   def search_query_params
