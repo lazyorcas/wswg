@@ -12,8 +12,11 @@ class CreateVisitors < ActiveRecord::Migration[8.0]
 end
 
 # Ahoy::Visit.find_each do |visit|
+#   city = City.find_by(name: visit.city)
+#   next if city.blank?
+
 #   Visitor.find_or_create_by(
-#     city: City.find_by(name: visit.city),
+#     city: city,
 #     visitor_token: visit.visitor_token
 #   )
 # end
