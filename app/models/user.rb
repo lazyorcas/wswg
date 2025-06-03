@@ -14,7 +14,7 @@ class User < ApplicationRecord
   has_one :account, dependent: :destroy
   has_many :bookmarks, dependent: :destroy
   has_many :bookmarked_events, through: :bookmarks, source: :event
-  has_many :seens, dependent: :destroy
+  has_many :seens, as: :seenable, dependent: :destroy
   has_many :seen_events, through: :seens, source: :event
   has_many :search_queries, as: :searcher, dependent: :destroy
 

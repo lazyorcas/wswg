@@ -121,6 +121,8 @@ class Home::EventsController < ApplicationController
 
   def create_seen
     if Current.user.present?
+      return if Current.user.seen_events.include?(@event)
+
       Current.user.seen_events << @event
       Current.user.save!
     else

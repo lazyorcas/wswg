@@ -1,7 +1,7 @@
 class Map::EventsController < ApplicationController
   include Temporal
 
-  EVENT_LIMIT = 100
+  EVENT_LIMIT = 200
 
   before_action :require_user!
   before_action :require_city!
@@ -9,7 +9,7 @@ class Map::EventsController < ApplicationController
   after_action :add_event_to_seen_events, only: :show
 
   def index
-    load_events_this_week
+    load_events
     order_events
     limit_events
     @events = @events.includes(:location, :source, :city)
@@ -22,8 +22,8 @@ class Map::EventsController < ApplicationController
 
   private
 
-  def load_events_this_week
-    @events = event_scope.where(end_date: current_date..current_date.end_of_week)
+  def load_events
+    @events = event_scope.where(end_date: current_date..)
   end
 
   def order_events
