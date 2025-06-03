@@ -1,10 +1,18 @@
 class Ahoy::Visit < ApplicationRecord
-  scope :non_user, -> { where(user_id: nil) }
-
   self.table_name = "ahoy_visits"
 
-  has_many :events, class_name: "Ahoy::Event", dependent: :destroy
-  belongs_to :user, optional: true
+  scope :non_user, -> { where(user_id: nil) }
 
   belongs_to :visitor, primary_key: "visitor_token", foreign_key: "visitor_token"
+  belongs_to :user, optional: true
+
+  has_many :events, class_name: "Ahoy::Event", dependent: :destroy
+
+  after_create :find_or_create_visitor
+
+  private
+
+  def find_or_create_visitor
+    Visitor.find_or_create_by(visitor_token: visitor_token)
+  end
 end
