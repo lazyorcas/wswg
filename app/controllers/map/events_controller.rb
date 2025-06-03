@@ -52,8 +52,6 @@ class Map::EventsController < ApplicationController
   def event_scope
     Event
       .joins(:city_source)
-      .left_joins(:seen_users)
-      .where(seens: { user_id: nil })
       .where(city_source: { city: Current.user.city })
   end
 end
