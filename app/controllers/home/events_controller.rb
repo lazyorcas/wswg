@@ -124,5 +124,7 @@ class Home::EventsController < ApplicationController
 
     Current.person.seen_events << @event
     Current.person.save!
+  rescue => e
+    Sentry.capture_exception(e)
   end
 end
