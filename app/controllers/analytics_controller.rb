@@ -170,7 +170,7 @@ class AnalyticsController < ApplicationController
       .transform_keys { |k| k.to_date }
       .sort
     @search_queries = SearchQuery
-      .where.not(user_id: 1)
+      .where.not(searcher_type: "User", searcher_id: 1)
       .group_by_period(@time_interval, :created_at, range: @time_range, expand_range: true)
       .count
       .transform_values { |v| v }
