@@ -8,7 +8,7 @@ class Ahoy::Visit < ApplicationRecord
 
   has_many :events, class_name: "Ahoy::Event", dependent: :destroy
 
-  after_create :find_or_create_visitor
+  before_validation :find_or_create_visitor
 
   private
 
