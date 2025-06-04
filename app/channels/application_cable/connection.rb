@@ -2,12 +2,13 @@ module ApplicationCable
   class Connection < ActionCable::Connection::Base
     include Passwordless::ControllerHelpers
 
-    attr_accessor :session
+    attr_accessor :session, :cookies
 
     identified_by :current_person
 
     def connect
       self.session = request.session
+      self.cookies = request.cookies
       self.current_person =
         find_verified_user ||
         find_verified_visitor ||
@@ -21,7 +22,7 @@ module ApplicationCable
     end
 
     def find_verified_visitor
-      Visitor.find_by(visitor_token: session[:visitor_token])
+      Visitor.find_by(visitor_token: cookies["ahoy_visitor"])
     end
   end
 end

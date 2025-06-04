@@ -8,9 +8,5 @@ module SetCurrentRequestDetails
       Current.ip_address = request.ip
       Current.visitor = Visitor.find_or_create_by(visitor_token: ahoy.visitor_token)
     end
-
-    before_action unless: -> { browser.bot? } do
-      session[:visitor_token] = ahoy.visitor_token
-    end
   end
 end
