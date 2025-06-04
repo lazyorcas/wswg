@@ -7,11 +7,9 @@ class Ahoy::AnonymizeVisitsJob < ApplicationJob
       .where(started_at: 2.hours.ago..)
       .find_each do |visit|
         masked_ip = Ahoy.mask_ip(visit.ip)
-        location = Geocoder.search(masked_ip).first
-
         visit.update_column :ip, masked_ip
-        visit.update_column :latitude, location.try(:latitude).presence
-        visit.update_column :longitude, location.try(:longitude).presence
+        visit.update_column :latitude, nil
+        visit.update_column :longitude, nil
     end
   end
 end
