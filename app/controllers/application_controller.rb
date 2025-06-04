@@ -8,8 +8,8 @@ class ApplicationController < ActionController::Base
   def require_city!
     return if Current.person&.city_id&.present?
 
-    if request.location.present?
-      city = City.find_by(name: request.location.city)
+    if current_visit.city.present?
+      city = City.find_by(name: current_visit.city)
       if city.present?
         Current.person.update(city: city)
         return
