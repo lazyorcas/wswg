@@ -1,8 +1,7 @@
-class AnalyticsController < ApplicationController
+class AnalyticsController < AdminController
   START_DATE = 4.weeks.ago.end_of_week + 1.day
   TIME_INTERVAL = "day"
 
-  before_action :require_admin!
   before_action :load_filters
 
   def index
