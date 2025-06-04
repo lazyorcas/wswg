@@ -5,3 +5,4 @@ Disallow: /events/*/redirect
 Disallow: /terms
 Disallow: /privacy
 Disallow: /map
+Disallow: /cdn-cgi/
