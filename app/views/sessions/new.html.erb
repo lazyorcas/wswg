@@ -5,9 +5,12 @@
     <%= render "passwordless/sessions/form", session: @passwordless_session %>
     <div class="flex items-center gap-x-2">
       <hr class="grow border-primary" />
-      <span class="shrink-0 text-sm text-secondary self-center">Or, faster:</span>
+      <span class="shrink-0 text-sm text-secondary self-center">Or</span>
       <hr class="grow border-primary" />
     </div>
-    <%= render "omniauth_sessions/form" %>
+    <div class="flex flex-col gap-y-2">
+      <%= render "omniauth_sessions/form" %>
+      <%= link_to "Sign up if you haven't", new_user_path(source: "Sign up button in login page"), class: "button button--ghost" %>
+    </div>
   </div>
 </div>

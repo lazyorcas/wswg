@@ -12,7 +12,10 @@
   <% else %>
     <div class="flex gap-x-2">
       <%= link_to "Login", login_path, class: "flex-1 button button--secondary" %>
-      <%= link_to "Sign up", new_user_path("user[city_id]" => @city&.id, source: "Sign up button in navbar"), class: "flex-1 button button--primary" %>
+      <%= link_to map_path(rel: "nofollow", data: { turbo: false }), class: "flex-1 button button--primary" do %>
+        <i class="ph-fill ph-map-trifold"></i>
+        Open map
+      <% end %>
     </div>
   <% end %>
 </nav>
