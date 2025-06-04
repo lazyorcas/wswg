@@ -8,21 +8,14 @@
       <p class="md:max-w-xl"><%= build_city_description(@city, @time_period).html_safe %></p>
     </div>
   </header>
-  <% unless signed_in? %>
-    <section class="md:max-w-xl mx-auto">
-      <%= render "form" %>
-    </section>
-  <% end %>
+  <section class="md:max-w-xl mx-auto">
+    <%= render "search_queries/form", search_query: SearchQuery.new %>
+  </section>
   <section class="py-10 w-full flex flex-col xl:flex-row gap-y-8 xl:gap-y-0 xl:gap-x-8">
     <section class="grow -mx-4 xl:mx-auto flex flex-col">
       <p class="px-4 text-sm">
         <% if @events.any? %>
-          <%= @events.size %>/<%= @all_events_count %> events are shown.
-          <% if signed_in? %>
-            <%= link_to "See all events", map_path, class: "link" %>.
-          <% else %>
-            <%= link_to "Create an account", new_user_path("user[city_id]" => @city.id, source: "New account button in city events page"), class: "link" %> to see all events.
-          <% end %>
+          <%= @events.size %>/<%= @all_events_count %> events are shown. <%= link_to "See all events", map_path(city_id: @city.id), class: "link", rel: "nofollow", data: { turbo: false } %>.
           <br />
         <% end %>
         Alternatively, you can view <%= @alternate_link_attributes.map { |link| link_to link[:title], link[:href], class: "link" }.to_sentence.html_safe %>.
@@ -48,7 +41,7 @@
                 <%= render "skeleton_event_item_link" %>
                 <%= render "skeleton_event_item_link" %>
               </div>
-              <%= link_to signed_in? ? map_path : new_user_path("user[city_id]" => @city.id, source: "See other events button in city events page"), class: "absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 button button--secondary" do %>
+              <%= link_to map_path(city_id: @city.id), class: "absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 button button--secondary", rel: "nofollow", data: { turbo: false } do %>
                 <i class="ph ph-list-bullets"></i>
                 See <%= @all_events_count - @events.size %> more events
               <% end %>

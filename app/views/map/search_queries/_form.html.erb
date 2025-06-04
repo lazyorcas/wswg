@@ -1,6 +1,6 @@
 <%= form_for search_query, url: map_search_queries_path, html: { class: "popup !rounded-3xl fixed inset-x-4 md:static" }, data: { action: "search#blur" } do |form| %>
   <%= form.search_field :query,
-    placeholder: "e.g. concerts this weekend under #{Money.from_amount(50, Current.user.city.currency).format(no_cents: true)}",
+    placeholder: generate_search_query_placeholder,
     class: "input !border-none truncate",
     required: true,
     data: { search_target: "searchInput", action: "search#input" }

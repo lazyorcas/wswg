@@ -1,13 +1,16 @@
-<nav class="flex flex-col md:flex-row md:items-center gap-y-4 md:gap-y-0 md:gap-x-8">
-  <%= link_to "About", "https://www.linkedin.com/company/where-should-we-go/", target: "_blank" %>
-  <%= link_to "Pricing", pricing_path %>
+<nav class="flex flex-col md:flex-row md:gap-x-4">
+  <div class="flex flex-col md:flex-row gap-y-2 md:gap-y-0">
+    <%= link_to "About", "https://www.linkedin.com/company/where-should-we-go/", target: "_blank", class: "button button--ghost" %>
+    <%= link_to "Pricing", pricing_path, class: "button button--ghost" %>
+  </div>
   <% if signed_in? %>
     <%= link_to map_path, class: "button button--primary", data: { turbo: false } do %>
       <i class="ph-fill ph-sparkle"></i>
       Discover
     <% end %>
   <% else %>
-    <div class="flex items-center gap-x-2">
+    <hr class="border-primary my-4 md:hidden">
+    <div class="flex gap-x-2">
       <%= link_to "Login", login_path, class: "flex-1 button button--secondary" %>
       <%= link_to "Sign up", new_user_path("user[city_id]" => @city&.id, source: "Sign up button in navbar"), class: "flex-1 button button--primary" %>
     </div>

@@ -1,44 +1,28 @@
-class Map::SearchQueriesController < ApplicationController
+class SearchQueriesController < ApplicationController
   include CreditsCheck
 
   rate_limit to: 20,
     within: 1.minute,
-    only: :create,
     with: -> do
       Sentry.capture_message("Too many requests.", level: :warning)
-      flash.now[:error] = "Too many requests. Please wait a moment and try again."
-      turbo_stream_flash(status: :too_many_requests)
+      redirect_to(map_path, flash: { error: "Too many requests. Please wait a moment and try again." })
     end
 
   before_action :require_city!
-  require_credits only: :create
-
-  def index; end
+  require_credits
 
   def create
     build_search_query
     begin
       @search_query.save!
+      redirect_to(map_path(search_query_id: @search_query.id))
     rescue => e
       Sentry.capture_exception(e)
-
-      flash.now[:error] = "Failed to search."
-      turbo_stream_flash(status: :unprocessable_entity)
-    end
-  end
-
-  def show
-    load_search_query
-    if @search_query.failed?
-      flash.now[:error] = "Failed to search."
+      redirect_to(map_path, flash: { error: "Failed to search." })
     end
   end
 
   private
-
-  def load_search_query
-    @search_query = search_query_scope.find(params[:id])
-  end
 
   def build_search_query
     @search_query ||= search_query_scope.build

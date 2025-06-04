@@ -36,15 +36,6 @@ export default class extends Controller {
 
     this.map.on("load", async () => {
       this.#addSource()
-
-      navigator.geolocation.getCurrentPosition(() => {
-        this.geolocateControl.trigger()
-      }, () => {
-        const features = this.#getFeaturesFromItemTargets()
-        if (features.length > 0) {
-          this.#goTo(features[0].geometry.coordinates)
-        }
-      })
     })
   }
 
@@ -70,15 +61,30 @@ export default class extends Controller {
     if (source) {
       this.#closeActivePopup()
 
+      const features = this.#getFeaturesFromItemTargets()
+
       source.setData({
         type: "FeatureCollection",
-        features: this.#getFeaturesFromItemTargets()
+        features,
       })
 
-      // const features = this.#getFeaturesFromItemTargets()
-      // if (features.length > 0) {
-      //   this.#goTo(features[0].geometry.coordinates)
-      // }
+      navigator.geolocation.getCurrentPosition((position) => {
+        if (features.length > 0) {
+          const distance = this.#calculateDistanceInKm(
+            features[0].geometry.coordinates, 
+            [position.coords.longitude, position.coords.latitude]
+          )
+          if (distance <= 50) {
+            this.geolocateControl.trigger()
+          } else {
+            this.#goTo(features[0].geometry.coordinates)
+          }
+        }
+      }, () => {
+        if (features.length > 0) {
+          this.#goTo(features[0].geometry.coordinates)
+        }
+      })
     }
   }
 
@@ -185,7 +191,7 @@ export default class extends Controller {
       }
     }
 
-    if (distance > 100) {
+    if (distance > 50) {
       this.map.jumpTo(options)
     } else {
       this.map.flyTo(options)

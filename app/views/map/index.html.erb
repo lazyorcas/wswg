@@ -7,7 +7,7 @@
   data: { 
     controller: "map",
     map_access_token_value: ENV['MAPBOX_PUBLIC_ACCESS_TOKEN'],
-    map_center_coordinates_value: get_mapbox_coordinates(Current.user.city.coordinates)
+    map_center_coordinates_value: get_mapbox_coordinates(@city&.coordinates || Current.person.city.coordinates)
   } do %>
   <div class="size-full" data-map-target="container"></div>
   <section class="absolute py-4 md:py-8 left-4 md:left-8 flex max-h-full md:gap-x-2">
@@ -19,6 +19,6 @@
     </div>
   </section>
   <div class="absolute py-4 md:py-8 right-4 md:right-8">
-    <%= render partial: "user" %>
+    <%= render partial: "person" %>
   </div>
 <% end %>

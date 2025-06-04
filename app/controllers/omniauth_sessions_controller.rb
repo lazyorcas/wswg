@@ -17,7 +17,7 @@ class OmniauthSessionsController < ApplicationController
     else
       flash.now[:error] = "Failed to login. Try again."
     end
-    turbo_stream_flash
+    turbo_stream_flash(status: :unprocessable_entity)
   end
 
   private

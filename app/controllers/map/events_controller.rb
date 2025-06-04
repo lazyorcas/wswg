@@ -3,7 +3,6 @@ class Map::EventsController < ApplicationController
 
   EVENT_LIMIT = 200
 
-  before_action :require_user!
   before_action :require_city!
 
   after_action :add_event_to_seen_events, only: :show
@@ -17,7 +16,7 @@ class Map::EventsController < ApplicationController
 
   def show
     load_event
-    load_bookmark
+    load_bookmark if signed_in?
   end
 
   private
@@ -43,15 +42,21 @@ class Map::EventsController < ApplicationController
   end
 
   def add_event_to_seen_events
-    return if Current.user.seen_events.include?(@event)
+    return if Current.person.seen_events.include?(@event)
 
-    Current.user.seen_events << @event
-    Current.user.save!
+    Current.person.seen_events << @event
+    Current.person.save!
   end
 
   def event_scope
+    city = if params[:city_id].present?
+      City.find(params[:city_id])
+    else
+      Current.person.city
+    end
+
     Event
       .joins(:city_source)
-      .where(city_source: { city: Current.user.city })
+      .where(city_source: { city: city })
   end
 end

@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="mobile-web-app-capable" content="yes">
+    <meta name="robots" content="noindex, nofollow" />
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
     <%= yield :head %>
@@ -21,7 +22,5 @@
     <%= yield %>
     <%= render "shared/floating_flash" %>
   </body>
-  <% if signed_in? %>
-    <%= turbo_stream_from [ Current.user, :flash ] %>
-  <% end %>
+  <%= turbo_stream_from [ Current.person, :flash ] %>
 </html>

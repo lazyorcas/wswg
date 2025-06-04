@@ -13,9 +13,10 @@
       period: "/month",
       description: "Perfect for occasional searches",
       features: [
-        "No credit card needed",
-        "#{Credits::MONTHLY_FREE_CREDITS} free day credits per month",
-        "Bookmark / Save for later"
+        [true, "No sign up needed."],
+        [true, "Map view"],
+        [true, "#{Credits::MONTHLY_FREE_CREDITS} free day credits per month"],
+        [false, "Bookmark / Save for later"],
       ],
       cta: "Get Started",
       cta_path: signed_in? ? nil : new_user_path(source: "Pricing page")
@@ -25,9 +26,10 @@
       price: Money.from_amount(5).exchange_to(Current.person&.city&.currency || "USD").format,
       description: "Perfect for frequent searches",
       features: [
-        "10 day credits. No expiration.",
-        "#{Credits::MONTHLY_FREE_CREDITS} free day credits per month",
-        "Bookmark / Save for later",
+        [true, "10 day credits. No expiration."],
+        [true, "Map view"],
+        [true, "#{Credits::MONTHLY_FREE_CREDITS} free day credits per month"],
+        [true, "Bookmark / Save for later"],
       ],
       cta: signed_in? ? "Top up" : "Get Started",
       cta_path: signed_in? ? current_user_top_up_credits_path : new_user_path(source: "Pricing page")

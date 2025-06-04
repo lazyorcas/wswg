@@ -14,10 +14,4 @@ class Map::EventsControllerTest < ActionDispatch::IntegrationTest
     get map_event_url(events(:first))
     assert_response :success
   end
-
-  test "should redirect to login if not signed in" do
-    get map_events_url
-    assert_response :redirect
-    assert_redirected_to login_url
-  end
 end

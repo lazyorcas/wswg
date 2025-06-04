@@ -13,7 +13,7 @@ class BookmarksController < ApplicationController
       Sentry.capture_exception(e)
 
       flash.now[:error] = "Failed to add \"#{@bookmark.event.title}\" to bookmarks"
-      turbo_stream_flash
+      turbo_stream_flash(status: :unprocessable_entity)
     end
   end
 
@@ -32,7 +32,7 @@ class BookmarksController < ApplicationController
       Sentry.capture_exception(e)
 
       flash.now[:error] = "Failed to update \"#{@bookmark.event.title}\" in bookmarks"
-      turbo_stream_flash
+      turbo_stream_flash(status: :unprocessable_entity)
     end
   end
 

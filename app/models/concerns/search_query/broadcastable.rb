@@ -43,7 +43,6 @@ module SearchQuery::Broadcastable
   def broadcast_exception(exception)
     message = exception.is_a?(UserReadableError) ? exception.message : "Failed to search. Try again."
 
-    # TODO: handle for visitor
     broadcast_error([ searcher, :flash ], message)
     broadcast_update_to(self, target: "search-results", html: "")
   end

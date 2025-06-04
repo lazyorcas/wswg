@@ -1,7 +1,7 @@
 module Event::Locatable
   extend ActiveSupport::Concern
 
-  MAX_DISTANCE_TO_CITY = 30
+  MAX_DISTANCE_TO_CITY = 50
   DISTANCE_UNIT = "km"
 
   included do

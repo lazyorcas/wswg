@@ -93,11 +93,20 @@ class Rack::Attack
   #    ['']] # body
   # end
 
-  # Throttle POST requests to /map/search_queries by IP address
+  # Throttle POST requests to /(map/)search_queries by IP address
   #
-  # Key: "rack::attack:#{Time.now.to_i/:period}:map/search_queries/ip:#{req.ip}"
-  throttle("map/search_queries/ip", limit: 100, period: 5.minutes) do |req|
-    if req.path.start_with?("/map/search_queries") && req.post?
+  # Key: "rack::attack:#{Time.now.to_i/:period}:search_queries/ip:#{req.ip}"
+  throttle("search_queries/ip", limit: 100, period: 5.minutes) do |req|
+    if (req.path.start_with?("/search_queries") || req.path.start_with?("/map/search_queries")) && req.post?
+      req.ip
+    end
+  end
+
+  ## Throttle GET requests to /map by IP address
+  #
+  # Key: "rack::attack:#{Time.now.to_i/:period}:map/ip:#{req.ip}"
+  throttle("map/ip", limit: 100, period: 5.minutes) do |req|
+    if req.path.start_with?("/map") && req.get?
       req.ip
     end
   end

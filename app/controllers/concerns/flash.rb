@@ -7,7 +7,12 @@ module Flash
     helper_method :turbo_stream_flash
   end
 
-  def turbo_stream_flash
-    turbo_stream.append "flash", partial: "shared/flash"
+  def turbo_stream_flash(status: nil)
+    if status.present?
+      render turbo_stream: turbo_stream.append("flash", partial: "shared/flash"), status: status
+
+    else
+      turbo_stream.append("flash", partial: "shared/flash")
+    end
   end
 end

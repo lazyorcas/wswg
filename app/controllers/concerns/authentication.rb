@@ -35,7 +35,18 @@ module Authentication
   end
 
   def require_user!
-    redirect_to(login_path) unless signed_in?
+    return if signed_in?
+
+    respond_to do |format|
+      format.html do
+        redirect_to(login_path, status: :temporary_redirect)
+      end
+
+      format.turbo_stream do
+        flash.now[:error] = "Please <a href=\"#{login_path}\" class=\"link\">sign in</a> to continue.".html_safe
+        turbo_stream_flash(status: :unauthorized)
+      end
+    end
   end
 
   def require_admin!

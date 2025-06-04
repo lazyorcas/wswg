@@ -23,7 +23,9 @@
         <i class="ph ph-arrow-square-out"></i>
         View details
       <% end %>
-      <%= render "bookmarks/form", bookmark: @bookmark %>
+      <% if @bookmark.present? %>
+        <%= render "bookmarks/form", bookmark: @bookmark %>
+      <% end %>
     </div>
   <% end %>
 <% end %>

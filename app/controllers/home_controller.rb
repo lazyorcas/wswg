@@ -3,6 +3,7 @@ class HomeController < ApplicationController
 
   def index
     load_enabled_cities
+    build_search_query
 
     ahoy.track "Visited homepage"
   end
@@ -15,5 +16,9 @@ class HomeController < ApplicationController
 
   def load_enabled_cities
     @enabled_cities = City.enabled.order(:name)
+  end
+
+  def build_search_query
+    @search_query = SearchQuery.new
   end
 end

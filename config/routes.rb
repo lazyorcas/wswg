@@ -27,8 +27,11 @@ Rails.application.routes.draw do
 
   get "/user/edit", to: "current_user#edit", as: :edit_current_user
   patch "/user", to: "current_user#update", as: :current_user
-  get "/user/no_credits", to: "current_user#no_credits", as: :current_user_no_credits
   get "/user/top_up_credits", to: "current_user#top_up_credits", as: :current_user_top_up_credits
+
+  get "/visitor/edit", to: "current_visitor#edit", as: :edit_current_visitor
+  patch "/visitor", to: "current_visitor#update", as: :current_visitor
+  get "/top_up_needed", to: "current_person#top_up_needed", as: :top_up_needed
 
   get "/map", to: "map#index", as: :map
   namespace :map do
@@ -38,6 +41,7 @@ Rails.application.routes.draw do
     get "/bookmarks/events", to: "bookmarks/events#index", as: :bookmarked_events
   end
 
+  resources :search_queries, only: [ :create ]
   resources :bookmarks, only: [ :create, :update ]
 
   post "/stripe/webhook", to: "stripe#webhook"

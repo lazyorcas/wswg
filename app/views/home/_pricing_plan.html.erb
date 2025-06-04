@@ -8,9 +8,13 @@
   </p>
   <p class="mt-6 text-base text-secondary"><%= description %></p>
   <ul class="mt-8 flex flex-col gap-y-3 text-sm text-secondary">
-    <% features.each do |feature| %>
+    <% features.each do |has_feature, feature| %>
       <li class="flex gap-x-3 items-center">
-        <i class="ph-bold ph-check text-brand-500"></i>
+        <% if has_feature %>
+          <i class="ph-fill ph-check-fat text-green-500 size-4"></i>
+        <% else %>
+          <i class="ph-bold ph-x text-red-500 size-4"></i>
+        <% end %>
         <%= feature %>
       </li>
     <% end %>
