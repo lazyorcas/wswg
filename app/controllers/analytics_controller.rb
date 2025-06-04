@@ -110,12 +110,12 @@ class AnalyticsController < ApplicationController
     .to_h
 
     @seens = Seen
-      .where.not(seenable_type: "User")
+      .where(seenable_type: [ nil, "Visitor" ])
       .group_by_period(@time_interval, :created_at, range: @time_range, expand_range: true)
       .count
 
     @seens_by_city = Seen
-      .where.not(seenable_type: "User")
+      .where(seenable_type: [ nil, "Visitor" ])
       .joins("INNER JOIN events ON events.id = seens.event_id")
       .joins("INNER JOIN city_sources ON city_sources.id = events.city_source_id")
       .joins("INNER JOIN cities ON cities.id = city_sources.city_id")
