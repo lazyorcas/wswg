@@ -10,9 +10,9 @@
       Discover
     <% end %>
   <% else %>
-    <div class="flex gap-x-2">
-      <%= link_to "Login", login_path, class: "flex-1 button button--secondary" %>
-      <%= link_to map_path, class: "flex-1 button button--primary", rel: "nofollow", data: { turbo: false } do %>
+    <div class="flex flex-col md:flex-row gap-y-2 md:gap-y-0 md:gap-x-2">
+      <%= link_to "Login", login_path, class: "md:flex-1 button button--secondary" %>
+      <%= link_to map_path, class: "md:flex-1 button button--primary", rel: "nofollow", data: { turbo: false } do %>
         <i class="ph-fill ph-map-trifold"></i>
         Open map
       <% end %>

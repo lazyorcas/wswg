@@ -11,7 +11,7 @@
         <%= link_to "Sign up", new_user_path("user[city_id]" => @city&.id, source: "Sign up button in map menu"), class: "flex-1 button button--primary" %>
       </div>
     <% end %>
-    <p class="text-sm text-center">
+    <p class="text-sm text-center text-primary">
       Or contact us via <%= link_to "email", "mailto:#{ENV["GMAIL_SENDER_EMAIL"]}", class: "link" %> or <%= link_to "Linkedin", "https://www.linkedin.com/company/where-should-we-go/", class: "link" %>.
     </p>
   </div>
