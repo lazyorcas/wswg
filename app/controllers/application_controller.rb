@@ -19,13 +19,13 @@ class ApplicationController < ActionController::Base
     respond_to do |format|
       format.html do
         if signed_in?
-          redirect_to(edit_current_user_path, flash: { error: "Your city could not be determined." })
+          redirect_to(edit_current_user_path, flash: { error: "Could not determine the city." })
         else
-          redirect_to(edit_current_visitor_path, flash: { error: "Your city could not be determined." })
+          redirect_to(edit_current_visitor_path, flash: { error: "Could not determine the city." })
         end
       end
       format.turbo_stream do
-        flash.now[:error] = "Your city could not be determined. Please <a href=\"#{edit_current_user_path}\" class=\"link\">select a city</a>.".html_safe
+        flash.now[:error] = "Could not determine the city. Please <a href=\"#{edit_current_user_path}\" class=\"link\">select a city</a>.".html_safe
         turbo_stream_flash(status: :unprocessable_entity)
       end
     end
