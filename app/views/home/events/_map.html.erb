@@ -1,6 +1,6 @@
 <section class="relative px-4">
-  <img src="/hero-light.webp" alt="Where Should We Go's Hero Light" class="w-full rounded-xl block dark:hidden blur-[2px]" loading="lazy">
-  <img src="/hero-dark.webp" alt="Where Should We Go's Hero Dark" class="w-full rounded-xl hidden dark:block blur-[2px]" loading="lazy">
+  <img src="/hero-light.webp" alt="Where Should We Go's Hero Light" class="w-full rounded-xl block dark:hidden blur-[2px]" loading="lazy" fetchpriority="high">
+  <img src="/hero-dark.webp" alt="Where Should We Go's Hero Dark" class="w-full rounded-xl hidden dark:block blur-[2px]" loading="lazy" fetchpriority="high">
   <%= link_to map_path(city_id: @city.id), class: "button button--primary absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2", rel: "nofollow", data: { turbo: false } do %>
     <i class="ph-fill ph-map-trifold"></i>
     View on map
