@@ -20,5 +20,7 @@ class MapController < ApplicationController
     end
 
     @content_path ||= map_search_queries_path
+
+    ahoy.track "Visited map page"
   end
 end

@@ -169,6 +169,7 @@ class AnalyticsController < ApplicationController
       .transform_values { |v| v }
       .transform_keys { |k| k.to_date }
       .sort
+    @map_page_events = build_ahoy_events_page_events_data("Visited map page")
     @search_queries = SearchQuery
       .where.not(searcher_type: "User", searcher_id: 1)
       .group_by_period(@time_interval, :created_at, range: @time_range, expand_range: true)

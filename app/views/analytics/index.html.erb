@@ -87,6 +87,9 @@
       <%= render "chart", title: "Sign Ins" do %>
         <%= line_chart @sign_ins %>
       <% end %>
+      <%= render "chart", title: "Visited map page" do %>
+        <%= line_chart @map_page_events %>
+      <% end %>
       <%= render "chart", title: "Search Queries created" do %>
         <%= line_chart @search_queries %>
       <% end %>
