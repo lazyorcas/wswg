@@ -1,6 +1,5 @@
 class BookmarksController < ApplicationController
   before_action :require_user!
-  before_action :require_city!
 
   def create
     build_bookmark

@@ -2,7 +2,6 @@ class Map::Bookmarks::EventsController < ApplicationController
   include Temporal
 
   before_action :require_user!
-  before_action :require_city!
 
   def index
     load_events
