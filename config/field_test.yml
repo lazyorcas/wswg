@@ -22,5 +22,3 @@ experiments:
 
 exclude:
   bots: true
-
-cookies: false
