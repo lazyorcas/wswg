@@ -30,7 +30,7 @@ class UsersController < ApplicationController
     else
       "Failed to create account. Please try again."
     end
-    redirect_to(new_user_path, error: error_message)
+    redirect_to(new_user_path, flash: { error: error_message })
   ensure
     field_test_converted(:sign_up_page)
   end
