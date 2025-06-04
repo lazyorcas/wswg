@@ -292,7 +292,7 @@
   |
   ============================================================================= */
   .modal {
-    @apply fixed m-auto z-100;
+    @apply fixed m-auto z-10;
     @apply bg-white dark:bg-stone-900;
     @apply rounded-xl;
     @apply border border-stone-300 dark:border-stone-700;
