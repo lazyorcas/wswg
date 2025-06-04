@@ -9,7 +9,7 @@ module SetCurrentRequestDetails
       Current.visitor = Visitor.find_by(visitor_token: ahoy.visitor_token)
     end
 
-    before_action do
+    before_action unless: -> { browser.bot? } do
       session[:visitor_token] = ahoy.visitor_token
     end
   end
