@@ -8,3 +8,6 @@ production:
   free_credits_top_up_job:
     class: Credits::FreeTopUpJob
     schedule: "0 * 1 * *"  # Every month at 00:00 on the first day of the month
+  anonymize_ahoy_visits_job:
+    class: Ahoy::AnonymizeVisits
+    schedule: "55 * * * *"  # Every hour at 55 minutes

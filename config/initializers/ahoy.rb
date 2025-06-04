@@ -9,6 +9,3 @@ Ahoy.api = false
 # see https://github.com/ankane/ahoy#geocoding
 Ahoy.geocode = true
 Ahoy.job_queue = :low_priority
-
-Ahoy.mask_ips = true
-Ahoy.cookies = :none
