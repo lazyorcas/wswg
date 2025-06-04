@@ -1,4 +1,15 @@
 class Ahoy::Store < Ahoy::DatabaseStore
+  def track_visit(data)
+    # https://developers.cloudflare.com/fundamentals/reference/http-headers/#cf-connecting-ip
+    data[:ip] = request.env["HTTP_CF_CONNECTING_IP"] || request.remote_ip
+    data[:latitude] = request.env["HTTP_CF_IPLATITUDE"]
+    data[:longitude] = request.env["HTTP_CF_IPLONGITUDE"]
+    data[:city] = request.env["HTTP_CF_IPCITY"]
+    data[:region] = request.env["HTTP_CF_REGION"]
+    data[:country] = request.env["HTTP_CF_IPCOUNTRY"]
+    # time zone also available
+    super(data)
+  end
 end
 
 # set to true for JavaScript tracking
