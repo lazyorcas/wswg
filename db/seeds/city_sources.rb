@@ -76,3 +76,19 @@ CITY_SOURCES_ATTRIBUTES.each do |attrs_array|
     city_source.save!
   end
 end
+
+# city = City.create(name: "", country_code: "", currency: "", lat: 0, lon: 0, time_zone: "")
+# [
+#   [ "Eventbrite", { city_slug: "" } ],
+#   [ "Luma", { city_slug: "" } ],
+#   [ "Meetup", { city_slug: "" } ],
+#   [ "Ticketmaster", {} ]
+# ].each do |attrs_array|
+#   source_id = Source.find_by(name: attrs_array[0]).id
+#   CitySource.create(
+#     city_id: city.id,
+#     source_id: source_id,
+#     url_params: attrs_array[1],
+#     enabled: true
+#   )
+# end
