@@ -1,5 +1,5 @@
 class MapController < ApplicationController
-  include CityLocatable
+  include CityDetection
 
   rate_limit to: 10,
     within: 1.minute,

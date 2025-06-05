@@ -1,5 +1,5 @@
 class Map::SearchQueriesController < ApplicationController
-  include CityLocatable
+  include CityDetection
   include CreditsCheck
 
   rate_limit to: 20,

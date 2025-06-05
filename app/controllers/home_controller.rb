@@ -1,5 +1,5 @@
 class HomeController < ApplicationController
-  include CityLocatable
+  include CityDetection
 
   layout "home"
 

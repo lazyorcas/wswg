@@ -1,5 +1,5 @@
 class Map::EventsController < ApplicationController
-  include CityLocatable
+  include CityDetection
 
   EVENT_LIMIT = 200
 

@@ -1,4 +1,4 @@
-module CityLocatable
+module CityDetection
   extend ActiveSupport::Concern
 
   private
