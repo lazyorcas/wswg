@@ -26,7 +26,7 @@ class Ahoy::Store < Ahoy::DatabaseStore
       data[:ip] = Ahoy.mask_ip(request.remote_ip)
 
       if lat.present? && lon.present?
-        noisy_coords = Geospatial.add_noise_to_coords({ lat: lat.to_f, lon: lon.to_f })
+        noisy_coords = Geospatial.add_noise_to_coords({ lat: lat.to_f.round(4), lon: lon.to_f.round(4) })
         data[:latitude] = noisy_coords[:lat]
         data[:longitude] = noisy_coords[:lon]
       end
