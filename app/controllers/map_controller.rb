@@ -13,7 +13,9 @@ class MapController < ApplicationController
 
   def index
     if params[:search_query_id].present?
-      @content_path = map_search_query_path(id: params[:search_query_id])
+      search_query = SearchQuery.find(params[:search_query_id])
+      @city = search_query.city
+      @content_path = map_search_query_path(search_query)
     end
 
     @content_path ||= map_search_queries_path(city_id: @city.id)
