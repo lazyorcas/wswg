@@ -18,19 +18,28 @@ class Ahoy::Store < Ahoy::DatabaseStore
     set_session
     set_current_user
 
+    lat = request.env["HTTP_CF_IPLATITUDE"]
+    lon = request.env["HTTP_CF_IPLONGITUDE"]
+
     if current_user.present?
       data[:user_id] = current_user.id
       data[:ip] = Ahoy.mask_ip(request.remote_ip)
+
+      if lat.present? && lon.present?
+        noisy_coords = Geospatial.add_noise_to_coords({ lat: lat, lon: lon })
+        data[:latitude] = noisy_coords[:lat]
+        data[:longitude] = noisy_coords[:lon]
+      end
     else
       data[:ip] = request.env["HTTP_CF_CONNECTING_IP"] || request.remote_ip
-      data[:latitude] = request.env["HTTP_CF_IPLATITUDE"]
-      data[:longitude] = request.env["HTTP_CF_IPLONGITUDE"]
-      # TODO: add time zone
+      data[:latitude] = lat
+      data[:longitude] = lon
     end
 
     data[:city] = request.env["HTTP_CF_IPCITY"]
     data[:region] = request.env["HTTP_CF_REGION"]
     data[:country] = request.env["HTTP_CF_IPCOUNTRY"]
+    data[:time_zone] = request.env["HTTP_CF_TIMEZONE"]
 
     super(data)
   end
