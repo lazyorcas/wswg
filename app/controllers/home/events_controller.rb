@@ -32,8 +32,6 @@ class Home::EventsController < ApplicationController
     @events = @events.to_a
     build_alternate_link_attributes
 
-    build_search_query
-
     ahoy.track "Viewed events", city: @city.name, time_period: @time_period.to_s
 
     if @events.empty? && @current_time.hour > 8
@@ -115,10 +113,6 @@ class Home::EventsController < ApplicationController
         title: build_city_meta_title(@city, time_period_symbol)
       }
     end
-  end
-
-  def build_search_query
-    @search_query = SearchQuery.new
   end
 
   def load_event
