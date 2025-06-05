@@ -5,8 +5,6 @@ module Authentication
 
   included do
     before_action :set_current_user
-    before_action :set_current_person
-    before_action :set_sentry_user_context, if: :signed_in?
 
     helper_method :signed_in?
   end
@@ -17,16 +15,8 @@ module Authentication
     Current.user.present?
   end
 
-  def set_sentry_user_context
-    Sentry.set_user({ id: Current.user.id })
-  end
-
   def set_current_user
     Current.user = User.find_by(id: session[:user_id]) || authenticate_by_session(User)
-  end
-
-  def set_current_person
-    Current.person = Current.user || Current.visitor
   end
 
   def require_user!
@@ -38,7 +28,7 @@ module Authentication
       end
 
       format.turbo_stream do
-        flash.now[:error] = "Please <a href=\"#{login_path}\" class=\"link\">sign in</a> to continue.".html_safe
+        flash.now[:error] = "Please sign in to continue.".html_safe
         turbo_stream_flash(status: :unauthorized)
       end
     end
