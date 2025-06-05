@@ -16,7 +16,7 @@ class MapController < ApplicationController
 
   def index
     if params[:search_query_id].present?
-      search_query = SearchQuery.find(params[:search_query_id])
+      search_query = search_query_scope.find(params[:search_query_id])
       @city = search_query.city
       @content_path = map_search_query_path(search_query)
     end
@@ -24,5 +24,11 @@ class MapController < ApplicationController
     @content_path ||= map_search_queries_path(city_id: @city.id)
 
     ahoy.track "Visited map page"
+  end
+
+  private
+
+  def search_query_scope
+    SearchQuery.where(searcher: Current.person)
   end
 end
