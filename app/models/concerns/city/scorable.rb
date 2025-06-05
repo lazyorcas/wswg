@@ -16,7 +16,7 @@ module City::Scorable
   end
 
   def visitor_score
-    @visitor_score ||= (1.0 * visitor_count / POPULAR_CITY_MIN_VISITOR_COUNT).round(2)
+    @visitor_score ||= (VISITOR_SCORE_MODIFIER * visitor_count / POPULAR_CITY_MIN_VISITOR_COUNT).round(2)
   end
 
   def active_user_count
