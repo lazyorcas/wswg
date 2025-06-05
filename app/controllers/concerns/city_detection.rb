@@ -21,7 +21,7 @@ module CityDetection
   end
 
   def get_city_from_current_person
-    Current.person.city
+    Current.person&.city
   end
 
   def respond_to_city_not_found

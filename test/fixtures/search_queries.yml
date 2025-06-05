@@ -1,4 +1,5 @@
 empty:
+  city: munich
   searcher_type: User
   searcher: oscar
   query: "all events in munich"

@@ -8,26 +8,8 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
 
   test "should create user" do
     assert_difference "User.count" do
-      post users_url, params: { user: { email: "test@example.com", city_id: cities(:singapore).id, notification_frequency: "daily" } }
+      post users_url, params: { user: { email: "test@example.com", city_id: cities(:singapore).id } }
     end
-  end
-
-  test "should create user with bookmark" do
-    assert_difference "User.count" do
-      post users_url, params: { user: { email: "test@example.com", city_id: cities(:singapore).id, bookmarks_attributes: { 0 => { event_id: events(:first).id } } } }
-    end
-
-    user = User.last
-    assert_equal events(:first).id, user.bookmarks.first.event_id
-  end
-
-  test "should create user with search query" do
-    assert_difference "User.count" do
-      post users_url, params: { user: { email: "test@example.com", city_id: cities(:singapore).id, search_queries_attributes: { 0 => { query: "test" } } } }
-    end
-
-    user = User.last
-    assert_equal "test", user.search_queries.first.query
   end
 
   test "should redirect to login page after creating user" do

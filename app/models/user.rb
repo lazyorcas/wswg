@@ -25,8 +25,6 @@ class User < ApplicationRecord
             uniqueness: { case_sensitive: false },
             format: { with: URI::MailTo::EMAIL_REGEXP }
 
-  accepts_nested_attributes_for :bookmarks, :search_queries
-
   def email=(value)
     super(value.split("+").first)
   end

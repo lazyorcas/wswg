@@ -8,8 +8,6 @@ class UsersController < ApplicationController
 
     ahoy.track "Visited sign up page", params: {
       city_id: user_params[:city_id],
-      bookmark_event_id: user_params.dig(:bookmarks_attributes, "0", :event_id),
-      query: user_params.dig(:search_queries_attributes, "0", :query),
       referrer: request.referer,
       source: params[:source]
     }
@@ -46,8 +44,6 @@ class UsersController < ApplicationController
       :email,
       :city_id,
       :notification_frequency,
-      bookmarks_attributes: [ :event_id ],
-      search_queries_attributes: [ :query ]
     ) : {}
   end
 end
