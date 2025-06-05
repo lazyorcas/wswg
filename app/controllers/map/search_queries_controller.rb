@@ -1,10 +1,13 @@
 class Map::SearchQueriesController < ApplicationController
+  include BotProtection
   include CityDetection
   include CreditsCheck
 
+  protect_from_bots only: [ :index, :show ]
+
   rate_limit to: 20,
     within: 1.minute,
-    only: :create,
+    only: [ :create ],
     with: -> do
       Sentry.capture_message("Too many requests.", level: :warning)
       flash.now[:error] = "Too many requests. Please wait a moment and try again."
@@ -12,7 +15,7 @@ class Map::SearchQueriesController < ApplicationController
     end
 
   before_action :require_city!, only: [ :index ]
-  require_credits only: :create
+  require_credits only: [ :create ]
 
   def index; end
 

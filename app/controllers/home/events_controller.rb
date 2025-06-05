@@ -14,7 +14,7 @@ class Home::EventsController < ApplicationController
 
   layout "home"
 
-  after_action :create_seen, only: :redirect, unless: -> { browser.bot? }
+  after_action :create_seen, only: [ :redirect ], unless: -> { browser.bot? }
 
   def index
     load_city

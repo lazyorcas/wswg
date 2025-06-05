@@ -4,13 +4,13 @@ class SearchQueriesController < ApplicationController
 
   rate_limit to: 20,
     within: 1.minute,
-    only: :create,
+    only: [ :create ],
     with: -> do
       Sentry.capture_message("Too many requests.", level: :warning)
       redirect_to(map_path, flash: { error: "Too many requests. Please wait a moment and try again." })
     end
 
-  require_credits only: :create
+  require_credits only: [ :create ]
 
   def create
     build_search_query

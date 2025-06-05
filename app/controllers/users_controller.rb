@@ -1,7 +1,7 @@
 class UsersController < ApplicationController
   layout "home"
 
-  before_action :require_unauth!, only: :new
+  before_action :require_unauth!, only: [ :new ]
 
   def new
     build_user

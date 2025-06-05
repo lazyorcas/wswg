@@ -1,6 +1,9 @@
 class CurrentVisitorController < ApplicationController
-  def edit
-  end
+  include BotProtection
+
+  protect_from_bots only: [ :edit ]
+
+  def edit; end
 
   def update
     Current.visitor.update!(visitor_params)

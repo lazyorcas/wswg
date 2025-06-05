@@ -1,11 +1,12 @@
 class Map::EventsController < ApplicationController
+  include BotProtection
   include CityDetection
 
   EVENT_LIMIT = 200
 
+  protect_from_bots only: [ :index, :show ]
   before_action :require_city!, only: [ :index ]
-
-  after_action :add_event_to_seen_events, only: :show
+  after_action :add_event_to_seen_events, only: [ :show ]
 
   def index
     load_events

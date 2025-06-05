@@ -3,7 +3,7 @@
 class SessionsController < ApplicationController
   layout "home"
 
-  before_action :require_unauth!, only: :new
+  before_action :require_unauth!, only: [ :new ]
 
   def new
     @passwordless_session = Passwordless::Session.new
