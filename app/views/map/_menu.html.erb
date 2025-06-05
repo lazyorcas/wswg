@@ -9,7 +9,7 @@
     <% unless signed_in? %>
       <div class="flex items-center gap-x-2">
         <%= link_to "Login", login_path, class: "flex-1 button button--secondary" %>
-        <%= link_to "Sign up", new_user_path("user[city_id]" => @city&.id, source: "Sign up button in map menu"), class: "flex-1 button button--primary" %>
+        <%= link_to "Sign up", new_user_path(source: "Sign up button in map menu"), class: "flex-1 button button--primary" %>
       </div>
     <% end %>
     <p class="text-sm text-center text-primary">
