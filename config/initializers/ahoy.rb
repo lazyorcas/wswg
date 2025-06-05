@@ -44,6 +44,14 @@ class Ahoy::Store < Ahoy::DatabaseStore
     super(data)
   end
 
+  def track_event(data)
+    set_session
+    set_current_user
+    data[:user_id] = current_user&.id
+
+    super(data)
+  end
+
   private
 
   def set_session
