@@ -15,27 +15,27 @@ class FieldTestsTest < ActionDispatch::IntegrationTest
   #   assert_select "a[href=?]", pricing_path, count: 0
   # end
 
-  test "should a/b test sign up page" do
-    @path = new_user_path
-    @experiment = "sign_up_page"
+  # test "should a/b test sign up page" do
+  #   @path = new_user_path
+  #   @experiment = "sign_up_page"
 
-    init
-    change_variant_to("control")
-    assert_select "#hero-image-container", count: 0
-    assert_select "h1", text: "Create an account"
+  #   init
+  #   change_variant_to("control")
+  #   assert_select "#hero-image-container", count: 0
+  #   assert_select "h1", text: "Create an account"
 
-    change_variant_to("has_free_word")
-    assert_select "#hero-image-container", count: 0
-    assert_select "h1", text: "Create a free account"
+  #   change_variant_to("has_free_word")
+  #   assert_select "#hero-image-container", count: 0
+  #   assert_select "h1", text: "Create a free account"
 
-    change_variant_to("has_hero_image")
-    assert_select "#hero-image-container"
-    assert_select "h1", text: "Create an account"
+  #   change_variant_to("has_hero_image")
+  #   assert_select "#hero-image-container"
+  #   assert_select "h1", text: "Create an account"
 
-    change_variant_to("has_free_word_and_hero_image")
-    assert_select "#hero-image-container"
-    assert_select "h1", text: "Create a free account"
-  end
+  #   change_variant_to("has_free_word_and_hero_image")
+  #   assert_select "#hero-image-container"
+  #   assert_select "h1", text: "Create a free account"
+  # end
 
   private
 
