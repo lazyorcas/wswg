@@ -1,6 +1,6 @@
 <nav class="flex flex-col">
   <div class="flex flex-col">
-    <%= link_to "Profile", edit_current_user_path, class: "button button--ghost" %>
+    <%= link_to "Profile", signed_in? ? edit_current_user_path : edit_current_visitor_path, class: "button button--ghost" %>
     <%= link_to "Home", root_path, class: "button button--ghost" %>
     <%= link_to "Pricing", pricing_path, class: "button button--ghost" %>
   </div>
