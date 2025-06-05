@@ -3,6 +3,7 @@ class Ahoy::Visit < ApplicationRecord
 
   scope :non_user, -> { where(user_id: nil) }
 
+  # belongs_to :city, primary_key: "name", foreign_key: "city"
   belongs_to :visitor, primary_key: "visitor_token", foreign_key: "visitor_token"
   belongs_to :user, optional: true
 

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_06_05_040028) do
+ActiveRecord::Schema[8.0].define(version: 2025_06_05_043041) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -281,6 +281,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_05_040028) do
   end
 
   add_foreign_key "accounts", "users"
+  add_foreign_key "ahoy_visits", "visitors", column: "visitor_token", primary_key: "visitor_token"
   add_foreign_key "bookmarks", "events"
   add_foreign_key "bookmarks", "users"
   add_foreign_key "city_languages", "cities"
