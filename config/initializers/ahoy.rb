@@ -1,6 +1,8 @@
 # https://developers.cloudflare.com/fundamentals/reference/http-headers/#cf-connecting-ip
 
 class Ahoy::Store < Ahoy::DatabaseStore
+  include Passwordless::ControllerHelpers
+
   attr_accessor :session, :current_user
 
   EXCLUDED_PATHS = [
