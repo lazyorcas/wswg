@@ -10,6 +10,10 @@ class Ahoy::Visit < ApplicationRecord
 
   before_validation :find_or_create_visitor
 
+  def time_zone
+    TimeZone.new(name: self[:time_zone])
+  end
+
   private
 
   def find_or_create_visitor
