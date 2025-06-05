@@ -1,6 +1,6 @@
 require "test_helper"
 
-class SearchQueriesControllerTest < ActionDispatch::IntegrationTest
+class Map::SearchQueriesControllerTest < ActionDispatch::IntegrationTest
   test "should create search query" do
     login_as(users(:oscar))
 
