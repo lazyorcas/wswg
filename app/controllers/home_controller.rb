@@ -1,4 +1,6 @@
 class HomeController < ApplicationController
+  include CityLocatable
+
   layout "home"
 
   def index
@@ -25,6 +27,6 @@ class HomeController < ApplicationController
   end
 
   def load_city
-    @city = current_visit&.city || Current.person&.city
+    @city = get_city_from_visit || get_city_from_current_person
   end
 end
