@@ -20,6 +20,7 @@ experiments:
       - has_free_word
       - has_hero_image
       - has_free_word_and_hero_image
+    winner: control
 
 exclude:
   bots: true
