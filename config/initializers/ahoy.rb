@@ -1,14 +1,16 @@
+# https://developers.cloudflare.com/fundamentals/reference/http-headers/#cf-connecting-ip
+
 class Ahoy::Store < Ahoy::DatabaseStore
   EXCLUDED_PATHS = [
     "/jobs",
     "/field_test",
     "/up",
     "/manifest",
-    "/service-worker"
+    "/service-worker",
+    "/analytics"
   ].freeze
 
   def track_visit(data)
-    # https://developers.cloudflare.com/fundamentals/reference/http-headers/#cf-connecting-ip
     data[:ip] = request.env["HTTP_CF_CONNECTING_IP"] || request.remote_ip
     data[:latitude] = request.env["HTTP_CF_IPLATITUDE"]
     data[:longitude] = request.env["HTTP_CF_IPLONGITUDE"]
