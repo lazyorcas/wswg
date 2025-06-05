@@ -9,7 +9,7 @@
   <div class="grid grid-cols-1 gap-4 md:gap-8 md:grid-cols-2 w-full md:max-w-3xl mx-auto">
     <%= render "pricing_plan",
       title: "Free",
-      price: Money.from_amount(0).exchange_to(Current.person&.city&.currency || "USD").format(no_cents: true),
+      price: Money.from_amount(0).exchange_to(@city&.currency || "USD").format(no_cents: true),
       period: "/month",
       description: "Perfect for occasional searches",
       features: [
@@ -23,7 +23,7 @@
     %>
     <%= render "pricing_plan",
       title: "Pay As You Go",
-      price: Money.from_amount(5).exchange_to(Current.person&.city&.currency || "USD").format,
+      price: Money.from_amount(5).exchange_to(@city&.currency || "USD").format,
       description: "Perfect for frequent searches",
       features: [
         [true, "10 day credits. No expiration."],

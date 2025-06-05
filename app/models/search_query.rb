@@ -9,6 +9,7 @@ class SearchQuery < ApplicationRecord
     searching: 2
   }, default: :analyzing
 
+  belongs_to :city, optional: true # TODO: remove optional
   belongs_to :searcher, polymorphic: true
   has_many :searches, dependent: :destroy
 

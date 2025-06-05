@@ -1,9 +1,9 @@
 class Map::EventsController < ApplicationController
-  include Temporal
+  include CityLocatable
 
   EVENT_LIMIT = 200
 
-  before_action :require_city!
+  before_action :require_city!, only: [ :index ]
 
   after_action :add_event_to_seen_events, only: :show
 
@@ -22,7 +22,7 @@ class Map::EventsController < ApplicationController
   private
 
   def load_events
-    @events = event_scope.where(end_date: current_date..)
+    @events = event_scope.where(end_date: @city.time_zone.current_date..)
   end
 
   def order_events
@@ -49,14 +49,8 @@ class Map::EventsController < ApplicationController
   end
 
   def event_scope
-    city = if params[:city_id].present?
-      City.find(params[:city_id])
-    else
-      Current.person.city
-    end
-
     Event
       .joins(:city_source)
-      .where(city_source: { city: city })
+      .where(city_source: { city: @city })
   end
 end

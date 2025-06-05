@@ -1,8 +1,13 @@
-<%= form_for search_query, url: map_search_queries_path, html: { class: "popup !rounded-3xl fixed inset-x-4 md:static" }, data: { action: "search#blur" } do |form| %>
-  <%= form.search_field :query,
-    placeholder: generate_search_query_placeholder,
-    class: "input !border-none truncate",
-    required: true,
-    data: { search_target: "searchInput", action: "search#input" }
-  %>
+<%= form_for search_query, url: map_search_queries_path, html: { class: "popup !rounded-3xl fixed inset-x-4 md:static" }, data: { action: "search#blur search#showStatus turbo:submit-end->search#hideStatus" } do |form| %>
+  <div class="flex items-center">
+    <%= form.search_field :query,
+          placeholder: generate_search_query_placeholder,
+          class: "grow input !border-none truncate",
+          required: true,
+          data: { search_target: "searchInput", action: "search#input" }
+    %>
+    <div class="hidden items-center justify-center size-11 shrink-0" data-search-target="status">
+      <i class="ph ph-spinner animate-spin"></i>
+    </div>
+  </div>
 <% end %>

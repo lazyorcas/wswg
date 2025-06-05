@@ -12,11 +12,7 @@ class OmniauthSessionsController < ApplicationController
     end
   rescue => e
     Sentry.capture_exception(e)
-    if e.is_a?(UserReadableError)
-      flash.now[:error] = e.message
-    else
-      flash.now[:error] = "Failed to login. Try again."
-    end
+    flash.now[:error] = "Failed to login. Try again."
     turbo_stream_flash(status: :unprocessable_entity)
   end
 

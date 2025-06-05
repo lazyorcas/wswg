@@ -2,7 +2,7 @@
   <% if @events.any? %>
     <%= tag.section class: "flex flex-col gap-y-2 h-full", data: { map_target: "source", bottom_sheet_target: "content", collapsed: true } do %>
       <p class="shrink-0 text-sm pt-4 px-4">
-        Here's what happening in <%= Current.person.city.name %>.
+        Here's what happening in <%= @city.name %>.
       </p>
       <div class="grow min-h-0">
         <%= render Event::Map::ListComponent.new(@events, 

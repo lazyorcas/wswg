@@ -81,27 +81,6 @@ module SearchQuery::SearchesBuildable
     end
   end
 
-  def city
-    @city ||= begin
-      city_response = local_guide.detect_city(query)
-      city_name = city_response["city"]
-
-      if city_name == "NOT_SUPPORTED"
-        Sentry.capture_message(
-          "Location not supported",
-          level: :warning,
-          extra: { search_id: id }
-        )
-
-        raise UserReadableError.new(
-          "This location is not supported yet. Only #{City.enabled.pluck(:name).to_sentence} are currently supported."
-        )
-      end
-
-      City.find_by(name: city_name) || searcher.city
-    end
-  end
-
   def local_guide
     @local_guide ||= OpenAI::Assistants::LocalGuide.new
   end

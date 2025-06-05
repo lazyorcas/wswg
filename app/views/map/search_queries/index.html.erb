@@ -4,7 +4,7 @@
       <%= render "form", search_query: SearchQuery.new %>
     </div>
     <%= turbo_frame_tag "search-results", 
-      src: map_events_path(city_id: params[:city_id]),
+      src: map_events_path(city_id: @city.id),
       class: "grow md:min-h-0 popup popup--bottom-sheet bottom-sheet-transition",
       data: { controller: "bottom-sheet", bottom_sheet_target: "bottomSheet", search_target: "results" }
     %>

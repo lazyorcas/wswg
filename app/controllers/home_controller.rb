@@ -9,6 +9,8 @@ class HomeController < ApplicationController
   end
 
   def pricing
+    load_city
+
     ahoy.track "Visited pricing page"
   end
 
@@ -20,5 +22,9 @@ class HomeController < ApplicationController
 
   def build_search_query
     @search_query = SearchQuery.new
+  end
+
+  def load_city
+    @city = current_visit&.city || Current.person&.city
   end
 end

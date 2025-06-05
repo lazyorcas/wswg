@@ -1,10 +1,9 @@
 class Map::Bookmarks::EventsController < ApplicationController
-  include Temporal
-
   before_action :require_user!
 
   def index
     load_events
+    load_time_zone
     filter_out_past_events
     order_events
     @events = @events.includes(:location, :source, :city)
@@ -16,8 +15,12 @@ class Map::Bookmarks::EventsController < ApplicationController
     @events = event_scope
   end
 
+  def load_time_zone
+    @time_zone = Current.user.city.time_zone
+  end
+
   def filter_out_past_events
-    @events = @events.where(end_date: current_date..)
+    @events = @events.where(end_date: @time_zone.current_date..)
   end
 
   def order_events

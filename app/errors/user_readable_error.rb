@@ -1,2 +1,0 @@
-class UserReadableError < StandardError
-end

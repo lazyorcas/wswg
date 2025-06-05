@@ -1,24 +1,36 @@
 class SearchQueriesController < ApplicationController
+  include CityLocatable
   include CreditsCheck
 
   rate_limit to: 20,
     within: 1.minute,
+    only: :create,
     with: -> do
       Sentry.capture_message("Too many requests.", level: :warning)
       redirect_to(map_path, flash: { error: "Too many requests. Please wait a moment and try again." })
     end
 
-  before_action :require_city!
-  require_credits
+  require_credits only: :create
 
   def create
     build_search_query
+
     begin
+      assign_city_to_search_query
+      if @search_query.city.nil?
+        respond_to_city_not_found and return
+      end
+
       @search_query.save!
       redirect_to(map_path(search_query_id: @search_query.id))
+
     rescue => e
       Sentry.capture_exception(e)
-      redirect_to(map_path, flash: { error: "Failed to search." })
+      if e.is_a?(City::NotSupportedError)
+        redirect_to(map_path, flash: { error: e.message })
+      else
+        redirect_to(map_path, flash: { error: "Failed to search." })
+      end
     end
   end
 
@@ -27,6 +39,21 @@ class SearchQueriesController < ApplicationController
   def build_search_query
     @search_query ||= search_query_scope.build
     @search_query.attributes = search_query_params
+  end
+
+  def assign_city_to_search_query
+    @search_query.city = get_city_from_search_query ||
+      get_city_from_params ||
+      get_city_from_visit ||
+      get_city_from_current_person
+  end
+
+  def get_city_from_search_query
+    city_name = get_city_name_from_query(@search_query.query)
+    if city_name == "NOT_SUPPORTED"
+      raise City::NotSupportedError.new(@search_query.query)
+    end
+    City.find_by_name(city_name)
   end
 
   def search_query_scope

@@ -3,7 +3,7 @@ module CreditsCheck
 
   class_methods do
     def require_credits(options = {})
-      before_action :require_credits!, { if: :signed_in? }.merge(options)
+      before_action :require_credits!, options
     end
   end
 
