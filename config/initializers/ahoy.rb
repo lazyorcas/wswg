@@ -1,4 +1,12 @@
 class Ahoy::Store < Ahoy::DatabaseStore
+  EXCLUDED_PATHS = [
+    "/jobs",
+    "/field_test",
+    "/up",
+    "/manifest",
+    "/service-worker"
+  ].freeze
+
   def track_visit(data)
     # https://developers.cloudflare.com/fundamentals/reference/http-headers/#cf-connecting-ip
     data[:ip] = request.env["HTTP_CF_CONNECTING_IP"] || request.remote_ip
@@ -8,6 +16,7 @@ class Ahoy::Store < Ahoy::DatabaseStore
     data[:region] = request.env["HTTP_CF_REGION"]
     data[:country] = request.env["HTTP_CF_IPCOUNTRY"]
     # time zone also available
+
     super(data)
   end
 end
@@ -21,4 +30,6 @@ Ahoy.api = false
 Ahoy.geocode = false
 # Ahoy.job_queue = :low_priority
 
-Ahoy.server_side_visits = :when_needed
+Ahoy.exclude_method = lambda do |controller, request|
+  Ahoy::Store::EXCLUDED_PATHS.any? { |path| request.path.start_with?(path) }
+end
