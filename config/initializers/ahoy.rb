@@ -1,6 +1,8 @@
 # https://developers.cloudflare.com/fundamentals/reference/http-headers/#cf-connecting-ip
 
 class Ahoy::Store < Ahoy::DatabaseStore
+  attr_accessor :session, :current_user
+
   EXCLUDED_PATHS = [
     "/jobs",
     "/field_test",
@@ -11,15 +13,34 @@ class Ahoy::Store < Ahoy::DatabaseStore
   ].freeze
 
   def track_visit(data)
-    data[:ip] = request.env["HTTP_CF_CONNECTING_IP"] || request.remote_ip
-    data[:latitude] = request.env["HTTP_CF_IPLATITUDE"]
-    data[:longitude] = request.env["HTTP_CF_IPLONGITUDE"]
+    set_session
+    set_current_user
+
+    if current_user.present?
+      data[:user_id] = current_user.id
+      data[:ip] = Ahoy.mask_ip(request.remote_ip)
+    else
+      data[:ip] = request.env["HTTP_CF_CONNECTING_IP"] || request.remote_ip
+      data[:latitude] = request.env["HTTP_CF_IPLATITUDE"]
+      data[:longitude] = request.env["HTTP_CF_IPLONGITUDE"]
+      # TODO: add time zone
+    end
+
     data[:city] = request.env["HTTP_CF_IPCITY"]
     data[:region] = request.env["HTTP_CF_REGION"]
     data[:country] = request.env["HTTP_CF_IPCOUNTRY"]
-    # time zone also available
 
     super(data)
+  end
+
+  private
+
+  def set_session
+    self.session = request.session
+  end
+
+  def set_current_user
+    self.current_user = User.find_by(id: session[:user_id]) || authenticate_by_session(User)
   end
 end
 

@@ -6,7 +6,6 @@ module Authentication
   included do
     before_action :set_current_user
     before_action :set_current_person
-    before_action :associate_current_user_with_visit, if: :signed_in?
     before_action :set_sentry_user_context, if: :signed_in?
 
     helper_method :signed_in?
@@ -16,10 +15,6 @@ module Authentication
 
   def signed_in?
     Current.user.present?
-  end
-
-  def associate_current_user_with_visit
-    ahoy.authenticate(Current.user)
   end
 
   def set_sentry_user_context
