@@ -23,7 +23,7 @@ class MapController < ApplicationController
 
     @content_path ||= map_search_queries_path(city_id: @city.id)
 
-    ahoy.track "Visited map page"
+    ahoy.track "Visited map page", city: get_city_from_params&.name
   end
 
   private
