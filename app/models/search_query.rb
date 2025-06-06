@@ -1,6 +1,7 @@
 class SearchQuery < ApplicationRecord
   include SearchesBuildable
   include Broadcastable
+  include Summarizable
 
   enum :status, {
     analyzing: 0,

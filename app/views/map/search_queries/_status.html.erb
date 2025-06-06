@@ -1,10 +1,10 @@
-<div class="flex items-center gap-x-2 p-4">
+<div class="flex gap-x-2 p-4">
   <i class="ph ph-spinner animate-spin"></i>
   <p class="text-sm">
     <% if search_query.analyzing? %>
       Analyzing...
     <% else %>
-      Searching...
+      Searching for <%= search_query.summary %>...
     <% end %>
   </p>
 </div>
