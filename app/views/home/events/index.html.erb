@@ -1,11 +1,11 @@
 <% content_for :title, build_city_meta_title(@city, @time_period.to_sym) %>
-<% content_for :description, build_city_meta_description(@city, @time_period) %>
+<% content_for :description, build_city_description(@city, @time_period) %>
 <% mobile_map_shown_at_index = 10 %>
 <main class="grow">
   <header class="flex flex-col gap-y-8 md:gap-y-10 items-center py-10 md:pt-20">
     <div class="flex flex-col items-center text-center gap-y-2 md:gap-y-4">
       <h1 class="text-3xl md:text-4xl font-bold"><%= build_city_title(@city, @time_period.to_sym) %></h1>
-      <p class="md:max-w-xl"><%= build_city_description(@city, @time_period).html_safe %></p>
+      <p class="md:max-w-xl"><%= build_city_description(@city, @time_period) %></p>
     </div>
   </header>
   <section class="md:max-w-xl mx-auto">
