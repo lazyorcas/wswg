@@ -23,13 +23,11 @@ class Ahoy::Store < Ahoy::DatabaseStore
 
     if current_user.present?
       data[:user_id] = current_user.id
-      data[:ip] = Ahoy.mask_ip(request.remote_ip)
+      anonymized_data = Ahoy::Visit.anonymize(ip: request.remote_ip, lat: lat, lon: lon)
 
-      if lat.present? && lon.present?
-        noisy_coords = Geospatial.add_noise_to_coords({ lat: lat.to_f, lon: lon.to_f })
-        data[:latitude] = noisy_coords[:lat].round(4)
-        data[:longitude] = noisy_coords[:lon].round(4)
-      end
+      data[:ip] = anonymized_data[:ip]
+      data[:latitude] = anonymized_data[:lat]
+      data[:longitude] = anonymized_data[:lon]
     else
       data[:ip] = request.env["HTTP_CF_CONNECTING_IP"] || request.remote_ip
       data[:latitude] = lat

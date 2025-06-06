@@ -11,6 +11,20 @@ class Ahoy::Visit < ApplicationRecord
 
   before_validation :find_or_create_visitor
 
+  def self.anonymize(ip:, lat:, lon:)
+    masked_ip = Ahoy.mask_ip(ip)
+    noisy_lat = nil
+    noisy_lon = nil
+
+    if lat.present? && lon.present?
+      noisy_coords = Geospatial.add_noise_to_coords({ lat: lat, lon: lon })
+      noisy_lat = noisy_coords[:lat].round(4)
+      noisy_lon = noisy_coords[:lon].round(4)
+    end
+
+    { ip: masked_ip, lat: noisy_lat, lon: noisy_lon }
+  end
+
   def time_zone
     TimeZone.new(name: self[:time_zone])
   end
