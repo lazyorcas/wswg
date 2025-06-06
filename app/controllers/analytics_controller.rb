@@ -35,10 +35,18 @@ class AnalyticsController < AdminController
     @pricing_page_events = build_ahoy_events_page_events_data("Visited pricing page")
     @city_events_page_events = build_ahoy_events_page_events_data("Viewed events")
     @homepage_events = build_ahoy_events_page_events_data("Visited homepage")
+
+    qualified_visitor_tokens_for_retention = Ahoy::Visit
+      .group(:visitor_token)
+      .minimum(:started_at)
+      .select { |_, started_at| (started_at + 1.send(@time_interval.to_sym)).past? }
+      .map { |visitor_token, _| visitor_token }
+
     @visitor_retention = []
     visits_h = Ahoy::Visit
       .non_user
       .where(started_at: @time_range)
+      .where(visitor_token: qualified_visitor_tokens_for_retention)
       .group(:visitor_token)
       .count("DISTINCT DATE_TRUNC('#{@time_interval.upcase}', started_at)")
     visit_counts = visits_h.values
