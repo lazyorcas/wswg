@@ -39,7 +39,7 @@ class Event::CreateJob < ApplicationJob
 
   rescue Event::DataIncompleteError => e
     attempts = exception_executions[e.class.to_s] || 0
-    raise e if attempts < DATA_INCOMPLETE_MAX_ATTEMPTS
+    raise e if attempts + 1 < DATA_INCOMPLETE_MAX_ATTEMPTS
   end
 
   private

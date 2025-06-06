@@ -29,6 +29,6 @@ class CitySource::ScrapeAndCreateEventsJob < ApplicationJob
 
   rescue CitySource::NoEventsFoundError => e
     attempts = exception_executions[e.class.to_s] || 0
-    raise e if attempts < NO_EVENTS_FOUND_MAX_ATTEMPTS
+    raise e if attempts + 1 < NO_EVENTS_FOUND_MAX_ATTEMPTS
   end
 end
