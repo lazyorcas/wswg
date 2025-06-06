@@ -40,7 +40,7 @@ class AnalyticsController < AdminController
       .non_user
       .where(started_at: @time_range)
       .group(:visitor_token)
-      .count("DISTINCT EXTRACT(#{@time_interval.upcase} FROM started_at)")
+      .count("DISTINCT DATE_TRUNC('#{@time_interval.upcase}', started_at)")
     visit_counts = visits_h.values
     if visit_counts.present?
       (visit_counts.min..visit_counts.max).each do |day|
@@ -54,6 +54,7 @@ class AnalyticsController < AdminController
         day[1] = (day[1].to_f / @visitor_retention_total * 100).ceil
       end
     end
+
     @visits_by_city = Ahoy::Visit
       .non_user
       .where.not(city: nil)
