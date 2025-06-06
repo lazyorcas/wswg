@@ -1,5 +1,5 @@
 class AnalyticsController < AdminController
-  START_DATE = 4.weeks.ago.end_of_week + 1.day
+  START_DATE = (4.weeks.ago.end_of_week + 1.day).to_date
   TIME_INTERVAL = "day"
 
   before_action :load_filters
@@ -218,8 +218,8 @@ class AnalyticsController < AdminController
       START_DATE
 
     @end_date = params[:end_date].present? ?
-      Date.parse(params[:end_date]).end_of_day :
-      Time.now
+      Date.parse(params[:end_date]) :
+      Date.today
 
     @time_range = @start_date..@end_date
   end
