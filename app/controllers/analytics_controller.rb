@@ -64,6 +64,12 @@ class AnalyticsController < AdminController
       .reverse
       .take(30)
       .to_h
+    @visits_without_city = Ahoy::Visit
+      .non_user
+      .where(city: nil)
+      .where(started_at: @time_range)
+      .group_by_period(@time_interval, :started_at, range: @time_range, expand_range: true)
+      .count
 
     @city_views = build_ahoy_events_popularity_data(
       "properties->>'city'",
@@ -123,23 +129,24 @@ class AnalyticsController < AdminController
       .order("cities.name ASC")
       .count
 
-    @sign_up_page_cities = Ahoy::Event
+    @map_page_visits_by_city = Ahoy::Event
       .non_user
-      .joins("INNER JOIN cities ON cities.id = (ahoy_events.properties->'params'->>'city_id')::integer")
-      .where(name: "Visited sign up page")
-      .where("properties->'params'->>'city_id' IS NOT NULL")
+      .where(name: "Visited map page")
+      .where("properties->>'city' IS NOT NULL")
       .where("ahoy_events.time >= ?", @start_date)
-      .group("cities.name")
-      .group_by_period(@time_interval, :time, range: @time_range, expand_range: true)
-      .order("cities.name ASC")
+      .group("properties->>'city'")
       .count
-    @sign_up_page_queries = Ahoy::Event
+      .sort_by { |(_, count)| count }
+      .reverse
+    @map_page_queries = Ahoy::Event
       .non_user
-      .where(name: "Visited sign up page")
-      .where("properties->'params'->>'query' IS NOT NULL")
+      .where(name: "Searched")
+      .where("properties->>'query' IS NOT NULL")
       .where("ahoy_events.time >= ?", @start_date)
-      .group("properties->'params'->>'query'")
+      .group("properties->>'query'")
       .count
+      .sort_by { |(_, count)| count }
+      .reverse
     @sign_up_page_sources = Ahoy::Event
       .non_user
       .where(name: "Visited sign up page")

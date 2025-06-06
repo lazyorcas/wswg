@@ -38,6 +38,9 @@
       <%= render "chart", title: "Ahoy Visitor Retention" do %>
         <%= line_chart @visitor_retention, suffix: "%", xtitle: "nth #{@time_interval}" %>
       <% end %>
+      <%= render "chart", title: "Non-located Ahoy Visits" do %>
+        <%= line_chart @visits_without_city %>
+      <% end %>
     <% end %>
     <%= render "charts", title: "City Popularity" do %>
       <%= render "chart", title: "Active User Scores" do %>
@@ -69,12 +72,12 @@
         <%= column_chart @seens_by_city, stacked: true %>
       <% end %>
     <% end %>
-    <%= render "charts", title: "SEO - City Events Page -> Sign Up Page" do %>
-      <%= render "chart", title: "Which queries upon arriving at the sign up page?" do %>
-        <%= pie_chart @sign_up_page_queries %>
+    <%= render "charts", title: "SEO - Others" do %>
+      <%= render "chart", title: "Cities by search queries" do %>
+        <%= pie_chart @map_page_visits_by_city %>
       <% end %>
-      <%= render "chart", title: "Which cities upon arriving at the sign up page?" do %>
-        <%= column_chart @sign_up_page_cities, stacked: true %>
+      <%= render "chart", title: "Search queries" do %>
+        <%= pie_chart @map_page_queries %>
       <% end %>
       <%= render "chart", title: "Which sources led to sign ups?" do %>
         <%= pie_chart @sign_up_page_sources %>
