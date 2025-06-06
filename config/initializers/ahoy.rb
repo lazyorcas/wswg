@@ -23,7 +23,7 @@ class Ahoy::Store < Ahoy::DatabaseStore
 
     if current_user.present?
       data[:user_id] = current_user.id
-      anonymized_data = Ahoy::Visit.anonymize(ip: request.remote_ip, lat: lat, lon: lon)
+      anonymized_data = Ahoy::Visit.anonymize(ip: request.remote_ip, lat: lat.to_f, lon: lon.to_f)
 
       data[:ip] = anonymized_data[:ip]
       data[:latitude] = anonymized_data[:lat]
