@@ -32,6 +32,8 @@ class SearchQueriesController < ApplicationController
         redirect_to(map_path, flash: { error: "Failed to search." })
       end
     end
+
+    ahoy.track "Searched", query: @search_query.query, source: request.referer
   end
 
   private

@@ -39,6 +39,8 @@ class Map::SearchQueriesController < ApplicationController
       end
       turbo_stream_flash(status: :unprocessable_entity)
     end
+
+    ahoy.track "Searched on map", query: @search_query.query
   end
 
   def show

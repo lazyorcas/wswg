@@ -4,7 +4,9 @@ class CurrentVisitorController < ApplicationController
   protect_from_bots only: [ :edit ]
   before_action :require_unauth!
 
-  def edit; end
+  def edit
+    ahoy.track "Visited edit current visitor page"
+  end
 
   def update
     Current.visitor.update!(visitor_params)

@@ -4,6 +4,7 @@ class CurrentUserController < ApplicationController
   before_action :require_user!
 
   def edit
+    ahoy.track "Visited edit current user page"
   end
 
   def update
