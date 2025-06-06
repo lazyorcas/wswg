@@ -36,13 +36,16 @@ class Event::CreateJob < ApplicationJob
     elsif duplicated?(event.errors)
       create_archived_link_for_duplicated_event(event)
     end
+
+  rescue Event::DataIncompleteError => e
+    attempts = exception_executions[e.class.to_s] || 0
+    raise e if attempts < DATA_INCOMPLETE_MAX_ATTEMPTS
   end
 
   private
 
   def data_incomplete?(errors)
-    errors.any? { |error| error.type == :data_incomplete } &&
-      (exception_executions[Event::DataIncompleteError.to_s] || 0) < DATA_INCOMPLETE_MAX_ATTEMPTS
+    errors.any? { |error| error.type == :data_incomplete }
   end
 
   def url_taken?(errors)

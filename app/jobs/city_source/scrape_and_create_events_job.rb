@@ -1,29 +1,21 @@
-class NoEventsFoundError < StandardError; end
-
 class CitySource::ScrapeAndCreateEventsJob < ApplicationJob
   NO_EVENTS_FOUND_MAX_ATTEMPTS = 3
 
   queue_with_priority 2
   limits_concurrency to: 2, key: ->(*) { self.class.name }
 
-  retry_on Ferrum::TimeoutError, wait: 30.minutes, attempts: 3
-  retry_on Ferrum::NodeNotFoundError, wait: 1.minute, attempts: 3
-  retry_on Ferrum::JavaScriptError, wait: 15.minutes, attempts: 3
-  retry_on NoEventsFoundError, wait: 5.minutes, attempts: NO_EVENTS_FOUND_MAX_ATTEMPTS
+  retry_on Source::ScraperError, wait: 30.minutes, attempts: 3
+  retry_on CitySource::NoEventsFoundError, wait: 5.minutes, attempts: NO_EVENTS_FOUND_MAX_ATTEMPTS
 
   def perform(id, limit:)
     city_source = CitySource.find(id)
 
     events_attributes = city_source.scrape
     if events_attributes.empty?
-      if (exception_executions[NoEventsFoundError.to_s] || 0) >= NO_EVENTS_FOUND_MAX_ATTEMPTS
-        return
-      end
       raise NoEventsFoundError
     end
 
     events_attributes = events_attributes.take(limit)
-
     create_event_jobs = Event.build_create_event_jobs(
       events_attributes,
       city_source_id: id
@@ -34,5 +26,9 @@ class CitySource::ScrapeAndCreateEventsJob < ApplicationJob
     end
 
     city_source.update(last_fetched_at: Time.current)
+
+  rescue CitySource::NoEventsFoundError => e
+    attempts = exception_executions[e.class.to_s] || 0
+    raise e if attempts < NO_EVENTS_FOUND_MAX_ATTEMPTS
   end
 end
