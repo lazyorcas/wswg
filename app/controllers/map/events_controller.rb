@@ -23,7 +23,7 @@ class Map::EventsController < ApplicationController
   private
 
   def load_events
-    @events = event_scope.where(end_date: @city.time_zone.current_date..)
+    @events = event_scope.where(start_date: @city.time_zone.current_date..)
   end
 
   def order_events
