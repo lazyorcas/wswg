@@ -1,5 +1,5 @@
 class Credits::FreeTopUpJob < ApplicationJob
-  queue_with_priority 4
+  queue_with_priority 100
 
   def perform
     User.where(credits: 0).find_each(&:add_free_credits!)

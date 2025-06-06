@@ -1,5 +1,5 @@
 class City::ScrapeAndCreateEventsJob < ApplicationJob
-  queue_with_priority 2
+  queue_as :scraper
 
   def perform(id, limit:)
     city = City.find(id)

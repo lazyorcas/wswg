@@ -1,5 +1,5 @@
 class SearchQuery::QueryJob < ApplicationJob
-  queue_with_priority 0
+  queue_as :user
 
   def perform(id)
     search_query = SearchQuery.find(id)

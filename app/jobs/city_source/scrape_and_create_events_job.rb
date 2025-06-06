@@ -1,7 +1,7 @@
 class CitySource::ScrapeAndCreateEventsJob < ApplicationJob
   NO_EVENTS_FOUND_MAX_ATTEMPTS = 3
 
-  queue_with_priority 2
+  queue_as :scraper
   limits_concurrency to: 2, key: ->(*) { self.class.name }
 
   retry_on Source::ScraperError, wait: 30.minutes, attempts: 3

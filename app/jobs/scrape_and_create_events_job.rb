@@ -9,7 +9,7 @@ class ScrapeAndCreateEventsJob < ApplicationJob
   MIN_LIMIT_MODIFIER = 0.05
   MAX_LIMIT_MODIFIER = 1.0
 
-  queue_with_priority 2
+  queue_with_priority 0
 
   def perform
     City.enabled.includes(:city_sources).find_each do |city|
