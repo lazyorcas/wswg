@@ -1,5 +1,6 @@
 class User < ApplicationRecord
   include Credits
+  include Anonymity
 
   passwordless_with :email
 
