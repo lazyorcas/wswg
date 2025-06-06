@@ -27,7 +27,11 @@ module SearchQuery::Summarizable
     end
 
     if start_time.present? && end_time.present?
-      summary_fragments << "at #{start_time} - #{end_time}"
+      if start_time == end_time
+        summary_fragments << "at #{start_time}"
+      else
+        summary_fragments << "at #{start_time} - #{end_time}"
+      end
     elsif start_time.present?
       summary_fragments << "from #{start_time}"
     elsif end_time.present?
