@@ -5,7 +5,7 @@ module City::Scorable
   POPULAR_CITY_MIN_USER_COUNT = 10
   POPULAR_CITY_MIN_VISITOR_COUNT = 100
   ACTIVE_USER_SCORE_MODIFIER = 1.0
-  VISITOR_SCORE_MODIFIER = 0.5
+  VISITOR_SCORE_MODIFIER = 0.8
 
   def current_score
     @current_score ||= active_user_score + visitor_score
