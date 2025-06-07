@@ -4,8 +4,8 @@ class CitySource::ScrapeAndCreateEventsJob < ApplicationJob
   queue_as :scraper
   limits_concurrency to: 2, key: ->(*) { self.class.name }
 
-  retry_on Source::ScraperError, wait: 30.minutes, attempts: 3
-  retry_on CitySource::NoEventsFoundError, wait: 5.minutes, attempts: NO_EVENTS_FOUND_MAX_ATTEMPTS
+  retry_on Source::ScraperError, wait: 10.minutes, attempts: 3
+  retry_on CitySource::NoEventsFoundError, wait: 10.minutes, attempts: NO_EVENTS_FOUND_MAX_ATTEMPTS
 
   def perform(id, limit:)
     city_source = CitySource.find(id)
