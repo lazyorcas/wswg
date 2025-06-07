@@ -149,7 +149,7 @@ class AnalyticsController < AdminController
       .reverse
     @map_page_queries = Ahoy::Event
       .non_user
-      .where(name: "Searched")
+      .where(name: [ "Searched", "Searched on map page" ])
       .where("properties->>'query' IS NOT NULL")
       .where("ahoy_events.time >= ?", @start_date)
       .group("properties->>'query'")
