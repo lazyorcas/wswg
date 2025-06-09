@@ -17,9 +17,6 @@
       <%= render "chart", title: "Ahoy Visits by Device" do %>
         <%= line_chart @visits_by_device %>
       <% end %>
-      <%= render "chart", title: "Ahoy Events - Sign Up Page" do %>
-        <%= line_chart @sign_up_page_events %>
-      <% end %>
       <%= render "chart", title: "Ahoy Events - Pricing Page" do %>
         <%= line_chart @pricing_page_events %>
       <% end %>
@@ -37,9 +34,6 @@
       <% end %>
       <%= render "chart", title: "Ahoy Visitor Retention" do %>
         <%= line_chart @visitor_retention, suffix: "%", xtitle: "nth #{@time_interval}" %>
-      <% end %>
-      <%= render "chart", title: "Non-located Ahoy Visits" do %>
-        <%= line_chart @visits_without_city %>
       <% end %>
     <% end %>
     <%= render "charts", title: "City Popularity" do %>

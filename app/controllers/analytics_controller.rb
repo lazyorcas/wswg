@@ -31,7 +31,6 @@ class AnalyticsController < AdminController
       .group(:referring_domain)
       .group_by_period(@time_interval, :started_at, range: @time_range, expand_range: true)
       .count
-    @sign_up_page_events = build_ahoy_events_page_events_data("Visited sign up page")
     @pricing_page_events = build_ahoy_events_page_events_data("Visited pricing page")
     @city_events_page_events = build_ahoy_events_page_events_data("Viewed events")
     @homepage_events = build_ahoy_events_page_events_data("Visited homepage")
@@ -73,12 +72,6 @@ class AnalyticsController < AdminController
       .reverse
       .take(30)
       .to_h
-    @visits_without_city = Ahoy::Visit
-      .non_user
-      .where(city: nil)
-      .where(started_at: @time_range)
-      .group_by_period(@time_interval, :started_at, range: @time_range, expand_range: true)
-      .count
 
     @city_views = build_ahoy_events_popularity_data(
       "properties->>'city'",

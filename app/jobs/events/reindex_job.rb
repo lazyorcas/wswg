@@ -1,4 +1,4 @@
-class Events::ReindexJob
+class Events::ReindexJob < ApplicationJob
   queue_as :default
   queue_with_priority 1
 
