@@ -16,8 +16,8 @@
   </header>
   <% unless browser.device.mobile? %>
     <%= link_to map_path, class: "w-full relative group cursor-pointer", rel: "nofollow", data: { turbo: false } do %>
-      <img src="/hero-light.webp" alt="Where Should We Go's Hero Light" class="w-full rounded-2xl block dark:hidden group-hover:blur-xs transition-all" loading="lazy" fetchpriority="high">
-      <img src="/hero-dark.webp" alt="Where Should We Go's Hero Dark" class="w-full rounded-2xl hidden dark:block group-hover:blur-xs transition-all" loading="lazy" fetchpriority="high">
+      <img src="/hero-light.webp" alt="Where Should We Go's Hero Light" class="w-full rounded-2xl inline-block dark:hidden group-hover:blur-xs transition-all" loading="lazy" fetchpriority="high">
+      <img src="/hero-dark.webp" alt="Where Should We Go's Hero Dark" class="w-full rounded-2xl hidden dark:inline-block group-hover:blur-xs transition-all" loading="lazy" fetchpriority="high">
       <span class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity">
         <span class="button button--primary">
           <i class="ph-fill ph-map-trifold"></i>
