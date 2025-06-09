@@ -14,6 +14,8 @@ SitemapGenerator::Sitemap.create do
   # Defaults: :priority => 0.5, :changefreq => 'weekly',
   #           :lastmod => Time.now, :host => default_host
 
+  add local_events_directory_path, priority: 0.8, changefreq: "daily"
+
   City
     .enabled
     .order(:name)
