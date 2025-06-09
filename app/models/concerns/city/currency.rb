@@ -24,6 +24,6 @@ module City::Currency
   private
 
   def set_currency
-    self.currency = COUNTRY_CODE_TO_CURRENCY[country_code] || FALLBACK_CURRENCY
+    self.currency ||= COUNTRY_CODE_TO_CURRENCY[country_code] || FALLBACK_CURRENCY
   end
 end
