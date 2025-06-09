@@ -87,6 +87,8 @@
       <%= render "chart", title: "Bookmarks created" do %>
         <%= line_chart @bookmarks %>
       <% end %>
+    <% end %>
+    <%= render "charts", title: "Scraped Events" do %>
       <%= render "chart", title: "Events created by city" do %>
         <%= column_chart @events_by_city, stacked: true %>
       <% end %>
