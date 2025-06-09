@@ -25,7 +25,7 @@ class Home::EventsController < ApplicationController
       @city = get_city_from_visit
       build_city_from_visit
 
-      if @city.nil?
+      if @city.name.blank? || @city.time_zone.blank?
         respond_to_city_not_found and return
       end
 
