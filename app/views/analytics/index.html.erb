@@ -40,6 +40,9 @@
       <%= render "chart", title: "Popularity by Day of Week" do %>
         <%= line_chart @wday_views %>
       <% end %>
+      <%= render "chart", title: "Visits by Hour of Day" do %>
+        <%= line_chart @hour_views, xmax: 23 %>
+      <% end %>
       <%= render "chart", title: "Popularity by City & Time Period (Top 20)" do %>
         <%= pie_chart @city_time_period_views, legend: "right" %>
       <% end %>

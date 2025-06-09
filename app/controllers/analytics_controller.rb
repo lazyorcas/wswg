@@ -92,6 +92,19 @@ class AnalyticsController < AdminController
         }
       }
       .sort_by { |h| h[:name].to_s }
+
+    hour_views_h = Ahoy::Event
+      .non_user
+      .joins("INNER JOIN cities ON cities.name = ahoy_events.properties->>'city'")
+      .where(name: "Viewed events")
+      .where(time: @time_range)
+      .group(Arel.sql("EXTRACT(HOUR FROM ahoy_events.time AT TIME ZONE 'UTC' AT TIME ZONE cities.time_zone)"))
+      .count
+      .transform_keys { |hour| hour.to_i }
+    @hour_views = (0..23)
+      .map { |hour| [ hour, hour_views_h[hour] || 0 ] }
+      .sort_by { |(hour, _)| hour }
+
     @city_time_period_views = build_ahoy_events_popularity_data(
       [ "properties->>'city'", "properties->>'time_period'" ],
       label_format: ->(city, period) { "#{city} - #{period}" },
