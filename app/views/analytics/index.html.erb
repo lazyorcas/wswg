@@ -20,6 +20,9 @@
       <%= render "chart", title: "Ahoy Visits by Device" do %>
         <%= line_chart @visits_by_device %>
       <% end %>
+      <%= render "chart", title: "Ahoy Visits by Browser" do %>
+        <%= line_chart @visits_by_browser %>
+      <% end %>
       <%= render "chart", title: "Ahoy Events - Pricing Page" do %>
         <%= line_chart @pricing_page_events %>
       <% end %>
@@ -45,6 +48,9 @@
       <% end %>
       <%= render "chart", title: "Popularity by City & Time Period (Top 20)" do %>
         <%= pie_chart @city_time_period_views, legend: "right" %>
+      <% end %>
+      <%= render "chart", title: "Nearby Events Page Views" do %>
+        <%= line_chart @nearby_events_page_views %>
       <% end %>
       <%= render "chart", title: "Non-user Seens" do %>
         <%= line_chart @seens %>

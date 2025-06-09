@@ -29,6 +29,13 @@ class AnalyticsController < AdminController
       .group_by_period(@time_interval, :started_at, range: @time_range, expand_range: true)
       .order("device_type ASC")
       .count
+    @visits_by_browser = Ahoy::Visit
+      .non_user
+      .where.not(browser: nil)
+      .group(:browser)
+      .group_by_period(@time_interval, :started_at, range: @time_range, expand_range: true)
+      .order("browser ASC")
+      .count
     @visits_by_referring_domain = Ahoy::Visit
       .non_user
       .where.not(referring_domain: nil)
@@ -113,6 +120,13 @@ class AnalyticsController < AdminController
     .reverse
     .take(20)
     .to_h
+
+    @nearby_events_page_views = Ahoy::Event
+      .non_user
+      .where(name: "Viewed events")
+      .where("(properties->>'nearby')::boolean IS TRUE")
+      .group_by_period(@time_interval, :time, range: @time_range, expand_range: true)
+      .count
 
     @seens = Seen
       .where(seenable_type: [ nil, "Visitor" ])
