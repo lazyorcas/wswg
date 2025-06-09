@@ -13,6 +13,8 @@ module CreditsCheck
     if Current.person.can_use_credits?
       Current.person.use_credit!
     else
+      ahoy.track "Not enough credits", controller: controller_name, action: action_name
+
       respond_to do |format|
         format.html do
           redirect_to(top_up_needed_path, status: :temporary_redirect)
