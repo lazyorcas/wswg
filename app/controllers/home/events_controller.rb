@@ -16,14 +16,13 @@ class Home::EventsController < ApplicationController
 
   layout "home"
 
-  before_action :set_is_nearby
   after_action :create_seen, only: [ :redirect ], unless: -> { browser.bot? }
 
   helper_method :nearby?
 
   def index
     if nearby?
-      @city = get_city_from_visit || get_city_from_current_person
+      @city = get_city_from_visit
       build_city_from_visit
 
       if @city.nil?
@@ -63,12 +62,8 @@ class Home::EventsController < ApplicationController
 
   private
 
-  def set_is_nearby
-    @is_nearby = params[:city_slug].blank?
-  end
-
   def nearby?
-    @is_nearby
+    @is_nearby ||= params[:city_slug].blank?
   end
 
   def build_city_from_visit
