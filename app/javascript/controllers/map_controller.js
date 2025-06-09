@@ -26,9 +26,9 @@ export default class extends Controller {
     })
 
     this.geolocateControl = new mapboxgl.GeolocateControl({
-      positionOptions: {
-        enableHighAccuracy: true
-      },
+      // positionOptions: {
+      //   enableHighAccuracy: true
+      // },
       showUserHeading: true,
       trackUserLocation: true,
     })
@@ -84,6 +84,8 @@ export default class extends Controller {
         if (features.length > 0) {
           this.#goTo(features[0].geometry.coordinates)
         }
+      }, {
+        timeout: 1000
       })
     }
   }
