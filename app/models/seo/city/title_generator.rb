@@ -18,6 +18,7 @@ class SEO::City::TitleGenerator
       this_weekend: "San Francisco events this weekend"
     },
     "London" => {
+      all: "Events in London",
       today: "🌇 Events in London today",
       tomorrow: "🔜 London events tomorrow",
       this_week: "Events in London this week",
