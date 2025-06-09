@@ -1,5 +1,7 @@
 class Home::EventsController < ApplicationController
+  include CityDetection
   include CityHelper
+  include NearbyHelper
 
   EVENT_LIMIT_MAPPING = {
     today: 20,
@@ -14,12 +16,19 @@ class Home::EventsController < ApplicationController
 
   layout "home"
 
+  before_action :set_is_nearby
   after_action :create_seen, only: [ :redirect ], unless: -> { browser.bot? }
 
+  helper_method :nearby?
+
   def index
-    load_city
-    if @city.nil?
-      return head(:not_found)
+    if nearby?
+      @city = get_city_from_visit || get_city_from_current_person
+      build_city_from_visit
+
+    else
+      @city = get_city_from_params
+      return head(:not_found) if @city.nil?
     end
 
     load_current_time
@@ -30,6 +39,10 @@ class Home::EventsController < ApplicationController
     order_events
     limit_events
     @events = @events.to_a
+
+    build_meta_title
+    build_title
+    build_description
     build_alternate_link_attributes
 
     ahoy.track "Viewed events", city: @city.name, time_period: @time_period.to_s
@@ -46,8 +59,19 @@ class Home::EventsController < ApplicationController
 
   private
 
-  def load_city
-    @city = City.find_by(slug: params[:city_slug])
+  def set_is_nearby
+    @is_nearby = params[:city_slug].blank?
+  end
+
+  def nearby?
+    @is_nearby
+  end
+
+  def build_city_from_visit
+    @city ||= City.new(
+      name: request.env["HTTP_CF_IPCITY"],
+      time_zone: request.env["HTTP_CF_TIMEZONE"]
+    )
   end
 
   def load_current_time
@@ -61,9 +85,9 @@ class Home::EventsController < ApplicationController
 
   def load_events
     @events = Event
-      .joins(:city_source)
+      .joins(:city)
       .left_joins(:seens)
-      .where(city_source: { city_id: @city.id })
+      .where(city: { name: @city.name })
       .where(start_date: @time_period.start_date..@time_period.end_date)
 
     if @time_period.start_time.present?
@@ -84,6 +108,18 @@ class Home::EventsController < ApplicationController
 
   def limit_events
     @events = @events.limit(EVENT_LIMIT_MAPPING[@time_period.to_sym])
+  end
+
+  def build_meta_title
+    @meta_title = nearby? ? build_nearby_meta_title(@time_period.to_sym) : build_city_meta_title(@city, @time_period.to_sym)
+  end
+
+  def build_title
+    @title = nearby? ? build_nearby_title(@time_period.to_sym) : build_city_title(@city, @time_period.to_sym)
+  end
+
+  def build_description
+    @description = nearby? ? build_nearby_description(@time_period) : build_city_description(@city, @time_period)
   end
 
   def build_alternate_link_attributes
@@ -109,8 +145,8 @@ class Home::EventsController < ApplicationController
       time_period = TimePeriod.new(@city.time_zone, time_period_symbol)
 
       {
-        href: build_city_events_path(time_period_slug: time_period.slug),
-        title: build_city_meta_title(@city, time_period_symbol)
+        href: nearby? ? build_nearby_events_path(time_period_slug: time_period.slug) : build_city_events_path(city_slug: @city.slug, time_period_slug: time_period.slug),
+        title: nearby? ? build_nearby_meta_title(time_period_symbol) : build_city_meta_title(@city, time_period_symbol)
       }
     end
   end

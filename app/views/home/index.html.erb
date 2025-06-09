@@ -5,12 +5,12 @@
       <h1 class="text-3xl md:text-4xl font-bold">Discover all local events with one search</h1>
       <p class="md:max-w-xl">Search for events, meetups, and concerts from Luma, Meetup, Eventbrite, and Ticketmaster using natural language. All in one place.</p>
     </div>
-    <div class="w-full md:max-w-xl mx-auto flex flex-col gap-y-2 items-center">
+    <div class="w-full md:max-w-xl mx-auto flex flex-col gap-y-4 items-center">
       <div class="w-full">
         <%= render "search_queries/form", search_query: SearchQuery.new %>
       </div>
       <span class="text-sm text-secondary">
-        Or, <%= link_to "check out the local events directory", local_events_directory_path, class: "link", target: "_blank" %>.
+        Or check out <%= link_to "the local events directory", local_events_directory_path, class: "link", target: "_blank" %> and <%= link_to "events near me", all_nearby_events_path, class: "link", target: "_blank" %>.
       </span>
     </div>
   </header>

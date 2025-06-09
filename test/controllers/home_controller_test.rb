@@ -23,4 +23,15 @@ class HomeControllerTest < ActionDispatch::IntegrationTest
       end
     end
   end
+
+  test "every nearby_events url" do
+    TimePeriod::SYMBOLS.each do |time_period_symbol|
+      if time_period_symbol == :all
+        get all_nearby_events_url
+      else
+        get nearby_events_url(time_period_slug: TimePeriod.slugify(time_period_symbol))
+      end
+      assert_response :success
+    end
+  end
 end

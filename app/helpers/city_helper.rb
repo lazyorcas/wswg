@@ -1,14 +1,14 @@
 module CityHelper
-  def title_generator
-    @title_generator ||= SEO::City::TitleGenerator.new
+  def city_title_generator
+    @city_title_generator ||= SEO::City::TitleGenerator.new
   end
 
   def build_city_meta_title(city, time_period_symbol)
-    title_generator.generate_title(city, time_period_symbol)
+    city_title_generator.generate_title(city, time_period_symbol)
   end
 
   def build_city_title(city, time_period_symbol)
-    title_generator.generate_default_title(city, time_period_symbol)
+    city_title_generator.generate_default_title(city, time_period_symbol)
   end
 
   def build_city_description(city, time_period)
