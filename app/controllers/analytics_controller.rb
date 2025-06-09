@@ -73,14 +73,6 @@ class AnalyticsController < AdminController
       .take(30)
       .to_h
 
-    @city_views = build_ahoy_events_popularity_data(
-      "properties->>'city'",
-      label_format: ->(city) { city },
-    )
-    @time_period_views = build_ahoy_events_popularity_data(
-      "properties->>'time_period'",
-      label_format: ->(period) { period },
-    )
     @wday_views = Ahoy::Event
       .non_user
       .joins("INNER JOIN cities ON cities.name = ahoy_events.properties->>'city'")
