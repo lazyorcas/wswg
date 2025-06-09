@@ -1,4 +1,5 @@
 class Credits::FreeTopUpJob < ApplicationJob
+  queue_as :default
   queue_with_priority 100
 
   def perform

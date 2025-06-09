@@ -1,4 +1,5 @@
-class Events::ReindexJob < ApplicationJob
+class Events::ReindexJob
+  queue_as :default
   queue_with_priority 1
 
   def perform

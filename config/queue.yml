@@ -11,7 +11,7 @@ default: &default
       threads: 2
       processes: 1
       polling_interval: 60
-    - queues: "*"
+    - queues: [ default ]
       threads: <%= ENV.fetch("RAILS_MAX_THREADS", 5).to_i - 2 %>
       processes: 2
       polling_interval: 0.1
