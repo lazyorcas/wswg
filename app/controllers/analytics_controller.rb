@@ -62,17 +62,6 @@ class AnalyticsController < AdminController
       end
     end
 
-    @visits_by_city = Ahoy::Visit
-      .non_user
-      .where.not(city: nil)
-      .group(:city)
-      .where(started_at: @time_range)
-      .count
-      .sort_by { |(_, count)| count }
-      .reverse
-      .take(30)
-      .to_h
-
     @wday_views = Ahoy::Event
       .non_user
       .joins("INNER JOIN cities ON cities.name = ahoy_events.properties->>'city'")
