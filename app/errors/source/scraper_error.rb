@@ -1,10 +1,10 @@
 class Source::ScraperError < StandardError
-  def initialize(source, error)
-    @source = source
-    @error = error
+  def initialize(source_name:, error_message:)
+    @source_name = source_name
+    @error_message = error_message
   end
 
   def message
-    "Error scraping #{@source.name}: #{@error.message}"
+    "Error scraping #{@source_name}: #{@error_message}"
   end
 end

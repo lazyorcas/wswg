@@ -12,7 +12,10 @@ class CitySource::ScrapeAndCreateEventsJob < ApplicationJob
 
     events_attributes = city_source.scrape
     if events_attributes.empty?
-      raise CitySource::NoEventsFoundError.new(city_source)
+      raise CitySource::NoEventsFoundError.new(
+        source_name: city_source.source.name,
+        city_name: city_source.city.name
+      )
     end
 
     events_attributes = events_attributes.take(limit)
