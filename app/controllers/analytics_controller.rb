@@ -18,6 +18,10 @@ class AnalyticsController < AdminController
       .non_user
       .group_by_period(@time_interval, :started_at, range: @time_range, expand_range: true)
       .count
+    @visitors = Ahoy::Visit
+      .non_user
+      .group_by_period(@time_interval, :started_at, range: @time_range, expand_range: true)
+      .count("DISTINCT visitor_token")
     @visits_by_device = Ahoy::Visit
       .non_user
       .where.not(device_type: nil)

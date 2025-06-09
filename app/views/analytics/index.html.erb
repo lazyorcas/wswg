@@ -14,6 +14,9 @@
       <%= render "chart", title: "Ahoy Visits" do %>
         <%= line_chart @visits %>
       <% end %>
+      <%= render "chart", title: "Ahoy Visitors" do %>
+        <%= line_chart @visitors %>
+      <% end %>
       <%= render "chart", title: "Ahoy Visits by Device" do %>
         <%= line_chart @visits_by_device %>
       <% end %>
@@ -33,23 +36,13 @@
         <%= line_chart @visitor_retention, suffix: "%", xtitle: "nth #{@time_interval}" %>
       <% end %>
     <% end %>
-    <%= render "charts", title: "City Popularity" do %>
-      <%= render "chart", title: "Active User Scores" do %>
-        <%= bar_chart @city_active_user_scores %>
-      <% end %>
-      <%= render "chart", title: "Visitor Scores" do %>
-        <%= bar_chart @city_visitor_scores %>
-      <% end %>
-    <% end %>
-    <%= render "charts", title: "SEO - Popularity of City Events Pages" do %>
-      <%= render "chart", title: "By Day of Week" do %>
+    <%= render "charts", title: "SEO - City Events Pages" do %>
+      <%= render "chart", title: "Popularity by Day of Week" do %>
         <%= line_chart @wday_views %>
       <% end %>
-      <%= render "chart", title: "By City & Time Period (Top 20)" do %>
+      <%= render "chart", title: "Popularity by City & Time Period (Top 20)" do %>
         <%= pie_chart @city_time_period_views, legend: "right" %>
       <% end %>
-    <% end %>
-    <%= render "charts", title: "SEO - City Events Pages" do %>
       <%= render "chart", title: "Non-user Seens" do %>
         <%= line_chart @seens %>
       <% end %>
@@ -91,6 +84,14 @@
       <% end %>
       <%= render "chart", title: "Events created by source" do %>
         <%= area_chart @events_by_source, stacked: true %>
+      <% end %>
+    <% end %>
+    <%= render "charts", title: "City Popularity" do %>
+      <%= render "chart", title: "Active User Scores" do %>
+        <%= bar_chart @city_active_user_scores %>
+      <% end %>
+      <%= render "chart", title: "Visitor Scores" do %>
+        <%= bar_chart @city_visitor_scores %>
       <% end %>
     <% end %>
   </div>
