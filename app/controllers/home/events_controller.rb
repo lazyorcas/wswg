@@ -49,7 +49,7 @@ class Home::EventsController < ApplicationController
     build_description
     build_alternate_link_attributes
 
-    ahoy.track "Viewed events", city: @city.name, time_period: @time_period.to_s
+    ahoy.track "Viewed events", city: @city.name, time_period: @time_period.to_s, nearby: nearby?
 
     if @events.empty? && @current_time.hour > 8
       Sentry.capture_message("No events", extra: { city: @city.name, time_period: @time_period.to_s, current_time: @current_time.strftime("%H:%M:%S") })
