@@ -85,7 +85,7 @@ export default class extends Controller {
           this.#goTo(features[0].geometry.coordinates)
         }
       }, {
-        timeout: 1000
+        timeout: 500
       })
     }
   }
