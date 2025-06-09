@@ -1,0 +1,12 @@
+<%= content_for :title, "Local Events Directory | Where Should We Go" %>
+<%= content_for :description, "A directory of all local events in #{@enabled_cities.map(&:name).join(", ")} for all time periods." %>
+<main class="grow">
+  <header class="flex flex-col gap-y-8 md:gap-y-10 items-center py-10 md:py-20">
+    <h1 class="text-3xl md:text-4xl font-bold">Local Events Directory</h1>
+  </header>
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 w-full pb-10">
+    <% @enabled_cities.each do |city| %>
+      <%= render "city_events_section", city: city %>
+    <% end %>
+  </div>
+</main>

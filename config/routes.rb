@@ -2,6 +2,7 @@ Rails.application.routes.draw do
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
   mount MissionControl::Jobs::Engine, at: "/jobs"
   mount FieldTest::Engine, at: "field_test", constraints: AdminConstraint.new
+  get "/analytics", to: "analytics#index", as: :analytics
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
   # Can be used by load balancers and uptime monitors to verify that the app is live.
@@ -13,8 +14,8 @@ Rails.application.routes.draw do
 
   # Defines the root path route ("/")
   root "home#index"
+  get "/local-events-directory", to: "home#local_events_directory", as: :local_events_directory
   get "/pricing", to: "home#pricing", as: :pricing
-  get "/analytics", to: "analytics#index", as: :analytics
 
   get "/:city_slug-events", to: "home/events#index", time_period_slug: "all", as: :all_city_events
   get "/events-:time_period_slug-in-:city_slug", to: "home/events#index", as: :city_events

@@ -4,8 +4,6 @@ class HomeController < ApplicationController
   layout "home"
 
   def index
-    load_enabled_cities
-
     ahoy.track "Visited homepage"
   end
 
@@ -13,6 +11,10 @@ class HomeController < ApplicationController
     load_city
 
     ahoy.track "Visited pricing page"
+  end
+
+  def local_events_directory
+    load_enabled_cities
   end
 
   private

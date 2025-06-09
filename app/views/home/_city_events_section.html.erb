@@ -2,7 +2,7 @@
   <h3 class="text-xl font-semibold">Events in <%= city.name %></h3>
   <ol class="flex flex-col">
     <% TimePeriod::SYMBOLS.each do |time_period_symbol| %>
-      <li>
+      <li class="text-center">
         <%= link_to build_city_meta_title(city, time_period_symbol), build_city_events_path(city_slug: city.slug, time_period_slug: TimePeriod.slugify(time_period_symbol)), class: "link" %>
       </li>
     <% end %>
