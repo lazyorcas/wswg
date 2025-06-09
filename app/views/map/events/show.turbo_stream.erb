@@ -1,0 +1,3 @@
+<%= turbo_stream.update "search-results" do %>
+  <%= render Event::Map::InfoWindowComponent.new(@event, bookmark: @bookmark) %>
+<% end %>
