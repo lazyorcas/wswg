@@ -51,12 +51,16 @@
       <% else %>
         <div class="px-4 md:px-0">
           <p class="flash flash--warning mt-8 mx-auto">
-            <% if @current_time.hour <= 8 %>
-              Events are being fetched. Come back in 1-2 hours.
-            <% elsif @time_period.all? %>
-              No events found. Come back tomorrow.
+            <% if @city.persisted? %>
+              <% if @current_time.hour <= 8 %>
+                Events are being fetched. Come back in 1-2 hours.
+              <% elsif @time_period.all? %>
+                No events found. Come back tomorrow.
+              <% else %>
+                No upcoming events found for <%= @time_period.to_s.downcase %>. Come back tomorrow.
+              <% end %>
             <% else %>
-              No upcoming events found for <%= @time_period.to_s.downcase %>. Come back tomorrow.
+              Your city is not supported yet.
             <% end %>
           </p>
         </div>

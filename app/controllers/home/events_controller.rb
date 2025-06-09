@@ -26,6 +26,10 @@ class Home::EventsController < ApplicationController
       @city = get_city_from_visit || get_city_from_current_person
       build_city_from_visit
 
+      if @city.nil?
+        respond_to_city_not_found and return
+      end
+
     else
       @city = get_city_from_params
       return head(:not_found) if @city.nil?
