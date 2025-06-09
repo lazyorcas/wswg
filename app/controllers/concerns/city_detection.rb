@@ -13,7 +13,7 @@ module CityDetection
   end
 
   def get_city_from_params
-    City.find_by_id(params[:city_id])
+    City.find_by_id(params[:city_id]) || City.find_by_slug(params[:city_slug])
   end
 
   def get_city_from_visit

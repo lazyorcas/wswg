@@ -30,8 +30,8 @@ class Ahoy::Store < Ahoy::DatabaseStore
       data[:longitude] = anonymized_data[:lon]
     else
       data[:ip] = request.env["HTTP_CF_CONNECTING_IP"] || request.remote_ip
-      data[:latitude] = lat
-      data[:longitude] = lon
+      data[:latitude] = lat.to_f
+      data[:longitude] = lon.to_f
     end
 
     data[:city] = request.env["HTTP_CF_IPCITY"]

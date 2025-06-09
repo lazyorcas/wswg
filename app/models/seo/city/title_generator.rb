@@ -67,6 +67,6 @@ class SEO::City::TitleGenerator
 
   def generate_title(city, time_period_symbol)
     TITLE_DICTIONARY.dig(city.name, time_period_symbol) ||
-      FALLBACK_TITLE_TEMPLATES[time_period_symbol] % { city: city.name }
+      generate_default_title(city, time_period_symbol)
   end
 end
