@@ -130,6 +130,13 @@ class AnalyticsController < AdminController
       .where("(properties->>'nearby')::boolean IS TRUE")
       .group_by_period(@time_interval, :time, range: @time_range, expand_range: true)
       .count
+    @nearby_events_city_views = Ahoy::Event
+      .non_user
+      .where(name: "Viewed events")
+      .where("(properties->>'nearby')::boolean IS TRUE")
+      .where(time: @time_range)
+      .group("properties->>'city'")
+      .count
 
     @seens = Seen
       .where(seenable_type: [ nil, "Visitor" ])

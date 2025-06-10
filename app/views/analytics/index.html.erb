@@ -52,6 +52,9 @@
       <%= render "chart", title: "Nearby Events Page Views" do %>
         <%= line_chart @nearby_events_page_views %>
       <% end %>
+      <%= render "chart", title: "Nearby Events Page Views by City" do %>
+        <%= pie_chart @nearby_events_city_views, legend: "right" %>
+      <% end %>
       <%= render "chart", title: "Non-user Seens" do %>
         <%= line_chart @seens %>
       <% end %>
