@@ -37,11 +37,7 @@ class Home::Events::DescriptionsController < ApplicationController
   def markdown_renderer
     @markdown_renderer ||= Redcarpet::Markdown.new(
       DescriptionMarkdownRenderer,
-      autolink: false,
-      no_images: true,
-      no_links: true,
-      no_styles: true,
-      hard_wrap: true
+      autolink: false
     )
   end
 end
