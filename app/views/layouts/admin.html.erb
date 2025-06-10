@@ -15,9 +15,7 @@
     <%= render "shared/head/icons" %>
     <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
-    <%= javascript_import_module_tag "admin"%>
-    <%= javascript_import_module_tag "chartkick"%>
-    <%= javascript_import_module_tag "Chart.bundle"%>
+    <%= javascript_import_module_tag "admin" %>
     <%= Sentry.get_trace_propagation_meta.html_safe %>
   </head>
   <body class="min-h-dvh">
