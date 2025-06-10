@@ -29,7 +29,8 @@ module SearchQuery::Broadcastable
       partial: "map/search_queries/result",
       locals: {
         events: result.events,
-        searcher: searcher
+        searcher: searcher,
+        summary: summary
       }
     )
   end

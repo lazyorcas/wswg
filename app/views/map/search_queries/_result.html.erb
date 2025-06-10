@@ -2,11 +2,11 @@
   <div class="shrink-0 text-sm">
     <% if events.any? %>
       <p class="px-4 pt-4">
-        Found <%= events.size %> events for <%= search_query.summary %>.
+        Found <%= events.size %> events for <%= summary %>.
       </p>
     <% else %>
       <p class="p-4">
-        Nothing found for <%= search_query.summary %>. <b>Try other keywords.</b>
+        Nothing found for <%= summary %>. <b>Try other keywords.</b>
       </p>
     <% end %>
   </div>
