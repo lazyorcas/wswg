@@ -7,7 +7,7 @@ module SearchQueryHelper
     "meetup next week",
     "speed dating this weekend",
     "outdoor sports next weekend",
-    "what's happening in Singapore next week",
+    "what's happening next week",
     "live concerts",
     "all events today"
   ].freeze
