@@ -27,22 +27,25 @@ class AnalyticsController < AdminController
       .where.not(device_type: nil)
       .group(:device_type)
       .where(started_at: @time_range)
-      .order("device_type ASC")
       .count
+      .sort_by { |(_, count)| count }
+      .reverse
     @visits_by_browser = Ahoy::Visit
       .non_user
       .where.not(browser: nil)
       .group(:browser)
       .where(started_at: @time_range)
-      .order("browser ASC")
       .count
+      .sort_by { |(_, count)| count }
+      .reverse
     @visits_by_referring_domain = Ahoy::Visit
       .non_user
       .where.not(referring_domain: nil)
       .group(:referring_domain)
       .where(started_at: @time_range)
-      .order("referring_domain ASC")
       .count
+      .sort_by { |(_, count)| count }
+      .reverse
     @pricing_page_events = build_ahoy_events_page_events_data("Visited pricing page")
     @city_events_page_events = build_ahoy_events_page_events_data("Viewed events")
     @homepage_events = build_ahoy_events_page_events_data("Visited homepage")
@@ -135,6 +138,8 @@ class AnalyticsController < AdminController
       .where(time: @time_range)
       .group("properties->>'city'")
       .count
+      .sort_by { |(_, count)| count }
+      .reverse
 
     @seens = Seen
       .where(seenable_type: [ nil, "Visitor" ])
@@ -150,6 +155,8 @@ class AnalyticsController < AdminController
       .where(created_at: @time_range)
       .order("cities.name ASC")
       .count
+      .sort_by { |(_, count)| count }
+      .reverse
 
     @map_page_visits_by_city = Ahoy::Event
       .non_user
