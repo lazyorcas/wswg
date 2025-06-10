@@ -250,7 +250,7 @@ class AnalyticsController < AdminController
       Date.parse(params[:end_date]) :
       Date.today
 
-    @time_range = @start_date..@end_date
+    @time_range = @start_date.beginning_of_day..@end_date.end_of_day
   end
 
   def build_ahoy_events_page_events_data(event_name)
