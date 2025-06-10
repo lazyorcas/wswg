@@ -141,6 +141,12 @@ class AnalyticsController < AdminController
       .sort_by { |(_, count)| count }
       .reverse
 
+    @viewed_event_descriptions = Ahoy::Event
+      .non_user
+      .where(name: "Viewed event description")
+      .where(time: @time_range)
+      .group_by_period(@time_interval, :time, range: @time_range, expand_range: true)
+      .count
     @seens = Seen
       .where(seenable_type: [ nil, "Visitor" ])
       .group_by_period(@time_interval, :created_at, range: @time_range, expand_range: true)

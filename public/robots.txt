@@ -2,6 +2,7 @@ User-agent: *
 Sitemap: https://whereshouldwego.co/sitemap.xml
 
 Disallow: /events/*/redirect
+Disallow: /events/*/description
 Disallow: /terms
 Disallow: /privacy
 Disallow: /map

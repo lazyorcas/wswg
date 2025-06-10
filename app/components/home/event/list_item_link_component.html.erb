@@ -1,29 +1,65 @@
 <%= tag.li class: "shrink-0" do %>
   <span class="w-full list-item rounded-xl">
     <span class="flex gap-x-4">
-      <%= link_to event_redirect_path(@event), class: "grow flex gap-x-4", target: "_blank", rel: "nofollow" do %>
-        <% if helpers.browser.bot? %>
-          <div class="shrink-0 event-image bg-stone-200 dark:bg-stone-700" alt="Event image"></div>
-        <% else %>
-          <%= image_tag @event.image_url, class: "shrink-0 event-image", loading: "lazy", referrerpolicy: "no-referrer", alt: "Event image" %>
-        <% end %>
-        <span class="grow flex flex-col list-item__text">
-          <%= tag.span class: class_names("w-full flex items-center gap-x-1", @event.seen_count.positive? ? "mb-1" : "mb-2") do %>
-            <%= image_tag source_icon_url, class: "inline-flex event-source-icon", loading: "lazy", alt: "Event source icon" %>
-            <span class="text-xs"><%= @event.source.name %></span>
+      <% if helpers.browser.bot? %>
+        <div class="shrink-0 event-image bg-stone-200 dark:bg-stone-700" alt="Event image"></div>
+      <% else %>
+        <%= image_tag @event.image_url, class: "shrink-0 event-image", loading: "lazy", referrerpolicy: "no-referrer", alt: "Event image" %>
+      <% end %>
+      <span class="grow flex flex-col list-item__text">
+        <%= tag.span class: class_names("w-full flex items-center gap-x-1", @event.seen_count.positive? || @event.price.present? ? "mb-1" : "mb-2") do %>
+          <%= image_tag source_icon_url, class: "inline-flex event-source-icon", loading: "lazy", alt: "Event source icon" %>
+          <span class="text-xs"><%= @event.source.name %></span>
+          <span class="ml-auto flex gap-x-1">
+            <% if @event.price.present? %>
+              <span class="tag flex items-center gap-x-1">
+                <% if @event.price.zero? %>
+                  Free
+                <% else %>
+                  <%= Money.from_amount(@event.price).exchange_to("USD").format(no_cents: true) %>
+                <% end %>
+              </span>
+            <% end %>
             <% if @event.seen_count.positive? %>
-              <span class="ml-auto tag tag--hot font-semibold flex items-center gap-x-1">
-                <i class="ph-fill ph-fire"></i>
+              <span class="tag tag--hot font-semibold flex items-center gap-x-1">
+                <i class="ph-fill ph-fire shrink-0"></i>
                 Popular
               </span>
             <% end %>
-          <% end %>
+          </span>
+        <% end %>
+        <%= link_to event_redirect_path(@event), class: "w-fit", target: "_blank", rel: "nofollow" do %>
           <%= tag.h2 @event.title, class: "text-sm line-clamp-2 md:line-clamp-1 link" %>
-          <%= tag.p class: "text-xs text-secondary" do %>
+        <% end %>
+        <div class="flex flex-col gap-y-1 mt-1">
+          <%= tag.p class: "text-xs text-secondary flex gap-x-1" do %>
+            <i class="ph ph-clock size-4 shrink-0"></i>
             <%= date %> &#x2022; <%= time_range %>
           <% end %>
-        </span>
-      <% end %>
+          <% if @event.location.present? %>
+            <%= tag.p class: "text-xs text-secondary flex gap-x-1" do %>
+              <i class="ph ph-map-pin size-4 shrink-0"></i>
+              <%= @event.location.full_address %>
+            <% end %>
+          <% end %>
+          <% if @event.description.present? %>
+            <details class="group">
+              <summary class="text-xs text-secondary flex gap-x-1 cursor-pointer group-open:mb-2">
+                <i class="ph ph-caret-down size-4 group-open:rotate-180 transition-transform shrink-0"></i>
+                <span class="group-hover:underline">More details</span>
+              </summary>
+              <blockquote class="text-sm text-primary bg-stone-100 dark:bg-stone-800 p-4 rounded-lg -ml-20 overflow-y-scroll max-h-80 md:max-h-96" style="word-break: break-word;">
+                <%= turbo_frame_tag "event_#{@event.id}_description", src: event_description_path(@event), class: "flex flex-col gap-y-1", data: { nosnippet: true }, loading: "lazy" do %>
+                  <span class="flex gap-x-2 items-center">
+                    <i class="ph ph-spinner animate-spin shrink-0"></i>
+                    <span class="text-xs text-secondary">Loading...</span>
+                  </span>
+                <% end %>
+              </blockquote>
+            </details>
+          <% end %>
+        </div>
+      </span>
     </span>
   </span>
 <% end %>

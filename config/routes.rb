@@ -23,6 +23,8 @@ Rails.application.routes.draw do
   get "/events-:time_period_slug-in-:city_slug", to: "home/events#index", as: :city_events
   get "/events/:id/redirect", to: "home/events#redirect", as: :event_redirect
 
+  get "/events/:id/description", to: "home/events/descriptions#show", as: :event_description
+
   resources :users, only: [ :new, :create ]
   get "/login", to: "sessions#new"
   get "/auth/:provider/callback", to: "omniauth_sessions#create"

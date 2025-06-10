@@ -88,6 +88,7 @@ class Home::EventsController < ApplicationController
       .left_joins(:seens)
       .where(city: { name: @city.name })
       .where(start_date: @time_period.start_date..@time_period.end_date)
+      .includes(:location)
 
     if @time_period.start_time.present?
       @events = @events.where("start_time >= ?", @time_period.start_time)
