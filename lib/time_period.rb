@@ -110,7 +110,7 @@ class TimePeriod
     @start_time ||= if today?
       current_time
     elsif tonight?
-      NIGHT_START_TIME
+      [ NIGHT_START_TIME, current_time ].max
     end
   end
 
