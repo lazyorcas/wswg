@@ -43,10 +43,11 @@ class Map::EventsController < ApplicationController
   end
 
   def add_event_to_seen_events
-    return if Current.person.seen_events.include?(@event)
-
-    Current.person.seen_events << @event
-    Current.person.save!
+    Person::AddEventToSeenEventsJob.perform_later(
+      person_type: Current.person.class.name,
+      person_id: Current.person.id,
+      event_id: @event.id
+    )
   end
 
   def event_scope

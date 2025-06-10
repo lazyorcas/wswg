@@ -16,7 +16,7 @@ class Home::EventsController < ApplicationController
 
   layout "home"
 
-  after_action :create_seen, only: [ :redirect ], unless: -> { browser.bot? }
+  after_action :add_event_to_seen_events, only: [ :redirect ], unless: -> { browser.bot? }
 
   helper_method :nearby?
 
@@ -155,12 +155,11 @@ class Home::EventsController < ApplicationController
     @event = Event.find(params[:id])
   end
 
-  def create_seen
-    return if Current.person.seen_events.include?(@event)
-
-    Current.person.seen_events << @event
-    Current.person.save!
-  rescue => e
-    Sentry.capture_exception(e)
+  def add_event_to_seen_events
+    Person::AddEventToSeenEventsJob.perform_later(
+      person_type: Current.person.class.name,
+      person_id: Current.person.id,
+      event_id: @event.id
+    )
   end
 end
