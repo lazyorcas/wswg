@@ -44,7 +44,32 @@
         <%= line_chart @wday_views %>
       <% end %>
       <%= render "chart", title: "Visits by Hour of Day" do %>
-        <%= line_chart @hour_views, xmax: 23 %>
+        <%= pie_chart @hour_views, legend: "right", colors: [
+          "#1e1a4d", # 0:00
+          "#1e1a4d", # 1:00
+          "#1e1a4d", # 2:00
+          "#1e1a4d", # 3:00
+          "#1e1a4d", # 4:00
+          "#1447e6", # 5:00
+          "#1447e6", # 6:00
+          "#1447e6", # 7:00
+          "#51a2ff", # 8:00
+          "#51a2ff", # 9:00
+          "#51a2ff", # 10:00
+          "#fcc800", # 11:00
+          "#fcc800", # 12:00
+          "#fcc800", # 13:00
+          "#fd9a00", # 14:00
+          "#fd9a00", # 15:00
+          "#fd9a00", # 16:00
+          "#fd9a00", # 17:00
+          "#372aac", # 18:00
+          "#372aac", # 19:00
+          "#372aac", # 20:00
+          "#312c85", # 21:00
+          "#312c85", # 22:00
+          "#312c85"  # 23:00
+        ] %>
       <% end %>
       <%= render "chart", title: "Popularity by City & Time Period (Top 20)" do %>
         <%= pie_chart @city_time_period_views, legend: "right" %>
