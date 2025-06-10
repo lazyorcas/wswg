@@ -26,21 +26,22 @@ class AnalyticsController < AdminController
       .non_user
       .where.not(device_type: nil)
       .group(:device_type)
-      .group_by_period(@time_interval, :started_at, range: @time_range, expand_range: true)
+      .where(started_at: @time_range)
       .order("device_type ASC")
       .count
     @visits_by_browser = Ahoy::Visit
       .non_user
       .where.not(browser: nil)
       .group(:browser)
-      .group_by_period(@time_interval, :started_at, range: @time_range, expand_range: true)
+      .where(started_at: @time_range)
       .order("browser ASC")
       .count
     @visits_by_referring_domain = Ahoy::Visit
       .non_user
       .where.not(referring_domain: nil)
       .group(:referring_domain)
-      .group_by_period(@time_interval, :started_at, range: @time_range, expand_range: true)
+      .where(started_at: @time_range)
+      .order("referring_domain ASC")
       .count
     @pricing_page_events = build_ahoy_events_page_events_data("Visited pricing page")
     @city_events_page_events = build_ahoy_events_page_events_data("Viewed events")
@@ -112,14 +113,16 @@ class AnalyticsController < AdminController
       .map { |hour| [ hour, hour_views_h[hour] || 0 ] }
       .sort_by { |(hour, _)| hour }
 
-    @city_time_period_views = build_ahoy_events_popularity_data(
-      [ "properties->>'city'", "properties->>'time_period'" ],
-      label_format: ->(city, period) { "#{city} - #{period}" },
-    ).map { |series| [ series[:name], series[:data].values.sum ] }
-    .sort_by { |(_, count)| count }
-    .reverse
-    .take(20)
-    .to_h
+    @city_time_period_views = Ahoy::Event
+      .non_user
+      .where(name: "Viewed events")
+      .where(time: @time_range)
+      .group("properties->>'city'", "properties->>'time_period'")
+      .count
+      .transform_keys { |(city, period)| "#{city} - #{period}" }
+      .sort_by { |(_, count)| count }
+      .reverse
+      .take(20)
 
     @nearby_events_page_views = Ahoy::Event
       .non_user
@@ -139,7 +142,7 @@ class AnalyticsController < AdminController
       .joins("INNER JOIN city_sources ON city_sources.id = events.city_source_id")
       .joins("INNER JOIN cities ON cities.id = city_sources.city_id")
       .group("cities.name")
-      .group_by_period(@time_interval, :created_at, range: @time_range, expand_range: true)
+      .where(created_at: @time_range)
       .order("cities.name ASC")
       .count
 
@@ -147,7 +150,7 @@ class AnalyticsController < AdminController
       .non_user
       .where(name: "Visited map page")
       .where("properties->>'city' IS NOT NULL")
-      .where("ahoy_events.time >= ?", @start_date)
+      .where(time: @time_range)
       .group("properties->>'city'")
       .count
       .sort_by { |(_, count)| count }
@@ -156,7 +159,7 @@ class AnalyticsController < AdminController
       .non_user
       .where(name: [ "Searched", "Searched on map" ])
       .where("properties->>'query' IS NOT NULL")
-      .where("ahoy_events.time >= ?", @start_date)
+      .where(time: @time_range)
       .group("properties->>'query'")
       .count
       .sort_by { |(_, count)| count }
@@ -165,7 +168,7 @@ class AnalyticsController < AdminController
       .non_user
       .where(name: "Visited sign up page")
       .where("properties->'params'->>'source' IS NOT NULL")
-      .where("ahoy_events.time >= ?", @start_date)
+      .where(time: @time_range)
       .group("properties->'params'->>'source'")
       .count
       .sort_by { |(_, count)| count }
@@ -244,24 +247,6 @@ class AnalyticsController < AdminController
       .where(name: event_name)
       .group_by_period(@time_interval, :time, range: @time_range, expand_range: true)
       .count
-  end
-
-  def build_ahoy_events_popularity_data(group_by_columns, label_format: nil)
-    label_format ||= ->(*values) { values.first }
-
-    Ahoy::Event
-      .non_user
-      .where(name: "Viewed events")
-      .group(*Array(group_by_columns))
-      .group_by_period(@time_interval, :time, range: @time_range, expand_range: true)
-      .count
-      .group_by { |values, _| label_format.call(*values[0...-1]) }
-      .map { |label, data|
-        {
-          name: label,
-          data: data.each_with_object({}) { |((*_, date), count), hash| hash[date.to_date] = count }
-        }
-      }
   end
 
   def ordinal_suffix(day)

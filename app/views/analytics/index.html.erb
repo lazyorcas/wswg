@@ -17,12 +17,6 @@
       <%= render "chart", title: "Ahoy Visitors" do %>
         <%= line_chart @visitors %>
       <% end %>
-      <%= render "chart", title: "Ahoy Visits by Device" do %>
-        <%= line_chart @visits_by_device %>
-      <% end %>
-      <%= render "chart", title: "Ahoy Visits by Browser" do %>
-        <%= line_chart @visits_by_browser %>
-      <% end %>
       <%= render "chart", title: "Ahoy Events - Pricing Page" do %>
         <%= line_chart @pricing_page_events %>
       <% end %>
@@ -32,11 +26,17 @@
       <%= render "chart", title: "Ahoy Events - Homepage" do %>
         <%= line_chart @homepage_events %>
       <% end %>
-      <%= render "chart", title: "Ahoy Visits by Referring Domain" do %>
-        <%= column_chart @visits_by_referring_domain, stacked: true, legends: false %>
-      <% end %>
       <%= render "chart", title: "Ahoy Visitor Retention" do %>
         <%= line_chart @visitor_retention, suffix: "%", xtitle: "nth #{@time_interval}" %>
+      <% end %>
+      <%= render "chart", title: "Ahoy Visits by Device" do %>
+        <%= pie_chart @visits_by_device, legend: "right" %>
+      <% end %>
+      <%= render "chart", title: "Ahoy Visits by Browser" do %>
+        <%= pie_chart @visits_by_browser, legend: "right" %>
+      <% end %>
+      <%= render "chart", title: "Ahoy Visits by Referring Domain" do %>
+        <%= pie_chart @visits_by_referring_domain, legend: "right" %>
       <% end %>
     <% end %>
     <%= render "charts", title: "SEO - City Events Pages" do %>
@@ -56,7 +56,7 @@
         <%= line_chart @seens %>
       <% end %>
       <%= render "chart", title: "Non-user Seens by City" do %>
-        <%= column_chart @seens_by_city, stacked: true %>
+        <%= pie_chart @seens_by_city, legend: "right" %>
       <% end %>
     <% end %>
     <%= render "charts", title: "SEO - Map & Search" do %>
