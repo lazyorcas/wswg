@@ -1,11 +1,11 @@
 <%= tag.section class: "flex flex-col gap-y-2 h-full", data: { map_target: "source", bottom_sheet_target: "content" } do %>
   <div class="shrink-0 text-sm">
     <% if events.any? %>
-      <p class="px-4 pt-4">
+      <p class="px-4 pt-6">
         Found <%= events.size %> events for <%= summary %>.
       </p>
     <% else %>
-      <p class="p-4">
+      <p class="px-4 py-6">
         Nothing found for <%= summary %>. <b>Try other keywords.</b>
       </p>
     <% end %>

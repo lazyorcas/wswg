@@ -1,7 +1,7 @@
 <%= turbo_frame_tag dom_id(@event) do %>
   <%= tag.div class: class_names("flex flex-col", helpers.browser.device.mobile? ? "h-full" : "popup"), data: { no_location: @event.location.nil?, bottom_sheet_target: helpers.browser.device.mobile? ? "content" : nil } do %>
-    <div class="shrink-0 h-4"></div>
-    <div class="h-full no-scrollbar flex flex-col gap-y-4 px-4 pb-4 overflow-y-scroll md:overflow-y-auto" data-bottom-sheet-target="nonDraggable">
+    <div class="shrink-0 pt-6"></div>
+    <div class="h-full no-scrollbar flex flex-col gap-y-4 px-4 pb-6 overflow-y-scroll md:overflow-y-auto" data-bottom-sheet-target="nonDraggable">
       <%= image_tag @event.image_url, class: "aspect-square object-contain rounded-lg w-full h-auto md:h-fit md:w-80 md:max-w-80", referrerpolicy: "no-referrer" %>
       <h1 class="text-base/5 md:text-lg/6 font-bold line-clamp-4 md:line-clamp-3 shrink-0" style="word-break: break-word;"><%= @event.title %></h1>
       <div class="flex flex-col gap-y-1">
