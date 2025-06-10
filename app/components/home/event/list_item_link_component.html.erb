@@ -12,7 +12,7 @@
             <%= image_tag source_icon_url, class: "inline-flex event-source-icon", loading: "lazy", alt: "Event source icon" %>
             <span class="text-xs"><%= @event.source.name %></span>
             <% if @event.seen_count.positive? %>
-              <span class="ml-auto md:ml-2 tag tag--hot font-semibold flex items-center gap-x-1">
+              <span class="ml-auto tag tag--hot font-semibold flex items-center gap-x-1">
                 <i class="ph-fill ph-fire"></i>
                 Popular
               </span>
