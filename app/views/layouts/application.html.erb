@@ -16,10 +16,6 @@
     <%= tag.link rel: "manifest", href: pwa_manifest_path(format: :json) %>
     <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
-    <%= javascript_import_module_tag "stimulus"%>
-    <%= javascript_import_module_tag "@hotwired/stimulus"%>
-    <%= javascript_import_module_tag "@hotwired/stimulus-loading"%>
-    <%= javascript_import_module_tag "controllers"%>
     <%= Sentry.get_trace_propagation_meta.html_safe %>
   </head>
   <body class="min-h-dvh">
