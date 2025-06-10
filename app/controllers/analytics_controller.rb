@@ -67,10 +67,8 @@ class AnalyticsController < AdminController
       end
       @visitor_retention_total = @visitor_retention.first[1]
       @visitor_retention.each_with_index do |day, index|
-        if index == 0
-          day[0] = "#{day[0]} (#{@visitor_retention_total})"
-        end
-        day[1] = (day[1].to_f / @visitor_retention_total * 100).ceil
+        day[0] = "#{day[0]} (#{day[1]})"
+        day[1] = (day[1].to_f / @visitor_retention_total * 100).round(2)
       end
     end
 
