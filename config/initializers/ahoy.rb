@@ -14,6 +14,10 @@ class Ahoy::Store < Ahoy::DatabaseStore
     "/analytics"
   ].freeze
 
+  EXCLUDED_PATH_PATTERNS = [
+    /\/events\/[0-9]+\/redirect/
+  ].freeze
+
   def track_visit(data)
     set_session
     set_current_user
@@ -71,5 +75,5 @@ Ahoy.geocode = false
 # Ahoy.job_queue = :low_priority
 
 Ahoy.exclude_method = lambda do |controller, request|
-  Ahoy::Store::EXCLUDED_PATHS.any? { |path| request.path.start_with?(path) }
+  Ahoy::Store::EXCLUDED_PATHS.any? { |path| request.path.start_with?(path) } || Ahoy::Store::EXCLUDED_PATH_PATTERNS.any? { |pattern| request.path.match?(pattern) }
 end
