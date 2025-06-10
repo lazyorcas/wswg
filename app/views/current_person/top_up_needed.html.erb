@@ -1,21 +1,20 @@
 <% content_for :title, "Top up needed | Where Should We Go" %>
-<div class="dark:bg-stone-800">
-  <div class="h-dvh max-h-dvh flex flex-col container mx-auto px-4">
-    <div class="my-auto flex flex-col items-center">
-      <header class="flex flex-col md:gap-y-1 text-center">
-        <h1 class="text-2xl md:text-3xl font-bold">You have no credits left for this month.</h1>
-        <%= link_to "View pricing", pricing_path, class: "text-sm text-secondary hover:underline" %>
-      </header>
-      <div class="py-4 md:py-8 w-fit">
-        <%= link_to signed_in? ? current_user_top_up_credits_path : new_user_path(source: "Top up needed page"), class: "button button--primary" do %>
-          <% if signed_in? %>
-            <i class="ph-fill ph-coin"></i>
-            Top up
-          <% else %>
-            Claim more free credits
-          <% end %>
-        <% end %>
-      </div>
-    </div>
+<div class="w-full h-dvh flex flex-col gap-y-8 items-center justify-center dark:bg-stone-900 px-4 md:px-0">
+  <h1 class="text-3xl font-bold text-center">No credits left for this month.</h1>
+  <div class="w-full md:max-w-100 flex flex-col gap-y-2">
+    <%= link_to signed_in? ? current_user_top_up_credits_path : new_user_path(source: "Top up needed page"), class: "button button--primary w-full" do %>
+      <% if signed_in? %>
+        <i class="ph-fill ph-coin"></i>
+        Top up
+      <% else %>
+        Claim more free credits
+      <% end %>
+    <% end %>
+    <%= link_to "View pricing", pricing_path, class: "button button--secondary", target: "_blank" %>
+    <% if request.referer.present? %>
+      <%= link_to "Back", :back, class: "button button--ghost" %>
+    <% else %>
+      <%= link_to "Back", root_path, class: "button button--ghost" %>
+    <% end %>
   </div>
 </div>

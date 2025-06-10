@@ -4,7 +4,7 @@ export default class extends Controller {
   static targets = [ "message" ]
 
   connect() {
-    this.shownDuration = 5000
+    this.shownDuration = 10000
   }
 
   messageTargetConnected(target) {

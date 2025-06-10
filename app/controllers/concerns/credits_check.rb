@@ -1,6 +1,8 @@
 module CreditsCheck
   extend ActiveSupport::Concern
 
+  include Rails.application.routes.url_helpers
+
   class_methods do
     def require_credits(options = {})
       before_action :require_credits!, options
@@ -20,7 +22,7 @@ module CreditsCheck
           redirect_to(top_up_needed_path, status: :temporary_redirect)
         end
         format.turbo_stream do
-          flash.now[:error] = "You don't have enough credits. Top up to continue."
+          flash.now[:error] = "You don't have enough credits. <a href='#{top_up_needed_path}' class='link'>Top up</a> to continue.".html_safe
           turbo_stream_flash(status: :payment_required)
         end
       end
