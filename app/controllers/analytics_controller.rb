@@ -240,7 +240,8 @@ class AnalyticsController < AdminController
       .group_by_period(@time_interval, :created_at, range: @time_range, expand_range: true)
       .count
 
-    @days_between_visits_distribution = days_between_visits_distribution
+    @days_between_first_and_second_visits = days_between_visits(second_is_last: false)
+    @days_between_first_and_last_visits = days_between_visits(second_is_last: true)
   end
 
   private
@@ -278,14 +279,14 @@ class AnalyticsController < AdminController
     end
   end
 
-  def days_between_visits_distribution
+  def days_between_visits(second_is_last: false)
     visitors = Visitor
       .joins(:visits)
       .select("
         visitors.visitor_token,
         MIN(visits.started_at) as first_visit_at,
         (
-          SELECT MIN(v2.started_at)
+          SELECT #{second_is_last ? "MAX" : "MIN"}(v2.started_at)
           FROM ahoy_visits v2
           WHERE v2.visitor_token = visitors.visitor_token
           AND v2.started_at > MIN(visits.started_at)
