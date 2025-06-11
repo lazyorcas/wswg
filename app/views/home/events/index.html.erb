@@ -14,10 +14,6 @@
   <section class="py-10 w-full flex flex-col xl:flex-row gap-y-8 xl:gap-y-0 xl:gap-x-8">
     <section class="grow -mx-4 xl:mx-auto flex flex-col">
       <p class="px-4 text-sm">
-        <% if @events.any? %>
-          <%= @events.size %>/<%= @all_events_count %> events are shown. <%= link_to "See all events", map_path(city_id: @city.id), class: "link", rel: "nofollow", data: { turbo: false } %>.
-          <br />
-        <% end %>
         Alternatively, you can view <%= @alternate_link_attributes.map { |link| link_to link[:title], link[:href], class: "link" }.to_sentence.html_safe %>.
       </p>
       <% if (@time_period.today? || @time_period.tonight? || @time_period.all? || @time_period.this_week?) && @events.any? %>

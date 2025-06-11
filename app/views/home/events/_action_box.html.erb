@@ -1,9 +1,3 @@
 <section class="py-8 self-center xl:self-start md:p-0 shrink-0 h-fit xl:max-w-xl xl:sticky xl:top-16 flex flex-col gap-y-4">
   <%= render "map"%>
-  <% unless signed_in? %>
-    <% unless browser.device.mobile? %>
-      <hr class="border-primary" />
-    <% end %>
-    <%= render "get_notified_form" %>
-  <% end %>
 </section>
