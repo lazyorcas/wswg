@@ -23,7 +23,7 @@ class Map::EventsController < ApplicationController
   private
 
   def load_events
-    @events = event_scope.where(start_date: @city.time_zone.current_date..)
+    @events = event_scope.where("CONCAT(start_date, 'T', start_time) >= ?", "#{@city.time_zone.current_date}T#{@city.time_zone.current_time}")
   end
 
   def order_events
