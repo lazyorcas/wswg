@@ -15,7 +15,7 @@
       features: [
         [true, "No sign up needed."],
         [true, "Map view"],
-        [true, "#{Credits::MONTHLY_FREE_CREDITS} free day credits per month"],
+        [true, "#{Credits::MONTHLY_FREE_CREDITS} free days per month"],
         [false, "Bookmark / Save for later"],
       ],
       cta: "Get Started",
@@ -26,9 +26,9 @@
       price: Money.from_amount(5).exchange_to(@city&.currency || "USD").format,
       description: "Perfect for frequent searches",
       features: [
-        [true, "10 day credits. No expiration."],
+        [true, "10 days. No expiration."],
         [true, "Map view"],
-        [true, "#{Credits::MONTHLY_FREE_CREDITS} free day credits per month"],
+        [true, "#{Credits::MONTHLY_FREE_CREDITS} free days per month"],
         [true, "Bookmark / Save for later"],
       ],
       cta: signed_in? ? "Top up" : "Get Started",
@@ -39,16 +39,16 @@
     <h2 class="text-2xl font-bold text-center mb-8">Frequently Asked Questions</h2>
     <div class="flex flex-col gap-y-4">
       <%= render "faq_item",
-        question: "What is a day credit?",
-        answer: "One day credit is consumed when you use our search engine within a 24-hour window. Only one day credit is counted within this period, regardless of how many searches you perform."
+        question: "Must I use all 10 days consecutively?",
+        answer: "No, not at all. You can use the days as you need them."
       %>
       <%= render "faq_item",
-        question: "When do I receive free day credits?",
-        answer: "Users with zero day credits at the beginning of each month will automatically receive #{Credits::MONTHLY_FREE_CREDITS} free day credits."
+        question: "When do I receive free days?",
+        answer: "Users with zero days at the beginning of each month will automatically receive #{Credits::MONTHLY_FREE_CREDITS} free days."
       %>
       <%= render "faq_item",
-        question: "How do I get more day credits?",
-        answer: "You can purchase additional day credits through our \"Pay As You Go\" plan."
+        question: "How do I get more days?",
+        answer: "You can purchase additional days through our \"Pay As You Go\" plan."
       %>
     </div>
   </section>
