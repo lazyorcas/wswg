@@ -22,18 +22,19 @@ class Ahoy::Store < Ahoy::DatabaseStore
     set_session
     set_current_user
 
+    ip = request.env["HTTP_CF_CONNECTING_IP"] || request.remote_ip
     lat = request.env["HTTP_CF_IPLATITUDE"]
     lon = request.env["HTTP_CF_IPLONGITUDE"]
 
     if current_user.present?
       data[:user_id] = current_user.id
-      anonymized_data = Ahoy::Visit.anonymize(ip: request.remote_ip, lat: lat.to_f, lon: lon.to_f)
+      anonymized_data = Ahoy::Visit.anonymize(ip: ip, lat: lat.to_f, lon: lon.to_f)
 
       data[:ip] = anonymized_data[:ip]
       data[:latitude] = anonymized_data[:lat]
       data[:longitude] = anonymized_data[:lon]
     else
-      data[:ip] = request.env["HTTP_CF_CONNECTING_IP"] || request.remote_ip
+      data[:ip] = ip
       data[:latitude] = lat.to_f
       data[:longitude] = lon.to_f
     end
