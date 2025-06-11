@@ -1,9 +1,21 @@
 class HomeController < ApplicationController
+  EVENT_LIMIT = 20
+
   include CityDetection
 
   layout "home"
 
   def index
+    load_nearby_city
+
+    if @city.present?
+      load_events
+      order_events
+      limit_events
+    end
+
+    load_enabled_cities
+
     ahoy.track "Visited homepage"
   end
 
@@ -15,15 +27,41 @@ class HomeController < ApplicationController
 
   def local_events_directory
     load_enabled_cities
+
+    ahoy.track "Visited local events directory"
   end
 
   private
 
-  def load_enabled_cities
-    @enabled_cities = City.enabled.order(:name)
+  def load_nearby_city
+    @city = get_city_from_visit
+  end
+
+  def load_events
+    @events = Event
+      .joins(:city)
+      .left_joins(:seens)
+      .where(city: { name: @city.name })
+      .where("CONCAT(start_date, 'T', start_time) >= ?", "#{@city.time_zone.current_date}T#{@city.time_zone.current_time}")
+      .includes(:location)
+  end
+
+  def order_events
+    @events = @events
+      .select("events.*, COUNT(seens.id) as seen_count")
+      .group("events.id")
+      .order("seen_count DESC, events.start_date, events.start_time")
+  end
+
+  def limit_events
+    @events = @events.limit(EVENT_LIMIT)
   end
 
   def load_city
     @city = get_city_from_visit || get_city_from_current_person
+  end
+
+  def load_enabled_cities
+    @enabled_cities = City.enabled.order(:name)
   end
 end
