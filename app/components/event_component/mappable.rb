@@ -19,7 +19,7 @@ module EventComponent::Mappable
       nil
 
     {
-      action: "map#showFeaturePopup bottom-sheet#collapse",
+      action: "bottom-sheet#collapse map#showFeaturePopup",
       map_target: location.present? ? "item" : nil,
       map_feature: {
         type: "Feature",

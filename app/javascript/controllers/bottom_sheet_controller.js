@@ -48,6 +48,10 @@ export default class extends Controller {
     // }
   }
 
+  emptyBottomSheet() {
+    this.bottomSheetTarget.innerHTML = ""
+  }
+
   collapse() {
     if (this.#isMobile()) {
       this.bottomSheetTarget.style.height = 0;

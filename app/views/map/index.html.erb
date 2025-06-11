@@ -17,6 +17,12 @@
         src: @content_path, 
         class: "grow min-h-0 map-content" %>
     </div>
+    <% if browser.device.mobile? %>
+      <%= turbo_frame_tag "event-bottom-sheet", 
+      class: "popup popup--bottom-sheet bottom-sheet-transition z-[11]",
+      data: { controller: "bottom-sheet", bottom_sheet_target: "bottomSheet" }
+    %>
+    <% end %>
   </section>
   <div class="absolute py-4 md:py-8 right-4 md:right-8">
     <%= render partial: "person" %>

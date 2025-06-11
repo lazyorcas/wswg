@@ -132,7 +132,7 @@
   }
 
   .button--ghost {
-    @apply bg-transparent;
+    @apply bg-white dark:bg-stone-900;
     @apply hover:bg-stone-200 dark:hover:bg-stone-700;
     @apply text-stone-900 dark:text-stone-100;
   }
@@ -204,7 +204,7 @@
   @media (max-width: 48rem) {
     .popup--bottom-sheet:has(*) {
       @apply fixed inset-x-0 bottom-0;
-      @apply min-h-[128px] max-h-[calc(100dvh-128px)] h-[calc(100dvh-128px)];
+      @apply min-h-[136px] max-h-[calc(100dvh-136px)] h-[calc(100dvh-136px)];
       @apply rounded-none rounded-t-xl;
       @apply border-b-0 border-x-0 border-t;
     }
