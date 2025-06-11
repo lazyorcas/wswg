@@ -110,8 +110,8 @@ class Home::EventsController < ApplicationController
       @events = @events.where("start_date >= ?", @time_period.start_date)
     end
 
-    if @time_period.end_date.present? && @time_period.start_date != @time_period.end_date
-      @events = @events.where("start_date <= ?", @time_period.end_date)
+    if @time_period.end_date.present?
+      @events = @events.where("end_date <= ?", @time_period.end_date)
     end
   end
 
