@@ -42,9 +42,9 @@
             <details class="group">
               <summary class="text-xs text-secondary flex gap-x-1 cursor-pointer group-open:mb-2">
                 <i class="ph ph-caret-down size-4 group-open:rotate-180 transition-transform shrink-0"></i>
-                <span class="group-hover:underline">More details</span>
+                <span class="underline">More details</span>
               </summary>
-              <blockquote class="text-sm text-primary bg-stone-100 dark:bg-stone-800 p-4 rounded-lg -ml-20 overflow-y-scroll max-h-80 md:max-h-96" style="word-break: break-word;">
+              <blockquote class="text-sm text-primary bg-stone-100 dark:bg-stone-800 p-4 rounded-lg -ml-20 overflow-y-scroll max-h-96 md:max-h-128" style="word-break: break-word;">
                 <%= turbo_frame_tag "event_#{@event.id}_description", src: event_description_path(@event), class: "flex flex-col gap-y-1", data: { nosnippet: true }, loading: "lazy" do %>
                   <span class="flex gap-x-2 items-center">
                     <i class="ph ph-spinner animate-spin shrink-0"></i>
