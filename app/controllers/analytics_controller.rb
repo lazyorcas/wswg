@@ -292,7 +292,7 @@ class AnalyticsController < AdminController
           AND v2.started_at > MIN(visits.started_at)
         ) as second_visit_at
       ")
-      .where(visits: { id: Ahoy::Visit.pluck(:id) })
+      .where(visits: { id: Ahoy::Visit.non_user.pluck(:id) })
       .group("visitors.visitor_token")
       .having("COUNT(visits.id) >= 2")
 
