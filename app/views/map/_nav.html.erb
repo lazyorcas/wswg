@@ -8,7 +8,7 @@
       class: class_names("map-tab-button", link[3] ? "map-tab-button--active" : "map-tab-button--inactive"), 
       data: link[4] ? { 
         turbo_frame: "content",
-        home_nav_target: "link"
+        map_nav_target: "link"
       } : nil do %>
       <%= tag.i class: class_names(link[1], link[3] ? "ph-fill" : "ph") %>
       <%= link[0] %>
