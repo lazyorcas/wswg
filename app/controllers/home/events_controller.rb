@@ -17,8 +17,8 @@ class Home::EventsController < ApplicationController
 
   layout "home"
 
-  protect_from_bots only: [ :redirect ]
-  after_action :add_event_to_seen_events, only: [ :redirect ]
+  protect_from_bots only: [ :show ]
+  after_action :add_event_to_seen_events, only: [ :show ]
 
   helper_method :nearby?
 
@@ -70,9 +70,8 @@ class Home::EventsController < ApplicationController
     end
   end
 
-  def redirect
+  def show
     load_event
-    redirect_to(@event.url, allow_other_host: true)
   end
 
   private

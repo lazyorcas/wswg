@@ -14,9 +14,7 @@ class Ahoy::Store < Ahoy::DatabaseStore
     "/analytics"
   ].freeze
 
-  EXCLUDED_PATH_PATTERNS = [
-    /\/events\/[0-9]+\/redirect/
-  ].freeze
+  EXCLUDED_PATH_PATTERNS = [].freeze
 
   def track_visit(data)
     set_session
