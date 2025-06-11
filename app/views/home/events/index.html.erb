@@ -20,7 +20,7 @@
         <p class="mt-4 px-4 text-sm text-secondary italic">Past events are not shown.</p>
       <% end %>
       <% if @events.any? %>
-        <ol class="my-4 flex flex-col">
+        <ol class="my-4 flex flex-col" data-controller="event-list">
           <%= render partial: "event", collection: @events.first(mobile_map_shown_at_index), cached: -> (event) { build_event_cache_key(event) } %>
           <% if browser.device.mobile? %>
             <li class="shrink-0">
