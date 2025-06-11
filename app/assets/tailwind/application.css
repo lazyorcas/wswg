@@ -131,6 +131,13 @@
     @apply text-brand-900 dark:text-brand-200;
   }
 
+  .button--disabled {
+    @apply bg-stone-200 dark:bg-stone-700;
+    @apply text-stone-400 dark:text-stone-500;
+    @apply cursor-not-allowed;
+    @apply pointer-events-none;
+  }
+
   .button--ghost {
     @apply bg-white dark:bg-stone-900;
     @apply hover:bg-stone-200 dark:hover:bg-stone-700;

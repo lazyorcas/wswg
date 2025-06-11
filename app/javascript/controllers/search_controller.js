@@ -1,7 +1,7 @@
 import { Controller } from "@hotwired/stimulus";
 
 export default class extends Controller {
-  static targets = ["searchInput", "results", "status"];
+  static targets = ["searchInput", "submitButton", "results", "status"];
   
   clear() {
     this.resultsTarget.innerHTML = "";
@@ -15,6 +15,16 @@ export default class extends Controller {
     if (e.target.value === "") {
       this.clear();
     }
+  }
+
+  enable() {
+    this.submitButtonTarget.classList.remove("button--disabled");
+    this.submitButtonTarget.classList.add("button--primary");
+  }
+
+  disable() {
+    this.submitButtonTarget.classList.remove("button--primary");
+    this.submitButtonTarget.classList.add("button--disabled");
   }
 
   showStatus() {
