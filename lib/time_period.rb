@@ -80,7 +80,7 @@ class TimePeriod
     elsif tomorrow?
       current_date + 1.day
     elsif this_week?
-      [ current_date.beginning_of_week, current_date ].max
+      current_date
     elsif this_weekend?
       [ current_date.beginning_of_week.next_occurring(:saturday), current_date ].max
     elsif next_week?
