@@ -53,7 +53,20 @@ class Home::EventsController < ApplicationController
     ahoy.track "Viewed events", city: @city.name, time_period: @time_period.to_s, nearby: nearby?
 
     if @events.empty? && @current_time.hour > 8
-      Sentry.capture_message("No events", extra: { city: @city.name, time_period: @time_period.to_s, current_time: @current_time.strftime("%H:%M:%S") })
+      extra = {
+        city: @city.name,
+        time_period: @time_period.to_s,
+        current_time: @current_time.strftime("%H:%M:%S")
+      }
+
+      if browser.bot?
+        Sentry.capture_message("No events for bot", extra: {
+          **extra,
+          bot_name: browser.bot.name
+        })
+      else
+        Sentry.capture_message("No events for visitor", extra: extra)
+      end
     end
   end
 
