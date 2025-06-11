@@ -17,6 +17,12 @@ class HomeController < ApplicationController
     load_enabled_cities
 
     ahoy.track "Visited homepage"
+
+    if browser.bot? && browser.bot.search_engine?
+      Sentry.capture_message("[Search Engine] Visited homepage", extra: {
+        bot_name: browser.bot.name
+      })
+    end
   end
 
   def pricing

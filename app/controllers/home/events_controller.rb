@@ -52,6 +52,16 @@ class Home::EventsController < ApplicationController
 
     ahoy.track "Viewed events", city: @city.name, time_period: @time_period.to_s, nearby: nearby?
 
+    if browser.bot? && browser.bot.search_engine?
+      Sentry.capture_message("[Search Engine] Viewed events", extra: {
+        city: @city.name,
+        time_period: @time_period.to_s,
+        current_time: @current_time.strftime("%H:%M:%S"),
+        nearby: nearby?,
+        bot_name: browser.bot.name
+      })
+    end
+
     if @events.empty? && @current_time.hour > 8
       extra = {
         city: @city.name,
