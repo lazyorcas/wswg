@@ -36,7 +36,6 @@
                 <% end %>
               </div>
               <%= link_to map_path(city_id: @city.id), class: "absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 button button--secondary", rel: "nofollow", data: { turbo: false } do %>
-                <i class="ph ph-list-bullets"></i>
                 View <%= @all_events_count - @events.size %> more events
               <% end %>
             </li>
