@@ -239,6 +239,8 @@ class AnalyticsController < AdminController
       .order("sources.name ASC")
       .group_by_period(@time_interval, :created_at, range: @time_range, expand_range: true)
       .count
+
+    @days_between_visits_distribution = days_between_visits_distribution
   end
 
   private
@@ -274,5 +276,42 @@ class AnalyticsController < AdminController
     when 3 then "rd"
     else "th"
     end
+  end
+
+  def days_between_visits_distribution
+    visitors = Visitor
+      .joins(:visits)
+      .select("
+        visitors.visitor_token,
+        MIN(visits.started_at) as first_visit_at,
+        (
+          SELECT MIN(v2.started_at)
+          FROM ahoy_visits v2
+          WHERE v2.visitor_token = visitors.visitor_token
+          AND v2.started_at > MIN(visits.started_at)
+        ) as second_visit_at
+      ")
+      .where(visits: { id: Ahoy::Visit.pluck(:id) })
+      .group("visitors.visitor_token")
+      .having("COUNT(visits.id) >= 2")
+
+    # Calculate days between visits
+    days_between = visitors.map { |visitor| (visitor.second_visit_at.to_date - visitor.first_visit_at.to_date).to_i }
+
+    # Create distribution hash with all days in range
+    min_day = days_between.min || 0
+    max_day = days_between.max || 0
+
+    # Initialize hash with all days in range set to 0
+    distribution = (min_day..max_day).each_with_object({}) do |day, hash|
+      hash[day] = 0
+    end
+
+    # Add actual counts
+    days_between.each do |days|
+      distribution[days] += 1
+    end
+
+    distribution
   end
 end

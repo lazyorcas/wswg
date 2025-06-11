@@ -29,6 +29,9 @@
       <%= render "chart", title: "Ahoy Visitor Retention" do %>
         <%= line_chart @visitor_retention, suffix: "%", xtitle: "nth #{@time_interval}" %>
       <% end %>
+      <%= render "chart", title: "Days Between First and Second Visit" do %>
+        <%= column_chart @days_between_visits_distribution %>
+      <% end %>
       <%= render "chart", title: "Ahoy Visits by Device" do %>
         <%= pie_chart @visits_by_device, legend: "right" %>
       <% end %>
