@@ -102,11 +102,16 @@ class Home::EventsController < ApplicationController
       .joins(:city)
       .left_joins(:seens)
       .where(city: { name: @city.name })
-      .where(start_date: @time_period.start_date..@time_period.end_date)
       .includes(:location)
 
     if @time_period.start_time.present?
-      @events = @events.where("start_time >= ?", @time_period.start_time)
+      @events = @events.where("CONCAT(start_date, 'T', start_time) >= ?", "#{@time_period.start_date}T#{@time_period.start_time}")
+    else
+      @events = @events.where("start_date >= ?", @time_period.start_date)
+    end
+
+    if @time_period.end_date.present? && @time_period.start_date != @time_period.end_date
+      @events = @events.where("start_date <= ?", @time_period.end_date)
     end
   end
 

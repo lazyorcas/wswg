@@ -1,7 +1,7 @@
 class TimePeriod
   attr_reader :time_zone, :time_period_symbol
 
-  NIGHT_START_TIME = "18:00".freeze
+  NIGHT_START_TIME = "18:00:00".freeze
   SYMBOLS = [
     :today,
     :tonight,
@@ -107,7 +107,7 @@ class TimePeriod
   end
 
   def start_time
-    @start_time ||= if today?
+    @start_time ||= if today? || this_week? || all?
       current_time
     elsif tonight?
       [ NIGHT_START_TIME, current_time ].max

@@ -16,7 +16,7 @@ class TimeZone
   end
 
   def current_time
-    @current_time ||= now.strftime("%H:%M")
+    @current_time ||= now.strftime("%H:%M:%S")
   end
 
   def current_date

@@ -20,7 +20,7 @@
         <% end %>
         Alternatively, you can view <%= @alternate_link_attributes.map { |link| link_to link[:title], link[:href], class: "link" }.to_sentence.html_safe %>.
       </p>
-      <% if (@time_period.today? || @time_period.tonight?) && @events.any? %>
+      <% if (@time_period.today? || @time_period.tonight? || @time_period.all? || @time_period.this_week?) && @events.any? %>
         <p class="mt-4 px-4 text-sm text-secondary italic">Past events are not shown.</p>
       <% end %>
       <% if @events.any? %>
