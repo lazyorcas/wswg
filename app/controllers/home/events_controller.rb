@@ -111,7 +111,7 @@ class Home::EventsController < ApplicationController
       .joins(:city)
       .left_joins(:seens)
       .where(city: { name: @city.name })
-      .includes(:location)
+      .includes(:location, :city)
 
     if @time_period.start_time.present?
       @events = @events.where("CONCAT(start_date, 'T', start_time) >= ?", "#{@time_period.start_date}T#{@time_period.start_time}")
@@ -131,7 +131,7 @@ class Home::EventsController < ApplicationController
   def order_events
     @events = @events
       .select("events.*, COUNT(seens.id) as seen_count")
-      .group("events.id")
+      .group("events.id, locations.id, city.id")
       .order("seen_count DESC, events.start_date, events.start_time")
   end
 
