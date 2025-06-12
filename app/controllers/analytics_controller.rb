@@ -178,6 +178,7 @@ class AnalyticsController < AdminController
       .where(name: [ "Searched", "Searched on map" ])
       .where("properties->>'query' IS NOT NULL")
       .where(time: @time_range)
+      .order(time: :desc)
       .pluck(:time, Arel.sql("properties->>'query'"))
     @sign_up_page_sources = Ahoy::Event
       .non_user
