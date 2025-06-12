@@ -1,0 +1,17 @@
+<% if ENV["SENTRY_DSN"].present? %>
+  <script
+    src="https://js.sentry-cdn.com/f5a68701755ff9bc3b80293fe1869d85.min.js"
+    crossorigin="anonymous"
+  ></script>
+  <script>
+    window.sentryOnLoad = function () {
+      Sentry.init({
+        dsn: "<%= ENV["SENTRY_DSN"] %>",
+        sendDefaultPii: true,
+        tracesSampleRate: 0.2,
+        profilesSampleRate: 1.0,
+      });
+    };
+  </script>
+  <%= Sentry.get_trace_propagation_meta.html_safe %>
+<% end %>
