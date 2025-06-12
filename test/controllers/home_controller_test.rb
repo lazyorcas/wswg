@@ -11,6 +11,11 @@ class HomeControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
+  test "should get local events directory" do
+    get local_events_directory_url
+    assert_response :success
+  end
+
   test "every city_events url" do
     City.all.each do |city|
       TimePeriod::SYMBOLS.each do |time_period_symbol|
