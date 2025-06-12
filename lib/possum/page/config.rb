@@ -6,7 +6,7 @@ module Possum::Page::Config
   BLOCKED_VIDEO_EXTENSIONS = %w[.mp4 .avi .mov .mkv .webm]
   BLOCKED_SOUND_EXTENSIONS = %w[.mp3 .ogg .wav .aac .flac]
   BLOCKED_FONT_EXTENSIONS = %w[.woff .woff2 .ttf .otf .eot]
-  BLOCKED_DOMAINS = %w[www.googletagmanager.com]
+  BLOCKED_DOMAINS = %w[www.googletagmanager.com cdn.evbstatic.com img.evbuc.com]
   BLOCKED_FILETYPES =
     BLOCKED_IMAGE_EXTENSIONS +
     BLOCKED_VIDEO_EXTENSIONS +
