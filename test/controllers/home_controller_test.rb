@@ -1,6 +1,6 @@
-require "test_helper"
+require "application_controller_test_case"
 
-class HomeControllerTest < ActionDispatch::IntegrationTest
+class HomeControllerTest < ApplicationControllerTestCase
   test "should get root" do
     get root_url
     assert_response :success
@@ -31,7 +31,8 @@ class HomeControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "every nearby_events url" do
-    headers = build_cloudflare_http_headers
+    headers = build_human_headers
+
     TimePeriod::SYMBOLS.each do |time_period_symbol|
       if time_period_symbol == :all
         get all_nearby_events_url, headers: headers
@@ -39,6 +40,22 @@ class HomeControllerTest < ActionDispatch::IntegrationTest
         get nearby_events_url(time_period_slug: TimePeriod.slugify(time_period_symbol)), headers: headers
       end
       assert_response :success
+    end
+  end
+
+  test "visitor should generate a visit" do
+    headers = build_human_headers
+
+    assert_difference "Ahoy::Visit.count", 1 do
+      get root_url, headers: headers
+    end
+  end
+
+  test "bot should not generate a visit" do
+    headers = build_bot_headers
+
+    assert_difference "Ahoy::Visit.count", 0 do
+      get root_url, headers: headers
     end
   end
 end
