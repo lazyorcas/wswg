@@ -102,7 +102,7 @@
       <% end %>
       <%= render "chart", title: "Search queries" do %>
         <table class="min-w-full">
-          <tbody class="bg-white divide-y divide-primary overflow-y-scroll flex flex-col"  style="max-height: 300px;">
+          <tbody class="divide-y divide-primary overflow-y-scroll flex flex-col"  style="max-height: 300px;">
             <% @map_page_queries.each do |time, query| %>
               <tr>
                 <td class="py-2 px-4 text-sm text-secondary min-w-32 w-32 max-w-32">
