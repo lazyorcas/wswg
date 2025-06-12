@@ -3,8 +3,6 @@ require_relative "../config/environment"
 require "rails/test_help"
 require "passwordless/test_helpers"
 
-# Geocoder.configure(lookup: :test, ip_lookup: :test)
-
 module ActiveSupport
   class TestCase
     # Run tests in parallel with specified workers
@@ -45,12 +43,13 @@ module ActiveSupport
       follow_redirect! if response.redirect?
     end
 
-    # def stub_geocoder_response(city_name)
-    #   Geocoder::Lookup::Test.add_stub(
-    #     "127.0.0.1", [
-    #       { "city" => city_name }
-    #     ]
-    #   )
-    # end
+    def build_cloudflare_geo_info(city)
+      {
+        "HTTP_CF_IPCITY" => city.name,
+        "HTTP_CF_TIMEZONE" => city.time_zone.name,
+        "HTTP_CF_IPLATITUDE" => city.lat,
+        "HTTP_CF_IPLONGITUDE" => city.lon
+      }
+    end
   end
 end

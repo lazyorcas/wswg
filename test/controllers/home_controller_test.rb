@@ -20,16 +20,20 @@ class HomeControllerTest < ActionDispatch::IntegrationTest
           get city_events_url(city_slug: city.slug, time_period_slug: TimePeriod.slugify(time_period_symbol))
         end
         assert_response :success
+        assert_select "h1", text: /#{city.name}/
       end
     end
   end
 
   test "every nearby_events url" do
+    city = cities(:singapore)
+    headers = build_cloudflare_geo_info(city)
+
     TimePeriod::SYMBOLS.each do |time_period_symbol|
       if time_period_symbol == :all
-        get all_nearby_events_url
+        get all_nearby_events_url, headers: headers
       else
-        get nearby_events_url(time_period_slug: TimePeriod.slugify(time_period_symbol))
+        get nearby_events_url(time_period_slug: TimePeriod.slugify(time_period_symbol)), headers: headers
       end
       assert_response :success
     end
