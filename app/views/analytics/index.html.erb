@@ -101,7 +101,20 @@
         <%= pie_chart @map_page_visits_by_city %>
       <% end %>
       <%= render "chart", title: "Search queries" do %>
-        <%= pie_chart @map_page_queries %>
+        <table class="min-w-full">
+          <tbody class="bg-white divide-y divide-primary overflow-y-scroll flex flex-col"  style="max-height: 300px;">
+            <% @map_page_queries.each do |time, query| %>
+              <tr>
+                <td class="py-2 px-4 whitespace-nowrap text-sm text-secondary min-w-32 w-32">
+                  <%= time_ago_in_words(time) %> ago
+                </td>
+                <td class="py-2 px-4 text-sm text-primary">
+                  <%= query %>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
       <% end %>
       <%= render "chart", title: "Which sources led to sign ups?" do %>
         <%= pie_chart @sign_up_page_sources %>
