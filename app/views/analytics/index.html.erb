@@ -105,7 +105,7 @@
           <tbody class="bg-white divide-y divide-primary overflow-y-scroll flex flex-col"  style="max-height: 300px;">
             <% @map_page_queries.each do |time, query| %>
               <tr>
-                <td class="py-2 px-4 whitespace-nowrap text-sm text-secondary min-w-32 w-32">
+                <td class="py-2 px-4 whitespace-nowrap text-sm text-secondary min-w-32 w-32 max-w-32 text-wrap">
                   <%= time_ago_in_words(time) %> ago
                 </td>
                 <td class="py-2 px-4 text-sm text-primary">
