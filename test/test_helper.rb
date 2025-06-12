@@ -1,6 +1,7 @@
 ENV["RAILS_ENV"] ||= "test"
 require_relative "../config/environment"
 require "rails/test_help"
+require "capybara/cuprite"
 require "passwordless/test_helpers"
 
 module ActiveSupport
@@ -43,13 +44,20 @@ module ActiveSupport
       follow_redirect! if response.redirect?
     end
 
-    def build_cloudflare_geo_info(city)
+    def build_cloudflare_headers
+      city = cities(:singapore)
       {
-        "HTTP_CF_IPCITY" => city.name,
-        "HTTP_CF_TIMEZONE" => city.time_zone.name,
-        "HTTP_CF_IPLATITUDE" => city.lat,
-        "HTTP_CF_IPLONGITUDE" => city.lon
+        # https://lite.ip2location.com/singapore-ip-address-ranges
+        "CF_CONNECTING_IP" => "1.21.224.0",
+        "CF_IPCITY" => city.name.to_s,
+        "CF_TIMEZONE" => city.time_zone.name.to_s,
+        "CF_IPLATITUDE" => city.lat.to_s,
+        "CF_IPLONGITUDE" => city.lon.to_s
       }
+    end
+
+    def build_cloudflare_http_headers
+      build_cloudflare_headers.transform_keys { |key| "HTTP_#{key}" }
     end
   end
 end

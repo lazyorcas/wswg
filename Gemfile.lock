@@ -125,6 +125,9 @@ GEM
       unaccent (~> 0.3)
     crass (1.0.6)
     csv (3.3.4)
+    cuprite (0.17)
+      capybara (~> 3.0)
+      ferrum (~> 0.17.0)
     date (3.4.1)
     debug (1.10.0)
       irb (~> 1.10)
@@ -563,6 +566,7 @@ DEPENDENCIES
   chartkick
   cloudflare-rails
   countries
+  cuprite
   debug
   dotenv
   ferrum

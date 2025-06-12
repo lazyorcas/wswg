@@ -2,15 +2,17 @@ first:
   url: https://example.com/events/1
   city_source: luma
   title: "Meetup with other people in tech"
+  description: "Description"
   image_url: "https://example.com/events/1.jpg"
   start_date: <%= Time.current.to_date + 1.day %>
   end_date: <%= Time.current.to_date + 1.day %>
   start_time: "18:00:00"
+  end_time: "20:00:00"
   location: first
 
 english_munich_event:
   url: https://example.com/events/5
-  city_source: luma
+  city_source: luma_munich
   title: "Sunday Football"
   image_url: "https://example.com/events/3.jpg"
   start_date: <%= Time.current.to_date + 1.week %>
@@ -19,7 +21,7 @@ english_munich_event:
 
 german_munich_event:
   url: https://example.com/events/6
-  city_source: luma
+  city_source: luma_munich
   title: "Sonntagsfußball"
   image_url: "https://example.com/events/4.jpg"
   start_date: <%= Time.current.to_date + 3.days %>

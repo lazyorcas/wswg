@@ -20,3 +20,9 @@ ticketmaster:
   city: munich
   source: ticketmaster
   enabled: true
+
+luma_munich:
+  city: munich
+  source: luma
+  url_params: { city_slug: "munich" }
+  enabled: true

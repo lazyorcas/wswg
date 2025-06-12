@@ -31,9 +31,7 @@ class HomeControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "every nearby_events url" do
-    city = cities(:singapore)
-    headers = build_cloudflare_geo_info(city)
-
+    headers = build_cloudflare_http_headers
     TimePeriod::SYMBOLS.each do |time_period_symbol|
       if time_period_symbol == :all
         get all_nearby_events_url, headers: headers
