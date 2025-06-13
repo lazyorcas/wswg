@@ -3,7 +3,7 @@
     <span class="size-full flex flex-col gap-y-2">
       <span class="size-full flex gap-x-4">
         <span class="grow flex flex-col list-item__text">
-          <%= tag.span class: class_names("w-full flex items-center gap-x-1", @event.seen_count.positive? ? "mb-1" : "mb-2") do %>
+          <%= tag.span class: "w-full flex items-center gap-x-1 mb-1" do %>
             <%= image_tag source_icon_url, class: "inline-flex event-source-icon", loading: "lazy", alt: "Event source icon" %>
             <span class="text-sm"><%= @event.source.name %></span>
           <% end %>
@@ -12,12 +12,12 @@
           <% end %>
           <span class="flex flex-col gap-y-1 mt-2" data-nosnippet>
             <%= tag.p class: "text-sm text-secondary flex gap-x-2" do %>
-              <i class="ph ph-clock text-sm shrink-0 h-fit mt-[3px]"></i>
+              <i class="ph ph-clock text-sm shrink-0 h-fit mt-[3px] size-3.5"></i>
               <%= date %> &#x2022; <%= time_range %>
             <% end %>
             <% if @event.location.present? %>
               <%= tag.p class: "text-sm text-secondary flex gap-x-2" do %>
-                <i class="ph ph-map-pin text-sm shrink-0 h-fit mt-[3px]"></i>
+                <i class="ph ph-map-pin text-sm shrink-0 h-fit mt-[3px] size-3.5"></i>
                 <%= link_to "https://www.google.com/maps/search/?api=1&query=#{CGI.escape(@event.location.full_address)}", class: "underline underline-secondary", target: "_blank", rel: "nofollow", data: { event_list_target: "link", event_path: event_path(@event, source: "address") } do %>
                   <%= @event.location.full_address %>
                 <% end %>
@@ -25,7 +25,7 @@
             <% end %>
             <% if @event.price.present? %>
               <%= tag.p class: "text-sm text-secondary flex gap-x-2" do %>
-                <i class="ph ph-wallet text-sm shrink-0 h-fit mt-[3px]"></i>
+                <i class="ph ph-wallet text-sm shrink-0 h-fit mt-[3px] size-3.5"></i>
                 <% if @event.price.zero? %>
                   Free
                 <% else %>
@@ -36,7 +36,7 @@
             <% if @event.description.present? %>
               <details class="group -mr-28 md:-mr-36">
                 <summary class="text-sm text-secondary flex gap-x-2 cursor-pointer group-open:mb-2">
-                  <i class="ph ph-caret-down text-sm group-open:rotate-180 transition-transform shrink-0"></i>
+                  <i class="ph ph-caret-down text-sm group-open:rotate-180 transition-transform shrink-0 size-3.5"></i>
                   <span class="underline underline-secondary">More details</span>
                 </summary>
                 <blockquote class="pl-5 text-sm text-primary overflow-y-scroll max-h-96 md:max-h-128" style="word-break: break-word;">
