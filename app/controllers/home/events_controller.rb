@@ -111,7 +111,6 @@ class Home::EventsController < ApplicationController
   def load_events
     @events = Event
       .joins(:city)
-      .left_joins(:seens)
       .where(city: { name: @city.name })
       .includes(:location, :city)
 
