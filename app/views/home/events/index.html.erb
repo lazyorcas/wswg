@@ -17,7 +17,7 @@
     <% end %>
     <% if @events.any? %>
       <ol class="mt-4 grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-y-4 lg:gap-y-5 lg:gap-x-5" data-controller="event-list">
-        <%= render partial: "event", collection: @events %>
+        <%= render partial: "event", collection: @events, cached: -> (event) { build_event_cache_key(event) } %>
       </ol>
       <div class="flex flex-col items-center">
         <% if @all_events_count > @events.size %>
