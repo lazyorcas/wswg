@@ -58,6 +58,7 @@ env:
     - PROXY_PASSWORD
     - STRIPE_SECRET_KEY
     - STRIPE_WEBHOOK_SECRET
+    - CLOUDFLARE_TURNSTILE_SECRET_KEY
   clear:
     # Run the Solid Queue Supervisor inside the web server's Puma process to do jobs.
     # When you start using multiple servers, you should split out job processing to a dedicated machine.
@@ -94,6 +95,7 @@ env:
     PROXY_USERNAME: <%= ENV["PROXY_USERNAME"] %>
     STRIPE_PAYMENT_LINK: <%= ENV["STRIPE_PAYMENT_LINK"] %>
     STRIPE_PUBLISHABLE_KEY: <%= ENV["STRIPE_PUBLISHABLE_KEY"] %>
+    CLOUDFLARE_TURNSTILE_SITE_KEY: <%= ENV["CLOUDFLARE_TURNSTILE_SITE_KEY"] %>
 
 # Aliases are triggered with "bin/kamal <alias>". You can overwrite arguments on invocation:
 # "bin/kamal logs -r job" will tail logs from the first server in the job section.
