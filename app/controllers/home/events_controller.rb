@@ -82,6 +82,8 @@ class Home::EventsController < ApplicationController
 
   def show
     load_event
+
+    ahoy.track "Viewed event", event_id: @event.id, source: params[:source]
   end
 
   private

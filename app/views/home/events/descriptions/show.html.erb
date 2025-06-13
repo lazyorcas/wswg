@@ -1,5 +1,5 @@
 <%= turbo_frame_tag "event_#{@event.id}_description" do %>
-  <%= tag.p class: "text-xs text-secondary" do %>
+  <%= tag.p class: "text-secondary" do %>
     Last updated: <%= @event.created_at.strftime("%B %d, %Y") %>
   <% end %>
   <hr class="border-primary" />

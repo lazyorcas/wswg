@@ -255,6 +255,30 @@
   |
   |
   |
+  |  Grid
+  |
+  |
+  |
+  ============================================================================= */
+  .grid-item {
+    @apply p-4;
+    @apply bg-stone-100 dark:bg-stone-800;
+    @apply hover:bg-stone-200 dark:hover:bg-stone-700;
+    @apply flex;
+    @apply text-stone-800 dark:text-stone-200;
+    @apply transition ease-in-out;
+  }
+
+  .grid-item__event-image {
+    @apply size-24 md:size-32;
+    @apply object-cover;
+    @apply rounded-lg;
+  }
+
+  /* ==========================================================================
+  |
+  |
+  |
   |  Flash
   |
   |
@@ -350,6 +374,10 @@
 
   .divide-primary {
     @apply divide-stone-300 dark:divide-stone-700;
+  }
+
+  .underline-secondary {
+    @apply decoration-stone-300 dark:decoration-stone-700;
   }
 
   .link {

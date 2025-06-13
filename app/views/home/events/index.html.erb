@@ -1,6 +1,5 @@
 <% content_for :title, @meta_title %>
 <% content_for :description, @description %>
-<% mobile_map_shown_at_index = 10 %>
 <main class="grow">
   <header class="flex flex-col gap-y-8 md:gap-y-10 items-center py-10 md:pt-20">
     <div class="flex flex-col items-center text-center gap-y-2 md:gap-y-4">
@@ -11,56 +10,37 @@
   <section class="md:max-w-xl mx-auto">
     <%= render "search_queries/form", search_query: SearchQuery.new %>
   </section>
-  <section class="py-10 w-full flex flex-col xl:flex-row gap-y-8 xl:gap-y-0 xl:gap-x-8">
-    <section class="grow -mx-4 xl:mx-auto flex flex-col">
-      <p class="px-4 text-sm">
-        Alternatively, you can view <%= @alternate_link_attributes.map { |link| link_to link[:title], link[:href], class: "link" }.to_sentence.html_safe %>.
+  <section class="py-10 w-full flex flex-col">
+    <%= link_to map_path(city_id: @city.id), class: "self-end button button--ghost", rel: "nofollow", data: { turbo: false } do %>
+      <i class="ph ph-map-trifold"></i>
+      Map View
+    <% end %>
+    <% if @events.any? %>
+      <ol class="mt-4 grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-y-4 lg:gap-y-5 lg:gap-x-5" data-controller="event-list">
+        <%= render partial: "event", collection: @events %>
+      </ol>
+      <div class="flex flex-col items-center">
+        <% if @all_events_count > @events.size %>
+          <%= link_to map_path(city_id: @city.id), class: " mt-4 lg:mt-5 button button--primary", rel: "nofollow", data: { turbo: false } do %>
+            View <%= @all_events_count - @events.size %> more events
+          <% end %>
+        <% end %>
+        <p class="mt-8 text-sm text-center md:max-w-4xl">
+          Alternatively, you can view <%= @alternate_link_attributes.map { |link| link_to link[:title], link[:href], class: "link" }.to_sentence.html_safe %>.
+        </p>
+      </div>
+    <% else %>
+      <p class="flash flash--warning mt-8 mx-auto">
+        <% if @city.persisted? %>
+          <% if @current_time.hour <= 8 %>
+            Events are being fetched. Come back in 1-2 hours.
+          <% else %>
+            No upcoming events found.
+          <% end %>
+        <% else %>
+          Your city is not supported yet.
+        <% end %>
       </p>
-      <% if (@time_period.today? || @time_period.tonight? || @time_period.all? || @time_period.this_week?) && @events.any? %>
-        <p class="mt-4 px-4 text-sm text-secondary italic">Past events are not shown.</p>
-      <% end %>
-      <% if @events.any? %>
-        <ol class="my-4 flex flex-col" data-controller="event-list">
-          <%= render partial: "event", collection: @events.first(mobile_map_shown_at_index), cached: -> (event) { build_event_cache_key(event) } %>
-          <% if browser.device.mobile? %>
-            <li class="shrink-0">
-              <%= render "action_box" %>
-            </li>
-          <% end %>
-          <%= render partial: "event", collection: @events[mobile_map_shown_at_index..], cached: -> (event) { build_event_cache_key(event) } %>
-          <% if @all_events_count > @events.size %>
-            <li class="shrink-0 relative">
-              <div class="blur-[2px]">
-                <% 5.times do %>
-                  <%= render "skeleton_event_item_link" %>
-                <% end %>
-              </div>
-              <%= link_to map_path(city_id: @city.id), class: "absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 button button--secondary", rel: "nofollow", data: { turbo: false } do %>
-                View <%= @all_events_count - @events.size %> more events
-              <% end %>
-            </li>
-          <% end %>
-        </ol>
-      <% else %>
-        <div class="px-4 md:px-0">
-          <p class="flash flash--warning mt-8 mx-auto">
-            <% if @city.persisted? %>
-              <% if @current_time.hour <= 8 %>
-                Events are being fetched. Come back in 1-2 hours.
-              <% elsif @time_period.all? %>
-                No events found. Come back tomorrow.
-              <% else %>
-                No upcoming events found.
-              <% end %>
-            <% else %>
-              Your city is not supported yet.
-            <% end %>
-          </p>
-        </div>
-      <% end %>
-    </section>
-    <% unless browser.device.mobile? %>
-      <%= render "action_box" %>
     <% end %>
   </section>
 </section>
