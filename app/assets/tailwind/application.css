@@ -413,11 +413,11 @@
   }
 
   .mapboxgl-popup-anchor-left .mapboxgl-popup-tip {
-    @apply dark:!border-r-stone-900;
+    @apply !border-r-stone-900 dark:!border-r-white;
   }
 
   .mapboxgl-popup-anchor-bottom .mapboxgl-popup-tip {
-    @apply dark:!border-t-stone-900;
+    @apply !border-t-stone-900 dark:!border-t-white;
   }
 
   .mapboxgl-popup:has([data-no-location="true"]) .mapboxgl-popup-tip {

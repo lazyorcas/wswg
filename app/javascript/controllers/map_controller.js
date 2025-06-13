@@ -189,7 +189,7 @@ export default class extends Controller {
       center: coordinates,
       padding: { 
         left: this.#isMobile() ? 0 : 256,
-        top: this.#isMobile() ? 256 : 0
+        bottom: this.#isMobile() ? 256 : 0
       }
     }
 
