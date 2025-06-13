@@ -53,10 +53,7 @@ class HomeController < ApplicationController
   end
 
   def order_events
-    @events = @events
-      .select("events.*, COUNT(seens.id) as seen_count")
-      .group("events.id")
-      .order("seen_count DESC, events.start_date, events.start_time")
+    @events = @events.order(:start_date, :start_time)
   end
 
   def limit_events
