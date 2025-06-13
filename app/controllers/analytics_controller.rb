@@ -149,11 +149,11 @@ class AnalyticsController < AdminController
       .sort_by { |(_, count)| count }
       .reverse
 
-    @viewed_event_descriptions = Ahoy::Event
+    @viewed_event_by_source = Ahoy::Event
       .non_user
       .where(name: "Viewed event")
-      .where("properties->>'source' = 'description'")
       .where(time: @time_range)
+      .group("properties->>'source'")
       .group_by_period(@time_interval, :time, range: @time_range, expand_range: true)
       .count
     @seens = Seen
