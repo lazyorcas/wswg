@@ -46,7 +46,6 @@ class HomeController < ApplicationController
   def load_events
     @events = Event
       .joins(:city)
-      .left_joins(:seens)
       .where(city: { name: @city.name })
       .where("CONCAT(start_date, 'T', start_time) >= ?", "#{@city.time_zone.current_date}T#{@city.time_zone.current_time}")
       .includes(:location)
