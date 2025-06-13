@@ -155,17 +155,17 @@ class Home::EventsController < ApplicationController
 
   def build_alternate_link_attributes
     alternate_time_periods_symbols = if @time_period.today?
-      [ :tonight, :tomorrow, :this_week, :this_weekend ]
+      [ :tonight, :tomorrow, :this_week, :this_weekend, :all ]
     elsif @time_period.tonight?
-      [ :tomorrow, :this_week, :this_weekend ]
+      [ :tomorrow, :this_week, :this_weekend, :all ]
     elsif @time_period.tomorrow?
-      [ :this_week, :this_weekend ]
+      [ :this_week, :this_weekend, :all ]
     elsif @time_period.this_week?
-      [ :this_weekend, :next_week ]
+      [ :this_weekend, :next_week, :all ]
     elsif @time_period.this_weekend?
-      [ :next_weekend, :next_week ]
+      [ :next_weekend, :next_week, :all ]
     elsif @time_period.next_week?
-      [ :next_weekend ]
+      [ :next_weekend, :all ]
     elsif @time_period.next_weekend?
       [ :all ]
     elsif @time_period.all?
