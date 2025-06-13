@@ -19,7 +19,7 @@ class Home::Events::DescriptionsController < ApplicationController
     description = @event.description.gsub(/(?<!\n)\n(?!\n)/, "<br/>")
     @markdown_description = markdown_renderer.render(description).html_safe
 
-    ahoy.track "Viewed event description", event_id: @event.id
+    ahoy.track "Viewed event", event_id: @event.id, source: "description"
   end
 
   def add_event_to_seen_events

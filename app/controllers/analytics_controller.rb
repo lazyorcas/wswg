@@ -30,6 +30,14 @@ class AnalyticsController < AdminController
       .count
       .sort_by { |(_, count)| count }
       .reverse
+    @visits_by_os = Ahoy::Visit
+      .non_user
+      .where.not(os: nil)
+      .group(:os)
+      .where(started_at: @time_range)
+      .count
+      .sort_by { |(_, count)| count }
+      .reverse
     @visits_by_browser = Ahoy::Visit
       .non_user
       .where.not(browser: nil)
@@ -143,7 +151,8 @@ class AnalyticsController < AdminController
 
     @viewed_event_descriptions = Ahoy::Event
       .non_user
-      .where(name: "Viewed event description")
+      .where(name: "Viewed event")
+      .where("properties->>'source' = 'description'")
       .where(time: @time_range)
       .group_by_period(@time_interval, :time, range: @time_range, expand_range: true)
       .count

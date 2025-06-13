@@ -38,6 +38,9 @@
       <%= render "chart", title: "Ahoy Visits by Device" do %>
         <%= pie_chart @visits_by_device, legend: "right" %>
       <% end %>
+      <%= render "chart", title: "Ahoy Visits by OS" do %>
+        <%= pie_chart @visits_by_os, legend: "right" %>
+      <% end %>
       <%= render "chart", title: "Ahoy Visits by Browser" do %>
         <%= pie_chart @visits_by_browser, legend: "right" %>
       <% end %>
