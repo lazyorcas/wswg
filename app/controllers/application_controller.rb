@@ -1,5 +1,5 @@
 class ApplicationController < ActionController::Base
-  # include Cloudflare::Turnstile
+  include Cloudflare::Turnstile
   include SetCurrentRequestDetails
   include Authentication
   include Flash
