@@ -8,7 +8,7 @@
       <img src="/hero-dark.webp" alt="Where Should We Go's Hero Dark" class="w-full rounded-xl hidden dark:inline-block blur-[2px]" loading="lazy" fetchpriority="high">
     </div>
   <% end %>
-  <%= link_to map_path(city_id: @city.id), class: "button button--primary absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2", rel: "nofollow" do %>
+  <%= link_to map_path(city_id: @city.id), class: "button button--primary absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2", rel: "nofollow", data: { turbo: false } do %>
     <i class="ph-fill ph-map-trifold"></i>
     View on map
   <% end %>
