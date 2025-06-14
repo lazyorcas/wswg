@@ -25,7 +25,7 @@ module EventComponent::Mappable
         type: "Feature",
         properties: {
           dom_id: dom_id(@event),
-          info_window_path: map_event_path(@event, format: helpers.browser.device.mobile? ? :turbo_stream : :html),
+          info_window_path: map_event_path(@event),
           source_name: @event.source.name,
           source_icon_multiplier: 1.0 * ICON_SIZE / SOURCE_ICON_SIZES[@event.source.name]
         },

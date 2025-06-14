@@ -4,7 +4,8 @@ export default class extends Controller {
   static targets = ["container", "item", "source"]
   static values = {
     accessToken: String,
-    centerCoordinates: Array
+    centerCoordinates: Array,
+    isMobile: Boolean
   }
 
   connect() {
@@ -159,7 +160,7 @@ export default class extends Controller {
   }
 
   #buildInfoWindowHtml(feature) {
-    return `<turbo-frame id="${feature.properties.dom_id}" src="${feature.properties.info_window_path}"></turbo-frame>`
+    return `<turbo-frame id="${feature.properties.dom_id}" src="${feature.properties.info_window_path}.${this.#isMobile() ? "turbo_stream" : "html"}"></turbo-frame>`
   }
 
   #addClickEventListeners() {
@@ -207,10 +208,11 @@ export default class extends Controller {
   }
 
   #isMobile() {
-    const breakpoint = this.#getCurrentBreakpoint()
-    return ["xs", "sm"].includes(breakpoint)
-  }
+    // const breakpoint = this.#getCurrentBreakpoint()
+    // return ["xs", "sm"].includes(breakpoint)
 
+    return this.isMobileValue
+  }
 
   #getCurrentBreakpoint() {
     const breakpoints = {
