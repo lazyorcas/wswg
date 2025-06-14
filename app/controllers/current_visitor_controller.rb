@@ -10,7 +10,7 @@ class CurrentVisitorController < ApplicationController
 
   def update
     Current.visitor.update!(visitor_params)
-    redirect_to(map_path)
+    redirect_to(root_path)
   end
 
   private

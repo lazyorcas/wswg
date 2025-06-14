@@ -7,7 +7,7 @@ class SearchQueriesController < ApplicationController
     only: [ :create ],
     with: -> do
       Sentry.capture_message("Too many requests.", level: :warning)
-      redirect_to(map_path, flash: { error: "Too many requests. Please wait a moment and try again." })
+      redirect_to(root_path, flash: { error: "Too many requests. Please wait a moment and try again." })
     end
 
   require_credits only: [ :create ]
@@ -26,11 +26,8 @@ class SearchQueriesController < ApplicationController
 
     rescue => e
       Sentry.capture_exception(e)
-      if e.is_a?(City::NotSupportedError)
-        redirect_to(map_path, flash: { error: e.message })
-      else
-        redirect_to(map_path, flash: { error: "Failed to search." })
-      end
+      error_message = e.is_a?(City::NotSupportedError) ? e.message : "Failed to search."
+      redirect_to(root_path, flash: { error: error_message })
     end
 
     ahoy.track "Searched", query: @search_query.query, source: request.referer

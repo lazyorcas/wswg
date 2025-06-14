@@ -9,7 +9,7 @@ class CurrentUserController < ApplicationController
 
   def update
     Current.user.update!(user_params)
-    redirect_to(map_path)
+    redirect_to(root_path)
   end
 
   def top_up_credits

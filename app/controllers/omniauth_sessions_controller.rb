@@ -8,7 +8,7 @@ class OmniauthSessionsController < ApplicationController
     if @recent_search_query.present?
       redirect_to(map_path(search_query_id: @recent_search_query.id))
     else
-      redirect_to(map_path)
+      redirect_to(root_path)
     end
   rescue => e
     Sentry.capture_exception(e)
