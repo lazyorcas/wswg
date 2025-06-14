@@ -24,7 +24,7 @@ module Authentication
 
     respond_to do |format|
       format.html do
-        redirect_to(login_path, status: :temporary_redirect)
+        redirect_to(login_path)
       end
 
       format.turbo_stream do

@@ -19,8 +19,9 @@ module CreditsCheck
 
       respond_to do |format|
         format.html do
-          redirect_to(top_up_needed_path, status: :temporary_redirect)
+          redirect_to(top_up_needed_path)
         end
+
         format.turbo_stream do
           flash.now[:error] = "You don't have enough credits. <a href='#{top_up_needed_path}' class='link'>Top up</a> to continue.".html_safe
           turbo_stream_flash(status: :payment_required)
