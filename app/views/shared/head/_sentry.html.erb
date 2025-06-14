@@ -9,7 +9,7 @@
         profilesSampleRate: 1.0,
       });
       <% if signed_in? %>
-      Sentry.setUser({ id: Current.user.id });
+      Sentry.setUser({ id: <%= Current.user.id %> });
       <% end %>
     };
   </script>
