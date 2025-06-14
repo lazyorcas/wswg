@@ -8,6 +8,9 @@
         tracesSampleRate: 0.2,
         profilesSampleRate: 1.0,
       });
+      <% if signed_in? %>
+      Sentry.setUser({ id: Current.user.id });
+      <% end %>
     };
   </script>
   <%= Sentry.get_trace_propagation_meta.html_safe %>
