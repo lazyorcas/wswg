@@ -21,6 +21,14 @@ experiments:
       - has_hero_image
       - has_free_word_and_hero_image
     winner: control
+  search_bar_position:
+    name: Search Bar Position
+    description: >
+      Test if the sticky search bar creates more search queries.
+    started_at: June 16, 2025 11 am SGT
+    variants:
+      - header
+      - sticky
 
 exclude:
   bots: true

@@ -31,6 +31,7 @@ class SearchQueriesController < ApplicationController
     end
 
     ahoy.track "Searched", query: @search_query.query, source: request.referer
+    field_test_converted(:search_bar_position)
   end
 
   private
