@@ -12,7 +12,7 @@ module CityHelper
   end
 
   def build_city_description(city, time_period)
-    description = "What's happening in #{city.name} #{time_period.all? ? nil : time_period}? Discover local events from Luma, Meetup, Eventbrite, and Ticketmaster in one place."
+    description = "What's happening in #{city.name} #{time_period.all? ? nil : time_period}? Browse and search for local events, meetups, and concerts from Luma, Meetup, Eventbrite, and Ticketmaster in one place."
     description.gsub!(/  +/, " ")
     description.gsub!(/ \?/, "?")
     description

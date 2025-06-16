@@ -12,7 +12,7 @@ module NearbyHelper
   end
 
   def build_nearby_description(time_period)
-    description = "What's happening near me #{time_period.all? ? nil : time_period}? Discover local events from Luma, Meetup, Eventbrite, and Ticketmaster in one place."
+    description = "What's happening near me #{time_period.all? ? nil : time_period}? Browser and search for local events, meetups, and concerts from Luma, Meetup, Eventbrite, and Ticketmaster in one place."
     description.gsub!(/  +/, " ")
     description.gsub!(/ \?/, "?")
     description
