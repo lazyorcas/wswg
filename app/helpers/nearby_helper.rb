@@ -3,16 +3,20 @@ module NearbyHelper
     @nearby_title_generator ||= SEO::Nearby::TitleGenerator.new
   end
 
-  def build_nearby_meta_title(time_period_symbol)
-    nearby_title_generator.generate_meta_title(time_period_symbol)
+  def build_nearby_meta_title(event_category_symbol, time_period_symbol)
+    nearby_title_generator.generate_meta_title(event_category_symbol, time_period_symbol)
   end
 
-  def build_nearby_title(time_period_symbol)
-    nearby_title_generator.generate_title(time_period_symbol)
+  def build_nearby_title(event_category_symbol, time_period_symbol)
+    nearby_title_generator.generate_title(event_category_symbol, time_period_symbol)
   end
 
-  def build_nearby_description(time_period)
-    description = "What's happening near me #{time_period.all? ? nil : time_period}? Browser and search for local events, meetups, and concerts from Luma, Meetup, Eventbrite, and Ticketmaster in one place."
+  def build_nearby_description(event_category_symbol, time_period)
+    description = if event_category_symbol == :events
+      "What's happening near me #{time_period.all? ? nil : time_period}? Browser and search for local events, meetups, and concerts from Luma, Meetup, Eventbrite, and Ticketmaster in one place."
+    else
+      "Browse and search for #{EventCategory::SYMBOL_TO_STRING_MAPPING[event_category_symbol]} near me #{time_period.all? ? nil : time_period} from Luma, Meetup, Eventbrite, and Ticketmaster in one place."
+    end
     description.gsub!(/  +/, " ")
     description.gsub!(/ \?/, "?")
     description

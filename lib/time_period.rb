@@ -49,20 +49,10 @@ class TimePeriod
   end
 
   def to_s
-    @to_s ||= if today?
-      "today"
-    elsif tonight?
-      "tonight"
-    elsif tomorrow?
-      "tomorrow"
-    elsif this_week?
-      "this week"
-    elsif this_weekend?
-      "this weekend"
-    elsif next_week?
-      "next week"
-    elsif next_weekend?
-      "next weekend"
+    @to_s ||= if all?
+      nil
+    else
+      time_period_symbol.to_s.humanize(capitalize: false)
     end
   end
 

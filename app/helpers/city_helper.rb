@@ -3,16 +3,20 @@ module CityHelper
     @city_title_generator ||= SEO::City::TitleGenerator.new
   end
 
-  def build_city_meta_title(city, time_period_symbol)
-    city_title_generator.generate_title(city, time_period_symbol)
+  def build_city_meta_title(city, event_category_symbol, time_period_symbol)
+    city_title_generator.generate_meta_title(city, event_category_symbol, time_period_symbol)
   end
 
-  def build_city_title(city, time_period_symbol)
-    city_title_generator.generate_default_title(city, time_period_symbol)
+  def build_city_title(city, event_category_symbol, time_period_symbol)
+    city_title_generator.generate_title(city, event_category_symbol, time_period_symbol)
   end
 
-  def build_city_description(city, time_period)
-    description = "What's happening in #{city.name} #{time_period.all? ? nil : time_period}? Browse and search for local events, meetups, and concerts from Luma, Meetup, Eventbrite, and Ticketmaster in one place."
+  def build_city_description(city, event_category_symbol, time_period)
+    description = if event_category_symbol == :events
+      "What's happening in #{city.name} #{time_period.all? ? nil : time_period}? Browse and search for local events, meetups, and concerts from Luma, Meetup, Eventbrite, and Ticketmaster in one place."
+    else
+      "Browse and search for #{EventCategory::SYMBOL_TO_STRING_MAPPING[event_category_symbol]} in #{city.name} #{time_period.all? ? nil : time_period} from Luma, Meetup, Eventbrite, and Ticketmaster in one place."
+    end
     description.gsub!(/  +/, " ")
     description.gsub!(/ \?/, "?")
     description

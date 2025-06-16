@@ -21,7 +21,7 @@
       <ol class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-y-4 lg:gap-y-5 lg:gap-x-5" data-controller="event-list">
         <%= render partial: "home/events/event", collection: @events, cached: -> (event) { build_event_cache_key(event) } %>
       </ol>
-      <%= link_to all_city_events_path(city_slug: @city.slug), class: "w-fit button button--secondary" do %>
+      <%= link_to all_city_events_path(event_category_slug: "events", city_slug: @city.slug), class: "w-fit button button--secondary" do %>
         View all events in <%= @city.name %>
       <% end %>
     </section>
@@ -30,7 +30,7 @@
     <h2 class="text-center text-2xl md:text-3xl font-semibold">Local Events Directory</h2>
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 w-full">
       <% @enabled_cities.each do |city| %>
-        <%= render "city_events_section", city: city %>
+        <%= render "all_city_events_section", city: city %>
       <% end %>
     </div>
   </section>

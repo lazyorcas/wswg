@@ -17,12 +17,13 @@ Rails.application.routes.draw do
   get "/local-events-directory", to: "home#local_events_directory", as: :local_events_directory
   get "/pricing", to: "home#pricing", as: :pricing
 
-  get "/events-near-me", to: "home/events#index", time_period_slug: "all", as: :all_nearby_events
-  get "/events-near-me-:time_period_slug", to: "home/events#index", as: :nearby_events
-  get "/:city_slug-events", to: "home/events#index", time_period_slug: "all", as: :all_city_events
-  get "/events-:time_period_slug-in-:city_slug", to: "home/events#index", as: :city_events
-  get "/events/:id", to: "home/events#show", as: :event
+  get "/:event_category_slug-near-me", to: "home/events#index", time_period_slug: "all", as: :all_nearby_events
+  get "/:event_category_slug-near-me-:time_period_slug", to: "home/events#index", as: :nearby_events
 
+  get "/:city_slug-:event_category_slug", to: "home/events#index", time_period_slug: "all", as: :all_city_events, constraints: { event_category_slug: /#{EventCategory::SLUGS.join('|')}/ }
+  get "/:event_category_slug-:time_period_slug-in-:city_slug", to: "home/events#index", as: :city_events, constraints: { event_category_slug: /#{EventCategory::SLUGS.join('|')}/ }
+
+  get "/events/:id", to: "home/events#show", as: :event
   get "/events/:id/description", to: "home/events/descriptions#show", as: :event_description
 
   resources :users, only: [ :new, :create ]

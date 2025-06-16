@@ -22,7 +22,7 @@
       <div class="flex flex-col items-center">
         <% if @all_events_count > @events.size %>
           <%= link_to map_path(city_id: @city.id), class: " mt-4 lg:mt-5 button button--primary", rel: "nofollow", data: { turbo: false } do %>
-            View <%= @all_events_count - @events.size %> more events
+            View <%= @all_events_count - @events.size %> more <%= @event_category.to_s %>
           <% end %>
         <% end %>
         <p class="mt-8 text-sm text-center md:max-w-4xl">
@@ -33,9 +33,9 @@
       <p class="flash flash--warning mt-8 mx-auto">
         <% if @city.persisted? %>
           <% if @current_time.hour <= 8 %>
-            Events are being fetched. Come back in 1-2 hours.
+            <%= @event_category.to_s.humanize %> are being fetched. Come back in 1-2 hours.
           <% else %>
-            No upcoming events found.
+            No upcoming <%= @event_category.to_s %> found.
           <% end %>
         <% else %>
           Your city is not supported yet.

@@ -1,31 +1,29 @@
 class SEO::Nearby::TitleGenerator
+  FALLBACK_TITLE_TEMPLATES = {
+    all: "%{event_category} near me",
+    today: "🌇 %{event_category} near me today",
+    tonight: "🌃 %{event_category} near me tonight",
+    tomorrow: "🔜 %{event_category} near me tomorrow",
+    this_week: "%{event_category} near me this week",
+    this_weekend: "%{event_category} near me this weekend",
+    next_week: "%{event_category} near me next week",
+    next_weekend: "%{event_category} near me next weekend"
+  }.freeze
+
   META_TITLE_DICTIONARY = {
-    all: "Events near me",
-    today: "🌇 Local events near me today",
-    tonight: "🌃 Events near me tonight",
-    tomorrow: "🔜 Local events near me tomorrow",
-    this_week: "Events near me this week",
-    this_weekend: "Events near me this weekend",
-    next_week: "Events near me next week",
-    next_weekend: "Events near me next weekend"
+    all: {
+      today: "🌇 Local events near me today",
+      tomorrow: "🔜 Local events near me tomorrow"
+    }
   }.freeze
 
-  TITLE_DICTIONARY = {
-    all: "Events near me",
-    today: "🌇 Events near me today",
-    tonight: "🌃 Events near me tonight",
-    tomorrow: "🔜 Events near me tomorrow",
-    this_week: "Events near me this week",
-    this_weekend: "Events near me this weekend",
-    next_week: "Events near me next week",
-    next_weekend: "Events near me next weekend"
-  }.freeze
-
-  def generate_meta_title(time_period_symbol)
-    META_TITLE_DICTIONARY[time_period_symbol]
+  def generate_title(event_category_symbol, time_period_symbol)
+    FALLBACK_TITLE_TEMPLATES[time_period_symbol] % {
+      event_category: EventCategory::SYMBOL_TO_STRING_MAPPING[event_category_symbol].humanize
+    }
   end
 
-  def generate_title(time_period_symbol)
-    TITLE_DICTIONARY[time_period_symbol]
+  def generate_meta_title(event_category_symbol, time_period_symbol)
+    META_TITLE_DICTIONARY.dig(event_category_symbol, time_period_symbol) || generate_title(event_category_symbol, time_period_symbol)
   end
 end

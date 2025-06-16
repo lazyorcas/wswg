@@ -41,6 +41,10 @@ class SearchQuery::Result < Search::Result
     end
   end
 
+  def event_ids
+    @event_ids ||= events.map(&:id)
+  end
+
   def all_scores_are_equal?
     return nil if scores.empty?
     scores.uniq.length == 1

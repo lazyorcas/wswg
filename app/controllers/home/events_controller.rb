@@ -20,7 +20,7 @@ class Home::EventsController < ApplicationController
   protect_from_bots only: [ :show ]
   after_action :add_event_to_seen_events, only: [ :show ]
 
-  helper_method :nearby?
+  helper_method :nearby?, :all_events?
 
   def index
     if nearby?
@@ -38,6 +38,7 @@ class Home::EventsController < ApplicationController
 
     load_current_time
 
+    load_event_category
     load_time_period
     load_events
     count_events
@@ -88,6 +89,10 @@ class Home::EventsController < ApplicationController
 
   private
 
+  def all_events?
+    @all_events ||= params[:event_category_slug] == "events"
+  end
+
   def nearby?
     @is_nearby ||= params[:city_slug].blank?
   end
@@ -103,25 +108,42 @@ class Home::EventsController < ApplicationController
     @current_time = Time.current.in_time_zone(@city.time_zone.name)
   end
 
+  def load_event_category
+    @event_category = EventCategory.new(params[:event_category_slug].to_sym)
+  end
+
   def load_time_period
     time_period_symbol = TimePeriod::SLUG_TO_SYMBOL_MAPPING[params[:time_period_slug]] || :all
     @time_period = TimePeriod.new(@city.time_zone, time_period_symbol)
   end
 
   def load_events
-    @events = Event
-      .joins(:city)
-      .where(city: { name: @city.name })
-      .includes(:location, :city)
-
-    if @time_period.start_time.present?
-      @events = @events.where("CONCAT(start_date, 'T', start_time) >= ?", "#{@time_period.start_date}T#{@time_period.start_time}")
+    @events = if @event_category.events?
+      Event.joins(:city).where(city: { name: @city.name })
     else
-      @events = @events.where("start_date >= ?", @time_period.start_date)
+      @search_query = SearchQuery
+      .where(
+        query: @event_category.query,
+        city_id: @city.id,
+        status: :completed,
+      )
+      .order(created_at: :desc)
+      .last
+      Event.where(id: @search_query&.result&.event_ids)
     end
 
-    if @time_period.end_date.present?
-      @events = @events.where("end_date <= ?", @time_period.end_date)
+    if @events.present?
+      @events = @events.includes(:location, :city)
+
+      if @time_period.start_time.present?
+        @events = @events.where("CONCAT(start_date, 'T', start_time) >= ?", "#{@time_period.start_date}T#{@time_period.start_time}")
+      else
+        @events = @events.where("start_date >= ?", @time_period.start_date)
+      end
+
+      if @time_period.end_date.present?
+        @events = @events.where("end_date <= ?", @time_period.end_date)
+      end
     end
   end
 
@@ -130,7 +152,11 @@ class Home::EventsController < ApplicationController
   end
 
   def order_events
-    @events = @events.order(:start_date, :start_time)
+    if @search_query.present?
+      @events = @events.order(Arel.sql("array_position(ARRAY[#{@search_query.result.event_ids.join(',')}], events.id)"))
+    else
+      @events = @events.order(:start_date, :start_time)
+    end
   end
 
   def limit_events
@@ -138,15 +164,21 @@ class Home::EventsController < ApplicationController
   end
 
   def build_meta_title
-    @meta_title = nearby? ? build_nearby_meta_title(@time_period.to_sym) : build_city_meta_title(@city, @time_period.to_sym)
+    @meta_title = nearby? ?
+      build_nearby_meta_title(@event_category.symbol, @time_period.to_sym) :
+      build_city_meta_title(@city, @event_category.symbol, @time_period.to_sym)
   end
 
   def build_title
-    @title = nearby? ? build_nearby_title(@time_period.to_sym) : build_city_title(@city, @time_period.to_sym)
+    @title = nearby? ?
+      build_nearby_title(@event_category.symbol, @time_period.to_sym) :
+      build_city_title(@city, @event_category.symbol, @time_period.to_sym)
   end
 
   def build_description
-    @description = nearby? ? build_nearby_description(@time_period) : build_city_description(@city, @time_period)
+    @description = nearby? ?
+      build_nearby_description(@event_category.symbol, @time_period) :
+      build_city_description(@city, @event_category.symbol, @time_period)
   end
 
   def build_alternate_link_attributes
@@ -172,8 +204,12 @@ class Home::EventsController < ApplicationController
       time_period = TimePeriod.new(@city.time_zone, time_period_symbol)
 
       {
-        href: nearby? ? build_nearby_events_path(time_period_slug: time_period.slug) : build_city_events_path(city_slug: @city.slug, time_period_slug: time_period.slug),
-        title: nearby? ? build_nearby_meta_title(time_period_symbol) : build_city_meta_title(@city, time_period_symbol)
+        href: nearby? ?
+          build_nearby_events_path(event_category_slug: @event_category.slug, time_period_slug: time_period.slug) :
+          build_city_events_path(event_category_slug: @event_category.slug, city_slug: @city.slug, time_period_slug: time_period.slug),
+        title: nearby? ?
+          build_nearby_meta_title(@event_category.symbol, time_period_symbol) :
+          build_city_meta_title(@city, @event_category.symbol, time_period_symbol)
       }
     end
   end

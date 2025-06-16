@@ -18,14 +18,16 @@ class HomeControllerTest < ApplicationControllerTestCase
 
   test "every city_events url" do
     City.all.each do |city|
-      TimePeriod::SYMBOLS.each do |time_period_symbol|
-        if time_period_symbol == :all
-          get all_city_events_url(city_slug: city.slug)
-        else
-          get city_events_url(city_slug: city.slug, time_period_slug: TimePeriod.slugify(time_period_symbol))
+      EventCategory::SYMBOLS.each do |event_category_symbol|
+        TimePeriod::SYMBOLS.each do |time_period_symbol|
+          if time_period_symbol == :all
+            get all_city_events_url(city_slug: city.slug, event_category_slug: EventCategory::SYMBOL_TO_SLUG_MAPPING[event_category_symbol])
+          else
+            get city_events_url(city_slug: city.slug, event_category_slug: EventCategory::SYMBOL_TO_SLUG_MAPPING[event_category_symbol], time_period_slug: TimePeriod.slugify(time_period_symbol))
+          end
+          assert_response :success
+          assert_select "h1", text: /#{city.name}/
         end
-        assert_response :success
-        assert_select "h1", text: /#{city.name}/
       end
     end
   end
@@ -33,13 +35,15 @@ class HomeControllerTest < ApplicationControllerTestCase
   test "every nearby_events url" do
     headers = build_human_headers
 
-    TimePeriod::SYMBOLS.each do |time_period_symbol|
-      if time_period_symbol == :all
-        get all_nearby_events_url, headers: headers
-      else
-        get nearby_events_url(time_period_slug: TimePeriod.slugify(time_period_symbol)), headers: headers
+    EventCategory::SYMBOLS.each do |event_category_symbol|
+      TimePeriod::SYMBOLS.each do |time_period_symbol|
+        if time_period_symbol == :all
+          get all_nearby_events_url(event_category_slug: EventCategory::SYMBOL_TO_SLUG_MAPPING[event_category_symbol]), headers: headers
+        else
+          get nearby_events_url(event_category_slug: EventCategory::SYMBOL_TO_SLUG_MAPPING[event_category_symbol], time_period_slug: TimePeriod.slugify(time_period_symbol)), headers: headers
+        end
+        assert_response :success
       end
-      assert_response :success
     end
   end
 
