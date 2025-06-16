@@ -127,7 +127,7 @@
         <%= column_chart @events_created %>
       <% end %>
       <%= render "chart", title: "Events created by source" do %>
-        <%= area_chart @events_by_source, stacked: true %>
+        <%= column_chart @events_by_source, stacked: true %>
       <% end %>
     <% end %>
     <%= render "charts", title: "City Popularity" do %>
