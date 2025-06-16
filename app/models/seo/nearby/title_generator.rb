@@ -11,7 +11,7 @@ class SEO::Nearby::TitleGenerator
   }.freeze
 
   META_TITLE_DICTIONARY = {
-    all: {
+    events: {
       today: "🌇 Local events near me today",
       tomorrow: "🔜 Local events near me tomorrow"
     }

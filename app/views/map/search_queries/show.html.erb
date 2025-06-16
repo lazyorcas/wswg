@@ -17,5 +17,7 @@
       <% end %>
     <% end %>
   <% end %>
-  <%= turbo_stream_from @search_query if @search_query.ongoing? %>
+  <% if @search_query.ongoing? && @search_query.can_broadcast? %>
+    <%= turbo_stream_from @search_query %>
+  <% end %>
 <% end %>

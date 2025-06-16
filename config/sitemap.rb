@@ -18,29 +18,34 @@ SitemapGenerator::Sitemap.create do
   add local_events_directory_path, priority: 0.8, changefreq: "daily"
 
   cities = City.enabled
-  TimePeriod::SYMBOLS.each do |time_period_symbol|
-    change_freq = case time_period_symbol
-    when :all, :today, :tonight, :tomorrow, :this_week
-      "hourly"
-    when :this_weekend, :next_week, :next_weekend
-      "daily"
-    else
-      "weekly"
-    end
 
-    add build_nearby_events_path(
-      time_period_slug: TimePeriod.slugify(time_period_symbol)
-    ),
-    priority: 0.9,
-    changefreq: change_freq
+  EventCategory::SYMBOLS.each do |event_category_symbol|
+    TimePeriod::SYMBOLS.each do |time_period_symbol|
+      change_freq = case time_period_symbol
+      when :all, :today, :tonight, :tomorrow, :this_week
+        "hourly"
+      when :this_weekend, :next_week, :next_weekend
+        "daily"
+      else
+        "weekly"
+      end
 
-    cities.each do |city|
-      add build_city_events_path(
-        city_slug: city.slug,
+      add build_nearby_events_path(
+        event_category_slug: EventCategory::SYMBOL_TO_SLUG_MAPPING[event_category_symbol],
         time_period_slug: TimePeriod.slugify(time_period_symbol)
       ),
       priority: 0.9,
       changefreq: change_freq
+
+      cities.each do |city|
+        add build_city_events_path(
+          city_slug: city.slug,
+          event_category_slug: EventCategory::SYMBOL_TO_SLUG_MAPPING[event_category_symbol],
+          time_period_slug: TimePeriod.slugify(time_period_symbol)
+        ),
+        priority: 0.9,
+        changefreq: change_freq
+      end
     end
   end
 end

@@ -12,7 +12,7 @@ class SEO::City::TitleGenerator
 
   META_TITLE_DICTIONARY = {
     "San Francisco" => {
-      all: {
+      events: {
         all: "San Francisco events",
         today: "🌇 San Francisco events today",
         this_week: "Things to do this week in San Francisco",
@@ -23,7 +23,7 @@ class SEO::City::TitleGenerator
       }
     },
     "London" => {
-      all: {
+      events: {
         all: "Events in London",
         today: "🌇 Events in London today",
         tomorrow: "🔜 London events tomorrow",
@@ -35,7 +35,7 @@ class SEO::City::TitleGenerator
       }
     },
     "New York City" => {
-      all: {
+      events: {
         all: "New York events",
         today: "🌇 NYC events today",
         tomorrow: "🔜 NYC things to do tomorrow",
@@ -48,13 +48,13 @@ class SEO::City::TitleGenerator
       }
     },
     "Singapore" => {
-      all: {
+      events: {
         all: "Singapore events",
         today: "🌇 Events in Singapore today"
       }
     },
     "Berlin" => {
-      all: {
+      events: {
         today: "🌇 Events in Berlin today",
         tomorrow: "🔜 Tomorrow in Berlin",
         this_week: "This week Berlin"
@@ -64,13 +64,13 @@ class SEO::City::TitleGenerator
       }
     },
     "Barcelona" => {
-      all: {
+      events: {
         all: "Barcelona events",
         today: "🌇 Barcelona events today"
       }
     },
     "Paris" => {
-      all: {
+      events: {
         today: "🌇 Paris events today",
         tomorrow: "🔜 Paris tomorrow",
         this_week: "Paris events this week"
@@ -80,13 +80,13 @@ class SEO::City::TitleGenerator
       }
     },
     "Munich" => {
-      all: {
+      events: {
         all: "Munich events",
         today: "🌇 Munich events today"
       }
     },
     "Lisbon" => {
-      all: {
+      events: {
         all: "Lisbon events",
         today: "🌇 Lisbon events today",
         tonight: "🌃 Tonight in Lisbon"

@@ -35,10 +35,12 @@ module SearchQuery::Broadcastable
     )
   end
 
-  private
+  def can_broadcast?
+    searcher.present?
+  end
 
   def should_broadcast?
-    !searcher.search_queries.excluding(self).exists?(created_at: created_at..)
+    can_broadcast?
   end
 
   def broadcast_exception(exception)

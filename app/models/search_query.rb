@@ -37,7 +37,7 @@ class SearchQuery < ApplicationRecord
 
   rescue => e
     Sentry.capture_exception(e)
-    broadcast_exception(e)
+    broadcast_exception(e) if can_broadcast?
     failed!
   end
 
@@ -51,7 +51,7 @@ class SearchQuery < ApplicationRecord
 
   rescue => e
     Sentry.capture_exception(e)
-    broadcast_exception(e)
+    broadcast_exception(e) if can_broadcast?
     failed!
   end
 

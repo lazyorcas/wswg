@@ -13,8 +13,8 @@
   <% if events.any? %>
     <div class="grow min-h-0">
       <%= render Event::Map::ListComponent.new(events, 
-        bookmarked_event_ids: searcher.is_a?(User) ? searcher.bookmarked_event_ids : [], 
-        seen_event_ids: searcher.seen_event_ids) %>
+        bookmarked_event_ids: searcher&.is_a?(User) ? searcher.bookmarked_event_ids : [], 
+        seen_event_ids: searcher.present? ? searcher.seen_event_ids : []) %>
     </div>
   <% end %>
 <% end %>

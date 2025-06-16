@@ -1,4 +1,6 @@
 <%= turbo_stream.update "search-results" do %>
   <%= render "status", search_query: @search_query %>
 <% end %>
-<%= turbo_stream_from @search_query %>
+<% if @search_query.ongoing? && @search_query.can_broadcast? %>
+  <%= turbo_stream_from @search_query %>
+<% end %>
