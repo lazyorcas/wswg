@@ -6,10 +6,10 @@
       <h1 class="text-3xl md:text-4xl font-bold"><%= @title %></h1>
       <p class="md:max-w-2xl"><%= @description %></p>
     </div>
+    <% if field_test(:search_bar_position) == "header" %>
+      <%= render "home/header_search_bar", search_query: SearchQuery.new %>
+    <% end %>
   </header>
-  <% if field_test(:search_bar_position) == "header" %>
-    <%= render "home/header_search_bar", search_query: SearchQuery.new %>
-  <% end %>
   <section class="py-10 w-full flex flex-col">
     <% if @events.any? %>
       <%= link_to map_path(@search_query.present? ? { search_query_id: @search_query.id } : { city_id: @city.id }), class: "self-end button button--ghost", rel: "nofollow", data: { turbo: false } do %>
