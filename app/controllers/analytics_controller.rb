@@ -52,6 +52,12 @@ class AnalyticsController < AdminController
       .reverse
     @pricing_page_events = build_ahoy_events_page_events_data("Visited pricing page")
     @city_events_page_events = build_ahoy_events_page_events_data("Viewed events")
+    @event_category_city_events_page_events = Ahoy::Event
+      .non_user
+      .where(name: "Viewed events")
+      .group("COALESCE(properties->>'event_category', 'events')")
+      .group_by_period(@time_interval, :time, range: @time_range, expand_range: true)
+      .count
     @homepage_events = build_ahoy_events_page_events_data("Visited homepage")
 
     qualified_visitor_tokens_for_retention = Ahoy::Visit
