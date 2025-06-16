@@ -29,6 +29,6 @@ class MapController < ApplicationController
   private
 
   def search_query_scope
-    SearchQuery.where(searcher: Current.person)
+    SearchQuery.where(searcher: [ Current.person, nil ])
   end
 end

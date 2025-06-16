@@ -11,7 +11,7 @@ class CreateSearchQueriesJob < ApplicationJob
       EventCategory::SYMBOLS.each do |event_category_symbol|
         SearchQuery.create(
           city: city,
-          query: EventCategory::SYMBOL_TO_STRING_MAPPING[event_category_symbol]
+          query: EventCategory.new(event_category_symbol).query
         )
       end
     end

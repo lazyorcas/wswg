@@ -127,6 +127,7 @@ class Home::EventsController < ApplicationController
         query: @event_category.query,
         city_id: @city.id,
         status: :completed,
+        searcher: nil
       )
       .order(created_at: :desc)
       .last

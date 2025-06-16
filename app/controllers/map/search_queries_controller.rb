@@ -59,6 +59,7 @@ class Map::SearchQueriesController < ApplicationController
   def build_search_query
     @search_query ||= search_query_scope.build
     @search_query.attributes = search_query_params
+    @search_query.searcher = Current.person
   end
 
   def assign_city_to_search_query
@@ -77,7 +78,7 @@ class Map::SearchQueriesController < ApplicationController
   end
 
   def search_query_scope
-    SearchQuery.where(searcher: Current.person)
+    SearchQuery.where(searcher: [ Current.person, nil ])
   end
 
   def search_query_params
