@@ -51,7 +51,7 @@ class Home::EventsController < ApplicationController
     build_description
     build_alternate_link_attributes
 
-    ahoy.track "Viewed events", city: @city.name, time_period: @time_period.to_s, nearby: nearby?
+    ahoy.track "Viewed events", city: @city.name, event_category: @event_category.to_s, time_period: @time_period.to_s, nearby: nearby?
 
     if browser.bot? && browser.bot.search_engine?
       Sentry.capture_message("[Search Engine] Viewed events", extra: {
