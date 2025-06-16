@@ -19,7 +19,7 @@
     <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
   </head>
-  <body class="min-h-dvh dark:bg-stone-900 container mx-auto flex flex-col px-4 py-4 md:py-8">
+  <body class="min-h-dvh dark:bg-stone-900 container mx-auto flex flex-col px-4 md:px-0 py-4 md:py-8">
     <header class="flex items-center gap-x-2 justify-between">
       <%= link_to root_path, class: "shrink-0" do %>
         <%= image_tag "/logo.webp", class: "size-10 rounded", alt: "Where Should We Go Logo" %>
