@@ -67,7 +67,8 @@ class Home::EventsController < ApplicationController
       extra = {
         city: @city.name,
         time_period: @time_period.to_s,
-        current_time: @current_time.strftime("%H:%M:%S")
+        current_time: @current_time.strftime("%H:%M:%S"),
+        event_category: @event_category.to_s
       }
 
       if browser.bot?
