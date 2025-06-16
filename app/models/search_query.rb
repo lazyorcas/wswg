@@ -11,7 +11,7 @@ class SearchQuery < ApplicationRecord
   }, default: :analyzing
 
   belongs_to :city
-  belongs_to :searcher, polymorphic: true
+  belongs_to :searcher, polymorphic: true, optional: true
   has_many :searches, dependent: :destroy
 
   attribute :result, SearchQuery::Result.to_type

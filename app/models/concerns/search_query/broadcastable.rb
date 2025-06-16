@@ -5,10 +5,8 @@ module SearchQuery::Broadcastable
   include Broadcastable
 
   included do
-    with_options if: :should_broadcast?, on: :update do
-      after_commit :broadcast_status, if: -> { status_previously_changed?(to: :searching) }
-      after_commit :broadcast_result_events, if: -> { status_previously_changed?(to: :completed) }
-    end
+    after_update_commit :broadcast_status, if: -> { should_broadcast? && status_previously_changed?(to: :searching) }
+    after_update_commit :broadcast_result_events, if: -> { should_broadcast? && status_previously_changed?(to: :completed) }
   end
 
   def broadcast_status

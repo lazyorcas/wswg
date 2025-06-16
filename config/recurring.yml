@@ -2,6 +2,9 @@ production:
   find_and_create_events_job:
     class: ScrapeAndCreateEventsJob
     schedule: "0 * * * *"  # Every hour at 0 minutes
+  create_search_queries_job:
+    class: CreateSearchQueriesJob
+    schedule: "0 * * * *"  # Every hour at 0 minutes
   reindex_events_job:
     class: Events::ReindexJob
     schedule: "30 * * * *"  # Every hour at 30 minutes

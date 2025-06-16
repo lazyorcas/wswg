@@ -16,6 +16,7 @@ class CreditTransaction < ApplicationRecord
   validates :transaction_type, presence: true
   validates :amount, presence: true, numericality: { other_than: 0 }
 
+  # GOTCHA: inner if will override outer if
   with_options if: :usage? do
     validates :expires_at, presence: true
     validates :creditable_id, uniqueness: {
