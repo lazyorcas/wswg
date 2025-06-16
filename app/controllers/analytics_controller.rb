@@ -14,10 +14,6 @@ class AnalyticsController < AdminController
       .reverse
       .map { |city| [ "#{city.name} (#{city.visitor_score})", city.visitor_score ] }
 
-    @visits = Ahoy::Visit
-      .non_user
-      .group_by_period(@time_interval, :started_at, range: @time_range, expand_range: true)
-      .count
     @visitors = Ahoy::Visit
       .non_user
       .group_by_period(@time_interval, :started_at, range: @time_range, expand_range: true)
@@ -122,17 +118,6 @@ class AnalyticsController < AdminController
       .map { |hour| [ hour, hour_views_h[hour] || 0 ] }
       .sort_by { |(hour, _)| hour }
 
-    @city_time_period_views = Ahoy::Event
-      .non_user
-      .where(name: "Viewed events")
-      .where(time: @time_range)
-      .group("properties->>'city'", "properties->>'time_period'")
-      .count
-      .transform_keys { |(city, period)| "#{city} - #{period}" }
-      .sort_by { |(_, count)| count }
-      .reverse
-      .take(20)
-
     @nearby_events_page_views = Ahoy::Event
       .non_user
       .where(name: "Viewed events")
@@ -161,27 +146,6 @@ class AnalyticsController < AdminController
       .group_by_period(@time_interval, :created_at, range: @time_range, expand_range: true)
       .count
 
-    @seens_by_city = Seen
-      .where(seenable_type: [ nil, "Visitor" ])
-      .joins("INNER JOIN events ON events.id = seens.event_id")
-      .joins("INNER JOIN city_sources ON city_sources.id = events.city_source_id")
-      .joins("INNER JOIN cities ON cities.id = city_sources.city_id")
-      .group("cities.name")
-      .where(created_at: @time_range)
-      .order("cities.name ASC")
-      .count
-      .sort_by { |(_, count)| count }
-      .reverse
-
-    @map_page_visits_by_city = Ahoy::Event
-      .non_user
-      .where(name: "Visited map page")
-      .where("properties->>'city' IS NOT NULL")
-      .where(time: @time_range)
-      .group("properties->>'city'")
-      .count
-      .sort_by { |(_, count)| count }
-      .reverse
     @map_page_queries = Ahoy::Event
       .non_user
       .where(name: [ "Searched", "Searched on map" ])
@@ -189,15 +153,6 @@ class AnalyticsController < AdminController
       .where(time: @time_range)
       .order(time: :desc)
       .pluck(:time, Arel.sql("properties->>'query'"))
-    @sign_up_page_sources = Ahoy::Event
-      .non_user
-      .where(name: "Visited sign up page")
-      .where("properties->'params'->>'source' IS NOT NULL")
-      .where(time: @time_range)
-      .group("properties->'params'->>'source'")
-      .count
-      .sort_by { |(_, count)| count }
-      .reverse
 
     # Usage
     @aggregated_users = User
@@ -218,13 +173,6 @@ class AnalyticsController < AdminController
       .transform_keys { |k| k.to_date }
       .sort
     @map_page_events = build_ahoy_events_page_events_data("Visited map page")
-    @search_queries = SearchQuery
-      .where.not(searcher_type: "User", searcher_id: 1)
-      .group_by_period(@time_interval, :created_at, range: @time_range, expand_range: true)
-      .count
-      .transform_values { |v| v }
-      .transform_keys { |k| k.to_date }
-      .sort
     @bookmarks = Bookmark
       .where.not(user_id: 1)
       .group_by_period(@time_interval, :created_at, range: @time_range, expand_range: true)
@@ -232,11 +180,7 @@ class AnalyticsController < AdminController
       .transform_values { |v| v }
       .transform_keys { |k| k.to_date }
       .sort
-    @events_by_city = Event
-      .joins(:city_source)
-      .joins(:city)
-      .group("cities.name")
-      .order("cities.name ASC")
+    @events_created = Event
       .group_by_period(@time_interval, :created_at, range: @time_range, expand_range: true)
       .count
     @events_by_source = Event

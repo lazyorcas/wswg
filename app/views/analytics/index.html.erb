@@ -11,9 +11,6 @@
   </header>
   <div class="flex flex-col gap-y-8">
     <%= render "charts", title: "Web Traffic" do %>
-      <%= render "chart", title: "Ahoy Visits" do %>
-        <%= line_chart @visits %>
-      <% end %>
       <%= render "chart", title: "Ahoy Visitors" do %>
         <%= line_chart @visitors %>
       <% end %>
@@ -80,9 +77,6 @@
           "#312c85"  # 23:00
         ] %>
       <% end %>
-      <%= render "chart", title: "Popularity by City & Time Period (Top 20)" do %>
-        <%= pie_chart @city_time_period_views, legend: "right" %>
-      <% end %>
       <%= render "chart", title: "Nearby Events Page Views" do %>
         <%= line_chart @nearby_events_page_views %>
       <% end %>
@@ -95,14 +89,8 @@
       <%= render "chart", title: "Non-user Seens" do %>
         <%= line_chart @seens %>
       <% end %>
-      <%= render "chart", title: "Non-user Seens by City" do %>
-        <%= pie_chart @seens_by_city, legend: "right" %>
-      <% end %>
     <% end %>
     <%= render "charts", title: "SEO - Map & Search" do %>
-      <%= render "chart", title: "Map page visits by city" do %>
-        <%= pie_chart @map_page_visits_by_city %>
-      <% end %>
       <%= render "chart", title: "Search queries" do %>
         <table class="min-w-full">
           <tbody class="divide-y divide-primary overflow-y-scroll flex flex-col"  style="max-height: 300px;">
@@ -119,9 +107,6 @@
           </tbody>
         </table>
       <% end %>
-      <%= render "chart", title: "Which sources led to sign ups?" do %>
-        <%= pie_chart @sign_up_page_sources %>
-      <% end %>
     <% end %>
     <%= render "charts", title: "Product" do %>
       <%= render "chart", title: "User Growth" do %>
@@ -133,19 +118,13 @@
       <%= render "chart", title: "Visited map page" do %>
         <%= line_chart @map_page_events %>
       <% end %>
-      <%= render "chart", title: "Search Queries created" do %>
-        <%= line_chart @search_queries %>
-      <% end %>
       <%= render "chart", title: "Bookmarks created" do %>
         <%= line_chart @bookmarks %>
       <% end %>
     <% end %>
     <%= render "charts", title: "Scraped Events" do %>
-      <%= render "chart", title: "Events created by city" do %>
-        <%= column_chart @events_by_city, stacked: true, legend: false %>
-      <% end %>
-      <%= render "chart", title: "Events created by source" do %>
-        <%= area_chart @events_by_source, stacked: true %>
+      <%= render "chart", title: "Events created" do %>
+        <%= column_chart @events_created %>
       <% end %>
     <% end %>
     <%= render "charts", title: "City Popularity" do %>
