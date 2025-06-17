@@ -8,7 +8,7 @@
             <span class="text-sm"><%= @event.source.name %></span>
           <% end %>
           <%= link_to @event.url, class: "w-fit", target: "_blank", rel: "ugc nofollow", data: { event_list_target: "link", event_path: event_path(@event, source: "title") } do %>
-            <%= tag.h2 @event.title, class: "text-base line-clamp-2 link" %>
+            <%= tag.h2 @event.title, class: "text-base line-clamp-2 link", style: "word-break: break-word;" %>
           <% end %>
           <span class="flex flex-col gap-y-1 mt-2" data-nosnippet>
             <%= tag.p class: "text-sm text-secondary flex gap-x-2" do %>
