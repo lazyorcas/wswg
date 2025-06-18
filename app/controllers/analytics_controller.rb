@@ -1,6 +1,7 @@
 class AnalyticsController < AdminController
   START_DATE = (4.weeks.ago.end_of_week + 1.day).to_date
   TIME_INTERVAL = "day"
+  DURATION_TRACKED_SINCE_AHOY_VISIT_ID = 2949
 
   before_action :load_filters
 
@@ -28,6 +29,13 @@ class AnalyticsController < AdminController
       .group("(duration / 5) * 5")
       .order(:duration_group)
       .map { |visit| [ visit.duration_group, visit.count ] }
+    @bounces = Ahoy::Visit
+      .legitimate
+      .non_admin
+      .where(id: DURATION_TRACKED_SINCE_AHOY_VISIT_ID..)
+      .where(duration: nil)
+      .group_by_period(@time_interval, :started_at, range: @time_range, expand_range: true)
+      .count
     @visits_by_device = Ahoy::Visit
       .legitimate
       .non_admin

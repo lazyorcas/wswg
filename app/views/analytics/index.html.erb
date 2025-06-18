@@ -17,6 +17,9 @@
       <%= render "chart", title: "Visit Durations" do %>
         <%= column_chart @visit_durations %>
       <% end %>
+      <%= render "chart", title: "Bounces" do %>
+        <%= line_chart @bounces %>
+      <% end %>
       <%= render "chart", title: "Ahoy Events - Homepage" do %>
         <%= line_chart @homepage_events %>
       <% end %>
