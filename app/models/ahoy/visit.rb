@@ -1,7 +1,7 @@
 class Ahoy::Visit < ApplicationRecord
   self.table_name = "ahoy_visits"
 
-  scope :visitors, -> { where.missing(:user).where("referrer != landing_page") }
+  scope :visitors, -> { where.missing(:user).where("referrer IS NULL OR landing_page IS NULL OR referrer != landing_page") }
 
   # belongs_to :city, primary_key: "name", foreign_key: "city"
   belongs_to :visitor, primary_key: "visitor_token", foreign_key: "visitor_token"
