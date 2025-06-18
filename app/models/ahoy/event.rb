@@ -9,4 +9,13 @@ class Ahoy::Event < ApplicationRecord
 
   belongs_to :visit
   belongs_to :user, optional: true
+
+  after_create_commit :sync_visit_duration
+
+  private
+
+  def sync_visit_duration
+    duration_sync = Ahoy::Visit::DurationSync.new(visit: visit)
+    duration_sync.call
+  end
 end
