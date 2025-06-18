@@ -16,10 +16,12 @@ class AnalyticsController < AdminController
 
     @visitors = Ahoy::Visit
       .legitimate
+      .non_admin
       .group_by_period(@time_interval, :started_at, range: @time_range, expand_range: true)
       .count("DISTINCT visitor_token")
     @visits_by_device = Ahoy::Visit
       .legitimate
+      .non_admin
       .where.not(device_type: nil)
       .group(:device_type)
       .where(started_at: @time_range)
@@ -28,6 +30,7 @@ class AnalyticsController < AdminController
       .reverse
     @visits_by_os = Ahoy::Visit
       .legitimate
+      .non_admin
       .where.not(os: nil)
       .group(:os)
       .where(started_at: @time_range)
@@ -36,6 +39,7 @@ class AnalyticsController < AdminController
       .reverse
     @visits_by_browser = Ahoy::Visit
       .legitimate
+      .non_admin
       .where.not(browser: nil)
       .group(:browser)
       .where(started_at: @time_range)
@@ -44,6 +48,7 @@ class AnalyticsController < AdminController
       .reverse
     @visits_by_referring_domain = Ahoy::Visit
       .legitimate
+      .non_admin
       .where.not(referring_domain: nil)
       .group(:referring_domain)
       .where(started_at: @time_range)
@@ -54,6 +59,7 @@ class AnalyticsController < AdminController
     @city_events_page_events = build_ahoy_events_page_events_data("Viewed events")
     @event_category_city_events_page_events = Ahoy::Event
       .legitimate
+      .non_admin
       .where(name: "Viewed events")
       .group("COALESCE(properties->>'event_category', 'events')")
       .group_by_period(@time_interval, :time, range: @time_range, expand_range: true)
@@ -69,6 +75,7 @@ class AnalyticsController < AdminController
     @visitor_retention = []
     visits_h = Ahoy::Visit
       .legitimate
+      .non_admin
       .where(started_at: @time_range)
       .where(visitor_token: qualified_visitor_tokens_for_retention)
       .group(:visitor_token)
@@ -87,6 +94,7 @@ class AnalyticsController < AdminController
 
     @wday_views = Ahoy::Event
       .legitimate
+      .non_admin
       .joins("INNER JOIN cities ON cities.name = ahoy_events.properties->>'city'")
       .where(name: "Viewed events")
       .where(time: @time_range)
@@ -114,6 +122,7 @@ class AnalyticsController < AdminController
 
     hour_views_h = Ahoy::Event
       .legitimate
+      .non_admin
       .joins("INNER JOIN cities ON cities.name = ahoy_events.properties->>'city'")
       .where(name: "Viewed events")
       .where(time: @time_range)
@@ -126,12 +135,14 @@ class AnalyticsController < AdminController
 
     @nearby_events_page_views = Ahoy::Event
       .legitimate
+      .non_admin
       .where(name: "Viewed events")
       .where("(properties->>'nearby')::boolean IS TRUE")
       .group_by_period(@time_interval, :time, range: @time_range, expand_range: true)
       .count
     @nearby_events_city_views = Ahoy::Event
       .legitimate
+      .non_admin
       .where(name: "Viewed events")
       .where("(properties->>'nearby')::boolean IS TRUE")
       .where(time: @time_range)
@@ -142,6 +153,7 @@ class AnalyticsController < AdminController
 
     @viewed_event_by_source = Ahoy::Event
       .legitimate
+      .non_admin
       .where(name: "Viewed event")
       .where(time: @time_range)
       .group("properties->>'source'")
@@ -154,6 +166,7 @@ class AnalyticsController < AdminController
 
     @map_page_queries = Ahoy::Event
       .legitimate
+      .non_admin
       .where(name: [ "Searched", "Searched on map" ])
       .where("properties->>'query' IS NOT NULL")
       .where(time: @time_range)
@@ -222,6 +235,7 @@ class AnalyticsController < AdminController
   def build_ahoy_events_page_events_data(event_name)
     Ahoy::Event
       .legitimate
+      .non_admin
       .where(name: event_name)
       .group_by_period(@time_interval, :time, range: @time_range, expand_range: true)
       .count
@@ -249,7 +263,7 @@ class AnalyticsController < AdminController
           AND v2.started_at > MIN(visits.started_at)
         ) as second_visit_at
       ")
-      .where(visits: { id: Ahoy::Visit.legitimate.pluck(:id) })
+      .where(visits: { id: Ahoy::Visit.legitimate.non_admin.pluck(:id) })
       .group("visitors.visitor_token")
       .having("COUNT(visits.id) >= 2")
 
