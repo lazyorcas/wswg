@@ -29,7 +29,6 @@ module City::Scorable
   def visitor_count
     @visitor_count ||= Ahoy::Event
       .visitors
-      .joins(:visit)
       .where(name: "Viewed events", time: TIME_WINDOW.ago..)
       .where("properties->>'city' = ?", self.name)
       .count("DISTINCT ahoy_visits.visitor_token")
