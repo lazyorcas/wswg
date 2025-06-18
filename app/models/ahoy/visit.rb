@@ -11,6 +11,8 @@ class Ahoy::Visit < ApplicationRecord
 
   before_validation :find_or_create_visitor
 
+  before_update :update_duration, if: :duration_synced_at_changed?
+
   def self.anonymize(ip:, lat:, lon:)
     masked_ip = Ahoy.mask_ip(ip)
     noisy_lat = nil
@@ -29,9 +31,17 @@ class Ahoy::Visit < ApplicationRecord
     TimeZone.new(name: self[:time_zone])
   end
 
+  def duration_in_mins
+    duration / 60
+  end
+
   private
 
   def find_or_create_visitor
     Visitor.find_or_create_by(visitor_token: visitor_token)
+  end
+
+  def update_duration
+    self.duration = (duration_synced_at - started_at).to_i
   end
 end
