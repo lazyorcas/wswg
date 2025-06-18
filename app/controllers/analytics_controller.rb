@@ -15,11 +15,11 @@ class AnalyticsController < AdminController
       .map { |city| [ "#{city.name} (#{city.visitor_score})", city.visitor_score ] }
 
     @visitors = Ahoy::Visit
-      .non_user
+      .visitors
       .group_by_period(@time_interval, :started_at, range: @time_range, expand_range: true)
       .count("DISTINCT visitor_token")
     @visits_by_device = Ahoy::Visit
-      .non_user
+      .visitors
       .where.not(device_type: nil)
       .group(:device_type)
       .where(started_at: @time_range)
@@ -27,7 +27,7 @@ class AnalyticsController < AdminController
       .sort_by { |(_, count)| count }
       .reverse
     @visits_by_os = Ahoy::Visit
-      .non_user
+      .visitors
       .where.not(os: nil)
       .group(:os)
       .where(started_at: @time_range)
@@ -35,7 +35,7 @@ class AnalyticsController < AdminController
       .sort_by { |(_, count)| count }
       .reverse
     @visits_by_browser = Ahoy::Visit
-      .non_user
+      .visitors
       .where.not(browser: nil)
       .group(:browser)
       .where(started_at: @time_range)
@@ -43,7 +43,7 @@ class AnalyticsController < AdminController
       .sort_by { |(_, count)| count }
       .reverse
     @visits_by_referring_domain = Ahoy::Visit
-      .non_user
+      .visitors
       .where.not(referring_domain: nil)
       .group(:referring_domain)
       .where(started_at: @time_range)
@@ -53,7 +53,7 @@ class AnalyticsController < AdminController
     @pricing_page_events = build_ahoy_events_page_events_data("Visited pricing page")
     @city_events_page_events = build_ahoy_events_page_events_data("Viewed events")
     @event_category_city_events_page_events = Ahoy::Event
-      .non_user
+      .visitors
       .where(name: "Viewed events")
       .group("COALESCE(properties->>'event_category', 'events')")
       .group_by_period(@time_interval, :time, range: @time_range, expand_range: true)
@@ -68,7 +68,7 @@ class AnalyticsController < AdminController
 
     @visitor_retention = []
     visits_h = Ahoy::Visit
-      .non_user
+      .visitors
       .where(started_at: @time_range)
       .where(visitor_token: qualified_visitor_tokens_for_retention)
       .group(:visitor_token)
@@ -86,7 +86,7 @@ class AnalyticsController < AdminController
     end
 
     @wday_views = Ahoy::Event
-      .non_user
+      .visitors
       .joins("INNER JOIN cities ON cities.name = ahoy_events.properties->>'city'")
       .where(name: "Viewed events")
       .where(time: @time_range)
@@ -113,7 +113,7 @@ class AnalyticsController < AdminController
       .sort_by { |h| h[:name].to_s }
 
     hour_views_h = Ahoy::Event
-      .non_user
+      .visitors
       .joins("INNER JOIN cities ON cities.name = ahoy_events.properties->>'city'")
       .where(name: "Viewed events")
       .where(time: @time_range)
@@ -125,13 +125,13 @@ class AnalyticsController < AdminController
       .sort_by { |(hour, _)| hour }
 
     @nearby_events_page_views = Ahoy::Event
-      .non_user
+      .visitors
       .where(name: "Viewed events")
       .where("(properties->>'nearby')::boolean IS TRUE")
       .group_by_period(@time_interval, :time, range: @time_range, expand_range: true)
       .count
     @nearby_events_city_views = Ahoy::Event
-      .non_user
+      .visitors
       .where(name: "Viewed events")
       .where("(properties->>'nearby')::boolean IS TRUE")
       .where(time: @time_range)
@@ -141,7 +141,7 @@ class AnalyticsController < AdminController
       .reverse
 
     @viewed_event_by_source = Ahoy::Event
-      .non_user
+      .visitors
       .where(name: "Viewed event")
       .where(time: @time_range)
       .group("properties->>'source'")
@@ -153,7 +153,7 @@ class AnalyticsController < AdminController
       .count
 
     @map_page_queries = Ahoy::Event
-      .non_user
+      .visitors
       .where(name: [ "Searched", "Searched on map" ])
       .where("properties->>'query' IS NOT NULL")
       .where(time: @time_range)
@@ -221,7 +221,7 @@ class AnalyticsController < AdminController
 
   def build_ahoy_events_page_events_data(event_name)
     Ahoy::Event
-      .non_user
+      .visitors
       .where(name: event_name)
       .group_by_period(@time_interval, :time, range: @time_range, expand_range: true)
       .count
@@ -249,7 +249,7 @@ class AnalyticsController < AdminController
           AND v2.started_at > MIN(visits.started_at)
         ) as second_visit_at
       ")
-      .where(visits: { id: Ahoy::Visit.non_user.pluck(:id) })
+      .where(visits: { id: Ahoy::Visit.visitors.pluck(:id) })
       .group("visitors.visitor_token")
       .having("COUNT(visits.id) >= 2")
 

@@ -1,7 +1,7 @@
 class Ahoy::Event < ApplicationRecord
   include Ahoy::QueryMethods
 
-  scope :non_user, -> { where(user_id: nil) }
+  scope :visitors, -> { where.missing(:user) }
 
   self.table_name = "ahoy_events"
 
