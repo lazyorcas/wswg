@@ -1,7 +1,7 @@
 class Ahoy::Event < ApplicationRecord
   include Ahoy::QueryMethods
 
-  scope :visitors, -> { where.missing(:user) }
+  scope :visitors, -> { joins(:visit).where.missing(:user).where("ahoy_visits.referrer != ahoy_visits.landing_page") }
 
   self.table_name = "ahoy_events"
 
