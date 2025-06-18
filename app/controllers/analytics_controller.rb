@@ -1,7 +1,7 @@
 class AnalyticsController < AdminController
   START_DATE = (4.weeks.ago.end_of_week + 1.day).to_date
   TIME_INTERVAL = "day"
-  DURATION_TRACKED_SINCE_AHOY_VISIT_ID = 2949
+  DURATION_TRACKED_SINCE_AHOY_VISIT_ID = 2952
 
   before_action :load_filters
 
