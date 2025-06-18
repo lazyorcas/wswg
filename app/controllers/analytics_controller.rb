@@ -27,6 +27,7 @@ class AnalyticsController < AdminController
       .where.not(duration: nil)
       .group("(duration / 5) * 5")
       .order(:duration_group)
+      .map { |visit| [ visit.duration_group, visit.count ] }
     @visits_by_device = Ahoy::Visit
       .legitimate
       .non_admin
