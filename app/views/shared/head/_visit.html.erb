@@ -1,9 +1,7 @@
 <% if current_visit.present? %>
   <script>
-    document.addEventListener("DOMContentLoaded", function() {
-      setInterval(function() {
-        fetch("<%= current_visit_duration_sync_path %>", { method: "POST" });
-      }, 2000);
-    });
+    setInterval(function() {
+      fetch("<%= current_visit_duration_sync_path %>", { method: "POST" });
+    }, 2000);
   </script>
 <% end %>
