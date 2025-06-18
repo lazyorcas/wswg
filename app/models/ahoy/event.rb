@@ -17,5 +17,7 @@ class Ahoy::Event < ApplicationRecord
   def sync_visit_duration
     duration_sync = Ahoy::Visit::DurationSync.new(visit: visit)
     duration_sync.call
+  rescue => e
+    Sentry.capture_exception(e)
   end
 end
