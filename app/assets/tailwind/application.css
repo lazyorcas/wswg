@@ -23,6 +23,15 @@
     @apply text-stone-900 dark:text-stone-100;
   }
 
+  select {
+    @apply appearance-none;
+  }
+
+  select,
+  input {
+    @apply bg-transparent;
+  }
+
   * {
     font-display: swap;
   }
