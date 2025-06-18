@@ -19,6 +19,14 @@ class AnalyticsController < AdminController
       .non_admin
       .group_by_period(@time_interval, :started_at, range: @time_range, expand_range: true)
       .count("DISTINCT visitor_token")
+    @visit_durations = Ahoy::Visit
+      .legitimate
+      .non_admin
+      .select("(duration / 5) * 5 as duration_group, count(*) as count")
+      .where(started_at: @time_range)
+      .where.not(duration: nil)
+      .group("(duration / 5) * 5")
+      .order(:duration_group)
     @visits_by_device = Ahoy::Visit
       .legitimate
       .non_admin

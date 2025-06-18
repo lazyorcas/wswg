@@ -14,6 +14,12 @@
       <%= render "chart", title: "Ahoy Visitors" do %>
         <%= line_chart @visitors %>
       <% end %>
+      <%= render "chart", title: "Visit Durations" do %>
+        <%= column_chart @visit_durations %>
+      <% end %>
+      <%= render "chart", title: "Ahoy Events - Homepage" do %>
+        <%= line_chart @homepage_events %>
+      <% end %>
       <%= render "chart", title: "Ahoy Events - Pricing Page" do %>
         <%= line_chart @pricing_page_events %>
       <% end %>
@@ -22,9 +28,6 @@
       <% end %>
       <%= render "chart", title: "Ahoy Events - City Events Page by Event Category" do %>
         <%= column_chart @event_category_city_events_page_events, stacked: true %>
-      <% end %>
-      <%= render "chart", title: "Ahoy Events - Homepage" do %>
-        <%= line_chart @homepage_events %>
       <% end %>
       <%= render "chart", title: "Ahoy Visitor Retention" do %>
         <%= line_chart @visitor_retention, suffix: "%", xtitle: "nth #{@time_interval}" %>
