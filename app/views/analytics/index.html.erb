@@ -48,7 +48,7 @@
         <%= pie_chart @visits_by_referring_domain, legend: "right" %>
       <% end %>
     <% end %>
-    <%= render "charts", title: "SEO - City Events Pages" do %>
+    <%= render "charts", title: "City Events Pages" do %>
       <%= render "chart", title: "Popularity by Day of Week" do %>
         <%= line_chart @wday_views %>
       <% end %>
@@ -89,11 +89,11 @@
       <%= render "chart", title: "Viewed Event by Source" do %>
         <%= column_chart @viewed_event_by_source, stacked: true %>
       <% end %>
-      <%= render "chart", title: "Non-user Seens" do %>
+      <%= render "chart", title: "Seens" do %>
         <%= line_chart @seens %>
       <% end %>
     <% end %>
-    <%= render "charts", title: "SEO - Map & Search" do %>
+    <%= render "charts", title: "Map & Search" do %>
       <%= render "chart", title: "Search queries" do %>
         <table class="min-w-full">
           <tbody class="divide-y divide-primary overflow-y-scroll flex flex-col"  style="max-height: 300px;">
