@@ -4,6 +4,6 @@ class Ahoy::Visit::DurationSync
   attr_accessor :visit
 
   def call
-    visit.update(duration_synced_at: Time.current)
+    visit.update!(duration_synced_at: Time.current)
   end
 end
