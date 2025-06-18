@@ -1,14 +1,8 @@
 <% if current_visit.present? %>
   <script>
     document.addEventListener("DOMContentLoaded", function() {
-      // set interval to ping the server every 5 seconds
       setInterval(function() {
-        fetch("<%= current_visit_duration_sync_path %>", {
-          method: "POST",
-          headers: {
-            "X-CSRF-Token": document.querySelector("meta[name='csrf-token']").content
-          }
-        });
+        fetch("<%= current_visit_duration_sync_path %>", { method: "POST" });
       }, 5000);
     });
   </script>
