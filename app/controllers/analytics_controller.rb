@@ -77,8 +77,7 @@ class AnalyticsController < AdminController
     @pricing_page_events = build_ahoy_events_page_events_data("Visited pricing page")
     @city_events_page_events = build_ahoy_events_page_events_data("Viewed events")
     @event_category_city_events_page_events = Ahoy::Event
-      .legitimate
-      .non_admin
+      .where(visit: Ahoy::Visit.legitimate.non_admin)
       .where(name: "Viewed events")
       .group("COALESCE(properties->>'event_category', 'events')")
       .group_by_period(@time_interval, :time, range: @time_range, expand_range: true)
@@ -112,8 +111,7 @@ class AnalyticsController < AdminController
     end
 
     @wday_views = Ahoy::Event
-      .legitimate
-      .non_admin
+      .where(visit: Ahoy::Visit.legitimate.non_admin)
       .joins("INNER JOIN cities ON cities.name = ahoy_events.properties->>'city'")
       .where(name: "Viewed events")
       .where(time: @time_range)
@@ -140,8 +138,7 @@ class AnalyticsController < AdminController
       .sort_by { |h| h[:name].to_s }
 
     hour_views_h = Ahoy::Event
-      .legitimate
-      .non_admin
+      .where(visit: Ahoy::Visit.legitimate.non_admin)
       .joins("INNER JOIN cities ON cities.name = ahoy_events.properties->>'city'")
       .where(name: "Viewed events")
       .where(time: @time_range)
@@ -153,15 +150,13 @@ class AnalyticsController < AdminController
       .sort_by { |(hour, _)| hour }
 
     @nearby_events_page_views = Ahoy::Event
-      .legitimate
-      .non_admin
+      .where(visit: Ahoy::Visit.legitimate.non_admin)
       .where(name: "Viewed events")
       .where("(properties->>'nearby')::boolean IS TRUE")
       .group_by_period(@time_interval, :time, range: @time_range, expand_range: true)
       .count
     @nearby_events_city_views = Ahoy::Event
-      .legitimate
-      .non_admin
+      .where(visit: Ahoy::Visit.legitimate.non_admin)
       .where(name: "Viewed events")
       .where("(properties->>'nearby')::boolean IS TRUE")
       .where(time: @time_range)
@@ -171,8 +166,7 @@ class AnalyticsController < AdminController
       .reverse
 
     @viewed_event_by_source = Ahoy::Event
-      .legitimate
-      .non_admin
+      .where(visit: Ahoy::Visit.legitimate.non_admin)
       .where(name: "Viewed event")
       .where(time: @time_range)
       .group("properties->>'source'")
@@ -184,8 +178,7 @@ class AnalyticsController < AdminController
       .count
 
     @map_page_queries = Ahoy::Event
-      .legitimate
-      .non_admin
+      .where(visit: Ahoy::Visit.legitimate.non_admin)
       .where(name: [ "Searched", "Searched on map" ])
       .where("properties->>'query' IS NOT NULL")
       .where(time: @time_range)
@@ -253,8 +246,7 @@ class AnalyticsController < AdminController
 
   def build_ahoy_events_page_events_data(event_name)
     Ahoy::Event
-      .legitimate
-      .non_admin
+      .where(visit: Ahoy::Visit.legitimate.non_admin)
       .where(name: event_name)
       .group_by_period(@time_interval, :time, range: @time_range, expand_range: true)
       .count
