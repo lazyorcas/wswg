@@ -3,7 +3,7 @@
 # 2.5M / 4000 = 625 free events per day.
 
 class ScrapeAndCreateEventsJob < ApplicationJob
-  HOUR_TO_FETCH_EVENTS = 4
+  HOUR_TO_FETCH_EVENTS = 0
   EVENT_LIMIT_PER_CITY_SOURCE = 1_000
   INITIAL_LIMIT_MODIFIER = 0.2
   MIN_LIMIT_MODIFIER = 0.05
