@@ -5,12 +5,16 @@ export default class extends Controller {
 
   linkTargetConnected(target) {
     target.addEventListener("click", () => {
-      fetch(target.dataset.eventPath, {
-        method: "HEAD",
-        headers: {
-          "X-CSRF-Token": document.querySelector("meta[name='csrf-token']").content
-        }
-      })
+      try {
+        fetch(target.dataset.eventPath, {
+          method: "HEAD",
+          headers: {
+            "X-CSRF-Token": document.querySelector("meta[name='csrf-token']").content
+          }
+        })
+      } catch (error) {
+        console.error("Error fetching event:", error);
+      }
     })
   }
 }
