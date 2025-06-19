@@ -1,16 +1,21 @@
 <% if current_visit.present? %>
   <script>
     const durationSyncInterval = setInterval(function() {
-      fetch("<%= current_visit_duration_sync_path %>", { method: "POST" })
-        .then(function(response) {
-          if (!response.ok) {
-            throw new Error('Network response was not ok');
-          }
-        })
-        .catch(function(error) {
-          console.warn('Duration sync failed, stopping interval:', error);
-          clearInterval(durationSyncInterval);
-        });
+      fetch("<%= current_visit_duration_sync_path %>", {
+        method: "POST",
+        headers: {
+          "X-CSRF-Token": document.querySelector("meta[name='csrf-token']").content
+        }
+      })
+      .then(function(response) {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+      })
+      .catch(function(error) {
+        console.warn('Duration sync failed, stopping interval:', error);
+        clearInterval(durationSyncInterval);
+      });
     }, 2000);
   </script>
 <% end %>

@@ -1,6 +1,4 @@
 class CurrentVisit::DurationSyncController < ApplicationController
-  skip_before_action :verify_authenticity_token
-
   def create
     build_new_duration_sync
     @duration_sync.call
