@@ -31,7 +31,8 @@ class AnalyticsController < AdminController
     @bounces = Ahoy::Visit
       .legitimate
       .non_admin
-      .where(duration: nil)
+      .where("duration < 10")
+      .group(:duration)
       .group_by_period(@time_interval, :started_at, range: @time_range, expand_range: true)
       .count
     @visits_by_device = Ahoy::Visit
