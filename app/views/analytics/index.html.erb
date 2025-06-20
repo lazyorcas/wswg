@@ -15,7 +15,7 @@
         <%= line_chart @visitors %>
       <% end %>
       <%= render "chart", title: "Search Engine Visitors" do %>
-        <%= column_chart @search_engine_visitors, stacked: true, legend: false %>
+        <%= column_chart @search_engine_visitors, stacked: true %>
       <% end %>
       <%= render "chart", title: "Bounces" do %>
         <%= column_chart @bounces, stacked: true %>
