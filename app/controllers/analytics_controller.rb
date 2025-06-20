@@ -1,6 +1,7 @@
 class AnalyticsController < AdminController
   START_DATE = (4.weeks.ago.end_of_week + 1.day).to_date
   TIME_INTERVAL = "day"
+  SEARCH_ENGINES = %w[google bing yandex yahoo duckduckgo baidu].freeze
 
   before_action :load_filters
 
@@ -19,11 +20,15 @@ class AnalyticsController < AdminController
       .non_admin
       .group_by_period(@time_interval, :started_at, range: @time_range, expand_range: true)
       .count("DISTINCT visitor_token")
+
+    search_engine_referrers_where_clause = SEARCH_ENGINES.map { |engine| "referrer LIKE '%#{engine}%'" }.join(" OR ")
+    search_engine_referrers_group_clause = "CASE " + SEARCH_ENGINES.map { |engine| "WHEN referrer LIKE '%#{engine}%' THEN '#{engine}'" }.join(" ") + " END"
+
     @search_engine_visitors = Ahoy::Visit
       .legitimate
       .non_admin
-      .where("referrer LIKE '%google%' OR referrer LIKE '%bing%' OR referrer LIKE '%yandex%' OR referrer LIKE '%yahoo%' OR referrer LIKE '%duckduckgo%' OR referrer LIKE '%baidu%'")
-      .group(:referrer)
+      .where(search_engine_referrers_where_clause)
+      .group(Arel.sql(search_engine_referrers_group_clause))
       .group_by_period(@time_interval, :started_at, range: @time_range, expand_range: true)
       .count("DISTINCT visitor_token")
     @bounces = Ahoy::Visit
@@ -38,10 +43,10 @@ class AnalyticsController < AdminController
     @bounces_by_search_engine = Ahoy::Visit
       .legitimate
       .non_admin
-      .where("referrer LIKE '%google%' OR referrer LIKE '%bing%' OR referrer LIKE '%yandex%' OR referrer LIKE '%yahoo%' OR referrer LIKE '%duckduckgo%' OR referrer LIKE '%baidu%'")
+      .where(search_engine_referrers_where_clause)
       .where.not(duration: nil)
       .where("duration < 10")
-      .group(:referrer)
+      .group(Arel.sql(search_engine_referrers_group_clause))
       .group_by_period(@time_interval, :started_at, range: @time_range, expand_range: true)
       .count
     @visits_by_device = Ahoy::Visit
