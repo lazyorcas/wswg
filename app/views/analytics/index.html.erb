@@ -17,11 +17,11 @@
       <%= render "chart", title: "Search Engine Visitors" do %>
         <%= line_chart @search_engine_visitors %>
       <% end %>
-      <%= render "chart", title: "Visit Durations" do %>
-        <%= column_chart @visit_durations %>
-      <% end %>
       <%= render "chart", title: "Bounces" do %>
         <%= column_chart @bounces, stacked: true %>
+      <% end %>
+      <%= render "chart", title: "Bounces by Search Engine" do %>
+        <%= column_chart @bounces_by_search_engine, stacked: true %>
       <% end %>
       <%= render "chart", title: "Ahoy Events - Homepage" do %>
         <%= line_chart @homepage_events %>

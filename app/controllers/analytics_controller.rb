@@ -23,17 +23,9 @@ class AnalyticsController < AdminController
       .legitimate
       .non_admin
       .where("referrer LIKE '%google%' OR referrer LIKE '%bing%' OR referrer LIKE '%yandex%' OR referrer LIKE '%yahoo%' OR referrer LIKE '%duckduckgo%' OR referrer LIKE '%baidu%'")
+      .group(:referrer)
       .group_by_period(@time_interval, :started_at, range: @time_range, expand_range: true)
       .count("DISTINCT visitor_token")
-    @visit_durations = Ahoy::Visit
-      .legitimate
-      .non_admin
-      .select("(duration / 5) * 5 as duration_group, count(*) as count")
-      .where(started_at: @time_range)
-      .where.not(duration: nil)
-      .group("(duration / 5) * 5")
-      .order(:duration_group)
-      .map { |visit| [ visit.duration_group, visit.count ] }
     @bounces = Ahoy::Visit
       .legitimate
       .non_admin
@@ -43,6 +35,15 @@ class AnalyticsController < AdminController
       .group_by_period(@time_interval, :started_at, range: @time_range, expand_range: true)
       .count
       .transform_keys { |key| [ "#{key[0]}s", key[1] ] }
+    @bounces_by_search_engine = Ahoy::Visit
+      .legitimate
+      .non_admin
+      .where("referrer LIKE '%google%' OR referrer LIKE '%bing%' OR referrer LIKE '%yandex%' OR referrer LIKE '%yahoo%' OR referrer LIKE '%duckduckgo%' OR referrer LIKE '%baidu%'")
+      .where.not(duration: nil)
+      .where("duration < 10")
+      .group(:referrer)
+      .group_by_period(@time_interval, :started_at, range: @time_range, expand_range: true)
+      .count
     @visits_by_device = Ahoy::Visit
       .legitimate
       .non_admin
