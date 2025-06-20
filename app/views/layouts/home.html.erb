@@ -10,12 +10,12 @@
     <%= csp_meta_tag %>
     <%= yield :head %>
     <%= canonical_tag -%>
+    <%= render "shared/head/visit" %>
     <%= render "shared/head/favicon" %>
     <%= render "shared/head/fonts" %>
     <%= render "shared/head/icons" %>
     <%= render "shared/head/sentry" %>
     <%= render "shared/head/hotjar" %>
-    <%= render "shared/head/visit" %>
     <%= tag.link rel: "manifest", href: pwa_manifest_path(format: :json) %>
     <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
