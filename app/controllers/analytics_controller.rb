@@ -19,6 +19,12 @@ class AnalyticsController < AdminController
       .non_admin
       .group_by_period(@time_interval, :started_at, range: @time_range, expand_range: true)
       .count("DISTINCT visitor_token")
+    @search_engine_visitors = Ahoy::Visit
+      .legitimate
+      .non_admin
+      .where("referrer LIKE '%google%' OR referrer LIKE '%bing%' OR referrer LIKE '%yandex%' OR referrer LIKE '%yahoo%' OR referrer LIKE '%duckduckgo%' OR referrer LIKE '%baidu%'")
+      .group_by_period(@time_interval, :started_at, range: @time_range, expand_range: true)
+      .count("DISTINCT visitor_token")
     @visit_durations = Ahoy::Visit
       .legitimate
       .non_admin

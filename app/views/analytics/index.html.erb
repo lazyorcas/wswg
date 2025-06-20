@@ -14,6 +14,9 @@
       <%= render "chart", title: "Ahoy Visitors" do %>
         <%= line_chart @visitors %>
       <% end %>
+      <%= render "chart", title: "Search Engine Visitors" do %>
+        <%= line_chart @search_engine_visitors %>
+      <% end %>
       <%= render "chart", title: "Visit Durations" do %>
         <%= column_chart @visit_durations %>
       <% end %>
