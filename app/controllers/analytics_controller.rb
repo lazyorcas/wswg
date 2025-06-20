@@ -36,6 +36,7 @@ class AnalyticsController < AdminController
       .group(:duration)
       .group_by_period(@time_interval, :started_at, range: @time_range, expand_range: true)
       .count
+      .transform_keys { |key| [ "#{key[0]}s", key[1] ] }
     @visits_by_device = Ahoy::Visit
       .legitimate
       .non_admin
