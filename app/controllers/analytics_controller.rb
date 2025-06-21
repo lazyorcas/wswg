@@ -165,7 +165,7 @@ class AnalyticsController < AdminController
       .non_admin
       .group(:referrer_host)
       .count
-      .select { |_, count| count > 1 }
+      .select { |_, count| count > 10 }
       .keys
   end
 
