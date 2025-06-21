@@ -105,6 +105,26 @@ class AnalyticsController < AdminController
     @map_page_events = build_ahoy_events_page_events_data("Visited map page")
 
     @visitor_retention = []
+    analyzable_user_ids = Ahoy::Visit
+      .where.associated(:user)
+      .group(:user_id)
+      .minimum(:started_at)
+      .select { |_, started_at| (started_at + 1.send(@time_interval.to_sym)).past? }
+      .map { |user_id, _| user_id }
+    first_user_visit_ids = Ahoy::Visit
+      .where.associated(:user)
+      .group(:visitor_token)
+      .minimum(:id)
+      .map { |_, id| id }
+    user_id_to_origin_referrer_host = Ahoy::Visit
+      .where(id: first_user_visit_ids)
+      .pluck(:user_id, :referrer_host)
+    origin_referrer_host_to_user_ids = {}
+    user_id_to_origin_referrer_host = user_id_to_origin_referrer_host.to_h
+    user_id_to_origin_referrer_host.each do |user_id, origin_referrer_host|
+      origin_referrer_host_to_user_ids[origin_referrer_host] ||= []
+      origin_referrer_host_to_user_ids[origin_referrer_host] << user_id
+    end
     analyzable_visitor_tokens = Ahoy::Visit
       .where(visitor_token: @visitor_tokens)
       .group(:visitor_token)
@@ -113,7 +133,7 @@ class AnalyticsController < AdminController
       .map { |visitor_token, _| visitor_token }
     usage_visitor_tokens = Ahoy::Visit
       .where(visitor_token: @visitor_tokens)
-      .where("user_id IS NOT NULL OR duration >= ?", Ahoy::Visit::BOUNCE_DURATION)
+      .where("duration >= ?", Ahoy::Visit::BOUNCE_DURATION)
       .pluck(:visitor_token)
       .uniq
     first_visit_ids = Ahoy::Visit
@@ -133,6 +153,7 @@ class AnalyticsController < AdminController
       series = { name: referrer_host.present? ? referrer_host : "direct", data: [] }
       visits_h = Ahoy::Visit
         .where(visitor_token: origin_referrer_host_to_visitor_tokens[referrer_host] & analyzable_visitor_tokens & usage_visitor_tokens)
+        .or(Ahoy::Visit.where(user_id: origin_referrer_host_to_user_ids[referrer_host] & analyzable_user_ids))
         .group(:visitor_token)
         .count("DISTINCT DATE_TRUNC('#{@time_interval.upcase}', started_at)")
       visit_counts = visits_h.values
