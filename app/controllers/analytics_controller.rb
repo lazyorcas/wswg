@@ -27,7 +27,6 @@ class AnalyticsController < AdminController
       .group_by_period(@time_interval, :started_at, range: @time_range, expand_range: true)
       .count("DISTINCT visitor_token")
       .transform_keys { |key| [ key[0].present? ? key[0] : "direct", key[1] ] }
-    @homepage_events = build_ahoy_events_page_events_data("Visited homepage")
     @bounces = Ahoy::Visit
       .legitimate
       .non_admin
@@ -45,16 +44,26 @@ class AnalyticsController < AdminController
       .group(Arel.sql(search_engine_referrers_group_clause))
       .group_by_period(@time_interval, :started_at, range: @time_range, expand_range: true)
       .count
-    @pricing_page_events = build_ahoy_events_page_events_data("Visited pricing page")
-
     @city_events_page_events = Ahoy::Event
       .joins(:visit)
       .where(visit: Ahoy::Visit.legitimate.non_admin)
+      .where(search_engine_referrers_where_clause)
       .where(name: "Viewed events")
       .group("COALESCE(properties->>'event_category', 'events')")
       .order(Arel.sql("COALESCE(properties->>'event_category', 'events')"))
       .group_by_period(@time_interval, :time, range: @time_range, expand_range: true)
       .count("DISTINCT ahoy_visits.visitor_token")
+    @nearby_events_page_views = Ahoy::Event
+      .joins(:visit)
+      .where(visit: Ahoy::Visit.legitimate.non_admin)
+      .where(search_engine_referrers_where_clause)
+      .where(name: "Viewed events")
+      .where("(properties->>'nearby')::boolean IS TRUE")
+      .group("properties->>'city'")
+      .group_by_period(@time_interval, :time, range: @time_range, expand_range: true)
+      .count("DISTINCT ahoy_visits.visitor_token")
+    @pricing_page_events = build_ahoy_events_page_events_data("Visited pricing page")
+
     @wday_views = Ahoy::Event
       .where(visit: Ahoy::Visit.legitimate.non_admin)
       .joins("INNER JOIN cities ON cities.name = ahoy_events.properties->>'city'")
@@ -81,23 +90,6 @@ class AnalyticsController < AdminController
         }
       }
       .sort_by { |h| h[:name].to_s }
-    @nearby_events_page_views = Ahoy::Event
-      .joins(:visit)
-      .where(visit: Ahoy::Visit.legitimate.non_admin)
-      .where(name: "Viewed events")
-      .where("(properties->>'nearby')::boolean IS TRUE")
-      .group_by_period(@time_interval, :time, range: @time_range, expand_range: true)
-      .count("DISTINCT ahoy_visits.visitor_token")
-    @nearby_events_city_views = Ahoy::Event
-      .joins(:visit)
-      .where(visit: Ahoy::Visit.legitimate.non_admin)
-      .where(name: "Viewed events")
-      .where("(properties->>'nearby')::boolean IS TRUE")
-      .where(time: @time_range)
-      .group("properties->>'city'")
-      .count("DISTINCT ahoy_visits.visitor_token")
-      .sort_by { |(_, count)| count }
-      .reverse
 
     @search_queries = Ahoy::Event
       .where(visit: Ahoy::Visit.legitimate.non_admin)

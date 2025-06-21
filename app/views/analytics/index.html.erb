@@ -23,25 +23,17 @@
       <%= render "chart", title: "Bounces by Search Engine" do %>
         <%= column_chart @bounces_by_search_engine, stacked: true %>
       <% end %>
-      <%= render "chart", title: "Viewed homepage" do %>
-        <%= column_chart @homepage_events %>
+      <%= render "chart", title: "SEO - Popular City Events Pages" do %>
+        <%= column_chart @city_events_page_events, stacked: true %>
+      <% end %>
+      <%= render "chart", title: "SEO - Popular Nearby Events' Cities" do %>
+        <%= column_chart @nearby_events_page_views, stacked: true %>
       <% end %>
       <%= render "chart", title: "Viewed pricing page" do %>
         <%= column_chart @pricing_page_events %>
       <% end %>
-    <% end %>
-    <%= render "charts", title: "City Events Pages" do %>
-      <%= render "chart", title: "Viewed city events page" do %>
-        <%= column_chart @city_events_page_events, stacked: true %>
-      <% end %>
       <%= render "chart", title: "Popularity by Day of Week" do %>
         <%= line_chart @wday_views %>
-      <% end %>
-      <%= render "chart", title: "Viewed nearby events page" do %>
-        <%= column_chart @nearby_events_page_views %>
-      <% end %>
-      <%= render "chart", title: "Viewed nearby events page by city" do %>
-        <%= pie_chart @nearby_events_city_views, legend: "right" %>
       <% end %>
     <% end %>
     <%= render "charts", title: "Usage" do %>
