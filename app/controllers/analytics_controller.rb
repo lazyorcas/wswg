@@ -44,6 +44,7 @@ class AnalyticsController < AdminController
     @pricing_page_events = build_ahoy_events_page_events_data("Visited pricing page")
 
     @city_events_page_events = Ahoy::Event
+      .joins(:visit)
       .where(visit: Ahoy::Visit.legitimate.non_admin)
       .where(name: "Viewed events")
       .group("COALESCE(properties->>'event_category', 'events')")
@@ -77,12 +78,14 @@ class AnalyticsController < AdminController
       }
       .sort_by { |h| h[:name].to_s }
     @nearby_events_page_views = Ahoy::Event
+      .joins(:visit)
       .where(visit: Ahoy::Visit.legitimate.non_admin)
       .where(name: "Viewed events")
       .where("(properties->>'nearby')::boolean IS TRUE")
       .group_by_period(@time_interval, :time, range: @time_range, expand_range: true)
       .count("DISTINCT ahoy_visits.visitor_token")
     @nearby_events_city_views = Ahoy::Event
+      .joins(:visit)
       .where(visit: Ahoy::Visit.legitimate.non_admin)
       .where(name: "Viewed events")
       .where("(properties->>'nearby')::boolean IS TRUE")
