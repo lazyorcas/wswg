@@ -17,14 +17,12 @@ class AnalyticsController < AdminController
       .group_by_period(@time_interval, :started_at, range: @time_range, expand_range: true)
       .count("DISTINCT visitor_token")
       .transform_keys { |key| [ key[0].present? ? key[0] : "direct", key[1] ] }
-    @landing_pages = Ahoy::Visit
+    @unbounced_visitors = Ahoy::Visit
       .legitimate
       .non_admin
-      .group(:landing_page)
-      .where(started_at: @time_range)
-      .count
-      .sort_by { |(_, count)| count }
-      .reverse
+      .where("duration >= 10")
+      .group_by_period(@time_interval, :started_at, range: @time_range, expand_range: true)
+      .count("DISTINCT visitor_token")
     @homepage_events = build_ahoy_events_page_events_data("Visited homepage")
     @bounces = Ahoy::Visit
       .legitimate
