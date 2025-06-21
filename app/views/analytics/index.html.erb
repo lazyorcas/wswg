@@ -20,8 +20,8 @@
       <%= render "chart", title: "Bounces" do %>
         <%= column_chart @bounces, stacked: true %>
       <% end %>
-      <%= render "chart", title: "Bounces by Search Engine" do %>
-        <%= column_chart @bounces_by_search_engine, stacked: true %>
+      <%= render "chart", title: "Bounces by Referrer Host" do %>
+        <%= column_chart @bounces_by_referrer_host, stacked: true %>
       <% end %>
       <%= render "chart", title: "SEO - Popular City Events Pages" do %>
         <%= column_chart @city_events_page_events, stacked: true %>

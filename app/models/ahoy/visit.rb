@@ -1,9 +1,10 @@
 class Ahoy::Visit < ApplicationRecord
+  BOUNCE_DURATION = 10
+
   self.table_name = "ahoy_visits"
 
-  scope :legitimate, -> { where("referrer IS NULL OR landing_page IS NULL OR referrer != landing_page") }
+  scope :legitimate, -> { Rails.env.production? ? where("user_id IS NOT NULL OR duration >= ? OR referrer != ?", BOUNCE_DURATION, ENV["HOST_NAME"]) : all }
   scope :non_admin, -> { where("user_id IS NULL OR user_id != 1") }
-  scope :visitors, -> { where.missing(:user).legitimate }
 
   # belongs_to :city, primary_key: "name", foreign_key: "city"
   belongs_to :visitor, primary_key: "visitor_token", foreign_key: "visitor_token"
