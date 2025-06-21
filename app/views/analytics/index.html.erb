@@ -15,7 +15,7 @@
         <%= column_chart @visitors, stacked: true %>
       <% end %>
       <%= render "chart", title: "Landing Pages" do %>
-        <%= pie_chart @landing_pages %>
+        <%= pie_chart @landing_pages, legend: "right" %>
       <% end %>
       <%= render "chart", title: "Bounces" do %>
         <%= column_chart @bounces, stacked: true %>

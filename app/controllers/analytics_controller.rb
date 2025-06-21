@@ -23,6 +23,8 @@ class AnalyticsController < AdminController
       .group(:landing_page)
       .where(started_at: @time_range)
       .count
+      .sort_by { |(_, count)| count }
+      .reverse
     @homepage_events = build_ahoy_events_page_events_data("Visited homepage")
     @bounces = Ahoy::Visit
       .legitimate
