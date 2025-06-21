@@ -2,7 +2,7 @@ module City::Scorable
   extend ActiveSupport::Concern
 
   TIME_WINDOW = 1.week
-  POPULAR_CITY_MIN_VISITOR_COUNT = 100
+  POPULAR_CITY_MIN_VISITOR_COUNT = 25
 
   def current_score
     @current_score ||= visitor_score
