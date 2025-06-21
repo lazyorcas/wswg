@@ -116,19 +116,18 @@ class AnalyticsController < AdminController
       .group(:visitor_token)
       .minimum(:id)
       .map { |_, id| id }
-    referrer_host_to_visitor_token = Ahoy::Visit
+    visitor_token_to_origin_referrer_host = Ahoy::Visit
       .where(id: first_visit_ids)
-      .pluck(:referrer_host, :visitor_token)
-    referrer_host_to_visitor_tokens = {}
-    referrer_host_to_visitor_token.each do |referrer_host, visitor_token|
-      referrer_host_to_visitor_tokens[referrer_host] ||= []
-      referrer_host_to_visitor_tokens[referrer_host] << visitor_token
+      .pluck(:visitor_token, :referrer_host)
+    origin_referrer_host_to_visitor_tokens = {}
+    visitor_token_to_origin_referrer_host.each do |visitor_token, origin_referrer_host|
+      origin_referrer_host_to_visitor_tokens[origin_referrer_host] ||= []
+      origin_referrer_host_to_visitor_tokens[origin_referrer_host] << visitor_token
     end
     @top_referrer_hosts.each do |referrer_host|
       series = { name: referrer_host.present? ? referrer_host : "direct", data: [] }
       visits_h = Ahoy::Visit
-        .where(started_at: @time_range)
-        .where(visitor_token: referrer_host_to_visitor_tokens[referrer_host] & analyzable_visitor_tokens)
+        .where(visitor_token: origin_referrer_host_to_visitor_tokens[referrer_host] & analyzable_visitor_tokens)
         # to only consider users / visitors who have tried
         .where("user_id IS NOT NULL OR duration >= ?", Ahoy::Visit::BOUNCE_DURATION)
         .group(:visitor_token)
