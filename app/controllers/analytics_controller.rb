@@ -173,11 +173,14 @@ class AnalyticsController < AdminController
       .non_admin
       .group(:referrer_host)
       .count
+      .select { |_, count| count > 10 }
       .keys
   end
 
   def load_visitor_tokens
     @visitor_tokens = Ahoy::Visit
+      .legitimate
+      .non_admin
       .where(referrer_host: @referrer_hosts)
       .pluck(:visitor_token)
       .uniq
