@@ -127,7 +127,7 @@ class AnalyticsController < AdminController
           series[:data] << [ "#{day}#{ordinal_suffix(day)} #{@time_interval}", visit_counts.count { |count| count >= day } ]
         end
         visitor_retention_total = series[:data].first[1]
-        day[0] = "#{day[0]} (#{visitor_retention_total})"
+        series[:name] = "#{series[:name]} (#{visitor_retention_total})"
         series[:data].each_with_index do |day, index|
           day[1] = (day[1].to_f / visitor_retention_total * 100).round(2)
         end
