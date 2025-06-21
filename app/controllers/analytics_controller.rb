@@ -174,7 +174,6 @@ class AnalyticsController < AdminController
       .group(:referrer_host)
       .count
       .keys
-      .sort
   end
 
   def load_visitor_tokens
