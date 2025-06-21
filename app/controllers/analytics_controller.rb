@@ -2,6 +2,7 @@ class AnalyticsController < AdminController
   START_DATE = (4.weeks.ago.end_of_week + 1.day).to_date
   TIME_INTERVAL = "day"
   SEARCH_ENGINES = %w[google bing yandex yahoo duckduckgo baidu].freeze
+  BOUNCE_DURATION = 10
 
   before_action :load_filters
 
@@ -20,7 +21,7 @@ class AnalyticsController < AdminController
     @unbounced_visitors = Ahoy::Visit
       .legitimate
       .non_admin
-      .where("duration >= 10")
+      .where("duration >= #{BOUNCE_DURATION}")
       .group(Arel.sql(search_engine_referrers_group_clause))
       .order(Arel.sql(search_engine_referrers_group_clause))
       .group_by_period(@time_interval, :started_at, range: @time_range, expand_range: true)
@@ -30,7 +31,7 @@ class AnalyticsController < AdminController
     @bounces = Ahoy::Visit
       .legitimate
       .non_admin
-      .where("duration < 10")
+      .where("duration < #{BOUNCE_DURATION}")
       .group(:duration)
       .order(:duration)
       .group_by_period(@time_interval, :started_at, range: @time_range, expand_range: true)
@@ -40,7 +41,7 @@ class AnalyticsController < AdminController
       .legitimate
       .non_admin
       .where(search_engine_referrers_where_clause)
-      .where("duration < 10")
+      .where("duration < #{BOUNCE_DURATION}")
       .group(Arel.sql(search_engine_referrers_group_clause))
       .group_by_period(@time_interval, :started_at, range: @time_range, expand_range: true)
       .count
@@ -120,7 +121,7 @@ class AnalyticsController < AdminController
     qualified_visitor_tokens_for_retention = Ahoy::Visit
       .legitimate
       .non_admin
-      .where("user_id IS NOT NULL OR duration >= 10")
+      .where("user_id IS NOT NULL OR duration >= #{BOUNCE_DURATION}")
       .pluck(:visitor_token)
     qualified_visitor_tokens_for_retention = Ahoy::Visit
       .where(visitor_token: qualified_visitor_tokens_for_retention)
