@@ -49,7 +49,7 @@ class AnalyticsController < AdminController
       .group("COALESCE(properties->>'event_category', 'events')")
       .order(Arel.sql("COALESCE(properties->>'event_category', 'events')"))
       .group_by_period(@time_interval, :time, range: @time_range, expand_range: true)
-      .count
+      .count("DISTINCT ahoy_visits.visitor_token")
     @wday_views = Ahoy::Event
       .where(visit: Ahoy::Visit.legitimate.non_admin)
       .joins("INNER JOIN cities ON cities.name = ahoy_events.properties->>'city'")
@@ -81,14 +81,14 @@ class AnalyticsController < AdminController
       .where(name: "Viewed events")
       .where("(properties->>'nearby')::boolean IS TRUE")
       .group_by_period(@time_interval, :time, range: @time_range, expand_range: true)
-      .count
+      .count("DISTINCT ahoy_visits.visitor_token")
     @nearby_events_city_views = Ahoy::Event
       .where(visit: Ahoy::Visit.legitimate.non_admin)
       .where(name: "Viewed events")
       .where("(properties->>'nearby')::boolean IS TRUE")
       .where(time: @time_range)
       .group("properties->>'city'")
-      .count
+      .count("DISTINCT ahoy_visits.visitor_token")
       .sort_by { |(_, count)| count }
       .reverse
 
