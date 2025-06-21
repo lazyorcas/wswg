@@ -12,7 +12,7 @@
   <div class="flex flex-col gap-y-8">
     <%= render "charts", title: "Web Traffic" do %>
       <%= render "chart", title: "Visitors" do %>
-        <%= line_chart @visitors %>
+        <%= column_chart @visitors, stacked: true %>
       <% end %>
       <%= render "chart", title: "Landing Pages" do %>
         <%= column_chart @landing_pages, stacked: true, legend: false %>
