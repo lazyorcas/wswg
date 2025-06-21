@@ -177,10 +177,11 @@ class AnalyticsController < AdminController
       .non_admin
       .group(:referrer_host)
       .count
-      .sort_by { |_, count| count }
       .select { |_, count| count > 1 }
+      .sort_by { |_, count| count }
       .reverse
       .take(10)
+      .map(&:first)
   end
 
   def load_visitor_tokens
