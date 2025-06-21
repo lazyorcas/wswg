@@ -116,16 +116,23 @@ class AnalyticsController < AdminController
       .count
     @map_page_events = build_ahoy_events_page_events_data("Visited map page")
 
+    @visitor_retention = []
     qualified_visitor_tokens_for_retention = Ahoy::Visit
+      .legitimate
+      .non_admin
+      .where("
+        user_id IS NOT NULL
+        OR referrer ~ '#{SEARCH_ENGINES.map { |engine| "#{engine}" }.join("|")}'
+        OR duration >= 10
+      ")
+      .pluck(:visitor_token)
+    qualified_visitor_tokens_for_retention = Ahoy::Visit
+      .where(visitor_token: qualified_visitor_tokens_for_retention)
       .group(:visitor_token)
       .minimum(:started_at)
       .select { |_, started_at| (started_at + 1.send(@time_interval.to_sym)).past? }
       .map { |visitor_token, _| visitor_token }
-
-    @visitor_retention = []
     visits_h = Ahoy::Visit
-      .legitimate
-      .non_admin
       .where(started_at: @time_range)
       .where(visitor_token: qualified_visitor_tokens_for_retention)
       .group(:visitor_token)
@@ -135,10 +142,10 @@ class AnalyticsController < AdminController
       (visit_counts.min..visit_counts.max).each do |day|
         @visitor_retention << [ "#{day}#{ordinal_suffix(day)}", visit_counts.count { |count| count >= day } ]
       end
-      @visitor_retention_total = @visitor_retention.first[1]
+      visitor_retention_total = @visitor_retention.first[1]
       @visitor_retention.each_with_index do |day, index|
         day[0] = "#{day[0]} (#{day[1]})"
-        day[1] = (day[1].to_f / @visitor_retention_total * 100).round(2)
+        day[1] = (day[1].to_f / visitor_retention_total * 100).round(2)
       end
     end
 
