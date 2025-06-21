@@ -15,7 +15,7 @@
         <%= column_chart @visitors, stacked: true %>
       <% end %>
       <%= render "chart", title: "Landing Pages" do %>
-        <%= column_chart @landing_pages, stacked: true, legend: false %>
+        <%= pie_chart @landing_pages %>
       <% end %>
       <%= render "chart", title: "Bounces" do %>
         <%= column_chart @bounces, stacked: true %>
@@ -24,10 +24,10 @@
         <%= column_chart @bounces_by_search_engine, stacked: true %>
       <% end %>
       <%= render "chart", title: "Viewed homepage" do %>
-        <%= line_chart @homepage_events %>
+        <%= column_chart @homepage_events %>
       <% end %>
       <%= render "chart", title: "Viewed pricing page" do %>
-        <%= line_chart @pricing_page_events %>
+        <%= column_chart @pricing_page_events %>
       <% end %>
     <% end %>
     <%= render "charts", title: "City Events Pages" do %>
@@ -38,7 +38,7 @@
         <%= line_chart @wday_views %>
       <% end %>
       <%= render "chart", title: "Viewed nearby events page" do %>
-        <%= line_chart @nearby_events_page_views %>
+        <%= column_chart @nearby_events_page_views %>
       <% end %>
       <%= render "chart", title: "Viewed nearby events page by city" do %>
         <%= pie_chart @nearby_events_city_views, legend: "right" %>
@@ -46,7 +46,7 @@
     <% end %>
     <%= render "charts", title: "Usage" do %>
       <%= render "chart", title: "Searched" do %>
-        <%= line_chart @searches %>
+        <%= column_chart @searches %>
       <% end %>
       <%= render "chart", title: "Search queries" do %>
         <table class="min-w-full">
@@ -68,7 +68,7 @@
         <%= column_chart @viewed_event_events, stacked: true %>
       <% end %>
       <%= render "chart", title: "Viewed map" do %>
-        <%= line_chart @map_page_events %>
+        <%= column_chart @map_page_events %>
       <% end %>
       <%= render "chart", title: "Retention" do %>
         <%= line_chart @visitor_retention, suffix: "%", xtitle: "nth #{@time_interval}" %>
