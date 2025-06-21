@@ -11,11 +11,11 @@
   </header>
   <div class="flex flex-col gap-y-8">
     <%= render "charts", title: "Web Traffic" do %>
-      <%= render "chart", title: "Ahoy Visitors" do %>
+      <%= render "chart", title: "Visitors" do %>
         <%= line_chart @visitors %>
       <% end %>
-      <%= render "chart", title: "Search Engine Visitors" do %>
-        <%= column_chart @search_engine_visitors, stacked: true %>
+      <%= render "chart", title: "Landing Pages" do %>
+        <%= column_chart @landing_pages, stacked: true, legend: false %>
       <% end %>
       <%= render "chart", title: "Bounces" do %>
         <%= column_chart @bounces, stacked: true %>
@@ -23,90 +23,35 @@
       <%= render "chart", title: "Bounces by Search Engine" do %>
         <%= column_chart @bounces_by_search_engine, stacked: true %>
       <% end %>
-      <%= render "chart", title: "Ahoy Events - Homepage" do %>
+      <%= render "chart", title: "Viewed homepage" do %>
         <%= line_chart @homepage_events %>
       <% end %>
-      <%= render "chart", title: "Ahoy Events - Pricing Page" do %>
+      <%= render "chart", title: "Viewed pricing page" do %>
         <%= line_chart @pricing_page_events %>
-      <% end %>
-      <%= render "chart", title: "Ahoy Events - City Events Page" do %>
-        <%= line_chart @city_events_page_events %>
-      <% end %>
-      <%= render "chart", title: "Ahoy Events - City Events Page by Event Category" do %>
-        <%= column_chart @event_category_city_events_page_events, stacked: true %>
-      <% end %>
-      <%= render "chart", title: "Ahoy Visitor Retention" do %>
-        <%= line_chart @visitor_retention, suffix: "%", xtitle: "nth #{@time_interval}" %>
-      <% end %>
-      <%= render "chart", title: "Days Between First and Second Visit" do %>
-        <%= column_chart @days_between_first_and_second_visits %>
-      <% end %>
-      <%= render "chart", title: "Days Between First and Last Visit" do %>
-        <%= column_chart @days_between_first_and_last_visits %>
-      <% end %>
-      <%= render "chart", title: "Ahoy Visits by Device" do %>
-        <%= pie_chart @visits_by_device, legend: "right" %>
-      <% end %>
-      <%= render "chart", title: "Ahoy Visits by OS" do %>
-        <%= pie_chart @visits_by_os, legend: "right" %>
-      <% end %>
-      <%= render "chart", title: "Ahoy Visits by Browser" do %>
-        <%= pie_chart @visits_by_browser, legend: "right" %>
-      <% end %>
-      <%= render "chart", title: "Ahoy Visits by Referring Domain" do %>
-        <%= pie_chart @visits_by_referring_domain, legend: "right" %>
       <% end %>
     <% end %>
     <%= render "charts", title: "City Events Pages" do %>
+      <%= render "chart", title: "Viewed city events page" do %>
+        <%= column_chart @city_events_page_events, stacked: true %>
+      <% end %>
       <%= render "chart", title: "Popularity by Day of Week" do %>
         <%= line_chart @wday_views %>
       <% end %>
-      <%= render "chart", title: "Visits by Hour of Day" do %>
-        <%= pie_chart @hour_views, legend: "right", colors: [
-          "#1e1a4d", # 0:00
-          "#1e1a4d", # 1:00
-          "#1e1a4d", # 2:00
-          "#1e1a4d", # 3:00
-          "#1e1a4d", # 4:00
-          "#1447e6", # 5:00
-          "#1447e6", # 6:00
-          "#1447e6", # 7:00
-          "#51a2ff", # 8:00
-          "#51a2ff", # 9:00
-          "#51a2ff", # 10:00
-          "#fcc800", # 11:00
-          "#fcc800", # 12:00
-          "#fcc800", # 13:00
-          "#fd9a00", # 14:00
-          "#fd9a00", # 15:00
-          "#fd9a00", # 16:00
-          "#fd9a00", # 17:00
-          "#372aac", # 18:00
-          "#372aac", # 19:00
-          "#372aac", # 20:00
-          "#312c85", # 21:00
-          "#312c85", # 22:00
-          "#312c85"  # 23:00
-        ] %>
-      <% end %>
-      <%= render "chart", title: "Nearby Events Page Views" do %>
+      <%= render "chart", title: "Viewed nearby events page" do %>
         <%= line_chart @nearby_events_page_views %>
       <% end %>
-      <%= render "chart", title: "Nearby Events Page Views by City" do %>
+      <%= render "chart", title: "Viewed nearby events page by city" do %>
         <%= pie_chart @nearby_events_city_views, legend: "right" %>
       <% end %>
-      <%= render "chart", title: "Viewed Event by Source" do %>
-        <%= column_chart @viewed_event_by_source, stacked: true %>
-      <% end %>
-      <%= render "chart", title: "Seens" do %>
-        <%= line_chart @seens %>
-      <% end %>
     <% end %>
-    <%= render "charts", title: "Map & Search" do %>
+    <%= render "charts", title: "Usage" do %>
+      <%= render "chart", title: "Searched" do %>
+        <%= line_chart @searches %>
+      <% end %>
       <%= render "chart", title: "Search queries" do %>
         <table class="min-w-full">
           <tbody class="divide-y divide-primary overflow-y-scroll flex flex-col"  style="max-height: 300px;">
-            <% @map_page_queries.each do |time, query| %>
+            <% @search_queries.each do |time, query| %>
               <tr>
                 <td class="py-2 px-4 text-sm text-secondary min-w-32 w-32 max-w-32">
                   <%= time_ago_in_words(time) %> ago
@@ -119,36 +64,28 @@
           </tbody>
         </table>
       <% end %>
-    <% end %>
-    <%= render "charts", title: "Product" do %>
-      <%= render "chart", title: "User Growth" do %>
-        <%= line_chart @aggregated_users, curve: false %>
+      <%= render "chart", title: "Viewed event" do %>
+        <%= column_chart @viewed_event_events, stacked: true %>
       <% end %>
-      <%= render "chart", title: "Sign Ins" do %>
-        <%= line_chart @sign_ins %>
-      <% end %>
-      <%= render "chart", title: "Visited map page" do %>
+      <%= render "chart", title: "Viewed map" do %>
         <%= line_chart @map_page_events %>
       <% end %>
-      <%= render "chart", title: "Bookmarks created" do %>
-        <%= line_chart @bookmarks %>
+      <%= render "chart", title: "Retention" do %>
+        <%= line_chart @visitor_retention, suffix: "%", xtitle: "nth #{@time_interval}" %>
       <% end %>
     <% end %>
     <%= render "charts", title: "Scraped Events" do %>
-      <%= render "chart", title: "Events created" do %>
-        <%= column_chart @events_created %>
+      <%= render "chart", title: "City Scores" do %>
+        <%= bar_chart @city_scores, height: "740px" %>
       <% end %>
-      <%= render "chart", title: "Events created by source" do %>
-        <%= column_chart @events_by_source, stacked: true %>
-      <% end %>
-    <% end %>
-    <%= render "charts", title: "City Popularity" do %>
-      <%= render "chart", title: "Active User Scores" do %>
-        <%= bar_chart @city_active_user_scores, height: "500px" %>
-      <% end %>
-      <%= render "chart", title: "Visitor Scores" do %>
-        <%= bar_chart @city_visitor_scores, height: "500px" %>
-      <% end %>
+      <div class="flex flex-col gap-y-8">
+        <%= render "chart", title: "Events created by Source" do %>
+          <%= column_chart @events_created_by_source, stacked: true %>
+        <% end %>
+        <%= render "chart", title: "Events created by City" do %>
+          <%= column_chart @events_created_by_city, stacked: true %>
+        <% end %>
+      </div>
     <% end %>
   </div>
 </main>

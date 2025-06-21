@@ -18,6 +18,8 @@ class Map::EventsController < ApplicationController
   def show
     load_event
     load_bookmark if signed_in?
+
+    ahoy.track "Viewed event", event_id: @event.id, source: "map"
   end
 
   private
