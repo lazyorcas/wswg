@@ -3,12 +3,13 @@ class AnalyticsController < AdminController
   TIME_INTERVAL = "day"
 
   before_action :load_filters
-  before_action :load_referrer_hosts
   before_action :load_visitor_tokens
+  before_action :load_top_referrer_hosts
 
   def index
     @visitors = Ahoy::Visit
       .where(visitor_token: @visitor_tokens)
+      .where(referrer_host: @top_referrer_hosts)
       .group(:referrer_host)
       .order(:referrer_host)
       .group_by_period(@time_interval, :started_at, range: @time_range, expand_range: true)
@@ -16,6 +17,7 @@ class AnalyticsController < AdminController
       .transform_keys { |key| [ key[0].present? ? key[0] : "direct", key[1] ] }
     @unbounced_visitors = Ahoy::Visit
       .where(visitor_token: @visitor_tokens)
+      .where(referrer_host: @top_referrer_hosts)
       .where("duration >= #{Ahoy::Visit::BOUNCE_DURATION}")
       .group(:referrer_host)
       .order(:referrer_host)
@@ -32,6 +34,7 @@ class AnalyticsController < AdminController
       .transform_keys { |key| [ "#{key[0]}s", key[1] ] }
     @bounces_by_referrer_host = Ahoy::Visit
       .where(visitor_token: @visitor_tokens)
+      .where(referrer_host: @top_referrer_hosts)
       .where("duration < #{Ahoy::Visit::BOUNCE_DURATION}")
       .group(:referrer_host)
       .order(:referrer_host)
@@ -108,8 +111,8 @@ class AnalyticsController < AdminController
       .minimum(:started_at)
       .select { |_, started_at| (started_at + 1.send(@time_interval.to_sym)).past? }
       .map { |visitor_token, _| visitor_token }
-    @referrer_hosts.each do |referrer_host|
-      series = { name: referrer_host, data: [] }
+    @top_referrer_hosts.each do |referrer_host|
+      series = { name: referrer_host.present? ? referrer_host : "direct", data: [] }
       visits_h = Ahoy::Visit
         .where(started_at: @time_range)
         .where(visitor_token: qualified_visitor_tokens_for_retention)
@@ -128,6 +131,7 @@ class AnalyticsController < AdminController
       end
       @visitor_retention << series
     end
+    @visitor_retention = @visitor_retention.sort_by { |series| series[:name] }
 
     @events_created_by_source = Event
       .joins(:city_source)
@@ -167,13 +171,16 @@ class AnalyticsController < AdminController
     @time_range = @start_date.beginning_of_day..@end_date.end_of_day
   end
 
-  def load_referrer_hosts
-    @referrer_hosts = Ahoy::Visit
+  def load_top_referrer_hosts
+    @top_referrer_hosts = Ahoy::Visit
       .legitimate
       .non_admin
       .group(:referrer_host)
       .count
-      .select { |_, count| count > 10 }
+      .sort_by { |_, count| count }
+      .select { |_, count| count > 1 }
+      .reverse
+      .take(10)
       .keys
   end
 
@@ -181,7 +188,6 @@ class AnalyticsController < AdminController
     @visitor_tokens = Ahoy::Visit
       .legitimate
       .non_admin
-      .where(referrer_host: @referrer_hosts)
       .pluck(:visitor_token)
       .uniq
   end
