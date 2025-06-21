@@ -120,7 +120,6 @@ class AnalyticsController < AdminController
       .where(id: first_user_visit_ids)
       .pluck(:user_id, :referrer_host)
     origin_referrer_host_to_user_ids = {}
-    user_id_to_origin_referrer_host = user_id_to_origin_referrer_host.to_h
     user_id_to_origin_referrer_host.each do |user_id, origin_referrer_host|
       origin_referrer_host_to_user_ids[origin_referrer_host] ||= []
       origin_referrer_host_to_user_ids[origin_referrer_host] << user_id
