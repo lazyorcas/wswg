@@ -3,7 +3,7 @@ class Ahoy::Visit < ApplicationRecord
 
   self.table_name = "ahoy_visits"
 
-  scope :legitimate, -> { Rails.env.production? ? where("(user_id IS NOT NULL OR duration >= ? OR referrer_host IS NOT NULL) AND referrer_host != ?", BOUNCE_DURATION, ENV["HOST_NAME"]) : all }
+  scope :legitimate, -> { Rails.env.production? ? where("user_id IS NOT NULL OR duration >= ? OR referrer_host != ?", BOUNCE_DURATION, ENV["HOST_NAME"]) : all }
   scope :non_admin, -> { where("user_id IS NULL OR user_id != 1") }
 
   # belongs_to :city, primary_key: "name", foreign_key: "city"
