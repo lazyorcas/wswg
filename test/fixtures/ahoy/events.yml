@@ -1,0 +1,15 @@
+oscar_viewed_events:
+  visit: oscar_visit
+  user: oscar
+  name: Viewed events
+  properties:
+    city: Singapore
+  time: <%= 1.day.ago %>
+
+lily_viewed_events:
+  visit: lily_visit
+  user: lily
+  name: Viewed events
+  properties:
+    city: Singapore
+  time: <%= 1.month.ago %>
