@@ -113,7 +113,7 @@ class AnalyticsController < AdminController
       .map { |user_id, _| user_id }
     first_user_visit_ids = Ahoy::Visit
       .where.associated(:user)
-      .group(:visitor_token)
+      .group(:user_id)
       .minimum(:id)
       .map { |_, id| id }
     user_id_to_origin_referrer_host = Ahoy::Visit
@@ -127,17 +127,20 @@ class AnalyticsController < AdminController
     end
     analyzable_visitor_tokens = Ahoy::Visit
       .where(visitor_token: @visitor_tokens)
+      .where.missing(:user)
       .group(:visitor_token)
       .minimum(:started_at)
       .select { |_, started_at| (started_at + 1.send(@time_interval.to_sym)).past? }
       .map { |visitor_token, _| visitor_token }
     usage_visitor_tokens = Ahoy::Visit
       .where(visitor_token: @visitor_tokens)
+      .where.missing(:user)
       .where("duration >= ?", Ahoy::Visit::BOUNCE_DURATION)
       .pluck(:visitor_token)
       .uniq
     first_visit_ids = Ahoy::Visit
       .where(visitor_token: @visitor_tokens)
+      .where.missing(:user)
       .group(:visitor_token)
       .minimum(:id)
       .map { |_, id| id }
