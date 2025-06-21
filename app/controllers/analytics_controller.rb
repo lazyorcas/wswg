@@ -117,6 +117,8 @@ class AnalyticsController < AdminController
         .where(started_at: @time_range)
         .where(visitor_token: qualified_visitor_tokens_for_retention)
         .where(referrer_host: referrer_host)
+        # to only consider users / visitors who have tried
+        .where("user_id IS NOT NULL OR duration >= ?", Ahoy::Visit::BOUNCE_DURATION)
         .group(:visitor_token)
         .count("DISTINCT DATE_TRUNC('#{@time_interval.upcase}', started_at)")
       visit_counts = visits_h.values
