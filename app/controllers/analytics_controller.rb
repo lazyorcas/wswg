@@ -21,7 +21,7 @@ class AnalyticsController < AdminController
       .legitimate
       .non_admin
       .group(:landing_page)
-      .where(landing_page: @time_range)
+      .where(started_at: @time_range)
       .count
     @homepage_events = build_ahoy_events_page_events_data("Visited homepage")
     @bounces = Ahoy::Visit
