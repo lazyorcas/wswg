@@ -4,21 +4,18 @@ class AnalyticsController < AdminController
 
   before_action :load_filters
   before_action :load_referrer_hosts
+  before_action :load_visitor_tokens
 
   def index
     @visitors = Ahoy::Visit
-      .legitimate
-      .non_admin
-      .where(referrer_host: @referrer_hosts)
+      .where(visitor_token: @visitor_tokens)
       .group(:referrer_host)
       .order(:referrer_host)
       .group_by_period(@time_interval, :started_at, range: @time_range, expand_range: true)
       .count("DISTINCT visitor_token")
       .transform_keys { |key| [ key[0].present? ? key[0] : "direct", key[1] ] }
     @unbounced_visitors = Ahoy::Visit
-      .legitimate
-      .non_admin
-      .where(referrer_host: @referrer_hosts)
+      .where(visitor_token: @visitor_tokens)
       .where("duration >= #{Ahoy::Visit::BOUNCE_DURATION}")
       .group(:referrer_host)
       .order(:referrer_host)
@@ -26,9 +23,7 @@ class AnalyticsController < AdminController
       .count("DISTINCT visitor_token")
       .transform_keys { |key| [ key[0].present? ? key[0] : "direct", key[1] ] }
     @bounces = Ahoy::Visit
-      .legitimate
-      .non_admin
-      .where(referrer_host: @referrer_hosts)
+      .where(visitor_token: @visitor_tokens)
       .where("duration < #{Ahoy::Visit::BOUNCE_DURATION}")
       .group(:duration)
       .order(:duration)
@@ -36,9 +31,7 @@ class AnalyticsController < AdminController
       .count("DISTINCT visitor_token")
       .transform_keys { |key| [ "#{key[0]}s", key[1] ] }
     @bounces_by_referrer_host = Ahoy::Visit
-      .legitimate
-      .non_admin
-      .where(referrer_host: @referrer_hosts)
+      .where(visitor_token: @visitor_tokens)
       .where("duration < #{Ahoy::Visit::BOUNCE_DURATION}")
       .group(:referrer_host)
       .order(:referrer_host)
@@ -47,7 +40,7 @@ class AnalyticsController < AdminController
       .transform_keys { |key| [ key[0].present? ? key[0] : "direct", key[1] ] }
     @city_events_page_events = Ahoy::Event
       .joins(:visit)
-      .where(visit: Ahoy::Visit.legitimate.non_admin.where(referrer_host: @referrer_hosts))
+      .where(visit: Ahoy::Visit.where(visitor_token: @visitor_tokens))
       .where(name: "Viewed events")
       .group("COALESCE(properties->>'event_category', 'events')")
       .order(Arel.sql("COALESCE(properties->>'event_category', 'events')"))
@@ -55,7 +48,7 @@ class AnalyticsController < AdminController
       .count("DISTINCT ahoy_visits.visitor_token")
     @nearby_events_page_views = Ahoy::Event
       .joins(:visit)
-      .where(visit: Ahoy::Visit.legitimate.non_admin.where(referrer_host: @referrer_hosts))
+      .where(visit: Ahoy::Visit.where(visitor_token: @visitor_tokens))
       .where(name: "Viewed events")
       .where("(properties->>'nearby')::boolean IS TRUE")
       .group("properties->>'city'")
@@ -64,7 +57,7 @@ class AnalyticsController < AdminController
     @pricing_page_events = build_ahoy_events_page_events_data("Visited pricing page")
 
     @wday_views = Ahoy::Event
-      .where(visit: Ahoy::Visit.legitimate.non_admin.where(referrer_host: @referrer_hosts))
+      .where(visit: Ahoy::Visit.where(visitor_token: @visitor_tokens))
       .joins("INNER JOIN cities ON cities.name = ahoy_events.properties->>'city'")
       .where(name: "Viewed events")
       .where(time: @time_range)
@@ -91,7 +84,7 @@ class AnalyticsController < AdminController
       .sort_by { |h| h[:name].to_s }
 
     @search_queries = Ahoy::Event
-      .where(visit: Ahoy::Visit.legitimate.non_admin.where(referrer_host: @referrer_hosts))
+      .where(visit: Ahoy::Visit.where(visitor_token: @visitor_tokens))
       .where(name: [ "Searched", "Searched on map" ])
       .where("properties->>'query' IS NOT NULL")
       .where(time: @time_range)
@@ -99,7 +92,7 @@ class AnalyticsController < AdminController
       .pluck(:time, Arel.sql("properties->>'query'"))
     @searches = build_ahoy_events_page_events_data("Searched")
     @viewed_event_events = Ahoy::Event
-      .where(visit: Ahoy::Visit.legitimate.non_admin.where(referrer_host: @referrer_hosts))
+      .where(visit: Ahoy::Visit.where(visitor_token: @visitor_tokens))
       .where(name: "Viewed event")
       .where(time: @time_range)
       .group("properties->>'source'")
@@ -110,31 +103,30 @@ class AnalyticsController < AdminController
 
     @visitor_retention = []
     qualified_visitor_tokens_for_retention = Ahoy::Visit
-      .legitimate
-      .non_admin
-      .where(referrer_host: @referrer_hosts)
-      .pluck(:visitor_token)
-    qualified_visitor_tokens_for_retention = Ahoy::Visit
-      .where(visitor_token: qualified_visitor_tokens_for_retention)
+      .where(visitor_token: @visitor_tokens)
       .group(:visitor_token)
       .minimum(:started_at)
       .select { |_, started_at| (started_at + 1.send(@time_interval.to_sym)).past? }
       .map { |visitor_token, _| visitor_token }
-    visits_h = Ahoy::Visit
-      .where(started_at: @time_range)
-      .where(visitor_token: qualified_visitor_tokens_for_retention)
-      .group(:visitor_token)
-      .count("DISTINCT DATE_TRUNC('#{@time_interval.upcase}', started_at)")
-    visit_counts = visits_h.values
-    if visit_counts.present?
-      (visit_counts.min..visit_counts.max).each do |day|
-        @visitor_retention << [ "#{day}#{ordinal_suffix(day)}", visit_counts.count { |count| count >= day } ]
+    @referrer_hosts.each do |referrer_host|
+      series = { name: referrer_host, data: [] }
+      visits_h = Ahoy::Visit
+        .where(started_at: @time_range)
+        .where(visitor_token: qualified_visitor_tokens_for_retention)
+        .where(referrer_host: referrer_host)
+        .group(:visitor_token)
+        .count("DISTINCT DATE_TRUNC('#{@time_interval.upcase}', started_at)")
+      visit_counts = visits_h.values
+      if visit_counts.present?
+        (visit_counts.min..visit_counts.max).each do |day|
+          series[:data] << [ "#{day}#{ordinal_suffix(day)} #{@time_interval}", visit_counts.count { |count| count >= day } ]
+        end
+        visitor_retention_total = series[:data].first[1]
+        series[:data].each_with_index do |day, index|
+          day[1] = (day[1].to_f / visitor_retention_total * 100).round(2)
+        end
       end
-      visitor_retention_total = @visitor_retention.first[1]
-      @visitor_retention.each_with_index do |day, index|
-        day[0] = "#{day[0]} (#{day[1]})"
-        day[1] = (day[1].to_f / visitor_retention_total * 100).round(2)
-      end
+      @visitor_retention << series
     end
 
     @events_created_by_source = Event
@@ -159,16 +151,6 @@ class AnalyticsController < AdminController
 
   private
 
-  def load_referrer_hosts
-    @referrer_hosts = Ahoy::Visit
-      .legitimate
-      .non_admin
-      .group(:referrer_host)
-      .count
-      .select { |_, count| count > 10 }
-      .keys
-  end
-
   def load_filters
     @time_interval = params[:time_interval].present? ?
       params[:time_interval] :
@@ -185,10 +167,28 @@ class AnalyticsController < AdminController
     @time_range = @start_date.beginning_of_day..@end_date.end_of_day
   end
 
+  def load_referrer_hosts
+    @referrer_hosts = Ahoy::Visit
+      .legitimate
+      .non_admin
+      .group(:referrer_host)
+      .count
+      .select { |_, count| count > 10 }
+      .keys
+      .sort
+  end
+
+  def load_visitor_tokens
+    @visitor_tokens = Ahoy::Visit
+      .where(referrer_host: @referrer_hosts)
+      .pluck(:visitor_token)
+      .uniq
+  end
+
   def build_ahoy_events_page_events_data(event_name)
     Ahoy::Event
       .joins(:visit)
-      .where(visit: Ahoy::Visit.legitimate.non_admin.where(referrer_host: @referrer_hosts))
+      .where(visit: Ahoy::Visit.where(visitor_token: @visitor_tokens))
       .where(name: event_name)
       .group_by_period(@time_interval, :time, range: @time_range, expand_range: true)
       .count("DISTINCT ahoy_visits.visitor_token")
