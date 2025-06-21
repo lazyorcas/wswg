@@ -41,8 +41,10 @@ class AnalyticsController < AdminController
       .where(referrer_host: @referrer_hosts)
       .where("duration < #{Ahoy::Visit::BOUNCE_DURATION}")
       .group(:referrer_host)
+      .order(:referrer_host)
       .group_by_period(@time_interval, :started_at, range: @time_range, expand_range: true)
       .count
+      .transform_keys { |key| [ key[0].present? ? key[0] : "direct", key[1] ] }
     @city_events_page_events = Ahoy::Event
       .joins(:visit)
       .where(visit: Ahoy::Visit.legitimate.non_admin.where(referrer_host: @referrer_hosts))

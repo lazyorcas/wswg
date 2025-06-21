@@ -23,10 +23,10 @@
       <%= render "chart", title: "Bounces by Referrer Host" do %>
         <%= column_chart @bounces_by_referrer_host, stacked: true %>
       <% end %>
-      <%= render "chart", title: "SEO - Popular City Events Pages" do %>
+      <%= render "chart", title: "Popular City Events Pages" do %>
         <%= column_chart @city_events_page_events, stacked: true %>
       <% end %>
-      <%= render "chart", title: "SEO - Popular Nearby Events' Cities" do %>
+      <%= render "chart", title: "Popular Nearby Events' Cities" do %>
         <%= column_chart @nearby_events_page_views, stacked: true %>
       <% end %>
       <%= render "chart", title: "Viewed pricing page" do %>
