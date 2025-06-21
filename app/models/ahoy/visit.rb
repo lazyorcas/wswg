@@ -13,6 +13,7 @@ class Ahoy::Visit < ApplicationRecord
 
   before_validation :find_or_create_visitor
 
+  after_create_commit :queue_update_referrer_host, if: -> { referrer.present? }
   before_update :set_duration, if: :duration_synced_at_changed?
 
   def self.anonymize(ip:, lat:, lon:)
@@ -35,6 +36,15 @@ class Ahoy::Visit < ApplicationRecord
 
   def duration_in_mins
     duration / 60
+  end
+
+  def queue_update_referrer_host
+    Ahoy::Visit::UpdateReferrerHostJob.perform_later(id)
+  end
+
+  def update_referrer_host!
+    self.referrer_host = URI.parse(referrer).host.split(".").last(2).join(".")
+    save!
   end
 
   private
