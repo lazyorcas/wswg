@@ -120,11 +120,7 @@ class AnalyticsController < AdminController
     qualified_visitor_tokens_for_retention = Ahoy::Visit
       .legitimate
       .non_admin
-      .where("
-        user_id IS NOT NULL
-        OR referrer ~ '#{SEARCH_ENGINES.map { |engine| "#{engine}" }.join("|")}'
-        OR duration >= 10
-      ")
+      .where("user_id IS NOT NULL OR duration >= 10")
       .pluck(:visitor_token)
     qualified_visitor_tokens_for_retention = Ahoy::Visit
       .where(visitor_token: qualified_visitor_tokens_for_retention)
