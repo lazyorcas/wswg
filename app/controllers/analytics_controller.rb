@@ -181,7 +181,6 @@ class AnalyticsController < AdminController
       .select { |_, count| count > 1 }
       .reverse
       .take(10)
-      .keys
   end
 
   def load_visitor_tokens
