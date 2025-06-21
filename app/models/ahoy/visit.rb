@@ -44,10 +44,12 @@ class Ahoy::Visit < ApplicationRecord
   end
 
   def update_referrer_host!
-    host = URI.parse(referrer).host
-    return if host.nil?
+    uri = URI.parse(referrer)
+    return if uri.host.nil?
 
-    self.referrer_host = host.split(".").last(2).join(".")
+    fragments = uri.host.split(".")
+    self.referrer_host = fragments.size > 2 ? fragments[1..2].join(".") : uri.host
+
     save!
   end
 
