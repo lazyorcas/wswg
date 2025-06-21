@@ -147,9 +147,9 @@ class AnalyticsController < AdminController
       .group_by_period(@time_interval, :created_at, range: @time_range, expand_range: true)
       .count
     @city_scores = City.enabled
-      .sort_by(&:visitor_score)
+      .sort_by(&:current_score)
       .reverse
-      .map { |city| [ "#{city.name} (#{city.visitor_score})", city.visitor_score ] }
+      .map { |city| [ "#{city.name} (#{city.current_score})", city.current_score ] }
   end
 
   private
