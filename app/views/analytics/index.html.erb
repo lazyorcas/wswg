@@ -15,7 +15,7 @@
         <%= column_chart @visitors, stacked: true %>
       <% end %>
       <%= render "chart", title: "Unbounced Visitors" do %>
-        <%= column_chart @unbounced_visitors %>
+        <%= column_chart @unbounced_visitors, stacked: true %>
       <% end %>
       <%= render "chart", title: "Bounces" do %>
         <%= column_chart @bounces, stacked: true %>
