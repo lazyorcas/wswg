@@ -111,6 +111,11 @@ class AnalyticsController < AdminController
       .minimum(:started_at)
       .select { |_, started_at| (started_at + 1.send(@time_interval.to_sym)).past? }
       .map { |visitor_token, _| visitor_token }
+    usage_visitor_tokens = Ahoy::Visit
+      .where(visitor_token: @visitor_tokens)
+      .where("user_id IS NOT NULL OR duration >= ?", Ahoy::Visit::BOUNCE_DURATION)
+      .pluck(:visitor_token)
+      .uniq
     first_visit_ids = Ahoy::Visit
       .where(visitor_token: @visitor_tokens)
       .group(:visitor_token)
@@ -127,9 +132,7 @@ class AnalyticsController < AdminController
     @top_referrer_hosts.each do |referrer_host|
       series = { name: referrer_host.present? ? referrer_host : "direct", data: [] }
       visits_h = Ahoy::Visit
-        .where(visitor_token: origin_referrer_host_to_visitor_tokens[referrer_host] & analyzable_visitor_tokens)
-        # to only consider users / visitors who have tried
-        .where("user_id IS NOT NULL OR duration >= ?", Ahoy::Visit::BOUNCE_DURATION)
+        .where(visitor_token: origin_referrer_host_to_visitor_tokens[referrer_host] & analyzable_visitor_tokens & usage_visitor_tokens)
         .group(:visitor_token)
         .count("DISTINCT DATE_TRUNC('#{@time_interval.upcase}', started_at)")
       visit_counts = visits_h.values
