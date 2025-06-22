@@ -24,7 +24,16 @@ class AnalyticsController < AdminController
       .group_by_period(@time_interval, :started_at, range: @time_range, expand_range: true)
       .count("DISTINCT (CASE WHEN user_id IS NOT NULL THEN user_id::text ELSE visitor_token END)")
       .transform_keys { |key| [ key[0].present? ? key[0] : "direct", key[1] ] }
-    @bounces = Ahoy::Visit
+    @bounces_by_city = Ahoy::Visit
+      .where(visitor_token: @visitor_tokens)
+      .where("duration < #{Ahoy::Visit::BOUNCE_DURATION}")
+      .where.not(city: nil)
+      .group(:city)
+      .order(:city)
+      .group_by_period(@time_interval, :started_at, range: @time_range, expand_range: true)
+      .count("DISTINCT (CASE WHEN user_id IS NOT NULL THEN user_id::text ELSE visitor_token END)")
+      .transform_keys { |key| [ "#{key[0]}s", key[1] ] }
+    @bounces_by_duration = Ahoy::Visit
       .where(visitor_token: @visitor_tokens)
       .where("duration < #{Ahoy::Visit::BOUNCE_DURATION}")
       .group(:duration)
