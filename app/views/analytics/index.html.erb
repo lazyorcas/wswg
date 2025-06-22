@@ -37,8 +37,11 @@
       <% end %>
     <% end %>
     <%= render "charts", title: "Usage" do %>
-      <%= render "chart", title: "Searched" do %>
-        <%= column_chart @searches %>
+      <%= render "chart", title: "Activation" do %>
+        <%= column_chart @activation %>
+      <% end %>
+      <%= render "chart", title: "Activation by Event" do %>
+        <%= column_chart @activation_by_event, stacked: true %>
       <% end %>
       <%= render "chart", title: "Search queries" do %>
         <table class="min-w-full">
@@ -56,14 +59,8 @@
           </tbody>
         </table>
       <% end %>
-      <%= render "chart", title: "Viewed event" do %>
-        <%= column_chart @viewed_event_events %>
-      <% end %>
       <%= render "chart", title: "Viewed event by source" do %>
         <%= column_chart @viewed_event_events_by_source, stacked: true %>
-      <% end %>
-      <%= render "chart", title: "Viewed map" do %>
-        <%= column_chart @map_page_events %>
       <% end %>
       <%= render "chart", title: "Retention" do %>
         <%= line_chart @visitor_retention, suffix: "%", curve: false %>

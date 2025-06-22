@@ -1,6 +1,7 @@
 class AnalyticsController < AdminController
   START_DATE = (4.weeks.ago.end_of_week + 1.day).to_date
   TIME_INTERVAL = "day"
+  ACTIVATION_EVENT_NAMES = [ "Viewed event", "Searched", "Visited map page", "Searched on map" ].freeze
 
   before_action :load_filters
   before_action :load_visitor_tokens
@@ -76,12 +77,19 @@ class AnalyticsController < AdminController
       .where(time: @time_range)
       .order(time: :desc)
       .pluck(:time, Arel.sql("properties->>'query'"))
-    @searches = build_ahoy_events_page_events_data("Searched")
-    @viewed_event_events = Ahoy::Event
+    @activation = Ahoy::Event
       .joins(:visit)
       .where(visit: Ahoy::Visit.where(visitor_token: @visitor_tokens))
-      .where(name: "Viewed event")
+      .where(name: ACTIVATION_EVENT_NAMES)
       .where(time: @time_range)
+      .group_by_period(@time_interval, :time, range: @time_range, expand_range: true)
+      .count("DISTINCT (CASE WHEN ahoy_visits.user_id IS NOT NULL THEN ahoy_visits.user_id::text ELSE ahoy_visits.visitor_token END)")
+    @activation_by_event = Ahoy::Event
+      .joins(:visit)
+      .where(visit: Ahoy::Visit.where(visitor_token: @visitor_tokens))
+      .where(name: ACTIVATION_EVENT_NAMES)
+      .where(time: @time_range)
+      .group(:name)
       .group_by_period(@time_interval, :time, range: @time_range, expand_range: true)
       .count("DISTINCT (CASE WHEN ahoy_visits.user_id IS NOT NULL THEN ahoy_visits.user_id::text ELSE ahoy_visits.visitor_token END)")
     @viewed_event_events_by_source = Ahoy::Event
@@ -92,11 +100,11 @@ class AnalyticsController < AdminController
       .order(Arel.sql("properties->>'source'"))
       .group_by_period(@time_interval, :time, range: @time_range, expand_range: true)
       .count
-    @map_page_events = build_ahoy_events_page_events_data("Visited map page")
 
     @visitor_retention = []
     first_visit_ids = Ahoy::Visit
       .where.missing(:user)
+      .where(started_at: @time_range)
       .group(:visitor_token)
       .minimum(:id)
       .values
@@ -108,12 +116,13 @@ class AnalyticsController < AdminController
       .to_h
     usage_visitor_tokens = Ahoy::Visit
       .joins(:events)
-      .where("duration >= ? OR (referrer_host != ? AND name IN (?))", Ahoy::Visit::BOUNCE_DURATION, ENV["HOST_NAME"], [ "Viewed events", "Viewed event", "Searched", "Searched on map" ])
+      .where("duration >= ? OR (referrer_host != ? AND name IN (?))", Ahoy::Visit::BOUNCE_DURATION, ENV["HOST_NAME"], ACTIVATION_EVENT_NAMES)
       .pluck(:visitor_token)
       .uniq
     first_user_visit_ids = Ahoy::Visit
       .non_admin
       .where.associated(:user)
+      .where(started_at: @time_range)
       .group(:user_id)
       .minimum(:id)
       .values
