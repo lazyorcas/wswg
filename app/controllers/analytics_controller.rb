@@ -105,60 +105,46 @@ class AnalyticsController < AdminController
     @map_page_events = build_ahoy_events_page_events_data("Visited map page")
 
     @visitor_retention = []
-    analyzable_user_ids = Ahoy::Visit
-      .where.associated(:user)
-      .group(:user_id)
-      .minimum(:started_at)
-      .select { |_, started_at| (started_at + 1.send(@time_interval.to_sym)).past? }
-      .map { |user_id, _| user_id }
-    first_user_visit_ids = Ahoy::Visit
-      .where.associated(:user)
-      .group(:user_id)
-      .minimum(:id)
-      .map { |_, id| id }
-    user_id_to_origin_referrer_host = Ahoy::Visit
-      .where(id: first_user_visit_ids)
-      .pluck(:user_id, :referrer_host)
-    origin_referrer_host_to_user_ids = {}
-    user_id_to_origin_referrer_host.each do |user_id, origin_referrer_host|
-      origin_referrer_host_to_user_ids[origin_referrer_host] ||= []
-      origin_referrer_host_to_user_ids[origin_referrer_host] << user_id
-    end
-    analyzable_visitor_tokens = Ahoy::Visit
-      .where(visitor_token: @visitor_tokens)
+    first_visit_ids = Ahoy::Visit
       .where.missing(:user)
       .group(:visitor_token)
-      .minimum(:started_at)
-      .select { |_, started_at| (started_at + 1.send(@time_interval.to_sym)).past? }
-      .map { |visitor_token, _| visitor_token }
-    usage_visitor_tokens = Ahoy::Visit
+      .having("MIN(started_at) + INTERVAL '1 #{@time_interval.upcase}' < NOW()")
+      .minimum(:id)
+      .values
+    first_referrer_host_to_visitor_tokens = Ahoy::Visit
+      .where(id: first_visit_ids)
+      .pluck(:referrer_host, :visitor_token)
+      .group_by(&:first)
+      .map { |referrer_host, arr| [ referrer_host, arr.map(&:last) ] }
+      .to_h
+    unbounced_visitor_tokens = Ahoy::Visit
       .where(visitor_token: @visitor_tokens)
-      .where.missing(:user)
-      .where("duration >= ?", Ahoy::Visit::BOUNCE_DURATION)
+      .where("duration >= ? OR referrer_host != ?", Ahoy::Visit::BOUNCE_DURATION, ENV["HOST_NAME"])
       .pluck(:visitor_token)
       .uniq
-    first_visit_ids = Ahoy::Visit
-      .where(visitor_token: @visitor_tokens)
-      .where.missing(:user)
-      .group(:visitor_token)
+    first_user_visit_ids = Ahoy::Visit
+      .non_admin
+      .where.associated(:user)
+      .group(:user_id)
+      .having("MIN(started_at) + INTERVAL '1 #{@time_interval.upcase}' < NOW()")
       .minimum(:id)
-      .map { |_, id| id }
-    visitor_token_to_origin_referrer_host = Ahoy::Visit
-      .where(id: first_visit_ids)
-      .pluck(:visitor_token, :referrer_host)
-    origin_referrer_host_to_visitor_tokens = {}
-    visitor_token_to_origin_referrer_host.each do |visitor_token, origin_referrer_host|
-      origin_referrer_host_to_visitor_tokens[origin_referrer_host] ||= []
-      origin_referrer_host_to_visitor_tokens[origin_referrer_host] << visitor_token
-    end
+      .values
+    first_referrer_host_to_user_ids = Ahoy::Visit
+      .where(id: first_user_visit_ids)
+      .pluck(:referrer_host, :user_id)
+      .group_by(&:first)
+      .map { |referrer_host, arr| [ referrer_host, arr.map(&:last) ] }
+      .to_h
+
     @top_referrer_hosts.each do |referrer_host|
       series = { name: referrer_host.present? ? referrer_host : "direct", data: [] }
-      visits_h = Ahoy::Visit
-        .where(visitor_token: origin_referrer_host_to_visitor_tokens[referrer_host] & analyzable_visitor_tokens & usage_visitor_tokens)
-        .or(Ahoy::Visit.where(user_id: origin_referrer_host_to_user_ids[referrer_host] & analyzable_user_ids))
-        .group(:visitor_token)
+      visit_counts = Ahoy::Visit
+        .select("CASE WHEN user_id::text IS NOT NULL THEN user_id::text ELSE visitor_token END AS id")
+        .where(visitor_token: first_referrer_host_to_visitor_tokens[referrer_host] & unbounced_visitor_tokens)
+        .or(Ahoy::Visit.where(user_id: first_referrer_host_to_user_ids[referrer_host]))
+        .group("CASE WHEN user_id::text IS NOT NULL THEN user_id::text ELSE visitor_token END")
         .count("DISTINCT DATE_TRUNC('#{@time_interval.upcase}', started_at)")
-      visit_counts = visits_h.values
+        .values
       if visit_counts.present?
         (visit_counts.min..visit_counts.max).each do |day|
           series[:data] << [ "#{day}#{ordinal_suffix(day)} #{@time_interval}", visit_counts.count { |count| count >= day } ]
