@@ -136,7 +136,6 @@ class AnalyticsController < AdminController
     @top_referrer_hosts.each do |referrer_host|
       series = { name: referrer_host.present? ? referrer_host : "direct", data: [] }
       visit_counts = Ahoy::Visit
-        .select("CASE WHEN user_id::text IS NOT NULL THEN user_id::text ELSE visitor_token END AS id")
         .where(visitor_token: first_referrer_host_to_visitor_tokens[referrer_host] & legitimate_visitor_tokens)
         .or(Ahoy::Visit.where(user_id: first_referrer_host_to_user_ids[referrer_host]))
         .group("CASE WHEN user_id::text IS NOT NULL THEN user_id::text ELSE visitor_token END")
