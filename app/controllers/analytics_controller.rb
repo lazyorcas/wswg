@@ -116,8 +116,10 @@ class AnalyticsController < AdminController
       .group_by(&:first)
       .map { |referrer_host, arr| [ referrer_host, arr.map(&:last) ] }
       .to_h
-    legitimate_visitor_tokens = Ahoy::Visit
-      .where("duration >= ? OR referrer_host != ?", Ahoy::Visit::BOUNCE_DURATION, ENV["HOST_NAME"])
+    usage_visitor_tokens = Ahoy::Visit
+      .joins(:events)
+      .where(events: { name: [ "Viewed events", "Viewed event", "Searched", "Searched on map" ] })
+      .or(Ahoy::Visit.where("duration >= ?", Ahoy::Visit::BOUNCE_DURATION))
       .pluck(:visitor_token)
       .uniq
     first_user_visit_ids = Ahoy::Visit
@@ -136,7 +138,7 @@ class AnalyticsController < AdminController
     @top_referrer_hosts.each do |referrer_host|
       series = { name: referrer_host.present? ? referrer_host : "direct", data: [] }
       visit_counts = Ahoy::Visit
-        .where(visitor_token: (first_referrer_host_to_visitor_tokens[referrer_host] & legitimate_visitor_tokens) || [])
+        .where(visitor_token: (first_referrer_host_to_visitor_tokens[referrer_host] & usage_visitor_tokens) || [])
         .or(Ahoy::Visit.where(user_id: first_referrer_host_to_user_ids[referrer_host] || []))
         .group("CASE WHEN user_id IS NOT NULL THEN user_id::text ELSE visitor_token END")
         .having("MIN(started_at) + INTERVAL '1 #{@time_interval.upcase}' < NOW()")
