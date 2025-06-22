@@ -63,7 +63,7 @@
         <%= column_chart @map_page_events %>
       <% end %>
       <%= render "chart", title: "Retention" do %>
-        <%= line_chart @visitor_retention, suffix: "%" %>
+        <%= line_chart @visitor_retention, suffix: "%", curve: false %>
       <% end %>
     <% end %>
     <%= render "charts", title: "Scraped Events" do %>
