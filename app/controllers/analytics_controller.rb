@@ -49,7 +49,7 @@ class AnalyticsController < AdminController
       .group(:referrer_host)
       .order(:referrer_host)
       .group_by_period(@time_interval, :started_at, range: @time_range, expand_range: true)
-      .count
+      .count("DISTINCT (CASE WHEN user_id IS NOT NULL THEN user_id::text ELSE visitor_token END)")
       .transform_keys { |key| [ key[0].present? ? key[0] : "direct", key[1] ] }
     @city_events_page_events = Ahoy::Event
       .joins(:visit)
@@ -212,8 +212,8 @@ class AnalyticsController < AdminController
       .legitimate
       .non_admin
       .group(:referrer_host)
-      .count
-      .select { |_, count| count > 1 }
+      .count("DISTINCT (CASE WHEN user_id IS NOT NULL THEN user_id::text ELSE visitor_token END)")
+      .reject { |_, count| count <= 1 }
       .sort_by { |_, count| count }
       .reverse
       .take(10)
