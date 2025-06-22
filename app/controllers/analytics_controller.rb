@@ -13,7 +13,7 @@ class AnalyticsController < AdminController
       .group(:referrer_host)
       .order(:referrer_host)
       .group_by_period(@time_interval, :started_at, range: @time_range, expand_range: true)
-      .count("DISTINCT visitor_token")
+      .count("DISTINCT (CASE WHEN user_id IS NOT NULL THEN user_id::text ELSE visitor_token END)")
       .transform_keys { |key| [ key[0].present? ? key[0] : "direct", key[1] ] }
     @unbounced_visitors = Ahoy::Visit
       .where(visitor_token: @visitor_tokens)
@@ -22,7 +22,7 @@ class AnalyticsController < AdminController
       .group(:referrer_host)
       .order(:referrer_host)
       .group_by_period(@time_interval, :started_at, range: @time_range, expand_range: true)
-      .count("DISTINCT visitor_token")
+      .count("DISTINCT (CASE WHEN user_id IS NOT NULL THEN user_id::text ELSE visitor_token END)")
       .transform_keys { |key| [ key[0].present? ? key[0] : "direct", key[1] ] }
     @bounces = Ahoy::Visit
       .where(visitor_token: @visitor_tokens)
@@ -30,7 +30,7 @@ class AnalyticsController < AdminController
       .group(:duration)
       .order(:duration)
       .group_by_period(@time_interval, :started_at, range: @time_range, expand_range: true)
-      .count("DISTINCT visitor_token")
+      .count("DISTINCT (CASE WHEN user_id IS NOT NULL THEN user_id::text ELSE visitor_token END)")
       .transform_keys { |key| [ "#{key[0]}s", key[1] ] }
     @bounces_by_referrer_host = Ahoy::Visit
       .where(visitor_token: @visitor_tokens)
@@ -48,7 +48,7 @@ class AnalyticsController < AdminController
       .group("COALESCE(properties->>'event_category', 'events')")
       .order(Arel.sql("COALESCE(properties->>'event_category', 'events')"))
       .group_by_period(@time_interval, :time, range: @time_range, expand_range: true)
-      .count("DISTINCT ahoy_visits.visitor_token")
+      .count("DISTINCT (CASE WHEN ahoy_visits.user_id IS NOT NULL THEN ahoy_visits.user_id::text ELSE ahoy_visits.visitor_token END)")
     @nearby_events_page_views = Ahoy::Event
       .joins(:visit)
       .where(visit: Ahoy::Visit.where(visitor_token: @visitor_tokens))
@@ -56,7 +56,7 @@ class AnalyticsController < AdminController
       .where("(properties->>'nearby')::boolean IS TRUE")
       .group("properties->>'city'")
       .group_by_period(@time_interval, :time, range: @time_range, expand_range: true)
-      .count("DISTINCT ahoy_visits.visitor_token")
+      .count("DISTINCT (CASE WHEN ahoy_visits.user_id IS NOT NULL THEN ahoy_visits.user_id::text ELSE ahoy_visits.visitor_token END)")
     @pricing_page_events = build_ahoy_events_page_events_data("Visited pricing page")
 
     @wday_views = Ahoy::Event
@@ -134,7 +134,7 @@ class AnalyticsController < AdminController
       .map { |referrer_host, arr| [ referrer_host, arr.map(&:last) ] }
       .to_h
 
-    @top_referrer_hosts.each do |referrer_host|
+    @top_referrer_hosts.sort.each do |referrer_host|
       series = { name: referrer_host.present? ? referrer_host : "direct", data: [] }
       visit_counts = Ahoy::Visit
         .where(visitor_token: (first_referrer_host_to_visitor_tokens[referrer_host] & usage_visitor_tokens) || [])
@@ -155,9 +155,7 @@ class AnalyticsController < AdminController
       end
       @visitor_retention << series
     end
-    @visitor_retention = @visitor_retention
-      .sort_by { |series| series[:name] }
-      .reject { |series| series[:data].empty? }
+    @visitor_retention = @visitor_retention.reject { |series| series[:data].empty? }
 
     @events_created_by_source = Event
       .joins(:city_source)
@@ -224,7 +222,7 @@ class AnalyticsController < AdminController
       .where(visit: Ahoy::Visit.where(visitor_token: @visitor_tokens))
       .where(name: event_name)
       .group_by_period(@time_interval, :time, range: @time_range, expand_range: true)
-      .count("DISTINCT ahoy_visits.visitor_token")
+      .count("DISTINCT (CASE WHEN ahoy_visits.user_id IS NOT NULL THEN ahoy_visits.user_id::text ELSE ahoy_visits.visitor_token END)")
   end
 
   def ordinal_suffix(day)
