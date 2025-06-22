@@ -57,7 +57,10 @@
         </table>
       <% end %>
       <%= render "chart", title: "Viewed event" do %>
-        <%= column_chart @viewed_event_events, stacked: true %>
+        <%= column_chart @viewed_event_events %>
+      <% end %>
+      <%= render "chart", title: "Viewed event by source" do %>
+        <%= column_chart @viewed_event_events_by_source, stacked: true %>
       <% end %>
       <%= render "chart", title: "Viewed map" do %>
         <%= column_chart @map_page_events %>

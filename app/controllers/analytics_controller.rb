@@ -81,6 +81,12 @@ class AnalyticsController < AdminController
       .where(visit: Ahoy::Visit.where(visitor_token: @visitor_tokens))
       .where(name: "Viewed event")
       .where(time: @time_range)
+      .group_by_period(@time_interval, :time, range: @time_range, expand_range: true)
+      .count
+    @viewed_event_events_by_source = Ahoy::Event
+      .where(visit: Ahoy::Visit.where(visitor_token: @visitor_tokens))
+      .where(name: "Viewed event")
+      .where(time: @time_range)
       .group("properties->>'source'")
       .order(Arel.sql("properties->>'source'"))
       .group_by_period(@time_interval, :time, range: @time_range, expand_range: true)
