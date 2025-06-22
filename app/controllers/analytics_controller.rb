@@ -107,7 +107,7 @@ class AnalyticsController < AdminController
       .map { |referrer_host, arr| [ referrer_host, arr.map(&:last) ] }
       .to_h
 
-    @top_referrer_hosts.sort.each do |referrer_host|
+    @top_referrer_hosts.each do |referrer_host|
       series = { name: referrer_host.present? ? referrer_host : "direct", data: [] }
       visit_counts = Ahoy::Visit
         .where(visitor_token: (first_referrer_host_to_visitor_tokens[referrer_host] & usage_visitor_tokens) || [])
@@ -128,7 +128,9 @@ class AnalyticsController < AdminController
       end
       @visitor_retention << series
     end
-    @visitor_retention = @visitor_retention.reject { |series| series[:data].empty? }
+    @visitor_retention = @visitor_retention
+      .sort_by { |series| [ series[:name] == "direct" ? 0 : 1, series[:name] ] }
+      .reject { |series| series[:data].empty? }
 
     @wday_views = Ahoy::Event
       .where(visit: Ahoy::Visit.where(visitor_token: @visitor_tokens))
