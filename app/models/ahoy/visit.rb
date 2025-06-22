@@ -48,7 +48,15 @@ class Ahoy::Visit < ApplicationRecord
     return if uri.host.nil?
 
     fragments = uri.host.split(".")
-    self.referrer_host = fragments.size > 2 ? fragments[1..2].join(".") : uri.host
+    self.referrer_host = if fragments.include?("google")
+      "google"
+    elsif fragments.include?("linkedin")
+      "linkedin"
+    elsif fragments.size > 2
+      fragments[1..2].join(".")
+    else
+      uri.host
+    end
 
     save!
   end
