@@ -59,33 +59,6 @@ class AnalyticsController < AdminController
       .count("DISTINCT (CASE WHEN ahoy_visits.user_id IS NOT NULL THEN ahoy_visits.user_id::text ELSE ahoy_visits.visitor_token END)")
     @pricing_page_events = build_ahoy_events_page_events_data("Visited pricing page")
 
-    @wday_views = Ahoy::Event
-      .where(visit: Ahoy::Visit.where(visitor_token: @visitor_tokens))
-      .joins("INNER JOIN cities ON cities.name = ahoy_events.properties->>'city'")
-      .where(name: "Viewed events")
-      .where(time: @time_range)
-      .group("COALESCE(properties->>'time_period', 'all')", Arel.sql("EXTRACT(DOW FROM ahoy_events.time AT TIME ZONE 'UTC' AT TIME ZONE cities.time_zone)"))
-      .count
-      .group_by { |(period, _), _| period }
-      .map { |period, data|
-        {
-          name: period,
-          data: data.each_with_object({}) do |((_, dow), count), hash|
-            day = Date::DAYNAMES[dow.to_i]
-            hash[day] = count
-          end
-        }
-      }
-      .map { |series|
-        {
-          name: series[:name],
-          data: Date::DAYNAMES.rotate(1).each_with_object({}) do |day, hash|
-            hash[day] = series[:data][day] || 0
-          end
-        }
-      }
-      .sort_by { |h| h[:name].to_s }
-
     @search_queries = Ahoy::Event
       .where(visit: Ahoy::Visit.where(visitor_token: @visitor_tokens))
       .where(name: [ "Searched", "Searched on map" ])
@@ -156,6 +129,33 @@ class AnalyticsController < AdminController
       @visitor_retention << series
     end
     @visitor_retention = @visitor_retention.reject { |series| series[:data].empty? }
+
+    @wday_views = Ahoy::Event
+      .where(visit: Ahoy::Visit.where(visitor_token: @visitor_tokens))
+      .joins("INNER JOIN cities ON cities.name = ahoy_events.properties->>'city'")
+      .where(name: "Viewed events")
+      .where(time: @time_range)
+      .group("COALESCE(properties->>'time_period', 'all')", Arel.sql("EXTRACT(DOW FROM ahoy_events.time AT TIME ZONE 'UTC' AT TIME ZONE cities.time_zone)"))
+      .count
+      .group_by { |(period, _), _| period }
+      .map { |period, data|
+        {
+          name: period,
+          data: data.each_with_object({}) do |((_, dow), count), hash|
+            day = Date::DAYNAMES[dow.to_i]
+            hash[day] = count
+          end
+        }
+      }
+      .map { |series|
+        {
+          name: series[:name],
+          data: Date::DAYNAMES.rotate(1).each_with_object({}) do |day, hash|
+            hash[day] = series[:data][day] || 0
+          end
+        }
+      }
+      .sort_by { |h| h[:name].to_s }
 
     @events_created_by_source = Event
       .joins(:city_source)
