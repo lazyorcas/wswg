@@ -78,6 +78,7 @@ class AnalyticsController < AdminController
       .pluck(:time, Arel.sql("properties->>'query'"))
     @searches = build_ahoy_events_page_events_data("Searched")
     @viewed_event_events = Ahoy::Event
+      .joins(:visit)
       .where(visit: Ahoy::Visit.where(visitor_token: @visitor_tokens))
       .where(name: "Viewed event")
       .where(time: @time_range)
