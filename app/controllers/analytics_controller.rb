@@ -82,7 +82,7 @@ class AnalyticsController < AdminController
       .where(name: "Viewed event")
       .where(time: @time_range)
       .group_by_period(@time_interval, :time, range: @time_range, expand_range: true)
-      .count
+      .count("DISTINCT (CASE WHEN ahoy_visits.user_id IS NOT NULL THEN ahoy_visits.user_id::text ELSE ahoy_visits.visitor_token END)")
     @viewed_event_events_by_source = Ahoy::Event
       .where(visit: Ahoy::Visit.where(visitor_token: @visitor_tokens))
       .where(name: "Viewed event")
