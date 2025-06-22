@@ -104,12 +104,12 @@ class AnalyticsController < AdminController
     @visitor_retention = []
     first_visit_ids = Ahoy::Visit
       .where.missing(:user)
-      .where(started_at: @time_range)
       .group(:visitor_token)
       .minimum(:id)
       .values
     first_referrer_host_to_visitor_tokens = Ahoy::Visit
       .where(id: first_visit_ids)
+      .where(started_at: @time_range)
       .pluck(:referrer_host, :visitor_token)
       .group_by(&:first)
       .map { |referrer_host, arr| [ referrer_host, arr.map(&:last) ] }
@@ -122,12 +122,12 @@ class AnalyticsController < AdminController
     first_user_visit_ids = Ahoy::Visit
       .non_admin
       .where.associated(:user)
-      .where(started_at: @time_range)
       .group(:user_id)
       .minimum(:id)
       .values
     first_referrer_host_to_user_ids = Ahoy::Visit
       .where(id: first_user_visit_ids)
+      .where(started_at: @time_range)
       .pluck(:referrer_host, :user_id)
       .group_by(&:first)
       .map { |referrer_host, arr| [ referrer_host, arr.map(&:last) ] }
