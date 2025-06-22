@@ -26,6 +26,7 @@ class AnalyticsController < AdminController
       .transform_keys { |key| [ key[0].present? ? key[0] : "direct", key[1] ] }
     @bounces_by_city = Ahoy::Visit
       .where(visitor_token: @visitor_tokens)
+      .where(referrer_host: @top_referrer_hosts)
       .where("duration < #{Ahoy::Visit::BOUNCE_DURATION}")
       .where.not(city: nil)
       .group(:city)
@@ -34,6 +35,7 @@ class AnalyticsController < AdminController
       .count("DISTINCT (CASE WHEN user_id IS NOT NULL THEN user_id::text ELSE visitor_token END)")
     @bounces_by_duration = Ahoy::Visit
       .where(visitor_token: @visitor_tokens)
+      .where(referrer_host: @top_referrer_hosts)
       .where("duration < #{Ahoy::Visit::BOUNCE_DURATION}")
       .group(:duration)
       .order(:duration)
