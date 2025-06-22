@@ -118,8 +118,7 @@ class AnalyticsController < AdminController
       .to_h
     usage_visitor_tokens = Ahoy::Visit
       .joins(:events)
-      .where(events: { name: [ "Viewed events", "Viewed event", "Searched", "Searched on map" ] })
-      .or(Ahoy::Visit.where("duration >= ?", Ahoy::Visit::BOUNCE_DURATION))
+      .where("duration >= ? OR (referrer_host != ? AND name IN (?))", Ahoy::Visit::BOUNCE_DURATION, ENV["HOST_NAME"], [ "Viewed events", "Viewed event", "Searched", "Searched on map" ])
       .pluck(:visitor_token)
       .uniq
     first_user_visit_ids = Ahoy::Visit
