@@ -53,6 +53,7 @@ class AnalyticsController < AdminController
       .map do |visit|
         {
           started_at: visit.started_at,
+          duration: visit.duration,
           origin: visit.user_id.present? ? visit.user.email : visit.referrer_host || "direct",
           events: visit.events.map(&:name).join(" → ")
         }
