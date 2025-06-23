@@ -26,7 +26,7 @@ module Ticketmaster
   private
 
   def self.build_url(path, params)
-    Url.get_parameterized_url("#{BASE_URL}#{path}", {
+    Url.build_parameterized_url("#{BASE_URL}#{path}", {
       **params,
       apikey: ENV["TICKETMASTER_API_KEY"]
     })

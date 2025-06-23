@@ -12,6 +12,6 @@ module Event::HandlesSources::Luma
   private
 
   def build_unique_url_for_luma
-    self.url = Url.get_parameterized_url(url, { date: start_date })
+    self.url = Url.build_parameterized_url(url, { date: start_date })
   end
 end
