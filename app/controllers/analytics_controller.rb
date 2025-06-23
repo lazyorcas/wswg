@@ -117,7 +117,7 @@ class AnalyticsController < AdminController
       .order(:duration)
       .group_by_period(@time_interval, :started_at, range: @time_range, expand_range: true)
       .count("DISTINCT (CASE WHEN user_id IS NOT NULL THEN user_id::text ELSE visitor_token END)")
-      .transform_keys { |key| [ "#{key[0]}s", key[1] ] }
+      .transform_keys { |duration, started_at| [ "#{duration}s", started_at ] }
 
     @viewed_event_events_by_source = Ahoy::Event
       .where(visit: Ahoy::Visit.where(visitor_token: @visitor_tokens))

@@ -71,7 +71,7 @@
       <% end %>
     <% end %>
     <%= render "charts", title: "Activation" do %>
-      <%= render "chart", title: "Activation by duration" do %>
+      <%= render "chart", title: "Activation by browsing for longer than #{Ahoy::Visit::BOUNCE_DURATION}s" do %>
         <%= column_chart @activation_by_duration %>
       <% end %>
       <%= render "chart", title: "Activation by user action" do %>
