@@ -18,6 +18,6 @@ module City::Scorable
       .where(visit: Ahoy::Visit.legitimate.non_admin)
       .where(name: "Viewed events", time: TIME_WINDOW.ago..)
       .where("properties->>'city' = ?", self.name)
-      .count("DISTINCT ahoy_visits.visitor_token")
+      .count("DISTINCT (CASE WHEN ahoy_visits.user_id IS NOT NULL THEN ahoy_visits.user_id::text ELSE ahoy_visits.visitor_token END)")
   end
 end
