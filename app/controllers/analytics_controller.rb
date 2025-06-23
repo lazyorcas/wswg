@@ -88,7 +88,7 @@ class AnalyticsController < AdminController
     @activation = Ahoy::Event
       .joins(:visit)
       .where(visit: Ahoy::Visit.where(visitor_token: @visitor_tokens))
-      .where(name: ACTIVATION_EVENT_NAMES)
+      .where("name in (?) OR duration > ?", ACTIVATION_EVENT_NAMES, Ahoy::Visit::BOUNCE_DURATION)
       .where(time: @time_range)
       .group_by_period(@time_interval, :time, range: @time_range, expand_range: true)
       .count("DISTINCT (CASE WHEN ahoy_visits.user_id IS NOT NULL THEN ahoy_visits.user_id::text ELSE ahoy_visits.visitor_token END)")
