@@ -85,10 +85,10 @@ class AnalyticsController < AdminController
     @pricing_page_events = build_ahoy_events_page_events_data("Visited pricing page")
 
     # Activation
-    @activation = Ahoy::Event
+    @activation_by_duration = Ahoy::Event
       .joins(:visit)
       .where(visit: Ahoy::Visit.where(visitor_token: @visitor_tokens))
-      .where("duration >= ? OR (referrer_host != ? AND name IN (?))", Ahoy::Visit::BOUNCE_DURATION, ENV["HOST_NAME"], ACTIVATION_EVENT_NAMES)
+      .where("duration >= ?", Ahoy::Visit::BOUNCE_DURATION)
       .where(time: @time_range)
       .group_by_period(@time_interval, :time, range: @time_range, expand_range: true)
       .count("DISTINCT (CASE WHEN ahoy_visits.user_id IS NOT NULL THEN ahoy_visits.user_id::text ELSE ahoy_visits.visitor_token END)")

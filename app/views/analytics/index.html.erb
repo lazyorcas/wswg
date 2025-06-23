@@ -71,8 +71,8 @@
       <% end %>
     <% end %>
     <%= render "charts", title: "Activation" do %>
-      <%= render "chart", title: "Activation" do %>
-        <%= column_chart @activation %>
+      <%= render "chart", title: "Activation by duration" do %>
+        <%= column_chart @activation_by_duration %>
       <% end %>
       <%= render "chart", title: "Activation by user action" do %>
         <%= column_chart @activation_by_event, stacked: true %>
