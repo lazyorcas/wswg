@@ -41,7 +41,7 @@
                 <td class="md:flex-2 text-secondary">
                   <%= time_ago_in_words(journey[:started_at]) %> ago
                 </td>
-                <td class="md:flex-1 text-secondary">
+                <td class="md:flex-2 text-secondary">
                   <%= journey[:duration] ? distance_of_time_in_words(journey[:duration]) : "n/a" %>
                 </td>
                 <td class="md:flex-2 text-primary" style="word-break: break-word;">
