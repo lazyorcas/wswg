@@ -47,10 +47,9 @@ class AnalyticsController < AdminController
     @journeys = Ahoy::Visit
       .where(visitor_token: @visitor_tokens)
       .where(started_at: @time_range)
+      .order(started_at: :desc)
       .limit(100)
       .includes(:user, :events)
-      .sort_by { |visit| visit.started_at }
-      .reverse
       .map do |visit|
         {
           started_at: visit.started_at,
