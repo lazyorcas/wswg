@@ -1,15 +1,15 @@
 <% content_for :title, "Analytics | Where Should We Go" %>
-<main class="dark:bg-stone-900 min-h-dvh p-4 md:p-8">
-  <header class="flex flex-col md:flex-row md:justify-between gap-y-2 md:gap-y-0 mb-8">
+<div class="dark:bg-stone-900 min-h-dvh">
+  <header class="flex flex-col md:flex-row md:justify-between gap-y-2 md:gap-y-0 p-4 md:p-8 sticky top-0 border-b border-primary z-10 bg-white dark:bg-stone-900">
     <h1 class="text-3xl font-bold">Analytics</h1>
-    <%= form_with method: :get, html: { class: "flex flex-wrap gap-2" } do |form| %>
+    <%= form_with method: :get, html: { class: "no-scrollbar flex items-center gap-x-2 overflow-x-scroll" } do |form| %>
       <%= form.date_field :start_date, value: @start_date, class: "whitespace-nowrap shrink-0 input input--accent w-fit" %>
       <%= form.date_field :end_date, value: @end_date, class: "whitespace-nowrap shrink-0 input input--accent  w-fit" %>
       <%= form.select :time_interval, options_for_select([["Day", "day"], ["Week", "week"]], @time_interval), {}, class: "whitespace-nowrap shrink-0 input input--accent w-fit" %>
       <%= form.submit "Filter", class: "button button--secondary" %>
     <% end %>
   </header>
-  <div class="flex flex-col gap-y-8">
+  <main class="flex flex-col gap-y-8 pt-4 md:pt-8 px-4 md:px-8">
     <%= render "charts", title: "Web Traffic" do %>
       <%= render "chart", title: "Visitors" do %>
         <%= column_chart @visitors, stacked: true %>
@@ -76,5 +76,5 @@
         <% end %>
       </div>
     <% end %>
-  </div>
-</main>
+  </main>
+</div>
