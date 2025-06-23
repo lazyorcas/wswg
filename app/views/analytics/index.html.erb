@@ -10,34 +10,11 @@
     <% end %>
   </header>
   <main class="flex flex-col gap-y-8 pt-4 md:pt-8 px-4 md:px-8">
-    <%= render "charts", title: "Web Traffic" do %>
-      <%= render "chart", title: "Visitors" do %>
-        <%= column_chart @visitors, stacked: true %>
+    <%= render "charts", title: "Market" do %>
+      <%= render "chart", title: "Which day of the week do people look for events?" do %>
+        <%= line_chart @wday_views %>
       <% end %>
-      <%= render "chart", title: "Unbounced Visitors" do %>
-        <%= column_chart @unbounced_visitors, stacked: true %>
-      <% end %>
-      <%= render "chart", title: "Bounces by Landing Page" do %>
-        <%= column_chart @bounces_by_landing_page, stacked: true %>
-      <% end %>
-      <%= render "chart", title: "Bounces by Duration" do %>
-        <%= column_chart @bounces_by_duration, stacked: true %>
-      <% end %>
-      <%= render "chart", title: "Viewed events pages" do %>
-        <%= column_chart @events_page_views, stacked: true %>
-      <% end %>
-      <%= render "chart", title: "Viewed pricing page" do %>
-        <%= column_chart @pricing_page_events %>
-      <% end %>
-    <% end %>
-    <%= render "charts", title: "Usage" do %>
-      <%= render "chart", title: "Activation" do %>
-        <%= column_chart @activation %>
-      <% end %>
-      <%= render "chart", title: "Activation by Event" do %>
-        <%= column_chart @activation_by_event, stacked: true %>
-      <% end %>
-      <%= render "chart", title: "Search queries" do %>
+      <%= render "chart", title: "What do people search for?" do %>
         <table class="min-w-full">
           <tbody class="divide-y divide-primary overflow-y-scroll flex flex-col"  style="max-height: 300px;">
             <% @search_queries.each do |time, query| %>
@@ -53,17 +30,44 @@
           </tbody>
         </table>
       <% end %>
+    <% end %>
+    <%= render "charts", title: "Acquisition" do %>
+      <%= render "chart", title: "Visitors" do %>
+        <%= column_chart @visitors, stacked: true %>
+      <% end %>
+      <%= render "chart", title: "Viewed homepage" do %>
+        <%= column_chart @homepage_views, stacked: true %>
+      <% end %>
+      <%= render "chart", title: "Viewed events pages" do %>
+        <%= column_chart @events_page_views, stacked: true %>
+      <% end %>
+      <%= render "chart", title: "Viewed pricing page" do %>
+        <%= column_chart @pricing_page_events %>
+      <% end %>
+    <% end %>
+    <%= render "charts", title: "Activation" do %>
+      <%= render "chart", title: "Activation" do %>
+        <%= column_chart @activation %>
+      <% end %>
+      <%= render "chart", title: "Activation by user action" do %>
+        <%= column_chart @activation_by_event, stacked: true %>
+      <% end %>
       <%= render "chart", title: "Viewed event by source" do %>
         <%= column_chart @viewed_event_events_by_source, stacked: true %>
       <% end %>
-      <%= render "chart", title: "Retention" do %>
-        <%= line_chart @visitor_retention, suffix: "%", curve: false %>
+      <%= render "chart", title: "Bounces by Landing Page" do %>
+        <%= column_chart @bounces_by_landing_page, stacked: true %>
       <% end %>
-      <%= render "chart", title: "Popularity by Day of Week" do %>
-        <%= line_chart @wday_views %>
+      <%= render "chart", title: "Bounces by Duration" do %>
+        <%= column_chart @bounces_by_duration, stacked: true %>
       <% end %>
     <% end %>
-    <%= render "charts", title: "Scraped Events" do %>
+    <%= render "charts", title: "Retention" do %>
+      <%= render "chart", title: "Retention by referrer" do %>
+        <%= line_chart @retention_by_referrer_host, suffix: "%", curve: false %>
+      <% end %>
+    <% end %>
+    <%= render "charts", title: "System" do %>
       <%= render "chart", title: "City Scores" do %>
         <%= bar_chart @city_scores, height: "740px" %>
       <% end %>
