@@ -43,6 +43,20 @@ class AnalyticsController < AdminController
       .order(time: :desc)
       .pluck(:time, Arel.sql("properties->>'query'"))
 
+    # Journey
+    @journeys = Ahoy::Visit
+      .where(visitor_token: @visitor_tokens)
+      .where(started_at: @time_range)
+      .includes(:user, :events)
+      .sort_by { |visit| visit.started_at }
+      .reverse
+      .map do |visit|
+        {
+          origin: visit.user_id.present? ? visit.user.email : visit.referrer_host || "direct",
+          events: visit.events.map(&:name).join(" → ")
+        }
+      end
+
     # Acquisition
     @visitors = Ahoy::Visit
       .where(visitor_token: @visitor_tokens)
