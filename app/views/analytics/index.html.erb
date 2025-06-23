@@ -17,20 +17,14 @@
       <%= render "chart", title: "Unbounced Visitors" do %>
         <%= column_chart @unbounced_visitors, stacked: true %>
       <% end %>
-      <%= render "chart", title: "Bounces by City" do %>
-        <%= column_chart @bounces_by_city, stacked: true %>
+      <%= render "chart", title: "Bounces by Landing Page" do %>
+        <%= column_chart @bounces_by_landing_page, stacked: true %>
       <% end %>
       <%= render "chart", title: "Bounces by Duration" do %>
         <%= column_chart @bounces_by_duration, stacked: true %>
       <% end %>
-      <%= render "chart", title: "Bounces by Referrer Host" do %>
-        <%= column_chart @bounces_by_referrer_host, stacked: true %>
-      <% end %>
-      <%= render "chart", title: "Popular City Events pages" do %>
-        <%= column_chart @city_events_page_events, stacked: true %>
-      <% end %>
-      <%= render "chart", title: "Popular Nearby Events' Cities" do %>
-        <%= column_chart @nearby_events_page_views, stacked: true %>
+      <%= render "chart", title: "Viewed events pages" do %>
+        <%= column_chart @events_page_views, stacked: true %>
       <% end %>
       <%= render "chart", title: "Viewed pricing page" do %>
         <%= column_chart @pricing_page_events %>

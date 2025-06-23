@@ -14,21 +14,25 @@
       description: "Perfect for occasional searches",
       features: [
         [true, "No sign up needed."],
-        [true, "Map view"],
-        [true, "#{Credits::MONTHLY_FREE_CREDITS} free days per month"],
+        [true, "Browse as much as you want."],
+        [true, "View events on a map."],
+        [true, "#{Credits::MONTHLY_FREE_CREDITS} free search days per month"],
+        [false, "Extra search days"],
         [false, "Bookmark / Save for later"],
       ],
       cta: "Get Started",
       cta_path: signed_in? ? nil : new_user_path(source: "Pricing page")
     %>
     <%= render "pricing_plan",
-      title: "Pay As You Go",
+      title: "Pay As You Search",
       price: Money.from_amount(5).exchange_to(@city&.currency || "USD").format,
       description: "Perfect for frequent searches",
       features: [
-        [true, "10 days. No expiration."],
-        [true, "Map view"],
-        [true, "#{Credits::MONTHLY_FREE_CREDITS} free days per month"],
+        [true, "Sign up with Google or without password"],
+        [true, "Browse as much as you want."],
+        [true, "View events on a map."],
+        [true, "#{Credits::MONTHLY_FREE_CREDITS} free search days per month"],
+        [true, "10 search days. No expiration."],
         [true, "Bookmark / Save for later"],
       ],
       cta: signed_in? ? "Top up" : "Get Started",
@@ -39,16 +43,16 @@
     <h2 class="text-2xl font-bold text-center mb-8">Frequently Asked Questions</h2>
     <div class="flex flex-col gap-y-4">
       <%= render "faq_item",
-        question: "Must I use all 10 days consecutively?",
-        answer: "No, not at all. You can use the days as you need them."
+        question: "Must I use all 10 search days in a row?",
+        answer: "No, not at all. You can use the search days as you need them."
       %>
       <%= render "faq_item",
-        question: "When do I receive free days?",
-        answer: "Users with zero days at the beginning of each month will automatically receive #{Credits::MONTHLY_FREE_CREDITS} free days."
+        question: "When do I receive free search days?",
+        answer: "Users with zero search days at the beginning of each month will automatically receive #{Credits::MONTHLY_FREE_CREDITS} free search days."
       %>
       <%= render "faq_item",
-        question: "How do I get more days?",
-        answer: "You can purchase additional days through our \"Pay As You Go\" plan."
+        question: "How do I get more search days?",
+        answer: "You can purchase additional search days through our \"Pay As You Search\" plan."
       %>
     </div>
   </section>

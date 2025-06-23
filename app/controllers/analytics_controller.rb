@@ -19,53 +19,36 @@ class AnalyticsController < AdminController
     @unbounced_visitors = Ahoy::Visit
       .where(visitor_token: @visitor_tokens)
       .where(referrer_host: @top_referrer_hosts)
-      .where("duration >= #{Ahoy::Visit::BOUNCE_DURATION}")
+      .where("duration >= ?", Ahoy::Visit::BOUNCE_DURATION)
       .group(:referrer_host)
       .order(:referrer_host)
       .group_by_period(@time_interval, :started_at, range: @time_range, expand_range: true)
       .count("DISTINCT (CASE WHEN user_id IS NOT NULL THEN user_id::text ELSE visitor_token END)")
       .transform_keys { |key| [ key[0].present? ? key[0] : "direct", key[1] ] }
-    @bounces_by_city = Ahoy::Visit
+    @bounces_by_landing_page = Ahoy::Visit
       .where(visitor_token: @visitor_tokens)
       .where(referrer_host: @top_referrer_hosts)
-      .where("duration < #{Ahoy::Visit::BOUNCE_DURATION}")
-      .where.not(city: nil)
-      .group(:city)
-      .order(:city)
+      .where("duration < ?", Ahoy::Visit::BOUNCE_DURATION)
+      .group(:landing_page)
+      .order(:landing_page)
       .group_by_period(@time_interval, :started_at, range: @time_range, expand_range: true)
       .count("DISTINCT (CASE WHEN user_id IS NOT NULL THEN user_id::text ELSE visitor_token END)")
+      .transform_keys { |landing_page, started_at| [ URI.parse(landing_page).path, started_at ] }
     @bounces_by_duration = Ahoy::Visit
       .where(visitor_token: @visitor_tokens)
       .where(referrer_host: @top_referrer_hosts)
-      .where("duration < #{Ahoy::Visit::BOUNCE_DURATION}")
+      .where("duration < ?", Ahoy::Visit::BOUNCE_DURATION)
       .group(:duration)
       .order(:duration)
       .group_by_period(@time_interval, :started_at, range: @time_range, expand_range: true)
       .count("DISTINCT (CASE WHEN user_id IS NOT NULL THEN user_id::text ELSE visitor_token END)")
       .transform_keys { |key| [ "#{key[0]}s", key[1] ] }
-    @bounces_by_referrer_host = Ahoy::Visit
-      .where(visitor_token: @visitor_tokens)
-      .where(referrer_host: @top_referrer_hosts)
-      .where("duration < #{Ahoy::Visit::BOUNCE_DURATION}")
-      .group(:referrer_host)
-      .order(:referrer_host)
-      .group_by_period(@time_interval, :started_at, range: @time_range, expand_range: true)
-      .count("DISTINCT (CASE WHEN user_id IS NOT NULL THEN user_id::text ELSE visitor_token END)")
-      .transform_keys { |key| [ key[0].present? ? key[0] : "direct", key[1] ] }
-    @city_events_page_events = Ahoy::Event
+    @events_page_views = Ahoy::Event
       .joins(:visit)
       .where(visit: Ahoy::Visit.where(visitor_token: @visitor_tokens))
       .where(name: "Viewed events")
-      .group("COALESCE(properties->>'event_category', 'events')")
-      .order(Arel.sql("COALESCE(properties->>'event_category', 'events')"))
-      .group_by_period(@time_interval, :time, range: @time_range, expand_range: true)
-      .count("DISTINCT (CASE WHEN ahoy_visits.user_id IS NOT NULL THEN ahoy_visits.user_id::text ELSE ahoy_visits.visitor_token END)")
-    @nearby_events_page_views = Ahoy::Event
-      .joins(:visit)
-      .where(visit: Ahoy::Visit.where(visitor_token: @visitor_tokens))
-      .where(name: "Viewed events")
-      .where("(properties->>'nearby')::boolean IS TRUE")
-      .group("properties->>'city'")
+      .group("(CASE WHEN properties->>'nearby' = 'true' THEN 'nearby ' ELSE '' END) || COALESCE(properties->>'event_category', 'events')")
+      .order(Arel.sql("(CASE WHEN properties->>'nearby' = 'true' THEN 'nearby ' ELSE '' END) || COALESCE(properties->>'event_category', 'events')"))
       .group_by_period(@time_interval, :time, range: @time_range, expand_range: true)
       .count("DISTINCT (CASE WHEN ahoy_visits.user_id IS NOT NULL THEN ahoy_visits.user_id::text ELSE ahoy_visits.visitor_token END)")
     @pricing_page_events = build_ahoy_events_page_events_data("Visited pricing page")
@@ -232,7 +215,6 @@ class AnalyticsController < AdminController
       .reject { |_, count| count <= 1 }
       .sort_by { |_, count| count }
       .reverse
-      .take(10)
       .map(&:first)
   end
 
@@ -260,5 +242,11 @@ class AnalyticsController < AdminController
     when 3 then "rd"
     else "th"
     end
+  end
+
+  def extract_path_from_url(url)
+    return nil if url.nil?
+    uri = Addressable::URI.parse(url)
+    uri.path
   end
 end
