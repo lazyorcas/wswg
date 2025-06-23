@@ -1,31 +1,9 @@
 experiments:
-  pricing_page_shown:
-    name: Pricing Page Shown
-    description: >
-      Test if more visitors go to the sign-up page to the site when the pricing page is not shown.
-    started_at: May 21, 2025 3 pm SGT
-    ended_at: June 2, 2025 1 pm SGT
-    variants:
-      - t
-      - f
-    winner: t
-  sign_up_page:
-    name: Sign Up Rate
-    description: >
-      Test if sign-up rate increases by either having the word "free" in the sign up page or by having a hero image of the app.
-    started_at: May 23, 2025 2 pm SGT
-    ended_at: June 5, 2025 2 pm SGT
-    variants:
-      - control
-      - has_free_word
-      - has_hero_image
-      - has_free_word_and_hero_image
-    winner: control
   search_bar_position:
     name: Search Bar Position
     description: >
       Test if the sticky search bar creates more search queries.
-    started_at: June 16, 2025 11 am SGT
+    started_at: June 23, 2025 12:30 pm SGT
     variants:
       - header
       - sticky

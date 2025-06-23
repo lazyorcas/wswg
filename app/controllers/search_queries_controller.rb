@@ -31,13 +31,13 @@ class SearchQueriesController < ApplicationController
     end
 
     ahoy.track "Searched", query: @search_query.query, source: request.referer
-    field_test_converted(:search_bar_position)
+    field_test_converted(:search_bar_position) unless signed_in?
   end
 
   private
 
   def build_search_query
-    @search_query ||= search_query_scope.build
+    @search_query ||= search_query_scope.buildt
     @search_query.attributes = search_query_params
   end
 

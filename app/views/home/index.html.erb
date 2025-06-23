@@ -5,7 +5,7 @@
       <h1 class="text-3xl md:text-4xl font-bold">Discover all local events with one search</h1>
       <p class="md:max-w-2xl">Browse and search for events, meetups, and concerts from Luma, Meetup, Eventbrite, and Ticketmaster in one place.</p>
     </div>
-    <% if field_test(:search_bar_position) == "header" %>
+    <% if !signed_in? && field_test(:search_bar_position) == "header" %>
       <%= render "home/header_search_bar", search_query: SearchQuery.new %>
     <% else %>
       <%= link_to "View Events on Map", map_path, class: "button button--primary", rel: "nofollow", data: { turbo: false } %>
@@ -34,7 +34,7 @@
       <% end %>
     </div>
   </section>
-  <% if field_test(:search_bar_position) == "sticky" %>
+  <% if signed_in? || field_test(:search_bar_position) == "sticky" %>
     <%= render "home/sticky_search_bar", search_query: SearchQuery.new %>
   <% end %>
 </div>
