@@ -9,7 +9,7 @@
       <%= form.submit "Filter", class: "button button--secondary" %>
     <% end %>
   </header>
-  <main class="flex flex-col gap-y-8 pt-4 md:pt-8 px-4 md:px-8">
+  <main class="flex flex-col gap-y-8 py-4 md:py-8 px-4 md:px-8">
     <%= render "charts", title: "Market" do %>
       <%= render "chart", title: "Which day of the week do people look for events?" do %>
         <%= line_chart @wday_views %>
