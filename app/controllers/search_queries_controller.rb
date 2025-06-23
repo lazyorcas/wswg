@@ -37,7 +37,7 @@ class SearchQueriesController < ApplicationController
   private
 
   def build_search_query
-    @search_query ||= search_query_scope.buildt
+    @search_query ||= search_query_scope.build
     @search_query.attributes = search_query_params
   end
 
