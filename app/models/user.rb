@@ -10,6 +10,8 @@ class User < ApplicationRecord
     monthly: 2
   }
 
+  has_settings :personalization
+
   belongs_to :city, optional: true
 
   has_one :account, dependent: :destroy

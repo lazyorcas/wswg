@@ -1,0 +1,9 @@
+<%= form_with url: personalize_path, method: :put, class: "flex flex-col items-center gap-y-8" do |form| %>
+  <h2 class="text-center text-xl md:text-2xl font-semibold">How can we let you know when the feature is live? (3/3)</h2>
+  <div class="w-full flex flex-col md:flex-row gap-y-4 md:gap-y-0 md:gap-x-4">
+    <%= form.email_field "personalization[email]", class: "input input--accent", placeholder: "Enter your email", autocomplete: "email", required: true, value: signed_in? ? Current.user.email : nil %>
+    <%= form.button class: "cursor-pointer button button--primary" do %>
+      Done
+    <% end %>
+  </div>
+<% end %>

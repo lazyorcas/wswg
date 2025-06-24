@@ -1,0 +1,24 @@
+<% content_for :head do %>
+  <meta name="robots" content="noindex, nofollow" />
+<% end %>
+<%= content_for :title, "Personalize | Where Should We Go" %>
+<%= content_for :description, "Tailor your user experience by letting us know what events you find interesting." %>
+<main class="grow flex flex-col">
+  <header class="flex flex-col gap-y-8 md:gap-y-10 items-center pt-10 md:pt-20">
+    <div class="flex flex-col items-center text-center gap-y-2 md:gap-y-4">
+      <h1 class="text-3xl md:text-4xl font-bold flex items-center gap-x-4">
+        <i class="ph-fill ph-magic-wand"></i>
+        Personalize
+      </h1>
+      <p class="md:max-w-2xl">Tailor your user experience by letting us know what events you find interesting.</p>
+    </div>
+  </header>
+  <div class="w-full mt-10 md:mt-20 max-w-2xl mx-auto bg-stone-100 dark:bg-stone-800 rounded-xl p-4 md:p-8">
+    <% if @personalization.complete? %>
+      <p class="text-center">You're all set! We will let you know through your email (<%= @personalization.email %>) when the feature is live.</p>
+      <%= link_to "Back to home", root_path, class: "mt-8 w-full md:w-fit button button--primary mx-auto" %>
+    <% else %>
+      <%= render "home/personalization/#{@personalization.next_step}_form", personalization: @personalization %>
+    <% end %>
+  </div>
+</main>

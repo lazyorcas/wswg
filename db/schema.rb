@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_06_21_141008) do
+ActiveRecord::Schema[8.0].define(version: 2025_06_24_153405) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -251,6 +251,17 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_21_141008) do
     t.index ["event_id"], name: "index_seens_on_event_id"
     t.index ["seenable_type", "seenable_id", "event_id"], name: "index_seens_on_seenable_type_and_seenable_id_and_event_id", unique: true
     t.index ["seenable_type", "seenable_id"], name: "index_seens_on_seenable"
+  end
+
+  create_table "settings", id: :serial, force: :cascade do |t|
+    t.string "var", null: false
+    t.text "value"
+    t.string "target_type", null: false
+    t.integer "target_id", null: false
+    t.datetime "created_at", precision: nil
+    t.datetime "updated_at", precision: nil
+    t.index ["target_type", "target_id", "var"], name: "index_settings_on_target_type_and_target_id_and_var", unique: true
+    t.index ["target_type", "target_id"], name: "index_settings_on_target_type_and_target_id"
   end
 
   create_table "sources", force: :cascade do |t|

@@ -1,6 +1,8 @@
 class Visitor < ApplicationRecord
   include Credits
 
+  has_settings :personalization
+
   belongs_to :city, optional: true
 
   has_many :seens, as: :seenable, dependent: :destroy
