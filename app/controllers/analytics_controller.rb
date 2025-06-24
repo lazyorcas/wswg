@@ -100,6 +100,25 @@ class AnalyticsController < AdminController
       .group(:name)
       .group_by_period(@time_interval, :time, range: @time_range, expand_range: true)
       .count("DISTINCT (CASE WHEN ahoy_visits.user_id IS NOT NULL THEN ahoy_visits.user_id::text ELSE ahoy_visits.visitor_token END)")
+    @time_taken_until_first_viewed_event = Ahoy::Event
+      .joins(:visit)
+      .where(visit: Ahoy::Visit.where(visitor_token: @visitor_tokens))
+      .where(name: "Viewed event")
+      .where(time: @time_range)
+      .group(:started_at)
+      .select("MIN(ahoy_events.time) - started_at as time_taken")
+      .map { |event| (event.time_taken.to_i / 5) * 5 }
+      .group_by { |time_taken|
+        if time_taken <= 60
+          "#{time_taken}s"
+        else
+          "60s+"
+        end
+      }
+      .map { |time_taken, events| [ time_taken, events.count ] }
+      .sort_by { |_, count| count }
+      .reverse
+
     @viewed_event_events_by_source = Ahoy::Event
       .where(visit: Ahoy::Visit.where(visitor_token: @visitor_tokens))
       .where(name: "Viewed event")

@@ -77,6 +77,9 @@
       <%= render "chart", title: "Visitor actions" do %>
         <%= column_chart @visitor_actions, stacked: true %>
       <% end %>
+      <%= render "chart", title: "Time taken until an event is viewed" do %>
+        <%= pie_chart @time_taken_until_first_viewed_event %>
+      <% end %>
       <%= render "chart", title: "Viewed event by source" do %>
         <%= column_chart @viewed_event_events_by_source, stacked: true %>
       <% end %>
