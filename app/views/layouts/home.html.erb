@@ -10,7 +10,7 @@
     <%= csp_meta_tag %>
     <%= yield :head %>
     <%= canonical_tag -%>
-    <%= render "shared/head/visit" %>
+    <%= render "shared/head/visit" if Rails.env.production? %>
     <%= render "shared/head/favicon" %>
     <%= render "shared/head/fonts" %>
     <%= render "shared/head/icons" %>
