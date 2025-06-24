@@ -8,7 +8,10 @@
     <% if !signed_in? && field_test(:search_bar_position) == "header" %>
       <%= render "home/header_search_bar", search_query: SearchQuery.new %>
     <% else %>
-      <%= link_to "View Events on Map", map_path, class: "button button--primary", rel: "nofollow", data: { turbo: false } %>
+      <%= link_to map_path, class: "button button--primary", rel: "nofollow", data: { turbo: false } do %>
+        <i class="ph ph-map-trifold"></i>
+        Open Map
+      <% end %>
     <% end %>
   </header>
   <% if @events&.any? %>
