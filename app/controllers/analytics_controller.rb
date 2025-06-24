@@ -47,7 +47,7 @@ class AnalyticsController < AdminController
     @journeys = Ahoy::Visit
       .where(visitor_token: @visitor_tokens)
       .where(started_at: @time_range)
-      .order(started_at: :desc)
+      .order(id: :desc)
       .limit(100)
       .includes(:user, :events)
       .map do |visit|
