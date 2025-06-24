@@ -109,10 +109,12 @@ class AnalyticsController < AdminController
       .select("MIN(ahoy_events.time) - started_at as time_taken")
       .map { |event| (event.time_taken.to_i / 5) * 5 }
       .group_by { |time_taken|
-        if time_taken <= 60
-          "#{time_taken}s"
+        if time_taken <= 10
+          "≤10s"
+        elsif time_taken <= 60
+          "10-60s"
         else
-          "60s+"
+          ">60s"
         end
       }
       .map { |time_taken, events| [ time_taken, events.count ] }
