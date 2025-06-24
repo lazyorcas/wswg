@@ -1,7 +1,7 @@
 class Personalization
   include ActiveModel::Model
 
-  STEPS = [ :medium, :frequency, :email ].freeze
+  STEPS = [ :medium, :frequency, :reason, :email ].freeze
 
   validates :medium,
     inclusion: { in: %w[newsletter discovery_feed] },
@@ -17,7 +17,7 @@ class Personalization
     @person = person
   end
 
-  [ :medium, :frequency, :email ].each do |step|
+  STEPS.each do |step|
     define_method("#{step}=") do |value|
       person_personalization_settings.send("#{step}=", value)
     end
@@ -36,7 +36,7 @@ class Personalization
   end
 
   def complete?
-    [ medium, frequency, email ].all?(&:present?)
+    STEPS.all? { |step| send(step).present? }
   end
 
   def save!

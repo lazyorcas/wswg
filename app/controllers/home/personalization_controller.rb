@@ -20,7 +20,7 @@ class Home::PersonalizationController < ApplicationController
         redirect_to(personalization_path)
       rescue => e
         Sentry.capture_exception(e)
-        flash.now[:error] = "Something went wrong. Please try again."
+        flash.now[:error] = "Something went wrong. Please contact us."
         turbo_stream_flash(status: :unprocessable_entity)
       end
     else
@@ -37,6 +37,6 @@ class Home::PersonalizationController < ApplicationController
 
   def personalization_params
     personalization_params = params[:personalization]
-    personalization_params ? personalization_params.permit(:medium, :frequency, :email) : {}
+    personalization_params ? personalization_params.permit(:medium, :frequency, :reason, :email) : {}
   end
 end
