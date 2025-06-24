@@ -1,7 +1,7 @@
 class AnalyticsController < AdminController
   START_DATE = (4.weeks.ago.end_of_week + 1.day).to_date
   TIME_INTERVAL = "day"
-  ACTIVATION_EVENT_NAMES = [ "Viewed event", "Searched", "Visited map page", "Searched on map" ].freeze
+  VISITOR_ACTION_EVENT_NAMES = [ "Viewed event", "Searched", "Visited map page", "Searched on map" ].freeze
 
   before_action :load_filters
   before_action :load_visitor_tokens
@@ -85,17 +85,17 @@ class AnalyticsController < AdminController
     @pricing_page_events = build_ahoy_events_page_events_data("Visited pricing page")
 
     # Activation
-    @activation_by_duration = Ahoy::Event
+    @unbounced_visitors = Ahoy::Event
       .joins(:visit)
       .where(visit: Ahoy::Visit.where(visitor_token: @visitor_tokens))
       .where("duration >= ?", Ahoy::Visit::BOUNCE_DURATION)
       .where(time: @time_range)
       .group_by_period(@time_interval, :time, range: @time_range, expand_range: true)
       .count("DISTINCT (CASE WHEN ahoy_visits.user_id IS NOT NULL THEN ahoy_visits.user_id::text ELSE ahoy_visits.visitor_token END)")
-    @activation_by_event = Ahoy::Event
+    @visitor_actions = Ahoy::Event
       .joins(:visit)
       .where(visit: Ahoy::Visit.where(visitor_token: @visitor_tokens))
-      .where(name: ACTIVATION_EVENT_NAMES)
+      .where(name: VISITOR_ACTION_EVENT_NAMES)
       .where(time: @time_range)
       .group(:name)
       .group_by_period(@time_interval, :time, range: @time_range, expand_range: true)
@@ -143,7 +143,7 @@ class AnalyticsController < AdminController
       .to_h
     usage_visitor_tokens = Ahoy::Visit
       .joins(:events)
-      .where("duration >= ? OR (referrer_host != ? AND name IN (?))", Ahoy::Visit::BOUNCE_DURATION, ENV["HOST_NAME"], ACTIVATION_EVENT_NAMES)
+      .where("duration >= ? OR (referrer_host != ? AND name IN (?))", Ahoy::Visit::BOUNCE_DURATION, ENV["HOST_NAME"], VISITOR_ACTION_EVENT_NAMES)
       .pluck(:visitor_token)
       .uniq
     first_user_visit_ids = Ahoy::Visit

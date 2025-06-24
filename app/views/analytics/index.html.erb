@@ -71,11 +71,11 @@
       <% end %>
     <% end %>
     <%= render "charts", title: "Activation" do %>
-      <%= render "chart", title: "Activation by browsing for longer than #{Ahoy::Visit::BOUNCE_DURATION}s" do %>
-        <%= column_chart @activation_by_duration %>
+      <%= render "chart", title: "Unbounced visitors" do %>
+        <%= column_chart @unbounced_visitors %>
       <% end %>
-      <%= render "chart", title: "Activation by user action" do %>
-        <%= column_chart @activation_by_event, stacked: true %>
+      <%= render "chart", title: "Visitor actions" do %>
+        <%= column_chart @visitor_actions, stacked: true %>
       <% end %>
       <%= render "chart", title: "Viewed event by source" do %>
         <%= column_chart @viewed_event_events_by_source, stacked: true %>
