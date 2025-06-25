@@ -1,0 +1,5 @@
+<button popovertarget="current_person_settings_preferences_sort_by" class="button button--ghost" title="Sort">
+  <i class="ph ph-arrows-down-up"></i>
+  <%= Current.person.settings(:preferences).sort_by.humanize %>
+</button>
+<%= turbo_frame_tag "current_person_settings_preferences_sort_by", src: current_person_settings_preference_path(id: "sort_by"), popover: "", target: "_top", loading: "lazy", class: "modal p-4 w-xs max-w-full", rel: "nofollow" %>

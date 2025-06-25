@@ -17,10 +17,14 @@
           <i class="ph ph-magic-wand"></i>
           Personalize
         <% end %>
-        <%= link_to map_path(@search_query.present? ? { search_query_id: @search_query.id } : { city_id: @city.id }), class: "self-end button button--ghost", rel: "nofollow", data: { turbo: false } do %>
-          <i class="ph ph-map-trifold"></i>
-          Map View
-        <% end %>
+        <div class="flex self-end">
+          <% if Current.person.present? %>
+            <%= render "current_person/settings/preferences/sort_by_popover_button" %>
+          <% end %>
+          <%= link_to map_path(@search_query.present? ? { search_query_id: @search_query.id } : { city_id: @city.id }), class: "icon-button icon-button--base button--ghost", rel: "nofollow", data: { turbo: false } do %>
+            <i class="ph ph-map-trifold"></i>
+          <% end %>
+        </div>
       </div>
       <ol class="mt-4 grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-y-4 lg:gap-y-5 lg:gap-x-5" data-controller="event-list">
         <%= render partial: "event", collection: @events, cached: -> (event) { build_event_cache_key(event) } %>

@@ -52,7 +52,15 @@ class HomeController < ApplicationController
   end
 
   def order_events
-    @events = @events.order(:start_date, :start_time)
+    @events = if Current.person.nil? || Current.person.settings(:preferences).sort_by == "time"
+      @events.order(:start_date, :start_time)
+    else
+      @events
+        .left_joins(:seen_users)
+        .select("events.*, COUNT(DISTINCT users.id) as seen_count")
+        .group("events.id, locations.id, city.id")
+        .order("seen_count DESC, events.start_date, events.start_time")
+    end
   end
 
   def limit_events
