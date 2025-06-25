@@ -42,7 +42,7 @@ Rails.application.routes.draw do
   patch "/visitor", to: "current_visitor#update", as: :current_visitor
   get "/top_up_needed", to: "current_person#top_up_needed", as: :top_up_needed
 
-  post "/current_visit/duration_sync", to: "current_visit/duration_sync#create", as: :current_visit_duration_sync
+  post "/visit/duration_sync", to: "current_visit/duration_sync#create", as: :current_visit_duration_sync
 
   get "/map", to: "map#index", as: :map
   namespace :map do

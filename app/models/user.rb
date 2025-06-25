@@ -4,12 +4,6 @@ class User < ApplicationRecord
 
   passwordless_with :email
 
-  enum :notification_frequency, {
-    daily: 0,
-    weekly: 1,
-    monthly: 2
-  }
-
   has_settings :personalization
 
   belongs_to :city, optional: true
