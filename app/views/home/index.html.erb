@@ -29,9 +29,8 @@
         <% if Current.person.present? %>
           <%= render "current_person/settings/preferences/sort_by_popover_button" %>
         <% end %>
-        <%= link_to map_path(city_id: @city.id), class: "self-end button button--ghost", rel: "nofollow", data: { turbo: false } do %>
+        <%= link_to map_path(city_id: @city.id), class: "self-end icon-button icon-button--base button--ghost", rel: "nofollow", data: { turbo: false } do %>
           <i class="ph ph-map-trifold"></i>
-          Map View
         <% end %>
       </div>
       <ol class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-y-4 lg:gap-y-5 lg:gap-x-5" data-controller="event-list">
