@@ -1,9 +1,6 @@
 class Visitor < ApplicationRecord
+  include IsPerson
   include Credits
-
-  has_settings :personalization
-
-  belongs_to :city, optional: true
 
   has_many :seens, as: :seenable, dependent: :destroy
   has_many :seen_events, through: :seens, source: :event

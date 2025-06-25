@@ -1,12 +1,9 @@
 class User < ApplicationRecord
+  include IsPerson
   include Credits
   include Anonymity
 
   passwordless_with :email
-
-  has_settings :personalization
-
-  belongs_to :city, optional: true
 
   has_one :account, dependent: :destroy
   has_many :bookmarks, dependent: :destroy
