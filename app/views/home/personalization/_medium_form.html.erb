@@ -1,15 +1,14 @@
 <div class="flex flex-col items-center gap-y-8">
   <h2 class="text-center text-xl md:text-2xl font-semibold">
-    How would you like to see the personalized recommendations? (1/4)
+    How would you like to see the personalized recommendations?
   </h2>
   <div class="w-full flex flex-col md:flex-row gap-y-4 md:gap-y-0 md:gap-x-4">
-    <%= button_to personalize_path, method: :put, params: { personalization: { medium: "newsletter" } }, class: "w-full button button--secondary", form_class: "flex-1" do %>
-      <i class="ph-fill ph-newspaper"></i>
-      Email Newsletter
-    <% end %>
-    <%= button_to personalize_path, method: :put, params: { personalization: { medium: "discovery_feed" } }, class: "w-full button button--secondary", form_class: "flex-1" do %>
-      <i class="ph-fill ph-sparkle"></i>
-      Discovery Feed
+    <% Personalization::MEDIUMS.each do |medium| %>
+      <%= button_to personalize_path, method: :put, params: { personalization: { medium: medium } }, class: "w-full button button--ghost", form_class: "flex-1" do %>
+        <i class="ph <%= personalization_medium_icon(medium) %>"></i>
+        <%= medium.humanize %>
+      <% end %>
     <% end %>
   </div>
+  <%= render "disabled_skip_button" %>
 </div>

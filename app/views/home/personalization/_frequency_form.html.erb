@@ -1,14 +1,11 @@
 <div class="flex flex-col items-center gap-y-8">
-  <h2 class="text-center text-xl md:text-2xl font-semibold">How often would you like to receive new personalized recommendations? (2/4)</h2>
+  <h2 class="text-center text-xl md:text-2xl font-semibold">How often would you like to receive new personalized recommendations?</h2>
   <div class="w-full flex flex-col md:flex-row gap-y-4 md:gap-y-0 md:gap-x-4">
-    <%= button_to personalize_path, method: :put, params: { personalization: { frequency: "daily" } }, class: "w-full button button--secondary", form_class: "flex-1" do %>
-      Daily
-    <% end %>
-    <%= button_to personalize_path, method: :put, params: { personalization: { frequency: "weekly" } }, class: "w-full button button--secondary", form_class: "flex-1" do %>
-      Weekly
-    <% end %>
-    <%= button_to personalize_path, method: :put, params: { personalization: { frequency: "monthly" } }, class: "w-full button button--secondary", form_class: "flex-1" do %>
-      Monthly
+    <% Personalization::FREQUENCIES.each do |frequency| %>
+      <%= button_to personalize_path, method: :put, params: { personalization: { frequency: frequency } }, class: "w-full button button--ghost", form_class: "flex-1" do %>
+        <%= frequency.humanize %>
+      <% end %>
     <% end %>
   </div>
+  <%= render "disabled_skip_button" %>
 </div>

@@ -7,12 +7,20 @@ class Home::PersonalizationController < ApplicationController
   def index
     build_personalization
 
+    if personalization_params.present?
+      if @personalization.valid?
+        begin
+          @personalization.save!
+        rescue => e
+          Sentry.capture_exception(e)
+        end
+      end
+    end
+
     ahoy.track "Visited personalization page", completed: @personalization.complete?
   end
 
   def update
-    ahoy.track "Personalized", params: personalization_params
-
     build_personalization
     if @personalization.valid?
       begin
@@ -26,6 +34,8 @@ class Home::PersonalizationController < ApplicationController
     else
       turbo_stream_flash(status: :bad_request)
     end
+
+    ahoy.track "Personalized", params: personalization_params
   end
 
   private
@@ -37,6 +47,6 @@ class Home::PersonalizationController < ApplicationController
 
   def personalization_params
     personalization_params = params[:personalization]
-    personalization_params ? personalization_params.permit(:medium, :frequency, :reason, :email) : {}
+    personalization_params ? personalization_params.permit(Personalization::FIELDS) : {}
   end
 end

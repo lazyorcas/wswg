@@ -1,13 +1,27 @@
 class Personalization
   include ActiveModel::Model
 
-  STEPS = [ :medium, :frequency, :reason, :email ].freeze
+  MEDIUMS = %w[email_newsletter discovery_feed telegram_channel].freeze
+  FREQUENCIES = %w[daily weekly monthly].freeze
+
+  FIELDS = [ :medium, :frequency, :reason, :keywords, :email, :telegram_username ].freeze
+
+  STEPS = {
+    email_newsletter: [ :frequency, :keywords, :reason, :email ],
+    discovery_feed: [ :frequency, :keywords, :reason, :email ],
+    telegram_channel: [ :frequency, :keywords, :reason, :telegram_username ]
+  }.freeze
+  REQUIRED_STEPS = {
+    email_newsletter: [ :frequency, :email ],
+    discovery_feed: [ :frequency, :email ],
+    telegram_channel: [ :frequency, :telegram_username ]
+  }
 
   validates :medium,
-    inclusion: { in: %w[newsletter discovery_feed] },
+    inclusion: { in: MEDIUMS },
     if: -> { medium.present? }
   validates :frequency,
-    inclusion: { in: %w[daily weekly monthly] },
+    inclusion: { in: FREQUENCIES },
     if: -> { frequency.present? }
   validates :email,
     format: { with: URI::MailTo::EMAIL_REGEXP },
@@ -17,7 +31,7 @@ class Personalization
     @person = person
   end
 
-  STEPS.each do |step|
+  FIELDS.each do |step|
     define_method("#{step}=") do |value|
       person_personalization_settings.send("#{step}=", value)
     end
@@ -27,16 +41,26 @@ class Personalization
     end
   end
 
+  def steps
+    medium.present? ? STEPS[medium.to_sym] : []
+  end
+
+  def required_steps
+    medium.present? ? REQUIRED_STEPS[medium.to_sym] : []
+  end
+
   def next_step
-    if complete?
+    if medium.nil?
+      :medium
+    elsif complete?
       nil
     else
-      STEPS.find { |step| !send(step).present? }
+      steps.find { |step| send(step).nil? }
     end
   end
 
   def complete?
-    STEPS.all? { |step| send(step).present? }
+    medium.present? && required_steps.all? { |step| send(step).present? }
   end
 
   def save!
