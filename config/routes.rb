@@ -28,6 +28,7 @@ Rails.application.routes.draw do
 
   get "/events/:id", to: "home/events#show", as: :event
   get "/events/:id/description", to: "home/events/descriptions#show", as: :event_description
+  get "/events/:id/redirect", to: "home/events/redirects#show"
 
   resources :users, only: [ :new, :create ]
   get "/login", to: "sessions#new"
