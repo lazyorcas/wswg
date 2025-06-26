@@ -6,7 +6,6 @@ Disallow: /events/*/description
 Disallow: /terms
 Disallow: /privacy
 Disallow: /map
-Disallow: /personalize
 Disallow: /personalization
 Disallow: /current_person/settings/preferences/
 Disallow: /cdn-cgi/
