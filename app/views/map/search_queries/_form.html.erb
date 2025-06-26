@@ -2,7 +2,7 @@
   <div class="flex items-center">
     <%= form.search_field :query,
           placeholder: generate_search_query_placeholder,
-          class: "grow input !border-none truncate",
+          class: "grow input input--base !border-none truncate",
           required: true,
           data: { search_target: "searchInput", action: "search#input" }
     %>

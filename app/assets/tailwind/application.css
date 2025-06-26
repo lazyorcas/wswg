@@ -169,6 +169,10 @@
     @apply text-stone-700 dark:text-stone-300;
   }
 
+  .input--base {
+    @apply bg-white dark:bg-stone-900;
+  }
+
   .input--accent {
     @apply bg-stone-100 dark:bg-stone-800;
   }
