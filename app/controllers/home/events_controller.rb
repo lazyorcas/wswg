@@ -120,7 +120,7 @@ class Home::EventsController < ApplicationController
 
   def load_events
     @events = if @event_category.events?
-      Event.joins(:city).where(city: { name: @city.name })
+      Event.joins(:city).where(city: { id: @city.id })
     else
       @search_query = SearchQuery
       .where(

@@ -29,7 +29,15 @@ class Map::EventsController < ApplicationController
   end
 
   def order_events
-    @events = @events.order(:start_date, :start_time)
+    @events = if Current.person.settings(:preferences).sort_by == "time"
+      @events.order(:start_date, :start_time)
+    else
+      @events
+        .left_joins(:seen_users)
+        .select("events.*, COUNT(DISTINCT users.id) as seen_count")
+        .group("events.id, locations.id, sources.id, city.id")
+        .order("seen_count DESC, events.start_date, events.start_time")
+    end
   end
 
   def limit_events
@@ -54,7 +62,7 @@ class Map::EventsController < ApplicationController
 
   def event_scope
     Event
-      .joins(:city_source)
-      .where(city_source: { city: @city })
+      .joins(:city)
+      .where(city: { id: @city.id })
   end
 end
