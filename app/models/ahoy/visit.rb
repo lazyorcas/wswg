@@ -44,16 +44,18 @@ class Ahoy::Visit < ApplicationRecord
   end
 
   def update_referrer_host!
+    if landing_page.include?("gad_source")
+      self.referrer_host = "google_ads"
+      save!
+      return
+    end
+
     uri = URI.parse(referrer)
     return if uri.host.nil?
 
     fragments = uri.host.split(".")
     self.referrer_host = if fragments.include?("google")
-      if landing_page.include?("gad_source")
-        "google_ads"
-      else
-        "google"
-      end
+      "google"
     elsif fragments.include?("linkedin")
       "linkedin"
     elsif fragments.include?("reddit")
