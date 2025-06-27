@@ -3,28 +3,49 @@
     <div class="shrink-0 pt-6 md:pt-4"></div>
     <div class="h-full no-scrollbar flex flex-col gap-y-4 px-4 pb-6 md:pb-4 overflow-y-scroll md:overflow-y-auto" data-bottom-sheet-target="nonDraggable">
       <%= image_tag @event.image_url, class: "aspect-square object-contain rounded-lg w-full h-auto md:h-fit md:w-80 md:max-w-80", referrerpolicy: "no-referrer" %>
-      <h1 class="text-base/5 md:text-lg/6 font-bold line-clamp-4 md:line-clamp-3 shrink-0" style="word-break: break-word;"><%= @event.title %></h1>
-      <div class="flex flex-col gap-y-1">
-        <div class="text-sm">
-          <%= tag.p date %>
-          <%= tag.p time_range %>
-        </div>
-        <div class="flex gap-1 flex-wrap">
-          <% if @event.location.nil? %>
-            <%= tag.p "No location found", class: "tag" %>
+      <div class="flex flex-col gap-y-2">
+        <h1 class="text-base font-semibold line-clamp-4 md:line-clamp-3 shrink-0" style="word-break: break-word;"><%= @event.title %></h1>
+        <div class="flex flex-col gap-y-1 md:max-h-64 overflow-y-scroll">
+          <%= tag.p class: "text-sm text-secondary flex gap-x-2" do %>
+            <i class="ph ph-clock text-sm shrink-0 h-fit mt-[3px] size-3.5"></i>
+            <%= date %> &#x2022; <%= time_range %>
+          <% end %>
+          <% if @event.location.present? %>
+            <%= tag.p class: "text-sm text-secondary flex gap-x-2" do %>
+              <i class="ph ph-map-pin text-sm shrink-0 h-fit mt-[3px] size-3.5"></i>
+              <%= @event.location.full_address %>
+            <% end %>
           <% end %>
           <% if @event.price.present? %>
-            <%= tag.p price_label, class: "tag" %>
+            <%= tag.p class: "text-sm text-secondary flex gap-x-2" do %>
+              <i class="ph ph-wallet text-sm shrink-0 h-fit mt-[3px] size-3.5"></i>
+              <%= price_label %>
+            <% end %>
+          <% end %>
+          <% if @event.description.present? %>
+            <details class="group">
+              <summary class="text-sm text-secondary flex gap-x-2 cursor-pointer group-open:mb-2">
+                <i class="ph ph-caret-down text-sm group-open:rotate-180 transition-transform shrink-0 mt-[3px] size-3.5"></i>
+                <span class="underline underline-secondary">More details</span>
+              </summary>
+              <blockquote class="text-sm text-primary" style="word-break: break-word;">
+                <%= turbo_frame_tag "event_#{@event.id}_description", src: event_description_path(@event), class: "flex flex-col gap-y-1", data: { nosnippet: true }, loading: "lazy" do %>
+                  <span class="flex gap-x-2 items-center">
+                    <i class="ph ph-spinner animate-spin shrink-0"></i>
+                    <span class="text-sm text-secondary">Loading...</span>
+                  </span>
+                <% end %>
+              </blockquote>
+            </details>
           <% end %>
         </div>
       </div>
       <div class="flex gap-x-2 mt-auto">
-        <%= link_to @event.url, class: "grow button button--secondary", target: "_blank" do %>
-          <i class="ph ph-arrow-square-out"></i>
-          View details
-        <% end %>
         <% if @bookmark.present? %>
           <%= render "bookmarks/form", bookmark: @bookmark %>
+        <% end %>
+        <%= link_to @event.url, class: "icon-button icon-button--base button--secondary shrink-0", target: "_blank" do %>
+          <i class="ph ph-arrow-square-out"></i>
         <% end %>
       </div>
     </div>

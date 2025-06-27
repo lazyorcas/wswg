@@ -1,22 +1,36 @@
 <%= tag.li class: "shrink-0" do %>
   <%= tag.button class: "w-full cursor-pointer list-item", data: data do %>
     <span class="pointer-events-none flex gap-x-4 items-start">
-      <%= image_tag @event.image_url, class: "shrink-0 event-image", loading: "lazy", referrerpolicy: "no-referrer" %>
       <span class="grow flex flex-col list-item__text">
-        <%= tag.span class: "mb-2 w-full flex items-center gap-x-1" do %>
+        <%= tag.span class: "mb-1 w-full flex items-center gap-x-1" do %>
           <%= image_tag source_icon_url, class: "inline-flex event-source-icon", loading: "lazy" %>
-          <span class="text-xs"><%= @event.source.name %></span>
+          <span class="text-sm"><%= @event.source.name %></span>
         <% end %>
-        <%= tag.span @event.title, class: "text-sm line-clamp-1" %>
-        <%= tag.span class: "text-xs text-secondary" do %>
-          <%= date %> &#x2022; <%= time_range %>
-        <% end %>
+        <%= tag.span @event.title, class: class_names("text-base line-clamp-2", seen? ? "link-visited" : "link"), style: "word-break: break-word;" %>
+        <span class="flex flex-col gap-y-1 mt-2">
+          <%= tag.span class: "text-sm text-secondary flex gap-x-2" do %>
+            <i class="ph ph-clock text-sm shrink-0 h-fit mt-[3px] size-3.5"></i>
+            <%= date %> &#x2022; <%= time_range %>
+          <% end %>
+          <% if @event.location.present? %>
+            <%= tag.span class: "text-sm text-secondary flex gap-x-2" do %>
+              <i class="ph ph-map-pin text-sm shrink-0 h-fit mt-[3px] size-3.5"></i>
+              <%= @event.location.full_address %>
+            <% end %>
+          <% end %>
+          <% if @event.price.present? %>
+            <%= tag.span class: "text-sm text-secondary flex gap-x-2" do %>
+              <i class="ph ph-wallet text-sm shrink-0 h-fit mt-[3px] size-3.5"></i>
+              <%= price_label %>
+            <% end %>
+          <% end %>
+          <span class="text-sm text-secondary flex gap-x-2">
+            <i class="ph <%= helpers.browser.device.mobile? ? "ph-arrow-up" : "ph-arrow-right" %> text-sm transition-transform shrink-0 mt-[3px] size-3.5"></i>
+            <span class="underline underline-secondary">More details</span>
+          </span>
+        </span>
       </span>
-      <% if bookmarked? %>
-        <i class="mt-[3px] ph-fill ph-bookmark-simple"></i>
-      <% elsif seen? %>
-        <i class="mt-[3px] ph-bold ph-checks"></i>
-      <% end %>
+      <%= image_tag @event.image_url, class: "shrink-0 event-image", loading: "lazy", referrerpolicy: "no-referrer" %>
     </span>
   <% end %>
 <% end %>

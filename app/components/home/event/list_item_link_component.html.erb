@@ -26,11 +26,7 @@
             <% if @event.price.present? %>
               <%= tag.p class: "text-sm text-secondary flex gap-x-2" do %>
                 <i class="ph ph-wallet text-sm shrink-0 h-fit mt-[3px] size-3.5"></i>
-                <% if @event.price.zero? %>
-                  Free
-                <% else %>
-                  <%= "#{@event.city.currency} #{@event.price}" %>
-                <% end %>
+                <%= price_label %>
               <% end %>
             <% end %>
             <% if @event.description.present? %>

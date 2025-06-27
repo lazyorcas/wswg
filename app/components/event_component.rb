@@ -37,7 +37,7 @@ class EventComponent < ViewComponent::Base
     if price.zero?
       "Free"
     else
-      Money.from_amount(price, @event.city.currency).format(no_cents: true)
+      "#{@event.city.currency} #{@event.price}"
     end
   end
 end

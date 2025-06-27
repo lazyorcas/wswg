@@ -252,7 +252,7 @@
   |
   ============================================================================= */
   .list-item {
-    @apply py-2 px-4;
+    @apply p-4;
     @apply bg-white dark:bg-stone-900;
     @apply hover:bg-stone-200 dark:hover:bg-stone-700;
     @apply flex;
@@ -353,9 +353,9 @@
   |
   ============================================================================= */
   .event-image {
-    @apply size-16;
+    @apply size-24 md:size-32;
     @apply object-cover;
-    @apply rounded;
+    @apply rounded-lg;
   }
   
   .event-source-icon {
@@ -399,6 +399,12 @@
     @apply transition ease-in-out;
   }
 
+  .link-visited {
+    @apply text-violet-700 dark:text-violet-400;
+    @apply hover:text-violet-900 dark:hover:text-violet-100;
+    @apply transition ease-in-out;
+  }
+
   /* ==========================================================================
   |
   |
@@ -407,6 +413,10 @@
   |
   |
   ============================================================================= */
+  .mapboxgl-map {
+    font-family: "Inter", sans-serif, system-ui !important;
+  }
+  
   .mapboxgl-popup {
     @apply w-[320px];
   }
