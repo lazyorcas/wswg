@@ -49,7 +49,11 @@ class Ahoy::Visit < ApplicationRecord
 
     fragments = uri.host.split(".")
     self.referrer_host = if fragments.include?("google")
-      "google"
+      if landing_page.include?("gad_source")
+        "google_ads"
+      else
+        "google"
+      end
     elsif fragments.include?("linkedin")
       "linkedin"
     elsif fragments.include?("reddit")
