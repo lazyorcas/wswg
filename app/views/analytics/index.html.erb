@@ -45,10 +45,10 @@
                   <%= journey[:duration] ? distance_of_time_in_words(journey[:duration]) : "n/a" %>
                 </td>
                 <td class="md:flex-2 text-primary" style="word-break: break-word;">
-                  <%= journey[:origin] %>
                   <% if journey[:prior_visits_count] > 0 %>
                     (<%= journey[:prior_visits_count] %>)
                   <% end %>
+                  <%= journey[:origin] %>
                 </td>
                 <td class="md:flex-9 text-primary">
                   <%= journey[:events] %>
