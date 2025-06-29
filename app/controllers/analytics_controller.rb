@@ -45,10 +45,9 @@ class AnalyticsController < AdminController
 
     # Journey
     @journeys = Ahoy::Visit
-      .joins("LEFT JOIN ahoy_visits AS other_ahoy_visits ON other_ahoy_visits.visitor_token = ahoy_visits.visitor_token")
+      .joins("LEFT JOIN ahoy_visits AS other_ahoy_visits ON other_ahoy_visits.visitor_token = ahoy_visits.visitor_token AND other_ahoy_visits.started_at < ahoy_visits.started_at")
       .where(visitor_token: @visitor_tokens)
       .where(started_at: @time_range)
-      .where("other_ahoy_visits.started_at < ahoy_visits.started_at")
       .select("ahoy_visits.*, COUNT(other_ahoy_visits.id) AS prior_visits_count")
       .group(:id)
       .order(id: :desc)
