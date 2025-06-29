@@ -122,8 +122,7 @@ class AnalyticsController < AdminController
         end
       }
       .map { |time_taken, events| [ time_taken, events.count ] }
-      .sort_by { |_, count| count }
-      .reverse
+      .sort_by { |time_taken, _| [ time_taken == "≤10s" ? 0 : 1, time_taken == "10-60s" ? 0 : 1, time_taken == ">60s" ? 0 : 1 ] }
 
     @viewed_event_events_by_source = Ahoy::Event
       .where(visit: Ahoy::Visit.where(visitor_token: @visitor_tokens))
@@ -133,24 +132,13 @@ class AnalyticsController < AdminController
       .order(Arel.sql("properties->>'source'"))
       .group_by_period(@time_interval, :time, range: @time_range, expand_range: true)
       .count
-    @bounces_by_landing_page = Ahoy::Visit
-      .where(visitor_token: @visitor_tokens)
-      .where(referrer_host: @top_referrer_hosts)
-      .where("duration < ?", Ahoy::Visit::BOUNCE_DURATION)
-      .group(:landing_page)
-      .order(:landing_page)
-      .group_by_period(@time_interval, :started_at, range: @time_range, expand_range: true)
-      .count("DISTINCT (CASE WHEN user_id IS NOT NULL THEN user_id::text ELSE visitor_token END)")
-      .transform_keys { |landing_page, started_at| [ URI.parse(landing_page).path, started_at ] }
     @bounces_by_duration = Ahoy::Visit
       .where(visitor_token: @visitor_tokens)
       .where(referrer_host: @top_referrer_hosts)
       .where("duration < ?", Ahoy::Visit::BOUNCE_DURATION)
       .group(:duration)
       .order(:duration)
-      .group_by_period(@time_interval, :started_at, range: @time_range, expand_range: true)
       .count("DISTINCT (CASE WHEN user_id IS NOT NULL THEN user_id::text ELSE visitor_token END)")
-      .transform_keys { |duration, started_at| [ "#{duration}s", started_at ] }
 
     @retention_by_referrer_host = []
     first_visit_ids = Ahoy::Visit

@@ -86,11 +86,8 @@
       <%= render "chart", title: "Viewed event by source" do %>
         <%= column_chart @viewed_event_events_by_source, stacked: true %>
       <% end %>
-      <%= render "chart", title: "Bounces by Landing Page" do %>
-        <%= column_chart @bounces_by_landing_page, stacked: true %>
-      <% end %>
-      <%= render "chart", title: "Bounces by Duration" do %>
-        <%= column_chart @bounces_by_duration, stacked: true %>
+      <%= render "chart", title: "Bounces by Duration (seconds)" do %>
+        <%= pie_chart @bounces_by_duration %>
       <% end %>
     <% end %>
     <%= render "charts", title: "Retention" do %>
