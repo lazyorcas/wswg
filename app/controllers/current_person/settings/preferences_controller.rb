@@ -8,6 +8,8 @@ class CurrentPerson::Settings::PreferencesController < ApplicationController
   end
 
   def update
+    ahoy.track "Updated preference", params[:preferences]
+
     build_preferences
 
     if @preferences.save
