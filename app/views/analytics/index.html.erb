@@ -18,11 +18,11 @@
         <table class="min-w-full">
           <tbody class="divide-y divide-primary overflow-y-scroll flex flex-col"  style="max-height: 300px;">
             <% @search_queries.each do |time, query| %>
-              <tr>
-                <td class="py-2 px-4 text-sm text-secondary min-w-32 w-32 max-w-32">
+              <tr class="flex text-sm py-2 gap-x-4">
+                <td class="flex-1 text-secondary">
                   <%= time_ago_in_words(time) %> ago
                 </td>
-                <td class="py-2 px-4 text-sm text-primary">
+                <td class="flex-2 md:flex-3 text-primary">
                   <%= query %>
                 </td>
               </tr>
