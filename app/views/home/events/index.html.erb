@@ -12,7 +12,7 @@
   </header>
   <section class="py-10 w-full flex flex-col">
     <% if @events.any? %>
-      <div class="flex justify-between">
+      <div class="flex flex-wrap justify-between">
         <%= link_to personalization_path, class: "button button--ghost", rel: "nofollow" do %>
           <i class="ph ph-magic-wand"></i>
           Personalize
@@ -23,6 +23,11 @@
           <% end %>
           <%= link_to map_path(@search_query.present? ? { search_query_id: @search_query.id } : { city_id: @city.id }), class: "icon-button icon-button--base button--ghost", rel: "nofollow", data: { turbo: false } do %>
             <i class="ph ph-map-trifold"></i>
+          <% end %>
+          <% unless signed_in? %>
+            <%= link_to new_user_path(source: "notification"), class: "icon-button icon-button--base button--ghost" do %>
+              <i class="ph ph-bell-ringing"></i>
+            <% end %>
           <% end %>
         </div>
       </div>

@@ -32,6 +32,11 @@
         <%= link_to map_path(city_id: @city.id), class: "self-end icon-button icon-button--base button--ghost", rel: "nofollow", data: { turbo: false } do %>
           <i class="ph ph-map-trifold"></i>
         <% end %>
+        <% unless signed_in? %>
+          <%= link_to new_user_path(source: "notification"), class: "icon-button icon-button--base button--ghost" do %>
+            <i class="ph ph-bell-ringing"></i>
+          <% end %>
+        <% end %>
       </div>
       <ol class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-y-4 lg:gap-y-5 lg:gap-x-5" data-controller="event-list">
         <%= render partial: "home/events/event", collection: @events, cached: -> (event) { build_event_cache_key(event) } %>
