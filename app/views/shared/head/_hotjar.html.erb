@@ -1,4 +1,4 @@
-<% if ENV["HOTJAR_ID"].present? && Current.person.present? %>
+<% if ENV["HOTJAR_ID"].present? && Current.person.present? && (Current.person.is_a?(Visitor) || Current.person.id != 1) %>
   <script>
     (function(h,o,t,j,a,r){
         h.hj=h.hj||function(){(h.hj.q=h.hj.q||[]).push(arguments)};
