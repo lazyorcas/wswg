@@ -6,7 +6,7 @@
       <h1 class="text-3xl md:text-4xl font-bold"><%= @title %></h1>
       <p class="md:max-w-2xl"><%= @description %></p>
     </div>
-    <% if !signed_in? && field_test(:search_bar_position) == "header" %>
+    <% if !signed_in? && !browser.bot? && field_test(:search_bar_position) == "header" %>
       <%= render "home/header_search_bar", search_query: SearchQuery.new %>
     <% end %>
   </header>
@@ -53,7 +53,7 @@
       </p>
     <% end %>
   </section>
-  <% if signed_in? || field_test(:search_bar_position) == "sticky" %>
+  <% if signed_in? || (!browser.bot? && field_test(:search_bar_position) == "sticky") %>
     <%= render "home/sticky_search_bar", search_query: SearchQuery.new %>
   <% end %>
 </main>
