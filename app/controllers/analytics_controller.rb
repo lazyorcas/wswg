@@ -57,7 +57,7 @@ class AnalyticsController < AdminController
         {
           started_at: visit.started_at,
           duration: visit.duration,
-          origin: visit.user_id.present? ? visit.user.email : [ visit.referrer_host || "direct", visit.utm_campaign, visit.utm_medium, visit.utm_content, visit.utm_term ].compact.join(", "),
+          origin: visit.user_id.present? ? visit.user.email : [ visit.referrer_host || "direct", visit.utm_campaign, visit.utm_source, visit.utm_medium, visit.utm_content, visit.utm_term ].compact.join(", "),
           events: visit.events.map(&:name).join(" → "),
           prior_visits_count: visit.prior_visits_count
         }
