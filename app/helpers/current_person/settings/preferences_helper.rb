@@ -4,10 +4,10 @@ module CurrentPerson::Settings::PreferencesHelper
   end
 
   def sort_by
-    if browser.bot?
-      "time"
-    else
+    if Current.person.present?
       Current.person.settings(:preferences).sort_by || field_test(:sort_by)
+    else
+      "time"
     end
   end
 
