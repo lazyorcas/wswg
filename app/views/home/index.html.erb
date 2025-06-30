@@ -29,11 +29,11 @@
         <% if Current.person.present? %>
           <%= render "current_person/settings/preferences/sort_by_popover_button" %>
         <% end %>
-        <%= link_to map_path(city_id: @city.id), class: "self-end icon-button icon-button--base button--ghost", rel: "nofollow", data: { turbo: false } do %>
+        <%= link_to map_path(city_id: @city.id), class: "self-end icon-button icon-button--base button--ghost", rel: "nofollow", data: { turbo: false }, aria: { label: "Open map" } do %>
           <i class="ph ph-map-trifold"></i>
         <% end %>
         <% unless signed_in? %>
-          <%= link_to new_user_path(source: "notification"), class: "icon-button icon-button--base button--ghost" do %>
+          <%= link_to new_user_path(source: "notification"), class: "icon-button icon-button--base button--ghost", aria: { label: "Subscribe to notifications" } do %>
             <i class="ph ph-bell-ringing"></i>
           <% end %>
         <% end %>
