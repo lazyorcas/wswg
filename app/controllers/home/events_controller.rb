@@ -122,23 +122,27 @@ class Home::EventsController < ApplicationController
 
   def load_events
     @events = if @event_category.events?
-      Event.joins(:city).where(city: { id: @city.id })
+      Event
+        .left_joins(:location, :city)
+        .where(city: { id: @city.id })
+        .includes(:location, :city)
     else
       @search_query = SearchQuery
-      .where(
-        query: @event_category.query,
-        city_id: @city.id,
-        status: :completed,
-        searcher: nil
-      )
-      .order(created_at: :desc)
-      .last
-      Event.where(id: @search_query&.result&.event_ids)
+        .where(
+          query: @event_category.query,
+          city_id: @city.id,
+          status: :completed,
+          searcher: nil
+        )
+        .order(created_at: :desc)
+        .last
+      Event
+        .left_joins(:location, :city)
+        .where(id: @search_query&.result&.event_ids)
+        .includes(:location, :city)
     end
 
     if @events.present?
-      @events = @events.includes(:location, :city)
-
       if @time_period.start_time.present?
         @events = @events.where("CONCAT(start_date, 'T', start_time) >= ?", "#{@time_period.start_date}T#{@time_period.start_time}")
       else
