@@ -46,7 +46,7 @@
                 </td>
                 <td class="md:flex-2 text-primary" style="word-break: break-word;">
                   <% if journey[:prior_visits_count] > 0 %>
-                    (<%= journey[:prior_visits_count] %>)
+                    (<%= journey[:prior_visits_count] + 1 %>)
                   <% end %>
                   <%= journey[:origin] %>
                 </td>
