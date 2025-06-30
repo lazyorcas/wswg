@@ -1,7 +1,7 @@
 class AnalyticsController < AdminController
   START_DATE = (4.weeks.ago.end_of_week + 1.day).to_date
   TIME_INTERVAL = "day"
-  VISITOR_ACTION_EVENT_NAMES = [ "Viewed event", "Searched", "Visited map page", "Searched on map" ].freeze
+  VISITOR_ACTION_EVENT_NAMES = [ "Viewed event", "Searched", "Visited map page", "Searched on map", "Visited personalization page" ].freeze
 
   before_action :load_filters
   before_action :load_visitor_tokens
@@ -53,7 +53,7 @@ class AnalyticsController < AdminController
       .order(id: :desc)
       .limit(100)
       .includes(:user, :events)
-      .map do |visit|
+      .map do |visit|t
         {
           started_at: visit.started_at,
           duration: visit.duration,
