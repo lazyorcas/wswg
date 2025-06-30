@@ -53,7 +53,7 @@ class AnalyticsController < AdminController
       .order(id: :desc)
       .limit(100)
       .includes(:user, :events)
-      .map do |visit|t
+      .map do |visit|
         {
           started_at: visit.started_at,
           duration: visit.duration,
