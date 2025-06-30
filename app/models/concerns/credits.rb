@@ -22,7 +22,7 @@ module Credits
 
   def has_free_credits_for_this_month?
     current_date = city.time_zone.current_date
-    credit_transactions.free_top_up.where(created_at: current_date.beginning_of_month..current_date.end_of_month).exists?
+    credit_transactions.free_top_up.where(created_at: current_date.beginning_of_month.beginning_of_day..current_date.end_of_month.end_of_day).exists?
   end
 
   def add_credits!(amount, transaction_type)

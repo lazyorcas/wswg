@@ -13,3 +13,11 @@ lily_viewed_events:
   properties:
     city: Singapore
   time: <%= 1.month.ago %>
+
+matthew_viewed_events:
+  visit: matthew_visit
+  user: matthew
+  name: Viewed events
+  properties:
+    city: Singapore
+  time: <%= 1.day.ago %>

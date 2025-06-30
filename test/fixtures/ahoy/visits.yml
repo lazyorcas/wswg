@@ -8,6 +8,12 @@ lily_visit:
   started_at: <%= 1.month.ago %>
   visitor_token: e22375ba-b7fe-4b2c-b993-f71387d96d9a
 
+matthew_visit:
+  user: matthew
+  started_at: <%= 1.day.ago %>
+  visitor_token: f6c6a248-4940-4edc-9de5-6dbc224ce77e
+  duration: 10
+
 <% ["finlay", "sasha", "darshana", "geeju", "cebo", "anton", "edwin", "michael", "rahul", "prajwal", "paulo"].each do |name| %>
 <%= name %>_visit:
   user: <%= name %>
