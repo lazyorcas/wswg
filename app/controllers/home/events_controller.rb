@@ -3,6 +3,7 @@ class Home::EventsController < ApplicationController
   include CityDetection
   include CityHelper
   include NearbyHelper
+  include CurrentPerson::Settings::PreferencesHelper
 
   EVENT_LIMIT_MAPPING = {
     today: 20,
@@ -86,6 +87,7 @@ class Home::EventsController < ApplicationController
     load_event
 
     ahoy.track "Viewed event", event_id: @event.id, source: params[:source]
+    sort_by_converted
   end
 
   private
@@ -157,7 +159,7 @@ class Home::EventsController < ApplicationController
     if @search_query.present?
       @events = @events.order(Arel.sql("array_position(ARRAY[#{@search_query.result.event_ids.join(',')}], events.id)"))
     else
-      @events = if Current.person.nil? || Current.person.settings(:preferences).sort_by == "time"
+      @events = if Current.person.nil? || sort_by_time?
         @events.order(:start_date, :start_time)
       else
         @events

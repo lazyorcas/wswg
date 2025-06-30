@@ -1,5 +1,6 @@
 class Home::Events::DescriptionsController < ApplicationController
   include BotProtection
+  include CurrentPerson::Settings::PreferencesHelper
 
   protect_from_bots only: [ :show ]
   after_action :add_event_to_seen_events, only: [ :show ]
@@ -20,6 +21,7 @@ class Home::Events::DescriptionsController < ApplicationController
     @markdown_description = markdown_renderer.render(description).html_safe
 
     ahoy.track "Viewed event", event_id: @event.id, source: "description"
+    sort_by_converted
   end
 
   def add_event_to_seen_events

@@ -13,6 +13,7 @@ class User < ApplicationRecord
   has_many :search_queries, as: :searcher, dependent: :destroy
 
   has_many :visits, class_name: "Ahoy::Visit", dependent: :nullify
+  has_many :field_test_memberships, class_name: "FieldTest::Membership", as: :participant, dependent: :nullify
 
   validates :email,
             presence: true,

@@ -1,4 +1,6 @@
 class CurrentPerson::Settings::PreferencesController < ApplicationController
+  include CurrentPerson::Settings::PreferencesHelper
+
   before_action :load_return_to, only: [ :update ]
 
   def show
@@ -13,13 +15,12 @@ class CurrentPerson::Settings::PreferencesController < ApplicationController
     build_preferences
 
     if @preferences.save
+      update_sort_by_field_test_membership
       redirect_to(@return_to)
     else
       flash.now[:error] = "Failed to update preferences."
       turbo_stream_flash(status: :unprocessable_entity)
     end
-
-    ahoy.track "Updated preference", params[:preferences]
   end
 
   private
@@ -36,5 +37,11 @@ class CurrentPerson::Settings::PreferencesController < ApplicationController
   def preferences_params
     preferences_params = params[:preferences]
     preferences_params ? preferences_params.permit(:sort_by) : {}
+  end
+
+  def update_sort_by_field_test_membership
+    return unless should_test_sort_by?
+
+    Current.person.field_test_memberships.find_by(experiment: "sort_by").update(variant: @preferences.sort_by, converted: true)
   end
 end

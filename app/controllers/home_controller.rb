@@ -2,6 +2,7 @@ class HomeController < ApplicationController
   EVENT_LIMIT = 20
 
   include CityDetection
+  include CurrentPerson::Settings::PreferencesHelper
 
   layout "home"
 
@@ -52,7 +53,7 @@ class HomeController < ApplicationController
   end
 
   def order_events
-    @events = if Current.person.nil? || Current.person.settings(:preferences).sort_by == "time"
+    @events = if Current.person.nil? || sort_by_time?
       @events.order(:start_date, :start_time)
     else
       @events

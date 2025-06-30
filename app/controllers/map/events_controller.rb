@@ -1,6 +1,7 @@
 class Map::EventsController < ApplicationController
   include BotProtection
   include CityDetection
+  include CurrentPerson::Settings::PreferencesHelper
 
   EVENT_LIMIT = 200
 
@@ -20,6 +21,7 @@ class Map::EventsController < ApplicationController
     load_bookmark if signed_in?
 
     ahoy.track "Viewed event", event_id: @event.id, source: "map"
+    sort_by_converted
   end
 
   private
@@ -29,7 +31,7 @@ class Map::EventsController < ApplicationController
   end
 
   def order_events
-    @events = if Current.person.settings(:preferences).sort_by == "time"
+    @events = if sort_by_time?
       @events.order(:start_date, :start_time)
     else
       @events
