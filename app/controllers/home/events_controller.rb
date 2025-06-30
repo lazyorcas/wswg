@@ -45,6 +45,7 @@ class Home::EventsController < ApplicationController
     count_events
     order_events
     limit_events
+    @events = @events.includes(:source, :location, :city)
     @events = @events.to_a
 
     build_meta_title
@@ -123,9 +124,8 @@ class Home::EventsController < ApplicationController
   def load_events
     @events = if @event_category.events?
       Event
-        .left_joins(:location, :city)
+        .joins(:city)
         .where(city: { id: @city.id })
-        .includes(:location, :city)
     else
       @search_query = SearchQuery
         .where(
@@ -136,10 +136,7 @@ class Home::EventsController < ApplicationController
         )
         .order(created_at: :desc)
         .last
-      Event
-        .left_joins(:location, :city)
-        .where(id: @search_query&.result&.event_ids)
-        .includes(:location, :city)
+      Event.where(id: @search_query&.result&.event_ids)
     end
 
     if @events.present?
@@ -167,9 +164,9 @@ class Home::EventsController < ApplicationController
         @events.order(:start_date, :start_time)
       else
         @events
-          .left_joins(:seen_users)
-          .select("events.*, COUNT(DISTINCT users.id) as seen_count")
-          .group("events.id, locations.id, city.id")
+          .left_joins(:seens)
+          .select("events.*, COUNT(DISTINCT seens.id) as seen_count")
+          .group("events.id, sources.id, locations.id, city.id")
           .order("seen_count DESC, events.start_date, events.start_time")
       end
     end

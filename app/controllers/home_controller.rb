@@ -13,6 +13,7 @@ class HomeController < ApplicationController
       load_events
       order_events
       limit_events
+      @events = @events.includes(:source, :location, :city)
     end
 
     load_enabled_cities
@@ -49,7 +50,6 @@ class HomeController < ApplicationController
       .joins(:city)
       .where(city: { id: @city.id })
       .where("CONCAT(start_date, 'T', start_time) >= ?", "#{@city.time_zone.current_date}T#{@city.time_zone.current_time}")
-      .includes(:location)
   end
 
   def order_events
@@ -57,9 +57,9 @@ class HomeController < ApplicationController
       @events.order(:start_date, :start_time)
     else
       @events
-        .left_joins(:seen_users)
-        .select("events.*, COUNT(DISTINCT users.id) as seen_count")
-        .group("events.id, city.id")
+        .left_joins(:seens)
+        .select("events.*, COUNT(DISTINCT seens.id) as seen_count")
+        .group("events.id, sources.id, locations.id, city.id")
         .order("seen_count DESC, events.start_date, events.start_time")
     end
   end

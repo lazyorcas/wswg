@@ -18,7 +18,6 @@ class Event < ApplicationRecord
   has_many :bookmarks
   has_many :bookmark_users, through: :bookmarks, source: :user
   has_many :seens
-  has_many :seen_users, through: :seens, source: :seenable, source_type: "User"
 
   validates :url, uniqueness: true
 

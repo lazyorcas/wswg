@@ -40,10 +40,6 @@ class UsersController < ApplicationController
 
   def user_params
     user_params = params[:user]
-    user_params ? user_params.permit(
-      :email,
-      :city_id,
-      :notification_frequency,
-    ) : {}
+    user_params ? user_params.permit(:email, :city_id) : {}
   end
 end

@@ -13,7 +13,7 @@ class Map::EventsController < ApplicationController
     load_events
     order_events
     limit_events
-    @events = @events.includes(:location, :source, :city)
+    @events = @events.includes(:source, :location, :city)
   end
 
   def show
@@ -35,9 +35,9 @@ class Map::EventsController < ApplicationController
       @events.order(:start_date, :start_time)
     else
       @events
-        .left_joins(:seen_users)
-        .select("events.*, COUNT(DISTINCT users.id) as seen_count")
-        .group("events.id, locations.id, sources.id, city.id")
+        .left_joins(:seens)
+        .select("events.*, COUNT(DISTINCT seens.id) as seen_count")
+        .group("events.id, sources.id, locations.id, city.id")
         .order("seen_count DESC, events.start_date, events.start_time")
     end
   end
