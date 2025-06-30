@@ -9,12 +9,13 @@ module Url
     Addressable::URI.join(base_url, path).to_s
   end
 
-  def self.build_utm_url(url, campaign: nil, source: nil, medium: nil)
+  def self.build_utm_url(url, campaign: nil, source: nil, medium: nil, content: nil)
     uri = parse(url)
     params = URI.decode_www_form(String(uri.query)).to_h
     params[:utm_campaign] = campaign if campaign.present?
     params[:utm_source] = source if source.present?
     params[:utm_medium] = medium if medium.present?
+    params[:utm_content] = content if content.present?
     uri.query = URI.encode_www_form(params)
     uri.to_s
   end
