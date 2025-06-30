@@ -7,7 +7,7 @@ class ApplicationController < ActionController::Base
   before_action :set_sentry_user_context, if: :signed_in?
 
   def field_test_participant
-    [ ahoy.user, ahoy.visitor_token ]
+    [ Current.person, Current.person.id ]
   end
 
   private
