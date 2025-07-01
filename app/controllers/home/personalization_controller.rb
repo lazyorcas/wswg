@@ -2,6 +2,8 @@ class Home::PersonalizationController < ApplicationController
   layout "home"
 
   def index
+    return head(:ok) if browser.bot?
+
     build_personalization
 
     if personalization_params.present?
