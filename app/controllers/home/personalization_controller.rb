@@ -1,8 +1,5 @@
 class Home::PersonalizationController < ApplicationController
-  include BotProtection
-
   layout "home"
-  protect_from_bots
 
   def index
     build_personalization
