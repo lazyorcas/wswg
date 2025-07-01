@@ -7,6 +7,8 @@ module PersonalizationHelper
       "ph-sparkle"
     when "telegram_channel"
       "ph-telegram-logo"
+    when "whatsapp_channel"
+      "ph-whatsapp-logo"
     end
   end
 end
