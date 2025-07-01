@@ -18,12 +18,6 @@
               <%= @event.location.full_address %>
             <% end %>
           <% end %>
-          <% if @event.price.present? %>
-            <%= tag.span class: "text-sm text-secondary flex gap-x-2" do %>
-              <i class="ph ph-wallet text-sm shrink-0 h-fit mt-[3px] size-3.5"></i>
-              <%= price_label %>
-            <% end %>
-          <% end %>
           <span class="text-sm text-secondary flex gap-x-2">
             <i class="ph <%= helpers.browser.device.mobile? ? "ph-arrow-up" : "ph-arrow-right" %> text-sm transition-transform shrink-0 mt-[3px] size-3.5"></i>
             <span class="underline underline-secondary">More details</span>

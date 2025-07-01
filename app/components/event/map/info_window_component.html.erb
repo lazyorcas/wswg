@@ -16,12 +16,6 @@
               <%= @event.location.full_address %>
             <% end %>
           <% end %>
-          <% if @event.price.present? %>
-            <%= tag.p class: "text-sm text-secondary flex gap-x-2" do %>
-              <i class="ph ph-wallet text-sm shrink-0 h-fit mt-[3px] size-3.5"></i>
-              <%= price_label %>
-            <% end %>
-          <% end %>
           <% if @event.description.present? %>
             <details class="group">
               <summary class="text-sm text-secondary flex gap-x-2 cursor-pointer group-open:mb-2">
