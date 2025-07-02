@@ -10,7 +10,7 @@ class CurrentVisitorController < ApplicationController
 
   def update
     Current.visitor.update!(visitor_params)
-    redirect_to(root_path)
+    redirect_to(referrer)
   end
 
   private
@@ -18,5 +18,13 @@ class CurrentVisitorController < ApplicationController
   def visitor_params
     visitor_params = params[:visitor]
     visitor_params ? visitor_params.permit(:city_id) : {}
+  end
+
+  def referrer
+    if request.referer.include?(ENV["HOST_NAME"])
+      request.referer
+    else
+      root_path
+    end
   end
 end

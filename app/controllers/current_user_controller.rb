@@ -9,7 +9,7 @@ class CurrentUserController < ApplicationController
 
   def update
     Current.user.update!(user_params)
-    redirect_to(root_path)
+    redirect_to(referrer)
   end
 
   def top_up_credits
@@ -23,5 +23,13 @@ class CurrentUserController < ApplicationController
   def user_params
     user_params = params[:user]
     user_params ? user_params.permit(:city_id) : {}
+  end
+
+  def referrer
+    if request.referer.include?(ENV["HOST_NAME"])
+      request.referer
+    else
+      root_path
+    end
   end
 end
