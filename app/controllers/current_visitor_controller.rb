@@ -4,13 +4,15 @@ class CurrentVisitorController < ApplicationController
   protect_from_bots only: [ :edit ]
   before_action :require_unauth!
 
+  helper_method :referrer
+
   def edit
     ahoy.track "Visited edit current visitor page"
   end
 
   def update
     Current.visitor.update!(visitor_params)
-    redirect_to(referrer)
+    redirect_to(params[:return_to] || root_path)
   end
 
   private
@@ -21,10 +23,6 @@ class CurrentVisitorController < ApplicationController
   end
 
   def referrer
-    if request.referer.include?(ENV["HOST_NAME"])
-      request.referer
-    else
-      root_path
-    end
+    request.referer if request.referer.include?(ENV["HOST_NAME"])
   end
 end
