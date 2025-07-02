@@ -1,7 +1,7 @@
 class Map::Bookmarks::EventsController < ApplicationController
   include CityDetection
 
-  before_action :require_user!
+  before_action :require_city!
 
   def index
     load_events
@@ -11,7 +11,7 @@ class Map::Bookmarks::EventsController < ApplicationController
     end
     filter_out_past_events
     order_events
-    @events = @events.includes(:location, :source, :city)
+    @events = @events.includes(:source, :location, :city)
   end
 
   private
@@ -36,6 +36,6 @@ class Map::Bookmarks::EventsController < ApplicationController
   end
 
   def event_scope
-    Current.user.bookmarked_events.where(bookmarks: { removed: false })
+    Current.person.bookmarked_events.where(bookmarks: { removed: false })
   end
 end

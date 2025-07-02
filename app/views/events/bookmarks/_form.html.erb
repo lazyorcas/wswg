@@ -1,7 +1,7 @@
 <%= form_for bookmark, html: { id: "#{dom_id(bookmark.event)}_bookmark_form" } do |form| %>
   <%= form.hidden_field :event_id, value: bookmark.event_id %>
   <%= form.hidden_field :removed, value: bookmark.persisted? && !bookmark.removed? %>
-  <%= form.button class: class_names("w-full button", bookmark.persisted? && !bookmark.removed? ? "button--secondary" : "button--primary") do %>
+  <%= form.button class: "w-full button button--secondary" do %>
     <% if bookmark.persisted? && !bookmark.removed? %>
       <i class="ph-fill ph-bookmark-simple"></i>
       Saved

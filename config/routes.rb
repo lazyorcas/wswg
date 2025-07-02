@@ -60,7 +60,7 @@ Rails.application.routes.draw do
   end
 
   resources :search_queries, only: [ :create ]
-  resources :bookmarks, only: [ :create, :update ]
+  resources :bookmarks, only: [ :index, :create, :update ]
 
   resources :events, only: [] do
     resource :bookmark, only: [ :show ], on: :member, module: "events"

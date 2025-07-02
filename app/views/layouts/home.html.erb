@@ -26,18 +26,24 @@
       <%= link_to root_path, class: "shrink-0" do %>
         <%= image_tag "/logo.webp", class: "size-10 rounded", alt: "Where Should We Go Logo" %>
       <% end %>
-      <% if browser.device.mobile? %>
-        <div>
-          <button popovertarget="menu" class="icon-button icon-button--base button--ghost" title="Open Menu">
-            <i class="ph ph-list"></i>
-          </button>
-          <div popover id="menu" class="modal p-4 w-xs max-w-full">
-            <%= render "home/nav" %>
+      <div class="flex">
+        <%= link_to bookmarks_path, class: "button button--ghost", rel: "nofollow" do %>
+          <i class="ph ph-bookmark-simple"></i>
+          Saved
+        <% end %>
+        <% if browser.device.mobile? %>
+          <div>
+            <button popovertarget="menu" class="icon-button icon-button--base button--ghost" title="Open Menu">
+              <i class="ph ph-list"></i>
+            </button>
+            <div popover id="menu" class="modal p-4 w-xs max-w-full">
+              <%= render "home/nav" %>
+            </div>
           </div>
-        </div>
-      <% else %>
-        <%= render "home/nav" %>
-      <% end %>
+        <% else %>
+          <%= render "home/nav" %>
+        <% end %>
+      </div>
     </header>
     <div class="grow flex flex-col">
       <%= yield %>

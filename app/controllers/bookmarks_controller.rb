@@ -1,15 +1,35 @@
 class BookmarksController < ApplicationController
+  include BotProtection
+  include CityDetection
+
+  layout "home"
+
+  protect_from_bots only: [ :index ]
+  before_action :require_city!
+
+  def index
+    ahoy.track "Visited bookmarks page"
+
+    load_events
+    filter_out_past_events
+    order_events
+
+    @events = @events.includes(:source, :location, :city)
+  end
+
   def create
+    ahoy.track "Bookmarked"
+
     build_bookmark
     return if @bookmark.persisted?
 
     begin
       @bookmark.save!
-      flash.now[:success] = "Added \"#{@bookmark.event.title}\" to bookmarks"
+      flash.now[:success] = "Saved \"#{@bookmark.event.title}\""
     rescue => e
       Sentry.capture_exception(e)
 
-      flash.now[:error] = "Failed to add \"#{@bookmark.event.title}\" to bookmarks"
+      flash.now[:error] = "Failed to save \"#{@bookmark.event.title}\""
       turbo_stream_flash(status: :unprocessable_entity)
     end
   end
@@ -21,19 +41,39 @@ class BookmarksController < ApplicationController
     begin
       @bookmark.save!
       if @bookmark.removed?
-        flash.now[:info] = "Removed \"#{@bookmark.event.title}\" from bookmarks"
+        ahoy.track "Removed bookmark"
+
+        flash.now[:info] = "Unsaved \"#{@bookmark.event.title}\""
       else
-        flash.now[:success] = "Added \"#{@bookmark.event.title}\" to bookmarks"
+        ahoy.track "Readded bookmark"
+
+        flash.now[:success] = "Saved \"#{@bookmark.event.title}\""
       end
     rescue => e
       Sentry.capture_exception(e)
 
-      flash.now[:error] = "Failed to update \"#{@bookmark.event.title}\" in bookmarks"
+      flash.now[:error] = "Failed to save \"#{@bookmark.event.title}\""
       turbo_stream_flash(status: :unprocessable_entity)
     end
   end
 
   private
+
+  def load_events
+    @events = event_scope.where(bookmarks: { removed: false })
+  end
+
+  def filter_out_past_events
+    @events = @events.where(end_date: @city.time_zone.current_date..)
+  end
+
+    def order_events
+      @events.order(:start_date, :start_time)
+    end
+
+  def event_scope
+    Current.person.bookmarked_events
+  end
 
   def load_bookmark
     @bookmark = bookmark_scope.find(params[:id])
@@ -45,7 +85,7 @@ class BookmarksController < ApplicationController
   end
 
   def bookmark_scope
-    Current.user.bookmarks
+    Current.person.bookmarks
   end
 
   def bookmark_params

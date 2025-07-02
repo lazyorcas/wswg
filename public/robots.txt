@@ -6,5 +6,6 @@ Disallow: /terms
 Disallow: /privacy
 Disallow: /map
 Disallow: /personalization
+Disallow: /bookmarks
 Disallow: /current_person/settings/preferences/
 Disallow: /cdn-cgi/
