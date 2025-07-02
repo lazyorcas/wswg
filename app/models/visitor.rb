@@ -2,6 +2,9 @@ class Visitor < ApplicationRecord
   include IsPerson
   include Credits
 
+  has_many :bookmarks, as: :bookmarkable, dependent: :destroy
+  has_many :bookmarked_events, through: :bookmarks, source: :event
+
   has_many :seens, as: :seenable, dependent: :destroy
   has_many :seen_events, through: :seens, source: :event
   has_many :search_queries, as: :searcher, dependent: :destroy
