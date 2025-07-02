@@ -18,7 +18,6 @@ class Map::EventsController < ApplicationController
 
   def show
     load_event
-    load_bookmark if signed_in?
 
     ahoy.track "Viewed event", event_id: @event.id, source: "map"
     sort_by_converted
@@ -48,10 +47,6 @@ class Map::EventsController < ApplicationController
 
   def load_event
     @event = Event.find(params[:id])
-  end
-
-  def load_bookmark
-    @bookmark = @event.bookmarks.find_or_initialize_by(user: Current.user)
   end
 
   def add_event_to_seen_events

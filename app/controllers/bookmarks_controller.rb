@@ -1,6 +1,4 @@
 class BookmarksController < ApplicationController
-  before_action :require_user!
-
   def create
     build_bookmark
     return if @bookmark.persisted?

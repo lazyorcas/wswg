@@ -1,4 +1,4 @@
 <%= turbo_stream_flash %>
 <%= turbo_stream.replace "#{dom_id(@bookmark.event)}_bookmark_form" do %>
-  <%= render "form", bookmark: @bookmark %>
+  <%= render "events/bookmarks/form", bookmark: @bookmark %>
 <% end %>
