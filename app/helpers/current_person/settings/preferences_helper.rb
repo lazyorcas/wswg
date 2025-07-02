@@ -1,14 +1,12 @@
 module CurrentPerson::Settings::PreferencesHelper
+  include FieldTestHelper
+
   def should_test_sort_by?
     Current.person.present? && (Current.person.is_a?(Visitor) || Current.person.id != 1)
   end
 
   def sort_by
-    if Current.person.present?
-      Current.person.settings(:preferences).sort_by || field_test(:sort_by)
-    else
-      "time"
-    end
+    Current.person&.settings(:preferences)&.sort_by || field_test_variant(:sort_by)
   end
 
   def sort_by_values

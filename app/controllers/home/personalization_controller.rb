@@ -1,9 +1,9 @@
 class Home::PersonalizationController < ApplicationController
   layout "home"
 
-  def index
-    return head(:ok) if browser.bot?
+  before_action -> { head(:ok) }, if: -> { browser.bot? }
 
+  def index
     build_personalization
 
     if personalization_params.present?

@@ -6,7 +6,7 @@
       <p class="md:max-w-2xl">Browse and search for events, meetups, and concerts from Luma, Meetup, Eventbrite, and Ticketmaster in one place.</p>
     </div>
     <div class="w-full flex flex-col gap-y-4">
-      <% if browser.bot? || field_test(:search_bar_position) == "header" %>
+      <% if field_test_variant(:search_bar_position) == "header" %>
         <%= render "home/header_search_bar", search_query: SearchQuery.new %>
       <% else %>
       <% end %>
@@ -54,7 +54,7 @@
       <% end %>
     </div>
   </section>
-  <% if !browser.bot? && field_test(:search_bar_position) == "sticky" %>
+  <% if field_test_variant(:search_bar_position) == "sticky" %>
     <%= render "home/sticky_search_bar", search_query: SearchQuery.new %>
   <% end %>
 </div>
