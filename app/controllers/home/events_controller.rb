@@ -5,16 +5,7 @@ class Home::EventsController < ApplicationController
   include NearbyHelper
   include CurrentPerson::Settings::PreferencesHelper
 
-  EVENT_LIMIT_MAPPING = {
-    today: 20,
-    tonight: 10,
-    tomorrow: 20,
-    this_week: 50,
-    this_weekend: 20,
-    next_week: 50,
-    next_weekend: 20,
-    all: 100
-  }
+  EVENT_LIMIT = 50
 
   layout "home"
 
@@ -173,7 +164,7 @@ class Home::EventsController < ApplicationController
   end
 
   def limit_events
-    @events = @events.limit(EVENT_LIMIT_MAPPING[@time_period.to_sym])
+    @events = @events.limit(EVENT_LIMIT)
   end
 
   def build_meta_title
