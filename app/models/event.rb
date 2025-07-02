@@ -16,7 +16,6 @@ class Event < ApplicationRecord
   delegate :time_zone, to: :city
 
   has_many :bookmarks
-  has_many :bookmark_users, through: :bookmarks, source: :user
   has_many :seens
 
   validates :url, uniqueness: true

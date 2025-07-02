@@ -6,7 +6,7 @@ class User < ApplicationRecord
   passwordless_with :email
 
   has_one :account, dependent: :destroy
-  has_many :bookmarks, dependent: :destroy
+  has_many :bookmarks, as: :bookmarkable, dependent: :destroy
   has_many :bookmarked_events, through: :bookmarks, source: :event
   has_many :seens, as: :seenable, dependent: :destroy
   has_many :seen_events, through: :seens, source: :event

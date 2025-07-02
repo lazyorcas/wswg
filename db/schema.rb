@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_07_02_042448) do
+ActiveRecord::Schema[8.0].define(version: 2025_07_02_043218) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -82,20 +82,18 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_02_042448) do
   end
 
   create_table "bookmarks", force: :cascade do |t|
-    t.bigint "user_id", null: false
     t.bigint "event_id", null: false
     t.boolean "removed"
     t.datetime "removed_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "bookmarkable_type"
-    t.bigint "bookmarkable_id"
+    t.string "bookmarkable_type", null: false
+    t.bigint "bookmarkable_id", null: false
+    t.index ["bookmarkable_type", "bookmarkable_id", "event_id"], name: "idx_on_bookmarkable_type_bookmarkable_id_event_id_de6daff0b6", unique: true
     t.index ["bookmarkable_type", "bookmarkable_id"], name: "index_bookmarks_on_bookmarkable"
     t.index ["event_id"], name: "index_bookmarks_on_event_id"
     t.index ["removed"], name: "index_bookmarks_on_removed"
     t.index ["removed_at"], name: "index_bookmarks_on_removed_at"
-    t.index ["user_id", "event_id"], name: "index_bookmarks_on_user_id_and_event_id", unique: true
-    t.index ["user_id"], name: "index_bookmarks_on_user_id"
   end
 
   create_table "cities", force: :cascade do |t|
@@ -301,7 +299,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_02_042448) do
   add_foreign_key "accounts", "users"
   add_foreign_key "ahoy_visits", "visitors", column: "visitor_token", primary_key: "visitor_token"
   add_foreign_key "bookmarks", "events"
-  add_foreign_key "bookmarks", "users"
   add_foreign_key "city_languages", "cities"
   add_foreign_key "city_languages", "languages"
   add_foreign_key "city_sources", "cities"
