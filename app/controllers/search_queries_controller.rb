@@ -1,4 +1,5 @@
 class SearchQueriesController < ApplicationController
+  include FieldTestHelper
   include CityDetection
   include CreditsCheck
 
@@ -16,7 +17,7 @@ class SearchQueriesController < ApplicationController
     build_search_query
 
     ahoy.track "Searched", query: @search_query.query, source: request.referer
-    field_test_converted(:search_bar_position) unless signed_in?
+    convert_field_test(:search_bar_position)
 
     begin
       assign_city_to_search_query
