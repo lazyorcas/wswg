@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_06_25_034705) do
+ActiveRecord::Schema[8.0].define(version: 2025_07_02_042448) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -88,6 +88,9 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_25_034705) do
     t.datetime "removed_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "bookmarkable_type"
+    t.bigint "bookmarkable_id"
+    t.index ["bookmarkable_type", "bookmarkable_id"], name: "index_bookmarks_on_bookmarkable"
     t.index ["event_id"], name: "index_bookmarks_on_event_id"
     t.index ["removed"], name: "index_bookmarks_on_removed"
     t.index ["removed_at"], name: "index_bookmarks_on_removed_at"
