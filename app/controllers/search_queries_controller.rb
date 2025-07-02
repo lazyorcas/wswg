@@ -15,6 +15,9 @@ class SearchQueriesController < ApplicationController
   def create
     build_search_query
 
+    ahoy.track "Searched", query: @search_query.query, source: request.referer
+    field_test_converted(:search_bar_position) unless signed_in?
+
     begin
       assign_city_to_search_query
       if @search_query.city.nil?
@@ -29,9 +32,6 @@ class SearchQueriesController < ApplicationController
       error_message = e.is_a?(City::NotSupportedError) ? e.message : "Failed to search."
       redirect_to(root_path, flash: { error: error_message })
     end
-
-    ahoy.track "Searched", query: @search_query.query, source: request.referer
-    field_test_converted(:search_bar_position) unless signed_in?
   end
 
   private

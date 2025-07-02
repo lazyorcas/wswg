@@ -10,7 +10,7 @@ class CurrentPerson::Settings::PreferencesController < ApplicationController
   end
 
   def update
-    ahoy.track "Updated preference", params[:preferences]
+    ahoy.track "Updated preference", preferences_params
 
     build_preferences
 

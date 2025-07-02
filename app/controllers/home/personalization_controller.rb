@@ -20,6 +20,8 @@ class Home::PersonalizationController < ApplicationController
   end
 
   def update
+    ahoy.track "Personalized", params: personalization_params
+
     build_personalization
     if @personalization.valid?
       begin
@@ -33,8 +35,6 @@ class Home::PersonalizationController < ApplicationController
     else
       turbo_stream_flash(status: :bad_request)
     end
-
-    ahoy.track "Personalized", params: personalization_params
   end
 
   private
