@@ -2,7 +2,7 @@ module SetCurrentRequestDetails
   extend ActiveSupport::Concern
 
   included do
-    before_action unless: -> { browser.bot? } do
+    before_action unless: -> { browser.bot? || ahoy.exclude? } do
       Current.request_id = request.uuid
       Current.user_agent = request.user_agent
       Current.ip_address = request.ip
