@@ -28,6 +28,6 @@ class CurrentUserController < ApplicationController
   end
 
   def referrer
-    request.referer if request.referer.include?(ENV["HOST_NAME"])
+    request.referer if request.referer&.include?(ENV["HOST_NAME"])
   end
 end
