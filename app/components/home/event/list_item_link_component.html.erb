@@ -29,13 +29,9 @@
                   <i class="ph ph-caret-down text-sm group-open:rotate-180 transition-transform shrink-0 mt-[3px] size-3.5"></i>
                   <span class="underline underline-secondary">More details</span>
                 </summary>
-                <blockquote class="pl-5 text-sm text-primary overflow-y-scroll max-h-96 md:max-h-128 mb-14" style="word-break: break-word;">
-                  <%= turbo_frame_tag "event_#{@event.id}_description", src: event_description_path(@event), class: "flex flex-col gap-y-1", data: { nosnippet: true }, loading: "lazy" do %>
-                    <span class="flex gap-x-2 items-center">
-                      <i class="ph ph-spinner animate-spin shrink-0"></i>
-                      <span class="text-sm text-secondary">Loading...</span>
-                    </span>
-                  <% end %>
+                <blockquote class="pl-5 text-sm text-primary overflow-y-scroll max-h-96 md:max-h-128 mb-14 flex flex-col gap-y-1" style="word-break: break-word;">
+                  <%= render Home::Event::DescriptionComponent.new(@event) %>
+                  <%= turbo_frame_tag "event_#{@event.id}_description_ping", src: event_description_path(@event), loading: "lazy" %>
                 </blockquote>
               </details>
             <% end %>

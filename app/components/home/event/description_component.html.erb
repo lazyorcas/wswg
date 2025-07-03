@@ -1,0 +1,5 @@
+<%= tag.p class: "text-secondary" do %>
+  Last updated: <%= @event.created_at.strftime("%B %d, %Y") %>
+<% end %>
+<hr class="border-primary" />
+<%= markdown_description %>
