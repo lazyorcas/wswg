@@ -20,8 +20,6 @@ class City < ApplicationRecord
     presence: true,
     inclusion: { in: ISO3166::Country.codes }
 
-  before_validation :set_currency
-
   def time_zone
     TimeZone.new(name: self[:time_zone])
   end
