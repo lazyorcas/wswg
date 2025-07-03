@@ -26,7 +26,7 @@
     <%= yield %>
     <%= render "shared/floating_flash" %>
   </body>
-  <% if Current.person.present? %>
+  <% if Current.person.persisted? %>
     <%= turbo_stream_from [ Current.person, :flash ] %>
   <% end %>
 </html>
