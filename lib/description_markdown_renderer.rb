@@ -12,4 +12,8 @@ class DescriptionMarkdownRenderer < Redcarpet::Render::HTML
   def hrule
     %(<hr class="border-primary" />)
   end
+
+  def header(text, header_level)
+    %(<strong>#{text}</strong>)
+  end
 end
