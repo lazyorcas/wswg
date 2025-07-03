@@ -9,7 +9,9 @@
         a.appendChild(r);
     })(window,document,'https://static.hotjar.com/c/hotjar-','.js?sv=');
   </script>
-  <script>
-    window.hj('identify', <%= Current.person.id %>, { person_type: "<%= Current.person.class.name.downcase %>", return: <%= Current.person.created_at < 1.day.ago %> });
-  </script>
+  <% if Current.person.persisted? %>
+    <script>
+      window.hj('identify', <%= Current.person.id %>, { person_type: "<%= Current.person.class.name.downcase %>", return: <%= Current.person.created_at < 1.day.ago %> });
+    </script>
+  <% end %>
 <% end %>
