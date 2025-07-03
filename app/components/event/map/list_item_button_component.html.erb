@@ -3,7 +3,7 @@
     <span class="pointer-events-none flex gap-x-4 items-start">
       <span class="grow flex flex-col list-item__text">
         <%= tag.span class: "mb-1 w-full flex items-center gap-x-1" do %>
-          <%= image_tag source_icon_url, class: "inline-flex event-source-icon", loading: "lazy" %>
+          <%= image_tag source_icon_url, class: "inline-flex event-source-icon", loading: "lazy", alt: "#{@event.source.name} icon" %>
           <span class="text-sm"><%= @event.source.name %></span>
         <% end %>
         <%= tag.span @event.title, class: class_names("text-base line-clamp-2", seen? ? "link-visited" : "link"), style: "word-break: break-word;" %>
@@ -24,7 +24,7 @@
           </span>
         </span>
       </span>
-      <%= image_tag @event.image_url, class: "shrink-0 event-image", loading: "lazy", referrerpolicy: "no-referrer" %>
+      <%= image_tag @event.image_url, class: "shrink-0 event-image", loading: "lazy", referrerpolicy: "no-referrer", alt: "Event image" %>
     </span>
   <% end %>
 <% end %>

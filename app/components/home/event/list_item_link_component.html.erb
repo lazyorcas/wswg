@@ -4,7 +4,7 @@
       <span class="size-full flex gap-x-4">
         <span class="grow flex flex-col list-item__text">
           <%= tag.span class: "w-full flex items-center gap-x-1 mb-1" do %>
-            <%= image_tag source_icon_url, class: "inline-flex event-source-icon", loading: "lazy", alt: "Event source icon" %>
+            <%= image_tag source_icon_url, class: "inline-flex event-source-icon", loading: "lazy", alt: "#{@event.source.name} icon" %>
             <span class="text-sm"><%= @event.source.name %></span>
           <% end %>
           <%= link_to @event.url, class: "w-fit", target: "_blank", rel: "ugc", data: { event_list_target: "link", event_path: event_path(@event, source: "title") } do %>
