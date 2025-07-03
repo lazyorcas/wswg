@@ -1,7 +1,7 @@
 class MapController < ApplicationController
   include CityDetection
 
-  rate_limit to: 10,
+  rate_limit to: 20,
     within: 1.minute,
     only: [ :index ],
     with: -> do
