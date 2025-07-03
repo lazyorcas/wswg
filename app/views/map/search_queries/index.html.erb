@@ -1,3 +1,6 @@
+<% content_for :head do %>
+  <meta name="robots" content="noindex" />
+<% end %>
 <%= turbo_frame_tag "content" do %>
   <%= tag.section class: "flex flex-col gap-y-2 h-full", data: { controller: "search" } do %>
     <div class="shrink-0">
