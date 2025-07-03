@@ -1,4 +1,5 @@
 class CurrentPerson::Settings::PreferencesController < ApplicationController
+  include FieldTestHelper
   include CurrentPerson::Settings::PreferencesHelper
 
   before_action :load_return_to, only: [ :update ]
@@ -40,7 +41,7 @@ class CurrentPerson::Settings::PreferencesController < ApplicationController
   end
 
   def update_sort_by_field_test_membership
-    return unless should_test_sort_by?
+    return unless should_test?
 
     Current.person.field_test_memberships.find_by(experiment: "sort_by").update(variant: @preferences.sort_by, converted: true)
   end
