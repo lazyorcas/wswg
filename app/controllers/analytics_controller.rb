@@ -51,8 +51,8 @@ class AnalyticsController < AdminController
       .select("ahoy_visits.*, COUNT(other_ahoy_visits.id) AS prior_visits_count")
       .group(:id)
       .order(id: :desc)
-      .limit(100)
       .includes(:user, :events)
+      .take(100)
       .map do |visit|
         {
           started_at: visit.started_at,
