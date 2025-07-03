@@ -11,11 +11,11 @@
       <% else %>
       <% end %>
       <div class="w-full flex flex-col justify-center md:flex-row gap-y-2 md:gap-y-0 md:gap-x-2">
-        <%= link_to personalization_path, class: "button button--secondary", rel: "nofollow" do %>
+        <%= link_to personalization_path, class: "button button--secondary" do %>
           <i class="ph ph-magic-wand"></i>
           Personalize
         <% end %>
-        <%= link_to map_path, class: "button button--secondary", rel: "nofollow", data: { turbo: false } do %>
+        <%= link_to map_path, class: "button button--secondary", data: { turbo: false } do %>
           <i class="ph ph-map-trifold"></i>
           Open Map
         <% end %>
@@ -29,7 +29,7 @@
         <% if Current.person.present? %>
           <%= render "current_person/settings/preferences/sort_by_popover_button" %>
         <% end %>
-        <%= link_to map_path(city_id: @city.id), class: "self-end icon-button icon-button--base button--ghost", rel: "nofollow", data: { turbo: false }, aria: { label: "Open map" } do %>
+        <%= link_to map_path(city_id: @city.id), class: "self-end icon-button icon-button--base button--ghost", data: { turbo: false }, aria: { label: "Open map" } do %>
           <i class="ph ph-map-trifold"></i>
         <% end %>
         <% unless signed_in? %>

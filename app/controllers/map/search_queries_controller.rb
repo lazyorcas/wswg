@@ -3,7 +3,7 @@ class Map::SearchQueriesController < ApplicationController
   include CityDetection
   include CreditsCheck
 
-  protect_from_bots only: [ :index, :show ]
+  protect_from_bots only: [ :create ]
 
   rate_limit to: 20,
     within: 1.minute,

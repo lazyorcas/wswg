@@ -1,8 +1,6 @@
 class Home::Events::DescriptionsController < ApplicationController
-  include BotProtection
   include CurrentPerson::Settings::PreferencesHelper
 
-  protect_from_bots only: [ :show ]
   after_action :add_event_to_seen_events, only: [ :show ]
 
   def show

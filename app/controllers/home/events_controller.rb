@@ -1,5 +1,4 @@
 class Home::EventsController < ApplicationController
-  include BotProtection
   include CityDetection
   include CityHelper
   include NearbyHelper
@@ -9,7 +8,6 @@ class Home::EventsController < ApplicationController
 
   layout "home"
 
-  protect_from_bots only: [ :show ]
   after_action :add_event_to_seen_events, only: [ :show ]
 
   helper_method :nearby?, :all_events?

@@ -1,8 +1,5 @@
 class MapController < ApplicationController
-  include BotProtection
   include CityDetection
-
-  protect_from_bots only: [ :index ]
 
   rate_limit to: 10,
     within: 1.minute,

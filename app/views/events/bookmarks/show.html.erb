@@ -1,3 +1,6 @@
+<% content_for :head do %>
+  <meta name="robots" content="noindex" />
+<% end %>
 <%= turbo_frame_tag "#{dom_id(@event)}_bookmark" do %>
   <%= render "form", bookmark: @bookmark %>
 <% end %>

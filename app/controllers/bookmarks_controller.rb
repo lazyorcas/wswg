@@ -1,10 +1,8 @@
 class BookmarksController < ApplicationController
-  include BotProtection
   include CityDetection
 
   layout "home"
 
-  protect_from_bots only: [ :index ]
   before_action :require_city!
 
   def index

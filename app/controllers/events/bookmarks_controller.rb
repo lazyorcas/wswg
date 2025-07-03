@@ -1,8 +1,4 @@
 class Events::BookmarksController < ApplicationController
-  include BotProtection
-
-  protect_from_bots only: [ :show ]
-
   def show
     load_event
     build_bookmark

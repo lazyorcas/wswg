@@ -28,7 +28,7 @@
         <%= image_tag "/logo.webp", class: "size-10 rounded", alt: "Where Should We Go Logo" %>
       <% end %>
       <div class="flex">
-        <%= link_to bookmarks_path, class: "button button--ghost", rel: "nofollow" do %>
+        <%= link_to bookmarks_path, class: "button button--ghost" do %>
           <i class="ph ph-bookmark-simple"></i>
           Saved
         <% end %>
@@ -54,7 +54,7 @@
         <span>&copy; Where Should We Go, 2025</span>
         <%= link_to "Local Events Directory", local_events_directory_path, class: "hover:underline" %>
         <%= link_to "Events Near Me", all_nearby_events_path(event_category_slug: "events"), class: "hover:underline" %>
-        <%= link_to "Map", map_path, class: "hover:underline", rel: "nofollow", data: { turbo: false } %>
+        <%= link_to "Map", map_path, class: "hover:underline", data: { turbo: false } %>
       </div>
       <div class="flex flex-col md:flex-row gap-y-1 md:gap-y-0 items-end md:items-center md:gap-x-8">
         <%= link_to "Terms of Service", "/terms", target: "_blank", class: "hover:underline" %>

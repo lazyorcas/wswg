@@ -1,8 +1,6 @@
 class Home::PersonalizationController < ApplicationController
   layout "home"
 
-  before_action -> { head(:ok) }, if: -> { browser.bot? }
-
   def index
     build_personalization
 

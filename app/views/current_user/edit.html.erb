@@ -1,4 +1,7 @@
 <% content_for :title, "Profile | Where Should We Go" %>
+<% content_for :head do %>
+  <meta name="robots" content="noindex" />
+<% end %>
 <div class="w-full h-dvh flex flex-col gap-y-8 items-center justify-center dark:bg-stone-900 px-4 md:px-0">
   <h1 class="text-3xl font-bold">Profile</h1>
   <%= form_for Current.user, url: current_user_path(return_to: referrer), method: :patch, html: { class: "w-full md:max-w-100 flex flex-col gap-y-8" } do |form| %>

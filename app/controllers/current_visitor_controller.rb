@@ -1,7 +1,4 @@
 class CurrentVisitorController < ApplicationController
-  include BotProtection
-
-  protect_from_bots only: [ :edit ]
   before_action :require_unauth!
 
   helper_method :referrer
