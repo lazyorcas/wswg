@@ -48,4 +48,8 @@ SitemapGenerator::Sitemap.create do
       end
     end
   end
+
+  cities.each do |city|
+    add city_map_path(city_slug: city.slug), priority: 0.9, changefreq: "daily"
+  end
 end
