@@ -51,7 +51,7 @@ Rails.application.routes.draw do
 
   post "/visit/duration_sync", to: "current_visit/duration_sync#create", as: :current_visit_duration_sync
 
-  get "/:city_slug/events/map", to: "map#index", as: :city_map
+  get "/:city_slug-events-map", to: "map#index", as: :city_map
 
   get "/map", to: "map#index", as: :map
   namespace :map do

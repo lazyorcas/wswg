@@ -1,5 +1,5 @@
 <div class="flex flex-col gap-y-4">
-  <p class="text-lg font-bold">Sort by</p>
+  <p class="text-lg font-bold text-primary">Sort by</p>
   <%= form_with url: current_person_settings_preference_path(id: "sort_by", return_to: @return_to), method: :patch, html: { class: "flex flex-col gap-y-4" } do |form| %>
     <%= form.select "preferences[sort_by]", options_for_select(sort_by_options), { }, { class: "input input--accent" } %>
     <%= form.submit "Save", class: "button button--primary" %>

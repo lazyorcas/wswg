@@ -8,5 +8,8 @@
         </li>
       <% end %>
     <% end %>
+    <li class="text-center">
+      <%= link_to "#{city.name} events map", city_map_path(city_slug: city.slug), class: "link", data: { turbo: false } %>
+    </li>
   </ol>
 </section>
