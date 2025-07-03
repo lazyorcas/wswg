@@ -42,7 +42,7 @@ class HomeController < ApplicationController
   private
 
   def load_nearby_city
-    @city = get_city_from_visit
+    @city = get_city_from_current_city
   end
 
   def load_events
@@ -69,7 +69,7 @@ class HomeController < ApplicationController
   end
 
   def load_city
-    @city = get_city_from_visit || get_city_from_current_person
+    @city = get_city_from_current_city || get_city_from_current_person
   end
 
   def load_enabled_cities

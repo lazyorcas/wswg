@@ -14,7 +14,7 @@ class Home::EventsController < ApplicationController
 
   def index
     if nearby?
-      @city = get_city_from_visit
+      @city = get_city_from_current_city
       build_city_from_visit
 
       if @city.name.blank? || @city.time_zone.blank?

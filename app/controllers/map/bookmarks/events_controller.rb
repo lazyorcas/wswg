@@ -22,7 +22,7 @@ class Map::Bookmarks::EventsController < ApplicationController
 
   def load_time_zone
     @time_zone = begin
-      city = get_city_from_visit || get_city_from_current_person
+      city = get_city_from_current_city || get_city_from_current_person
       city.time_zone
     end
   end

@@ -2,5 +2,6 @@
 
 class Current < ActiveSupport::CurrentAttributes
   attribute :request_id, :user_agent, :ip_address
+  attribute :city
   attribute :user, :visitor, :person
 end
