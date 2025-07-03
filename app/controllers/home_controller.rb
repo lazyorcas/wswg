@@ -53,7 +53,7 @@ class HomeController < ApplicationController
   end
 
   def order_events
-    @events = if Current.person.nil? || sort_by_time?
+    @events = if sort_by_time?
       @events.order(:start_date, :start_time)
     else
       @events

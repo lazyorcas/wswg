@@ -5,7 +5,7 @@ class Map::EventsController < ApplicationController
   EVENT_LIMIT = 200
 
   before_action :require_city!, only: [ :index ]
-  after_action :add_event_to_seen_events, only: [ :show ]
+  after_action :add_event_to_seen_events, only: [ :show ], if: -> { Current.person.persisted? }
 
   def index
     load_events

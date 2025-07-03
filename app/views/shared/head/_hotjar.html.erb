@@ -1,4 +1,4 @@
-<% if ENV["HOTJAR_ID"].present? && Current.person.present? && (Current.person.is_a?(Visitor) || Current.person.id != 1) %>
+<% if ENV["HOTJAR_ID"].present? && Current.person.persisted? && (Current.person.is_a?(Visitor) || Current.person.id != 1) %>
   <script>
     (function(h,o,t,j,a,r){
         h.hj=h.hj||function(){(h.hj.q=h.hj.q||[]).push(arguments)};
@@ -9,9 +9,7 @@
         a.appendChild(r);
     })(window,document,'https://static.hotjar.com/c/hotjar-','.js?sv=');
   </script>
-  <% if Current.person.persisted? %>
-    <script>
-      window.hj('identify', <%= Current.person.id %>, { person_type: "<%= Current.person.class.name.downcase %>", return: <%= Current.person.created_at < 1.day.ago %> });
-    </script>
-  <% end %>
+  <script>
+    window.hj('identify', <%= Current.person.id %>, { person_type: "<%= Current.person.class.name.downcase %>", return: <%= Current.person.created_at < 1.day.ago %> });
+  </script>
 <% end %>

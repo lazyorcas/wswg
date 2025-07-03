@@ -8,7 +8,7 @@ module SetCurrentRequestDetails
       Current.ip_address = request.ip
 
       if browser.bot? || ahoy.exclude?
-        Current.visitor = Visitor.new(visitor_token: ahoy.visitor_token)
+        Current.visitor = Visitor.new(id: -1, visitor_token: ahoy.visitor_token)
       else
         Current.visitor = Visitor.find_or_create_by(visitor_token: ahoy.visitor_token)
       end

@@ -8,7 +8,7 @@ class Home::EventsController < ApplicationController
 
   layout "home"
 
-  after_action :add_event_to_seen_events, only: [ :show ]
+  after_action :add_event_to_seen_events, only: [ :show ], if: -> { Current.person.persisted? }
 
   helper_method :nearby?, :all_events?
 
@@ -149,7 +149,7 @@ class Home::EventsController < ApplicationController
     if @search_query.present?
       @events = @events.order(Arel.sql("array_position(ARRAY[#{@search_query.result.event_ids.join(',')}], events.id)"))
     else
-      @events = if Current.person.nil? || sort_by_time?
+      @events = if sort_by_time?
         @events.order(:start_date, :start_time)
       else
         @events

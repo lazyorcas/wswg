@@ -1,7 +1,7 @@
 class Home::Events::DescriptionsController < ApplicationController
   include CurrentPerson::Settings::PreferencesHelper
 
-  after_action :add_event_to_seen_events, only: [ :show ]
+  after_action :add_event_to_seen_events, only: [ :show ], if: -> { Current.person.persisted? }
 
   def show
     load_event

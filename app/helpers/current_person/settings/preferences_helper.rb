@@ -2,7 +2,7 @@ module CurrentPerson::Settings::PreferencesHelper
   include FieldTestHelper
 
   def sort_by
-    Current.person&.settings(:preferences)&.sort_by || field_test_variant(:sort_by)
+    Current.person.settings(:preferences).sort_by || field_test_variant(:sort_by)
   end
 
   def sort_by_values

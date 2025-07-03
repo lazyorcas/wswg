@@ -19,6 +19,6 @@ module FieldTestHelper
   private
 
   def should_test?
-    Current.person.present? && (Current.person.is_a?(Visitor) || Current.person.id != 1)
+    Current.person.persisted? && (Current.person.is_a?(Visitor) || Current.person.id != 1)
   end
 end
