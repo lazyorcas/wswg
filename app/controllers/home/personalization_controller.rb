@@ -5,7 +5,7 @@ class Home::PersonalizationController < ApplicationController
     build_personalization
 
     if personalization_params.present?
-      if @personalization.valid?
+      if Current.person.persisted? && @personalization.valid?
         begin
           @personalization.save!
         rescue => e
