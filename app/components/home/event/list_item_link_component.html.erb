@@ -30,8 +30,8 @@
                   <span class="underline underline-secondary">More details</span>
                 </summary>
                 <blockquote class="pl-5 text-sm text-primary overflow-y-scroll max-h-96 md:max-h-128 mb-14 flex flex-col gap-y-1" style="word-break: break-word;">
-                  <%= render Home::Event::DescriptionComponent.new(@event) %>
                   <%= turbo_frame_tag "event_#{@event.id}_description_ping", src: event_description_path(@event), loading: "lazy" %>
+                  <%= render Home::Event::DescriptionComponent.new(@event) %>
                 </blockquote>
               </details>
             <% end %>
