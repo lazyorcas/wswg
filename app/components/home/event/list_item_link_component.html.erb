@@ -7,7 +7,7 @@
             <%= image_tag source_icon_url, class: "inline-flex event-source-icon", loading: "lazy", alt: "Event source icon" %>
             <span class="text-sm"><%= @event.source.name %></span>
           <% end %>
-          <%= link_to @event.url, class: "w-fit", target: "_blank", rel: "ugc nofollow", data: { event_list_target: "link", event_path: event_path(@event, source: "title") } do %>
+          <%= link_to @event.url, class: "w-fit", target: "_blank", rel: "ugc", data: { event_list_target: "link", event_path: event_path(@event, source: "title") } do %>
             <%= tag.h2 @event.title, class: "text-base line-clamp-2 link", style: "word-break: break-word;" %>
           <% end %>
           <span class="flex flex-col gap-y-1 mt-2" data-nosnippet>
@@ -18,7 +18,7 @@
             <% if @event.location.present? %>
               <%= tag.p class: "text-sm text-secondary flex gap-x-2" do %>
                 <i class="ph ph-map-pin text-sm shrink-0 h-fit mt-[3px] size-3.5"></i>
-                <%= link_to "https://www.google.com/maps/search/?api=1&query=#{CGI.escape(@event.location.full_address)}", class: "underline underline-secondary", target: "_blank", rel: "nofollow", data: { event_list_target: "link", event_path: event_path(@event, source: "address") } do %>
+                <%= link_to "https://www.google.com/maps/search/?api=1&query=#{CGI.escape(@event.location.full_address)}", class: "underline underline-secondary", target: "_blank", data: { event_list_target: "link", event_path: event_path(@event, source: "address") } do %>
                   <%= @event.location.full_address %>
                 <% end %>
               <% end %>
