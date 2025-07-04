@@ -3,6 +3,7 @@
   <%= stylesheet_link_tag "https://api.mapbox.com/mapbox-gl-js/v3.11.0/mapbox-gl.css" %>
 <% end %>
 <% content_for :title, build_meta_title("#{@city.name} Events Map") %>
+<% content_for :description, "Explore events near you in #{@city.name} on the city map." %>
 <%= tag.main class: "w-full h-dvh max-h-dvh flex", 
   data: { 
     controller: "map",
