@@ -3,16 +3,18 @@ class BookmarksController < ApplicationController
 
   layout "home"
 
-  before_action :require_city!
-
   def index
     ahoy.track "Visited bookmarks page"
 
     load_events
-    filter_out_past_events
-    order_events
+    if @events.any?
+      load_city
+      return respond_to_city_not_found if @city.nil?
 
-    @events = @events.includes(:source, :location, :city)
+      filter_out_past_events
+      order_events
+      @events = @events.includes(:source, :location, :city)
+    end
   end
 
   def create
@@ -56,6 +58,10 @@ class BookmarksController < ApplicationController
   end
 
   private
+
+  def load_city
+    @city = get_city_from_current_city || get_city_from_current_person
+  end
 
   def load_events
     @events = event_scope.where(bookmarks: { removed: false })
