@@ -52,7 +52,7 @@ class AnalyticsController < AdminController
       .group(:id)
       .order(id: :desc)
       .includes(:user, :events)
-      .take(100)
+      .slide(100)
       .map do |visit|
         {
           started_at: visit.started_at,
