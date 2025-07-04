@@ -168,19 +168,19 @@ class Home::EventsController < ApplicationController
   def build_meta_title
     @meta_title = nearby? ?
       build_nearby_meta_title(@event_category.symbol, @time_period.to_sym) :
-      build_city_meta_title(@city, @event_category.symbol, @time_period.to_sym)
+      build_city_meta_title(@city.name, @event_category.symbol, @time_period.to_sym)
   end
 
   def build_title
     @title = nearby? ?
       build_nearby_title(@event_category.symbol, @time_period.to_sym) :
-      build_city_title(@city, @event_category.symbol, @time_period.to_sym)
+      build_city_title(@city.name, @event_category.symbol, @time_period.to_sym)
   end
 
   def build_description
     @description = nearby? ?
       build_nearby_description(@event_category.symbol, @time_period) :
-      build_city_description(@city, @event_category.symbol, @time_period)
+      build_city_description(@city.name, @event_category.symbol, @time_period)
   end
 
   def build_alternate_link_attributes
@@ -211,7 +211,7 @@ class Home::EventsController < ApplicationController
           build_city_events_path(event_category_slug: @event_category.slug, city_slug: @city.slug, time_period_slug: time_period.slug),
         title: nearby? ?
           build_nearby_meta_title(@event_category.symbol, time_period_symbol) :
-          build_city_meta_title(@city, @event_category.symbol, time_period_symbol)
+          build_city_meta_title(@city.name, @event_category.symbol, time_period_symbol)
       }
     end
   end

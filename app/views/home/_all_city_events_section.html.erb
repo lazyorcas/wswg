@@ -3,7 +3,7 @@
   <ol class="flex flex-col">
     <% TimePeriod::SYMBOLS.each do |time_period_symbol| %>
       <li class="text-center">
-        <%= link_to build_city_meta_title(city, :events, time_period_symbol), build_city_events_path(event_category_slug: "events", city_slug: city.slug, time_period_slug: TimePeriod.slugify(time_period_symbol)), class: "link" %>
+        <%= link_to build_city_meta_title(city.name, :events, time_period_symbol), build_city_events_path(event_category_slug: "events", city_slug: city.slug, time_period_slug: TimePeriod.slugify(time_period_symbol)), class: "link" %>
       </li>
     <% end %>
     <li class="text-center">

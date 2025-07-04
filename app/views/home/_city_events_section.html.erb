@@ -4,7 +4,7 @@
     <% EventCategory::SYMBOLS.each do |event_category_symbol| %>
       <% TimePeriod::SYMBOLS.each do |time_period_symbol| %>
         <li class="text-center">
-          <%= link_to build_city_meta_title(city, event_category_symbol, time_period_symbol), build_city_events_path(event_category_slug: EventCategory::SYMBOL_TO_SLUG_MAPPING[event_category_symbol], city_slug: city.slug, time_period_slug: TimePeriod.slugify(time_period_symbol)), class: "link" %>
+          <%= link_to build_city_meta_title(city.name, event_category_symbol, time_period_symbol), build_city_events_path(event_category_slug: EventCategory::SYMBOL_TO_SLUG_MAPPING[event_category_symbol], city_slug: city.slug, time_period_slug: TimePeriod.slugify(time_period_symbol)), class: "link" %>
         </li>
       <% end %>
     <% end %>

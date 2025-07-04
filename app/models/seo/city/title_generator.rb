@@ -1,5 +1,5 @@
 class SEO::City::TitleGenerator
-  FALLBACK_TITLE_TEMPLATES = {
+  FALLBACK_META_TITLE_TEMPLATES = {
     all: "%{event_category} in %{city}",
     today: "🌇 %{event_category} today in %{city}",
     tonight: "🌃 %{event_category} tonight in %{city}",
@@ -99,14 +99,24 @@ class SEO::City::TitleGenerator
     }
   }.freeze
 
-  def generate_title(city, event_category_symbol, time_period_symbol)
-    FALLBACK_TITLE_TEMPLATES[time_period_symbol] % {
-      event_category: EventCategory::SYMBOL_TO_STRING_MAPPING[event_category_symbol].humanize,
-      city: city.name
-    }
+  TITLE_TEMPLATE = "What %{event_category} are happening in %{city} %{time_period}?".freeze
+
+  def generate_meta_title(city_name, event_category_symbol, time_period_symbol)
+    META_TITLE_DICTIONARY.dig(city_name, event_category_symbol, time_period_symbol) ||
+      FALLBACK_META_TITLE_TEMPLATES[time_period_symbol] % {
+        event_category: EventCategory::SYMBOL_TO_STRING_MAPPING[event_category_symbol].humanize,
+        city: city_name
+      }
   end
 
-  def generate_meta_title(city, event_category_symbol, time_period_symbol)
-    META_TITLE_DICTIONARY.dig(city.name, event_category_symbol, time_period_symbol) || generate_title(city, event_category_symbol, time_period_symbol)
+  def generate_title(city_name, event_category_symbol, time_period_symbol)
+    title = TITLE_TEMPLATE % {
+      event_category: EventCategory::SYMBOL_TO_STRING_MAPPING[event_category_symbol],
+      city: city_name,
+      time_period: time_period_symbol == :all ? nil : time_period_symbol.to_s.humanize.downcase
+    }
+    title.gsub!(/  +/, " ")
+    title.gsub!(/ \?/, "?")
+    title
   end
 end

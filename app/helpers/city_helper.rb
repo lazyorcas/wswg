@@ -3,19 +3,19 @@ module CityHelper
     @city_title_generator ||= SEO::City::TitleGenerator.new
   end
 
-  def build_city_meta_title(city, event_category_symbol, time_period_symbol)
-    city_title_generator.generate_meta_title(city, event_category_symbol, time_period_symbol)
+  def build_city_meta_title(city_name, event_category_symbol, time_period_symbol)
+    city_title_generator.generate_meta_title(city_name, event_category_symbol, time_period_symbol)
   end
 
-  def build_city_title(city, event_category_symbol, time_period_symbol)
-    city_title_generator.generate_title(city, event_category_symbol, time_period_symbol)
+  def build_city_title(city_name, event_category_symbol, time_period_symbol)
+    city_title_generator.generate_title(city_name, event_category_symbol, time_period_symbol)
   end
 
-  def build_city_description(city, event_category_symbol, time_period)
+  def build_city_description(city_name, event_category_symbol, time_period)
     description = if event_category_symbol == :events
-      "What's happening in #{city.name} #{time_period.all? ? nil : time_period}? Browse and search for events, meetups, and concerts from multiple platforms in one place."
+      "What's happening in #{city_name} #{time_period.all? ? nil : time_period}? Browse and search for events, meetups, and concerts from multiple platforms in one place."
     else
-      "Browse and search for #{EventCategory::SYMBOL_TO_STRING_MAPPING[event_category_symbol]} in #{city.name} #{time_period.all? ? nil : time_period} from multiple platforms in one place."
+      "Browse and search for #{EventCategory::SYMBOL_TO_STRING_MAPPING[event_category_symbol]} in #{city_name} #{time_period.all? ? nil : time_period} from multiple platforms in one place."
     end
     description.gsub!(/  +/, " ")
     description.gsub!(/ \?/, "?")
