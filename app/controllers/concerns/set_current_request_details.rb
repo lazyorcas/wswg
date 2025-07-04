@@ -19,7 +19,11 @@ module SetCurrentRequestDetails
           Current.city = city
         else
           city.attributes = build_city_attributes_from_cloudflare_headers
-          Current.city = city if city.valid?
+          if city.valid?
+            Current.city = city
+          else
+            Sentry.capture_message("Invalid city detected from Cloudflare headers.", level: :warning, extra: { city: city.attributes })
+          end
         end
       end
     end
