@@ -29,7 +29,13 @@ data_sources:
       # user_id: "/admin/users/{value}"
 
     smart_columns:
-      user_id: "SELECT id, email FROM users WHERE id IN {value}"
+      user_id: >
+        SELECT email 
+        FROM users 
+        LEFT JOIN ahoy_visits AS other_ahoy_visits 
+          ON other_ahoy_visits.user_id = ahoy_visits.user_id 
+          AND other_ahoy_visits.started_at < ahoy_visits.started_at
+        WHERE id IN {value}
 
 # create audits
 # audit: true
