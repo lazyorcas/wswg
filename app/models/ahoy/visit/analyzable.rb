@@ -6,7 +6,7 @@ module Ahoy::Visit::Analyzable
   end
 
   def should_be_analyzed?
-    (user_id.present? || !bounced?) && user_id != 1 && valid_referrer_host?
+    (user_id.present? || (!bounced? && valid_referrer_host?)) && !admin?
   end
 
   private
@@ -17,5 +17,9 @@ module Ahoy::Visit::Analyzable
 
   def valid_referrer_host?
     referrer_host.nil? || referrer_host != ENV["HOST_NAME"]
+  end
+
+  def admin?
+    user_id == 1
   end
 end
