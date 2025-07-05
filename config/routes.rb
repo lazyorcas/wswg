@@ -4,6 +4,7 @@ Rails.application.routes.draw do
   constraints AdminConstraint.new do
     mount MissionControl::Jobs::Engine, at: "jobs"
     mount FieldTest::Engine, at: "field_test"
+    mount Blazer::Engine, at: "blazer"
 
     get "/analytics", to: "analytics#index", as: :analytics
   end
