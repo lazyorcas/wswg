@@ -9,6 +9,6 @@ class AdminConstraint
   end
 
   def current_user
-    User.find_by(id: session[:user_id]) || authenticate_by_session(User)
+    @current_user ||= User.find_by(id: session[:user_id]) || authenticate_by_session(User)
   end
 end

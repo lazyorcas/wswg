@@ -2,8 +2,8 @@
   <%= javascript_include_tag "https://api.mapbox.com/mapbox-gl-js/v3.11.0/mapbox-gl.js" %>
   <%= stylesheet_link_tag "https://api.mapbox.com/mapbox-gl-js/v3.11.0/mapbox-gl.css" %>
 <% end %>
-<% content_for :title, build_meta_title("#{@city.name} Events Map") %>
-<% content_for :description, "Explore events near you in #{@city.name} on the city map." %>
+<% content_for :title, build_meta_title(current_page(map_path) ? "#{@city.name} Events Map" : "Events Map") %>
+<% content_for :description, current_page(map_path) ? "Explore events near you in #{@city.name} on the city map." : "Explore events near you on the city map." %>
 <%= tag.main class: "w-full h-dvh max-h-dvh flex", 
   data: { 
     controller: "map",
