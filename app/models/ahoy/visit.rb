@@ -1,4 +1,6 @@
 class Ahoy::Visit < ApplicationRecord
+  include Analyzable
+
   BOUNCE_DURATION = 10
 
   self.table_name = "ahoy_visits"
