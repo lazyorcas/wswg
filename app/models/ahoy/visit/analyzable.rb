@@ -12,6 +12,6 @@ module Ahoy::Visit::Analyzable
   private
 
   def bounced?
-    duration == 0
+    duration.nil? || duration == 0
   end
 end
