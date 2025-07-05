@@ -99,7 +99,11 @@ class SEO::City::TitleGenerator
     }
   }.freeze
 
-  TITLE_TEMPLATE = "What %{event_category} are happening in %{city} %{time_period}?".freeze
+  FALLBACK_TITLE_TEMPLATE = "What %{event_category} are happening in %{city} %{time_period}?".freeze
+
+  TITLE_DICTIONARY = {
+    events: "What's happening in %{city} %{time_period}?"
+  }.freeze
 
   def generate_meta_title(city_name, event_category_symbol, time_period_symbol)
     META_TITLE_DICTIONARY.dig(city_name, event_category_symbol, time_period_symbol) ||
@@ -110,11 +114,12 @@ class SEO::City::TitleGenerator
   end
 
   def generate_title(city_name, event_category_symbol, time_period_symbol)
-    title = TITLE_TEMPLATE % {
+    title = (TITLE_DICTIONARY.dig(event_category_symbol) || FALLBACK_TITLE_TEMPLATE) % {
       event_category: EventCategory::SYMBOL_TO_STRING_MAPPING[event_category_symbol],
       city: city_name,
       time_period: time_period_symbol == :all ? nil : time_period_symbol.to_s.humanize.downcase
     }
+
     title.gsub!(/  +/, " ")
     title.gsub!(/ \?/, "?")
     title

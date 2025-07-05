@@ -13,7 +13,7 @@ module CityHelper
 
   def build_city_description(city_name, event_category_symbol, time_period)
     description = if event_category_symbol == :events
-      "What's happening in #{city_name} #{time_period.all? ? nil : time_period}? Browse and search for events, meetups, and concerts from multiple platforms in one place."
+      "Browse and search for events, meetups, and concerts from multiple platforms in one place."
     else
       "Browse and search for #{EventCategory::SYMBOL_TO_STRING_MAPPING[event_category_symbol]} in #{city_name} #{time_period.all? ? nil : time_period} from multiple platforms in one place."
     end
