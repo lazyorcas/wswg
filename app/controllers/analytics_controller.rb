@@ -1,4 +1,4 @@
-class AnalyticsController < AdminController
+class AnalyticsController < ApplicationController
   START_DATE = (4.weeks.ago.end_of_week + 1.day).to_date
   TIME_INTERVAL = "day"
   VISITOR_ACTION_EVENT_NAMES = [ "Viewed event", "Searched", "Visited map page", "Searched on map", "Visited personalization page" ].freeze

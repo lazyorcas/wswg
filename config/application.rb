@@ -24,7 +24,6 @@ module WhereShouldWeGo
     # config.eager_load_paths << Rails.root.join("extras")
 
     # https://github.com/rails/mission_control-jobs?tab=readme-ov-file#custom-authentication
-    MissionControl::Jobs.base_controller_class = "AdminController"
     config.mission_control.jobs.http_basic_auth_enabled = false
   end
 end
