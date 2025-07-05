@@ -30,13 +30,9 @@ data_sources:
 
     smart_columns:
       user_id: >
-        SELECT id, email, COUNT(other_ahoy_visits.id) + 1 AS visit_index
-        FROM users 
-        LEFT JOIN ahoy_visits AS other_ahoy_visits 
-          ON other_ahoy_visits.user_id = ahoy_visits.user_id 
-          AND other_ahoy_visits.started_at < ahoy_visits.started_at
+        SELECT id, email
+        FROM users
         WHERE id IN {value}
-        GROUP BY id, email
 
 # create audits
 # audit: true
