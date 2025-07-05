@@ -30,7 +30,7 @@ data_sources:
 
     smart_columns:
       user_id: >
-        SELECT email 
+        SELECT id, email, COUNT(other_ahoy_visits.id) + 1 AS visit_index
         FROM users 
         LEFT JOIN ahoy_visits AS other_ahoy_visits 
           ON other_ahoy_visits.user_id = ahoy_visits.user_id 
