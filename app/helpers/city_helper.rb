@@ -13,9 +13,9 @@ module CityHelper
 
   def build_city_description(city_name, event_category_symbol, time_period)
     description = if event_category_symbol == :events
-      "Browse and search for events, meetups, and concerts in #{city_name} #{time_period.all? ? nil : time_period} from multiple platforms in one place."
+      "Browse and search for events, meetups, and concerts in #{city_name} #{time_period.all? ? nil : time_period} from multiple sources in one place."
     else
-      "Browse and search for #{EventCategory::SYMBOL_TO_STRING_MAPPING[event_category_symbol]} in #{city_name} #{time_period.all? ? nil : time_period} from multiple platforms in one place."
+      "Browse and search for #{EventCategory::SYMBOL_TO_STRING_MAPPING[event_category_symbol]} in #{city_name} #{time_period.all? ? nil : time_period} from multiple sources in one place."
     end
     description.gsub!(/  +/, " ")
     description.gsub!(/ \?/, "?")
