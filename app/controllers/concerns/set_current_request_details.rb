@@ -15,15 +15,13 @@ module SetCurrentRequestDetails
 
       city = City.find_by_name(request.env["HTTP_CF_IPCITY"])
       if city.present?
-        if city.persisted?
+        Current.city = city
+      else
+        city.attributes = build_city_attributes_from_cloudflare_headers
+        if city.valid?
           Current.city = city
         else
-          city.attributes = build_city_attributes_from_cloudflare_headers
-          if city.valid?
-            Current.city = city
-          else
-            Sentry.capture_message("Invalid city detected from Cloudflare headers.", level: :warning, extra: { city: city.attributes })
-          end
+          Sentry.capture_message("Invalid city detected from Cloudflare headers.", level: :warning, extra: { city: city.attributes })
         end
       end
     end
