@@ -12,7 +12,7 @@ module Ahoy::Visit::Analyzable
   private
 
   def bounced?
-    duration.nil? || duration == 0 if started_at >= "2025-06-19T00:00:00Z"
+    duration.nil? || duration == 0
   end
 
   def valid_referrer_host?
