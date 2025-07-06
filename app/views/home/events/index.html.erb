@@ -53,7 +53,7 @@
             No upcoming <%= @event_category.to_s %> found.
           <% end %>
         <% else %>
-          Your city is not supported yet.
+          Your city (<%= @city.name %>) is not supported yet.
         <% end %>
       </p>
     <% end %>
