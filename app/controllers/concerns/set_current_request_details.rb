@@ -13,8 +13,8 @@ module SetCurrentRequestDetails
         Current.visitor = Visitor.find_or_create_by(visitor_token: ahoy.visitor_token)
       end
 
-      city = City.find_by_name(request.env["HTTP_CF_IPCITY"])
-      if city.present?
+      city = City.find_or_initialize_by(name: request.env["HTTP_CF_IPCITY"])
+      if city.persisted?
         Current.city = city
       else
         city.attributes = build_city_attributes_from_cloudflare_headers
