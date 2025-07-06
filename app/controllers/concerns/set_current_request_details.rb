@@ -32,11 +32,21 @@ module SetCurrentRequestDetails
 
   def build_city_attributes_from_cloudflare_headers
     {
-      time_zone: request.env["HTTP_CF_TIMEZONE"],
+      time_zone: build_time_zone_from_cloudflare_headers.name,
       country_code: request.env["HTTP_CF_IPCOUNTRY"],
       currency: City::Currency::COUNTRY_CODE_TO_CURRENCY[request.env["HTTP_CF_IPCOUNTRY"]] || City::Currency::FALLBACK_CURRENCY,
       lat: request.env["HTTP_CF_IPLATITUDE"],
       lon: request.env["HTTP_CF_IPLONGITUDE"]
     }
+  end
+
+  def build_time_zone_from_cloudflare_headers
+    time_zone_name = request.env["HTTP_CF_TIMEZONE"]
+    time_zone = TimeZone.new(name: time_zone_name)
+    return time_zone if time_zone.valid?
+
+    Sentry.capture_message("Invalid time zone detected from Cloudflare headers.", level: :warning, extra: { time_zone: time_zone_name })
+
+    TimeZone.new(name: "Etc/UTC")
   end
 end
