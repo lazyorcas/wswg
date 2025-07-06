@@ -15,9 +15,8 @@ class Home::EventsController < ApplicationController
   def index
     if nearby?
       @city = get_city_from_current_city
-      build_city_from_visit
 
-      if @city.name.blank? || @city.time_zone.blank?
+      if @city.nil?
         respond_to_city_not_found and return
       end
 
@@ -88,13 +87,6 @@ class Home::EventsController < ApplicationController
 
   def nearby?
     @is_nearby ||= params[:city_slug].blank?
-  end
-
-  def build_city_from_visit
-    @city ||= City.new(
-      name: request.env["HTTP_CF_IPCITY"],
-      time_zone: request.env["HTTP_CF_TIMEZONE"]
-    )
   end
 
   def load_current_time
