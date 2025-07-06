@@ -13,7 +13,8 @@ module SetCurrentRequestDetails
         Current.visitor = Visitor.find_or_create_by(visitor_token: ahoy.visitor_token)
       end
 
-      city = City.find_or_initialize_by(name: request.env["HTTP_CF_IPCITY"])
+      city_name = request.env["HTTP_CF_IPCITY"]&.to_s&.encode("UTF-8", invalid: :replace, undef: :replace, replace: "")
+      city = City.find_or_initialize_by(name: city_name)
       if city.persisted?
         Current.city = city
       else

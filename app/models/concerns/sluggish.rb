@@ -12,10 +12,6 @@ module Sluggish
   private
 
   def set_slug
-    begin
-      self.slug = sluggish_field.parameterize
-    rescue => e
-      Sentry.capture_exception(e, extra: { sluggish_field: sluggish_field })
-    end
+    self.slug = sluggish_field.parameterize
   end
 end
