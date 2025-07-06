@@ -117,7 +117,7 @@ class SEO::City::TitleGenerator
     title = (TITLE_DICTIONARY.dig(event_category_symbol) || FALLBACK_TITLE_TEMPLATE) % {
       event_category: EventCategory::SYMBOL_TO_STRING_MAPPING[event_category_symbol],
       city: city_name,
-      time_period: time_period_symbol == :all ? nil : time_period_symbol.to_s.humanize.downcase
+      time_period: time_period_symbol == :all ? nil : time_period_symbol.to_s.humanize(capitalize: false)
     }
 
     title.gsub!(/  +/, " ")

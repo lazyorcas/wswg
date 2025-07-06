@@ -13,7 +13,7 @@ module NearbyHelper
 
   def build_nearby_description(event_category_symbol, time_period)
     description = if event_category_symbol == :events
-      "Browse and search for nearby events, meetups, and concerts from multiple platforms in one place."
+      "Browse and search for nearby events, meetups, and concerts #{time_period.all? ? nil : time_period} from multiple platforms in one place."
     else
       "Browse and search for nearby #{EventCategory::SYMBOL_TO_STRING_MAPPING[event_category_symbol]} #{time_period.all? ? nil : time_period} from multiple platforms in one place."
     end
