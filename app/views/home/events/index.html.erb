@@ -40,9 +40,6 @@
             View <%= @all_events_count - @events.size %> more <%= @event_category.to_s %>
           <% end %>
         <% end %>
-        <p class="mt-8 text-sm text-center md:max-w-4xl">
-          Alternatively, you can view <%= @alternate_link_attributes.map { |link| link_to link[:title], link[:href], class: "link" }.to_sentence.html_safe %>.
-        </p>
       </div>
     <% else %>
       <p class="flash flash--warning mt-8 mx-auto">
@@ -57,6 +54,9 @@
         <% end %>
       </p>
     <% end %>
+    <p class="mt-8 mx-auto text-sm text-center md:max-w-4xl">
+      Alternatively, you can view <%= @alternate_link_attributes.map { |link| link_to link[:title], link[:href], class: "link" }.to_sentence.html_safe %>.
+    </p>
   </section>
   <% if field_test_variant(:search_bar_position) == "sticky" %>
     <%= render "home/sticky_search_bar", search_query: SearchQuery.new %>
