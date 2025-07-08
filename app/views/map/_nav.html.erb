@@ -1,15 +1,15 @@
 <% links = [
-  ["Search", "ph-sparkle", map_search_queries_path, !current_page?(map_bookmarked_events_path), true], 
-  ["Saved", "ph-bookmark-simple", signed_in? ? map_bookmarked_events_path : new_user_path(source: "Saved tab in map page"), current_page?(map_bookmarked_events_path), signed_in?]
+  ["Search", "ph-sparkle", map_search_queries_path, !current_page?(map_bookmarked_events_path)], 
+  ["Saved", "ph-bookmark-simple", map_bookmarked_events_path, current_page?(map_bookmarked_events_path)]
 ] %>
 <%= tag.nav class: "shrink-0 flex gap-x-1 md:gap-x-2", data: { controller: "map-nav" } do %>
   <% links.each do |link| %>
     <%= link_to link[2], 
       class: class_names("map-tab-button", link[3] ? "map-tab-button--active" : "map-tab-button--inactive"), 
-      data: link[4] ? { 
+      data: { 
         turbo_frame: "content",
         map_nav_target: "link"
-      } : nil do %>
+      } do %>
       <%= tag.i class: class_names(link[1], link[3] ? "ph-fill" : "ph") %>
       <%= link[0] %>
     <% end %>
