@@ -55,17 +55,21 @@ class Ahoy::Visit < ApplicationRecord
     uri = URI.parse(referrer)
     return if uri.host.nil?
 
-    fragments = uri.host.split(".")
-    self.referrer_host = if fragments.include?("google")
-      "google"
-    elsif fragments.include?("linkedin")
-      "linkedin"
-    elsif fragments.include?("reddit")
-      "reddit"
-    elsif fragments.size > 2
-      fragments[1..2].join(".")
+    if utm_source.present? && utm_source.include?("chatgpt.com")
+      self.referrer_host = "chatgpt"
     else
-      uri.host
+      fragments = uri.host.split(".")
+      self.referrer_host = if fragments.include?("google")
+        "google"
+      elsif fragments.include?("linkedin")
+        "linkedin"
+      elsif fragments.include?("reddit")
+        "reddit"
+      elsif fragments.size > 2
+        fragments[1..2].join(".")
+      else
+        uri.host
+      end
     end
 
     save!
