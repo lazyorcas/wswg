@@ -20,7 +20,6 @@ class SearchQueriesController < ApplicationController
     build_search_query
 
     ahoy.track "Searched", query: @search_query.query, source: request.referer
-    convert_field_test(:search_bar_position)
 
     begin
       assign_city_to_search_query

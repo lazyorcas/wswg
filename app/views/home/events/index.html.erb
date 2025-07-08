@@ -6,9 +6,6 @@
       <h1 class="text-3xl md:text-4xl font-bold md:max-w-3xl"><%= @title %></h1>
       <p class="md:max-w-2xl"><%= @description %></p>
     </div>
-    <% if field_test_variant(:search_bar_position) == "header" %>
-      <%= render "home/header_search_bar", search_query: SearchQuery.new %>
-    <% end %>
   </header>
   <section class="py-10 w-full flex flex-col">
     <% if @events.any? %>
@@ -58,7 +55,5 @@
       Alternatively, you can view <%= @alternate_link_attributes.map { |link| link_to link[:title], link[:href], class: "link" }.to_sentence.html_safe %>.
     </p>
   </section>
-  <% if field_test_variant(:search_bar_position) == "sticky" %>
-    <%= render "home/sticky_search_bar", search_query: SearchQuery.new %>
-  <% end %>
+  <%= render "home/sticky_search_bar", search_query: SearchQuery.new %>
 </main>

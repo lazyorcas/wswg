@@ -4,6 +4,7 @@ experiments:
     description: >
       Test if the sticky search bar creates more search queries.
     started_at: June 23, 2025 12:30 pm SGT
+    ended_at: July 8, 2025 12:00 pm SGT
     variants:
       - header
       - sticky
