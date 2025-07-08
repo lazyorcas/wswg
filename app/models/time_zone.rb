@@ -3,9 +3,7 @@ class TimeZone
 
   attr_accessor :name
 
-  validates :name,
-    presence: true,
-    inclusion: { in: ActiveSupport::TimeZone.all.map(&:tzinfo).map(&:name) }
+  validate :valid_name?
 
   def now
     @now ||= Time.current.in_time_zone(name)
@@ -34,5 +32,14 @@ class TimeZone
 
   def current_year
     @current_year ||= now.year
+  end
+
+  private
+
+  def valid_name?
+    now
+    true
+  rescue
+    errors.add(:name, "is invalid")
   end
 end
