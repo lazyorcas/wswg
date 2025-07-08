@@ -5,8 +5,6 @@ Rails.application.routes.draw do
     mount MissionControl::Jobs::Engine, at: "jobs"
     mount FieldTest::Engine, at: "field_test"
     mount Blazer::Engine, at: "blazer"
-
-    get "/analytics", to: "analytics#index", as: :analytics
   end
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
