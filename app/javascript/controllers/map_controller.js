@@ -58,6 +58,8 @@ export default class extends Controller {
   }
 
   sourceTargetConnected() {
+    if (!this.map) return
+
     const source = this.map.getSource(this.sourceId);
     if (source) {
       this.#closeActivePopup()

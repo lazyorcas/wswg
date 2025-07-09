@@ -17,8 +17,6 @@ class Map::SearchQueriesController < ApplicationController
   before_action :require_city!, only: [ :index ]
   require_credits only: [ :create ]
 
-  def index; end
-
   def create
     build_search_query
 

@@ -15,9 +15,16 @@
   <section class="absolute py-4 md:py-8 left-4 md:left-8 flex max-h-full md:gap-x-2">
     <div class="flex flex-col gap-y-2 max-h-full">
       <%= render "nav" %>
-      <%= turbo_frame_tag "content", 
-        src: @content_path, 
-        class: "grow min-h-0 map-content" %>
+      <%= turbo_frame_tag "content", class: "grow min-h-0 map-content" do %>
+        <%= tag.section class: "flex flex-col gap-y-2 h-full", data: { controller: "search" } do %>
+          <div class="shrink-0">
+            <%= render "map/search_queries/form", search_query: @search_query %>
+          </div>
+          <%= tag.section id: "search-results", class: "grow md:min-h-0 popup popup--bottom-sheet bottom-sheet-transition", data: { controller: "bottom-sheet", bottom_sheet_target: "bottomSheet", search_target: "results" } do %>
+            <%= render "events", city: @city, events: @events %>
+          <% end %>
+        <% end %>
+      <% end %>
     </div>
     <% if browser.device.mobile? %>
       <%= turbo_frame_tag "event-bottom-sheet", 
