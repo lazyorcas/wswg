@@ -1,5 +1,6 @@
 <%= form_for search_query, html: { class: "flex flex-col gap-y-2" }, data: { turbo: false, controller: "search", action: "search#disable search#showStatus turbo:submit-end->search#hideStatus turbo:submit-end->search#enable" } do |form| %>
   <div class="flex flex-row gap-x-2">
+    <%= form.hidden_field :city_id %>
     <%= form.search_field :query, placeholder: generate_search_query_placeholder, class: "input input--accent", required: true, data: { search_target: "searchInput" } %>
     <%= form.button type: :submit, class: "shrink-0 icon-button icon-button--base button--primary", data: { search_target: "submitButton" } do %>
       <i class="ph-bold ph-magnifying-glass" aria-label="Search"></i>

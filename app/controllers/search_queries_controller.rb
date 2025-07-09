@@ -46,7 +46,7 @@ class SearchQueriesController < ApplicationController
 
   def assign_city_to_search_query
     @search_query.city = get_city_from_search_query ||
-      # get_city_from_params ||
+      get_city_from_search_query_params ||
       get_city_from_current_city ||
       get_city_from_current_person
   end
@@ -59,12 +59,16 @@ class SearchQueriesController < ApplicationController
     City.find_by_name(city_name)
   end
 
+  def get_city_from_search_query_params
+    City.find_by_id(@search_query.city_id)
+  end
+
   def search_query_scope
     SearchQuery.where(searcher: Current.person)
   end
 
   def search_query_params
     search_query_params = params[:search_query]
-    search_query_params ? search_query_params.permit(:query) : {}
+    search_query_params ? search_query_params.permit(:query, :city_id) : {}
   end
 end

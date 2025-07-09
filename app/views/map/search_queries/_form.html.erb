@@ -1,5 +1,6 @@
 <%= form_for search_query, url: map_search_queries_path, html: { class: "popup !rounded-3xl fixed inset-x-4 md:static" }, data: { action: "search#blur search#showStatus turbo:submit-end->search#hideStatus" } do |form| %>
   <div class="flex items-center">
+    <%= form.hidden_field :city_id %>
     <%= form.search_field :query,
           placeholder: generate_search_query_placeholder,
           class: "grow input input--base !border-none truncate",
