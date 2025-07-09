@@ -55,7 +55,7 @@ class HomeController < ApplicationController
   end
 
   def load_nearby_events
-    @events = Event.within(Event::Locatable::MAX_DISTANCE_TO_CITY, origin: @city)
+    @events = Event.within(Event::Locatable::MAX_DISTANCE_TO_CITY, origin: @city.coordinates_arr)
   end
 
   def filter_out_past_events
