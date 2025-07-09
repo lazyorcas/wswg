@@ -3,7 +3,7 @@
   <%= stylesheet_link_tag "https://api.mapbox.com/mapbox-gl-js/v3.11.0/mapbox-gl.css" %>
 <% end %>
 <% content_for :title, build_meta_title(current_page?(map_path) ? "Events Map" : "#{@city.name} Events Map") %>
-<% content_for :description, current_page?(map_path) ? "Explore nearby events, meetups, and concerts from multiple sources on the city map." : "Explore events, meetups, and concerts in #{@city.name} from multiple sources on the city map." %>
+<% content_for :description, current_page?(map_path) ? "Discover nearby events, meetups, and concerts from multiple sources on the city map." : "Discover events, meetups, and concerts in #{@city.name} from multiple sources on the city map." %>
 <%= tag.main class: "w-full h-dvh max-h-dvh flex", 
   data: { 
     controller: "map",
