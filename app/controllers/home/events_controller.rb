@@ -107,7 +107,7 @@ class Home::EventsController < ApplicationController
       if @city.persisted?
         Event.joins(:city_source).where(city_sources: { city_id: @city.id })
       else
-        Event.within(Event::Locatable::MAX_DISTANCE_TO_CITY, origin: @city.coordinates_arr)
+        Event.within(Event::Locatable::MAX_DISTANCE_TO_CITY, origin: @city)
       end
     else
       @search_query = SearchQuery

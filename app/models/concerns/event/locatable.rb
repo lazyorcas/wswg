@@ -8,11 +8,7 @@ module Event::Locatable
     belongs_to :location, optional: true
     scope :located, -> { where.not(location_id: nil) }
 
-    acts_as_mappable through: :location,
-      default_units: :kms,
-      formula: :sphere,
-      lat_column_name: :lat,
-      lng_column_name: :lon
+    acts_as_mappable through: :location
   end
 
   def locatable?

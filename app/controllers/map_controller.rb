@@ -74,7 +74,7 @@ class MapController < ApplicationController
   end
 
   def load_nearby_events
-    @events = Event.within(Event::Locatable::MAX_DISTANCE_TO_CITY, origin: @city.coordinates_arr)
+    @events = Event.within(Event::Locatable::MAX_DISTANCE_TO_CITY, origin: @city)
   end
 
   def filter_out_past_events
