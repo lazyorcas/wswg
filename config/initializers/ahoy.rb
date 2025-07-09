@@ -14,10 +14,7 @@ class Ahoy::Store < Ahoy::DatabaseStore
     "/blazer"
   ].freeze
 
-  EXCLUDED_PATH_PATTERNS = [
-    %r{/events/\d+/bookmark},
-    %r{/events/\d+/description}
-  ].freeze
+  EXCLUDED_PATH_PATTERNS = [].freeze
 
   def track_visit(data)
     set_session
