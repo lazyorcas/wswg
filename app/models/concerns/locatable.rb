@@ -9,4 +9,8 @@ module Locatable
   def coordinates
     @coordinates ||= { lat: lat, lon: lon }
   end
+
+  def coordinates_arr
+    @coordinates_arr ||= [ lat, lon ]
+  end
 end
