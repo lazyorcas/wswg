@@ -1,12 +1,15 @@
 <%= tag.section class: "flex flex-col h-full", data: { map_target: "source", bottom_sheet_target: "content", collapsed: true } do %>
   <header class="shrink-0 pt-6 md:pt-4 px-4 flex gap-2 justify-between">
-    <h1 class="font-bold">
-      <% if current_page?(map_path) %>
-        Upcoming nearby events
-      <% else %>
-        Upcoming events in <%= city.name %>
-      <% end %>
-    </h1>
+    <div>
+      <h1 class="font-bold">
+        <% if current_page?(map_path) %>
+          Upcoming nearby events
+        <% else %>
+          Upcoming events in <%= city.name %>
+        <% end %>
+      </h1>
+      <p class="text-sm text-secondary">Search for more relevant events.</p>
+    </div>
     <div class="shrink-0 -mt-2 -mr-2">
       <%= render "current_person/settings/preferences/sort_by_popover_button" %>
     </div>
