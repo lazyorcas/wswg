@@ -1,6 +1,6 @@
 require "test_helper"
 
-class Map::Bookmarks::EventsControllerTest < ActionDispatch::IntegrationTest
+class Map::BookmarksControllerTest < ActionDispatch::IntegrationTest
   setup do
     login_as(users(:oscar))
   end
