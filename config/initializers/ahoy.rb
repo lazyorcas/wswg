@@ -11,8 +11,7 @@ class Ahoy::Store < Ahoy::DatabaseStore
     "/up",
     "/manifest",
     "/service-worker",
-    "/blazer",
-    "/duration_sync"
+    "/blazer"
   ].freeze
 
   EXCLUDED_PATH_PATTERNS = [
