@@ -107,8 +107,7 @@ class Home::EventsController < ApplicationController
       if @city.persisted?
         Event.joins(:city_source).where(city_sources: { city_id: @city.id })
       else
-        Event.joins(:city_source).where(city_sources: { city_id: @city.id })
-        # Event.within(Event::Locatable::MAX_DISTANCE_TO_CITY, origin: @city.coordinates_arr)
+        Event.joins(:location).within(Event::Locatable::MAX_DISTANCE_TO_CITY, origin: @city.coordinates_arr)
       end
     else
       @search_query = SearchQuery
@@ -147,11 +146,7 @@ class Home::EventsController < ApplicationController
       @events = if sort_by_time?
         @events.order(:start_date, :start_time)
       else
-        @events
-          .left_joins(:seens)
-          .select("events.*, COUNT(DISTINCT seens.id) as seen_count")
-          .group(events: :id)
-          .order("seen_count DESC, events.start_date, events.start_time")
+        @events.order(seens_count: :desc, start_date: :asc, start_time: :asc)
       end
     end
   end

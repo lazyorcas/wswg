@@ -13,8 +13,7 @@ class HomeController < ApplicationController
       if @city.persisted?
         load_city_events
       else
-        load_city_events
-        # load_nearby_events
+        load_nearby_events
       end
       filter_out_past_events
       order_events
@@ -56,7 +55,7 @@ class HomeController < ApplicationController
   end
 
   def load_nearby_events
-    @events = Event.within(Event::Locatable::MAX_DISTANCE_TO_CITY, origin: @city.coordinates_arr)
+    @events = Event.joins(:location).within(Event::Locatable::MAX_DISTANCE_TO_CITY, origin: @city.coordinates_arr)
   end
 
   def filter_out_past_events
@@ -67,11 +66,7 @@ class HomeController < ApplicationController
     @events = if sort_by_time?
       @events.order(:start_date, :start_time)
     else
-      @events
-        .left_joins(:seens)
-        .select("events.*, COUNT(DISTINCT seens.id) as seen_count")
-        .group(events: :id)
-        .order("seen_count DESC, events.start_date, events.start_time")
+      @events.order(seens_count: :desc, start_date: :asc, start_time: :asc)
     end
   end
 
