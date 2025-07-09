@@ -4,8 +4,8 @@ class UserMailer < ApplicationMailer
     @city = @user.city
 
     @events_count = Event
-      .joins(:city)
-      .where(city: { id: @city.id })
+      .joins(:city_source)
+      .where(city_sources: { city_id: @city.id })
       .where("CONCAT(start_date, 'T', start_time) >= ?", "#{@city.time_zone.current_date}T#{@city.time_zone.current_time}")
       .count
 

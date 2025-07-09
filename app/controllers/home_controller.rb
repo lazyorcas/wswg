@@ -51,11 +51,11 @@ class HomeController < ApplicationController
   end
 
   def load_city_events
-    @events = event_scope.where(city: { id: @city.id })
+    @events = Event.joins(:city_source).where(city_sources: { city_id: @city.id })
   end
 
   def load_nearby_events
-    @events = event_scope.within(Event::Locatable::MAX_DISTANCE_TO_CITY, origin: @city.coordinates)
+    @events = Event.within(Event::Locatable::MAX_DISTANCE_TO_CITY, origin: @city.coordinates)
   end
 
   def filter_out_past_events
@@ -69,7 +69,7 @@ class HomeController < ApplicationController
       @events
         .left_joins(:seens)
         .select("events.*, COUNT(DISTINCT seens.id) as seen_count")
-        .group("events.id, sources.id, locations.id, city.id")
+        .group(events: :id)
         .order("seen_count DESC, events.start_date, events.start_time")
     end
   end
@@ -84,9 +84,5 @@ class HomeController < ApplicationController
 
   def load_enabled_cities
     @enabled_cities = City.enabled.order(:name)
-  end
-
-  def event_scope
-    Event.joins(:city)
   end
 end

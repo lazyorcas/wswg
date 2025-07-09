@@ -23,10 +23,4 @@ class Map::EventsController < ApplicationController
       event_id: @event.id
     )
   end
-
-  def event_scope
-    Event
-      .joins(:city)
-      .where(city: { id: @city.id })
-  end
 end
