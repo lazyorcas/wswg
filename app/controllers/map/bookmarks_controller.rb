@@ -1,4 +1,4 @@
-class Map::Bookmarks::EventsController < ApplicationController
+class Map::BookmarksController < ApplicationController
   include CityDetection
 
   before_action :require_city!

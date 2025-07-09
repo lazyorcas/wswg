@@ -6,7 +6,7 @@ class Map::Bookmarks::EventsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should get index" do
-    get map_bookmarked_events_url
+    get map_bookmarks_url
     assert_response :success
   end
 end
