@@ -24,13 +24,18 @@ class MapController < ApplicationController
 
       return respond_to_city_not_found if @city.nil?
 
-      load_events
-      order_events
-      limit_events
+      if @city.persisted?
+        load_city_events
+      else
+        load_nearby_events
+      end
+
+      build_search_query
     end
 
-    build_search_query
-
+    filter_out_past_events
+    order_events
+    limit_events
     @events = @events.includes(:source, :location, :city)
 
     ahoy.track "Visited map page", city: @city.name
@@ -48,6 +53,10 @@ class MapController < ApplicationController
     @search_query = search_query_scope.find(params[:search_query_id])
   end
 
+  def load_search_query_events
+    @events = Event.find(@search_query.result.event_ids)
+  end
+
   def load_city_from_search_query
     @city = @search_query.city
   end
@@ -57,8 +66,16 @@ class MapController < ApplicationController
   end
 
   # Events
-  def load_events
-    @events = event_scope.where("CONCAT(start_date, 'T', start_time) >= ?", "#{@city.time_zone.current_date}T#{@city.time_zone.current_time}")
+  def load_city_events
+    @events = event_scope.where(city: { id: @city.id })
+  end
+
+  def load_nearby_events
+    @events = event_scope.within(Event::Locatable::MAX_DISTANCE_TO_CITY, origin: @city.coordinates)
+  end
+
+  def filter_out_past_events
+    @events = @events.where("CONCAT(start_date, 'T', start_time) >= ?", "#{@city.time_zone.current_date}T#{@city.time_zone.current_time}")
   end
 
   def order_events
@@ -78,6 +95,6 @@ class MapController < ApplicationController
   end
 
   def event_scope
-    Event.joins(:city).where(city: { id: @city.id })
+    Event.joins(:city)
   end
 end

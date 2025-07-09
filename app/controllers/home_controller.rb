@@ -10,7 +10,12 @@ class HomeController < ApplicationController
     load_nearby_city
 
     if @city.present?
-      load_events
+      if @city.persisted?
+        load_city_events
+      else
+        load_nearby_events
+      end
+      filter_out_past_events
       order_events
       limit_events
       @events = @events.includes(:source, :location, :city)
@@ -45,11 +50,16 @@ class HomeController < ApplicationController
     @city = get_city_from_current_city
   end
 
-  def load_events
-    @events = Event
-      .joins(:city)
-      .where(city: { id: @city.id })
-      .where("CONCAT(start_date, 'T', start_time) >= ?", "#{@city.time_zone.current_date}T#{@city.time_zone.current_time}")
+  def load_city_events
+    @events = event_scope.where(city: { id: @city.id })
+  end
+
+  def load_nearby_events
+    @events = event_scope.within(Event::Locatable::MAX_DISTANCE_TO_CITY, origin: @city.coordinates)
+  end
+
+  def filter_out_past_events
+    @events = @events.where("CONCAT(start_date, 'T', start_time) >= ?", "#{@city.time_zone.current_date}T#{@city.time_zone.current_time}")
   end
 
   def order_events
@@ -74,5 +84,9 @@ class HomeController < ApplicationController
 
   def load_enabled_cities
     @enabled_cities = City.enabled.order(:name)
+  end
+
+  def event_scope
+    Event.joins(:city)
   end
 end

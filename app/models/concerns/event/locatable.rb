@@ -7,6 +7,10 @@ module Event::Locatable
   included do
     belongs_to :location, optional: true
     scope :located, -> { where.not(location_id: nil) }
+
+    acts_as_mappable through: :location,
+      lat_column_name: :lat,
+      lng_column_name: :lon
   end
 
   def locatable?

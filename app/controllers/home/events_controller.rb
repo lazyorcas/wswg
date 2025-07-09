@@ -104,9 +104,15 @@ class Home::EventsController < ApplicationController
 
   def load_events
     @events = if @event_category.events?
-      Event
-        .joins(:city)
-        .where(city: { id: @city.id })
+      if @city.persisted?
+        Event
+          .joins(:city)
+          .where(city: { id: @city.id })
+      else
+        Event
+          .joins(:city)
+          .within(Event::Locatable::MAX_DISTANCE_TO_CITY, origin: @city.coordinates)
+      end
     else
       @search_query = SearchQuery
         .where(
