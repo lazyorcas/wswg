@@ -12,7 +12,7 @@
       <% end %>
       <%= link_to map_path, class: "button button--secondary", data: { turbo: false } do %>
         <i class="ph ph-map-trifold"></i>
-        Open Map
+        Events Map
       <% end %>
     </div>
   </header>
@@ -21,7 +21,7 @@
       <h2 class="self-center text-center text-2xl md:text-3xl font-semibold">Events near me</h2>
       <div class="self-end w-full flex justify-end">
         <%= render "current_person/settings/preferences/sort_by_popover_button" %>
-        <%= link_to city_map_path(city_slug: @city.slug), class: "self-end icon-button icon-button--base button--ghost", data: { turbo: false }, aria: { label: "Open map" } do %>
+        <%= link_to city_map_path(city_slug: @city.slug), class: "self-end icon-button icon-button--base button--ghost", data: { turbo: false }, aria: { label: "Events Map" } do %>
           <i class="ph ph-map-trifold"></i>
         <% end %>
       </div>
