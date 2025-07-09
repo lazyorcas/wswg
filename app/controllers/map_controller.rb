@@ -15,6 +15,7 @@ class MapController < ApplicationController
   def index
     if params[:search_query_id].present?
       load_search_query
+      load_search_query_events
       @city = @search_query.city
 
     else
