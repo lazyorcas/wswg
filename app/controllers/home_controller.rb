@@ -13,7 +13,8 @@ class HomeController < ApplicationController
       if @city.persisted?
         load_city_events
       else
-        load_nearby_events
+        load_city_events
+        # load_nearby_events
       end
       filter_out_past_events
       order_events

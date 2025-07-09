@@ -28,7 +28,8 @@ class MapController < ApplicationController
       if @city.persisted?
         load_city_events
       else
-        load_nearby_events
+        load_city_events
+        # load_nearby_events
       end
 
       build_search_query
