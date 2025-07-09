@@ -7,7 +7,7 @@
     <% if signed_in? %>
       <%= render "user_avatar" %>
     <% else %>
-      <%= render "empty_user_avatar" %>
+      <%= image_tag "/logo.webp", class: "size-8 md:size-10 rounded-full", alt: "Where Should We Go Logo" %>
     <% end %>
   </button>
   <div popover id="menu" class="modal p-4 w-xs max-w-full">
