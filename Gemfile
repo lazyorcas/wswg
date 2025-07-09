@@ -73,7 +73,7 @@ group :test do
   gem "cuprite"
 end
 
-gem "tailwindcss-rails", "~> 4.2"
+gem "tailwindcss-rails", "~> 4.3"
 gem "mission_control-jobs"
 gem "oj"
 gem "ruby-openai"
