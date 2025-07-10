@@ -23,11 +23,28 @@ Rails.application.routes.draw do
   get "/personalization", to: "home/personalization#index", as: :personalization
   put "/personalize", to: "home/personalization#update", as: :personalize
 
-  get "/:event_category_slug-near-me", to: "home/events#index", time_period_slug: "all", as: :all_nearby_events
-  get "/:event_category_slug-near-me-:time_period_slug", to: "home/events#index", as: :nearby_events
-
-  get "/:city_slug-:event_category_slug", to: "home/events#index", time_period_slug: "all", as: :all_city_events, constraints: { event_category_slug: /#{EventCategory::SLUGS.join('|')}/ }
-  get "/:event_category_slug-:time_period_slug-in-:city_slug", to: "home/events#index", as: :city_events, constraints: { event_category_slug: /#{EventCategory::SLUGS.join('|')}/ }
+  scope to: "home/events#index" do
+    scope time_period_slug: "all" do
+      scope event_category_slug: "events" do
+        get "/:city_slug-events", as: :all_city_events
+        get "/events-near-me", as: :all_nearby_events
+      end
+      constraints event_category_slug: EventCategoryConstraint::REGEX do
+        get "/:city_slug-:event_category_slug", as: :all_city_search_query_events
+        get "/:event_category_slug-near-me", as: :all_nearby_search_query_events
+      end
+    end
+    constraints time_period_slug: TimePeriodConstraint::REGEX do
+      scope event_category_slug: "events" do
+        get "/events-:time_period_slug-in-:city_slug", as: :city_events
+        get "/events-near-me-:time_period_slug", as: :nearby_events
+      end
+      constraints event_category_slug: EventCategoryConstraint::REGEX do
+        get "/:event_category_slug-:time_period_slug-in-:city_slug", as: :city_search_query_events
+        get "/:event_category_slug-near-me-:time_period_slug", as: :nearby_search_query_events
+      end
+    end
+  end
 
   get "/events/:id", to: "home/events#show", as: :event
   get "/events/:id/description", to: "home/events/descriptions#show", as: :event_description

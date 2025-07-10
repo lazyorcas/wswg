@@ -1,4 +1,6 @@
 class EventCategory
+  include Localizable
+
   attr_reader :symbol
 
   SYMBOLS = [
@@ -30,8 +32,8 @@ class EventCategory
     @symbol = symbol
   end
 
-  def to_s
-    @to_s ||= self.class.stringify(symbol)
+  def name
+    @name ||= self.class.stringify(symbol)
   end
 
   def slug
@@ -42,7 +44,7 @@ class EventCategory
     if concerts?
       "music concerts"
     else
-      to_s
+      name
     end
   end
 
@@ -50,5 +52,9 @@ class EventCategory
     define_method("#{symbol}?") do
       symbol == self.symbol
     end
+  end
+
+  def localizable_field
+    name
   end
 end

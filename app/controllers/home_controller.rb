@@ -1,47 +1,30 @@
 class HomeController < ApplicationController
-  EVENT_LIMIT = 20
-
   include CityDetection
   include CurrentPerson::Settings::PreferencesHelper
 
   layout "home"
 
   def index
+    ahoy.track "Visited homepage"
     load_nearby_city
 
     if @city.present?
-      if @city.persisted?
-        load_city_events
-      else
-        load_nearby_events
-      end
-      filter_out_past_events
-      order_events
-      limit_events
+      load_events_page_builder
+      build_events
       @events = @events.includes(:source, :location, :city)
     end
 
-    load_enabled_cities
-
-    ahoy.track "Visited homepage"
-
-    if browser.bot? && browser.bot.search_engine?
-      Sentry.capture_message("[Search Engine] Visited homepage", extra: {
-        bot_name: browser.bot.name
-      })
-    end
+    load_events_directory
   end
 
   def pricing
-    load_city
-
     ahoy.track "Visited pricing page"
+    load_city
   end
 
   def local_events_directory
-    load_enabled_cities
-
     ahoy.track "Visited local events directory"
+    load_events_directory(complete: true)
   end
 
   private
@@ -50,35 +33,28 @@ class HomeController < ApplicationController
     @city = get_city_from_current_city
   end
 
-  def load_city_events
-    @events = Event.joins(:city_source).where(city_sources: { city_id: @city.id })
-  end
-
-  def load_nearby_events
-    @events = Event.joins(:location).within(Event::Locatable::MAX_DISTANCE_TO_CITY, origin: @city.coordinates_arr)
-  end
-
-  def filter_out_past_events
-    @events = @events.where("CONCAT(start_date, 'T', start_time) >= ?", "#{@city.time_zone.current_date}T#{@city.time_zone.current_time}")
-  end
-
-  def order_events
-    @events = if sort_by_time?
-      @events.order(:start_date, :start_time)
-    else
-      @events.order(seens_count: :desc, start_date: :asc, start_time: :asc)
-    end
-  end
-
-  def limit_events
-    @events = @events.limit(EVENT_LIMIT)
-  end
-
   def load_city
     @city = get_city_from_current_city || get_city_from_current_person
   end
 
-  def load_enabled_cities
-    @enabled_cities = City.enabled.order(:name)
+  def load_events_page_builder
+    @events_page_builder = Marketing::EventsPageBuilderFactory.build({
+      city: @city,
+      event_category: EventCategory.new(:events),
+      time_period: TimePeriod.new(@city.time_zone, :all),
+      order_by: sort_by
+    })
+  end
+
+  def build_events
+    @events = @events_page_builder.build_events
+  end
+
+  def load_events_directory(complete: false)
+    @events_directory = events_directory_builder.build_links_attributes(complete: complete)
+  end
+
+  def events_directory_builder
+    @events_directory_builder ||= Marketing::EventsDirectoryBuilder.new
   end
 end

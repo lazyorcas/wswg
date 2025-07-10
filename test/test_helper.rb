@@ -49,7 +49,8 @@ module ActiveSupport
       {
         # https://lite.ip2location.com/singapore-ip-address-ranges
         "CF_CONNECTING_IP" => "1.21.224.0",
-        "CF_IPCITY" => city.name.to_s,
+        "CF_IPCOUNTRY" => city.country_code,
+        "CF_IPCITY" => "#{city.name} CBD",
         "CF_TIMEZONE" => city.time_zone.name.to_s,
         "CF_IPLATITUDE" => city.lat.to_s,
         "CF_IPLONGITUDE" => city.lon.to_s

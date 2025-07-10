@@ -27,27 +27,17 @@
         <%= render partial: "event", collection: @events, cached: -> (event) { build_event_cache_key(event) } %>
       </ol>
       <div class="flex flex-col items-center">
-        <% if @all_events_count > @events.size %>
-          <%= link_to @search_query.present? ? map_path(search_query_id: @search_query.id) : city_map_path(city_slug: @city.slug), class: " mt-4 lg:mt-5 button button--primary", data: { turbo: false } do %>
-            View <%= @all_events_count - @events.size %> more <%= @event_category.to_s %>
-          <% end %>
+        <%= link_to @search_query.present? ? map_path(search_query_id: @search_query.id) : city_map_path(city_slug: @city.slug), class: " mt-4 lg:mt-5 button button--primary", data: { turbo: false } do %>
+          View all <%= @event_category.name %>
         <% end %>
       </div>
     <% else %>
       <p class="flash flash--warning mt-8 mx-auto">
-        <% if @city.persisted? %>
-          <% if @current_time.hour <= 8 %>
-            <%= @event_category.to_s.humanize %> are being fetched. Come back in 1-2 hours.
-          <% else %>
-            No upcoming <%= @event_category.to_s %> found.
-          <% end %>
-        <% else %>
-          Your city (<%= @city.name %>) is not supported yet.
-        <% end %>
+        <%= @events_page_builder.no_events_message %>
       </p>
     <% end %>
     <p class="mt-8 mx-auto text-sm text-center md:max-w-4xl">
-      Alternatively, you can view <%= @alternate_link_attributes.map { |link| link_to link[:title], link[:href], class: "link" }.to_sentence.html_safe %>.
+      Alternatively, you can view <%= @alternate_links_attributes.map { |link| link_to link[:title], link[:href], class: "link" }.to_sentence.html_safe %>.
     </p>
   </section>
   <%= render "home/sticky_search_bar", search_query: SearchQuery.new %>

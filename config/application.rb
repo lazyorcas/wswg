@@ -25,5 +25,7 @@ module WhereShouldWeGo
 
     # https://github.com/rails/mission_control-jobs?tab=readme-ov-file#custom-authentication
     config.mission_control.jobs.http_basic_auth_enabled = false
+
+    config.i18n.raise_on_missing_translations = true
   end
 end

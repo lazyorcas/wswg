@@ -1,0 +1,11 @@
+en:
+  marketing:
+    nearby_events_page_builder:
+      no_events_message: "No upcoming events nearby."
+      defaults:
+        meta_title: "Events near me %{time_period}"
+        meta_description: "Browse and search for nearby events, meetups, and concerts %{time_period} from multiple sources in one place."
+        title: "What's happening near me %{time_period}?"
+      meta_title:
+        today: "🌇 Local events near me today"
+        tomorrow: "🔜 Local events near me tomorrow"

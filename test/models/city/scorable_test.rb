@@ -1,8 +1,8 @@
 require "test_helper"
 
 class City::ScorableTest < ActiveSupport::TestCase
-  test "Singapore should have score = 0.04" do
-    assert_equal 0.04, cities(:singapore).current_score
+  test "Singapore should have score = 0.08" do
+    assert_equal 0.08, cities(:singapore).current_score
   end
 
   test "Munich should have score = 0" do

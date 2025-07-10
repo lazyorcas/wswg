@@ -1,0 +1,8 @@
+en:
+  marketing:
+    nearby_search_query_events_page_builder:
+      no_events_message: "No upcoming %{event_category} nearby."
+      defaults:
+        meta_title: "%{event_category} near me %{time_period}"
+        meta_description: "Browse and search for nearby %{event_category} %{time_period} from multiple sources in one place."
+        title: "What %{event_category} are happening near me %{time_period}?"

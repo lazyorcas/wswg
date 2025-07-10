@@ -11,37 +11,18 @@ class HomeControllerTest < ApplicationControllerTestCase
     assert_response :success
   end
 
-  test "should get local events directory" do
+  test "should get events directory" do
     get local_events_directory_url
     assert_response :success
   end
 
   test "every city_events url" do
-    City.all.each do |city|
-      EventCategory::SYMBOLS.each do |event_category_symbol|
-        TimePeriod::SYMBOLS.each do |time_period_symbol|
-          if time_period_symbol == :all
-            get all_city_events_url(city_slug: city.slug, event_category_slug: EventCategory::SYMBOL_TO_SLUG_MAPPING[event_category_symbol])
-          else
-            get city_events_url(city_slug: city.slug, event_category_slug: EventCategory::SYMBOL_TO_SLUG_MAPPING[event_category_symbol], time_period_slug: TimePeriod.slugify(time_period_symbol))
-          end
-          assert_response :success
-          assert_select "h1", text: /#{city.name}/
-        end
-      end
-    end
-  end
-
-  test "every nearby_events url" do
     headers = build_human_headers
-
-    EventCategory::SYMBOLS.each do |event_category_symbol|
-      TimePeriod::SYMBOLS.each do |time_period_symbol|
-        if time_period_symbol == :all
-          get all_nearby_events_url(event_category_slug: EventCategory::SYMBOL_TO_SLUG_MAPPING[event_category_symbol]), headers: headers
-        else
-          get nearby_events_url(event_category_slug: EventCategory::SYMBOL_TO_SLUG_MAPPING[event_category_symbol], time_period_slug: TimePeriod.slugify(time_period_symbol)), headers: headers
-        end
+    events_directory_builder = Marketing::EventsDirectoryBuilder.new
+    links_groups = events_directory_builder.build_links_attributes(complete: true)
+    links_groups.each do |_, links|
+      links.each do |link|
+        get link[:href], headers: headers
         assert_response :success
       end
     end

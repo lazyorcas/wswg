@@ -1,5 +1,6 @@
 class City < ApplicationRecord
   include Sluggish
+  include Localizable
   include Currency
   include Locatable
   include Scorable
@@ -25,6 +26,10 @@ class City < ApplicationRecord
   end
 
   def sluggish_field
+    name
+  end
+
+  def localizable_field
     name
   end
 end

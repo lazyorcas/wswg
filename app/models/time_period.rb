@@ -1,5 +1,7 @@
 class TimePeriod
-  attr_reader :time_zone, :time_period_symbol
+  include Localizable
+
+  attr_reader :time_zone, :symbol
 
   NIGHT_START_TIME = "18:00:00".freeze
   SYMBOLS = [
@@ -13,18 +15,22 @@ class TimePeriod
     :all
   ].freeze
 
-  def self.slugify(time_period_symbol)
-    if time_period_symbol == :all
-      nil
-    else
-      time_period_symbol.to_s.gsub("_", "-")
-    end
+  def self.slugify(symbol)
+    symbol.to_s.gsub("_", "-")
   end
 
   SLUGS = SYMBOLS.map { |symbol| slugify(symbol) }.freeze
   SLUG_TO_SYMBOL_MAPPING = SLUGS.zip(SYMBOLS).to_h.freeze
 
-  def initialize(time_zone, time_period_symbol)
+  def self.stringify(symbol)
+    if symbol == :all
+      nil
+    else
+      symbol.to_s.humanize(capitalize: false)
+    end
+  end
+
+  def initialize(time_zone, symbol)
     @time_zone = if time_zone.is_a?(String)
       TimeZone.new(name: time_zone)
     elsif time_zone.is_a?(TimeZone)
@@ -33,11 +39,19 @@ class TimePeriod
       raise ArgumentError, "Invalid time zone: #{time_zone}"
     end
 
-    if SYMBOLS.exclude?(time_period_symbol)
-      raise ArgumentError, "Invalid time period: #{time_period_symbol}"
+    if SYMBOLS.exclude?(symbol)
+      raise ArgumentError, "Invalid time period: #{symbol}"
     end
 
-    @time_period_symbol = time_period_symbol
+    @symbol = symbol
+  end
+
+  def name
+    @name ||= self.class.stringify(symbol)
+  end
+
+  def slug
+    @slug ||= self.class.slugify(symbol)
   end
 
   def current_date
@@ -46,22 +60,6 @@ class TimePeriod
 
   def current_time
     @current_time ||= time_zone.current_time
-  end
-
-  def to_s
-    @to_s ||= if all?
-      nil
-    else
-      time_period_symbol.to_s.humanize(capitalize: false)
-    end
-  end
-
-  def to_sym
-    time_period_symbol
-  end
-
-  def slug
-    @slug ||= self.class.slugify(time_period_symbol)
   end
 
   def start_date
@@ -104,9 +102,13 @@ class TimePeriod
     end
   end
 
-  SYMBOLS.each do |time_period_symbol|
-    define_method("#{time_period_symbol}?") do
-      time_period_symbol == self.time_period_symbol
+  SYMBOLS.each do |symbol|
+    define_method("#{symbol}?") do
+      symbol == self.symbol
     end
+  end
+
+  def localizable_field
+    name
   end
 end
