@@ -1,5 +1,5 @@
 class Events::FinalizeAttendeesCountsJob < ApplicationJob
-  LIMIT = 150 # TODO: lower this
+  LIMIT = 500 # TODO: lower this
 
   queue_as :default
   queue_with_priority 10
