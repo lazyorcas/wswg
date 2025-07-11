@@ -44,6 +44,10 @@ module OpenAI::Responses::Schemas
         type: "number",
         description: "Price of the event. If there's a range, return the minimum price. Round up to the nearest integer. If the price is not available or free, return 0."
       },
+      attendees_count: {
+        type: "number",
+        description: "Number of attendees. If not mentioned, return 0."
+      },
       not_found: {
         type: "boolean",
         description: "If the event is not found, return true. Otherwise, return false."
