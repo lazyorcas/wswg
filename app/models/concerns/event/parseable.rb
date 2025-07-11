@@ -21,14 +21,7 @@ module Event::Parseable
   TEXT
 
   def parse
-    json = markdown_expert.convert_to_json(
-      markdown,
-      context: CONTEXT % {
-        current_date: time_zone.current_date,
-        current_year: time_zone.current_year
-      },
-      json_schema: json_schema
-    )
+    json = convert_markdown_to_json
 
     if json["not_found"]
       archived_link = ArchivedLink.find_or_initialize_by(url: url)
@@ -46,6 +39,17 @@ module Event::Parseable
 
     self.attributes = json.slice(*self.class.column_names)
     self.location_query = json["location"].presence
+  end
+
+  def convert_markdown_to_json
+    markdown_expert.convert_to_json(
+      markdown,
+      context: CONTEXT % {
+        current_date: time_zone.current_date,
+        current_year: time_zone.current_year
+      },
+      json_schema: json_schema
+    )
   end
 
   private
