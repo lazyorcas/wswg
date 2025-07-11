@@ -220,7 +220,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_11_055801) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "seens_count", default: 0
-    t.integer "attendees_count"
+    t.integer "attendees_count", default: 0
     t.index ["city_source_id"], name: "index_events_on_city_source_id"
     t.index ["location_id", "start_date", "end_date", "start_time", "end_time"], name: "idx_on_location_id_start_date_end_date_start_time_e_415cb0e2f4"
     t.index ["location_id"], name: "index_events_on_location_id"

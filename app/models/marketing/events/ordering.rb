@@ -12,6 +12,11 @@ module Marketing::Events::Ordering
   end
 
   def order_events_by_seens_count
-    @events = @events.order(seens_count: :desc, start_date: :asc, start_time: :asc)
+    @events = @events.order(
+      attendees_count: :desc,
+      seens_count: :desc,
+      start_date: :asc,
+      start_time: :asc
+    )
   end
 end
