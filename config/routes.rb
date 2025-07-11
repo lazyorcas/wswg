@@ -24,25 +24,24 @@ Rails.application.routes.draw do
   put "/personalize", to: "home/personalization#update", as: :personalize
 
   scope to: "home/events#index" do
-    scope time_period_slug: "all" do
-      scope event_category_slug: "events" do
-        get "/:city_slug-events", as: :all_city_events
-        get "/events-near-me", as: :all_nearby_events
-      end
-      constraints event_category_slug: EventCategoryConstraint::REGEX do
-        get "/:city_slug-:event_category_slug", as: :all_city_search_query_events
-        get "/:event_category_slug-near-me", as: :all_nearby_search_query_events
-      end
+    scope event_category_slug: "events" do
+      get "/:city_slug-events", time_period_slug: "all", as: :all_city_events
+      get "/events-:time_period_slug-in-:city_slug", time_period_slug: TimePeriodConstraint::REGEX, as: :city_events
     end
-    constraints time_period_slug: TimePeriodConstraint::REGEX do
-      scope event_category_slug: "events" do
-        get "/events-:time_period_slug-in-:city_slug", as: :city_events
-        get "/events-near-me-:time_period_slug", as: :nearby_events
-      end
-      constraints event_category_slug: EventCategoryConstraint::REGEX do
-        get "/:event_category_slug-:time_period_slug-in-:city_slug", as: :city_search_query_events
-        get "/:event_category_slug-near-me-:time_period_slug", as: :nearby_search_query_events
-      end
+
+    scope event_category_slug: EventCategoryConstraint::REGEX do
+      get "/:city_slug-:event_category_slug", time_period_slug: "all", as: :all_city_search_query_events
+      get "/:event_category_slug-:time_period_slug-in-:city_slug", time_period_slug: TimePeriodConstraint::REGEX, as: :city_search_query_events
+    end
+
+    scope event_category_slug: "events" do
+      get "/events-near-me", time_period_slug: "all", as: :all_nearby_events
+      get "/events-near-me-:time_period_slug", time_period_slug: TimePeriodConstraint::REGEX, as: :nearby_events
+    end
+
+    scope event_category_slug: EventCategoryConstraint::REGEX do
+      get "/:event_category_slug-near-me-:time_period_slug", time_period_slug: "all", as: :all_nearby_search_query_events
+      get "/:event_category_slug-near-me", time_period_slug: TimePeriodConstraint::REGEX, as: :nearby_search_query_events
     end
   end
 

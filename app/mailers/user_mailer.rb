@@ -16,7 +16,7 @@ class UserMailer < ApplicationMailer
     @week_start_date_str = week_start_date.strftime("%-d %B")
     @week_end_date_str = week_end_date.strftime("%-d %B")
 
-    url = all_city_events_url(city_slug: @city.slug, event_category_slug: "events")
+    url = all_city_events_url(city_slug: @city.slug)
     @utm_url = Url.build_utm_url(url, campaign: "retention", source: "weekly_events_notification", medium: "email", content: "simple")
 
     subject = "What's happening in #{@city.name} - Week of #{@week_start_date_str}"

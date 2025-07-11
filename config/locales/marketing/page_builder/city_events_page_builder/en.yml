@@ -9,40 +9,40 @@ en:
       meta_title:
         san_francisco:
           all: "San Francisco events"
-          today: "🌇 San Francisco events today"
+          today: "San Francisco events today"
           this_week: "Things to do this week in San Francisco"
           this_weekend: "San Francisco events this weekend"
         london:
           all: "Events in London"
-          today: "🌇 Events in London today"
-          tomorrow: "🔜 London events tomorrow"
+          today: "Events in London today"
+          tomorrow: "London events tomorrow"
           this_week: "Events in London this week"
           next_week: "Events in London next week"
         new_york_city:
           all: "New York events"
-          today: "🌇 NYC events today"
-          tomorrow: "🔜 NYC things to do tomorrow"
+          today: "NYC events today"
+          tomorrow: "NYC things to do tomorrow"
           this_week: "Events in New York this week"
           this_weekend: "New York City happenings this weekend"
           next_week: "Next week in New York"
         singapore:
           all: "Singapore events"
-          today: "🌇 Events in Singapore today"
+          today: "Events in Singapore today"
         berlin:
-          today: "🌇 Events in Berlin today"
-          tomorrow: "🔜 Tomorrow in Berlin"
+          today: "Events in Berlin today"
+          tomorrow: "Tomorrow in Berlin"
           this_week: "This week Berlin"
         barcelona:
           all: "Barcelona events"
-          today: "🌇 Barcelona events today"
+          today: "Barcelona events today"
         paris:
-          today: "🌇 Paris events today"
-          tomorrow: "🔜 Paris tomorrow"
+          today: "Paris events today"
+          tomorrow: "Paris tomorrow"
           this_week: "Paris events this week"
         munich:
           all: "Munich events"
-          today: "🌇 Munich events today"
+          today: "Munich events today"
         lisbon:
           all: "Lisbon events"
-          today: "🌇 Lisbon events today"
-          tonight: "🌃 Tonight in Lisbon"
+          today: "Lisbon events today"
+          tonight: "Tonight in Lisbon"
