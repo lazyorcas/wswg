@@ -1,6 +1,3 @@
-SitemapGenerator::Interpreter.send :include, CityHelper
-SitemapGenerator::Interpreter.send :include, NearbyHelper
-
 SitemapGenerator::Sitemap.default_host = "https://#{ENV["HOST_NAME"]}"
 SitemapGenerator::Sitemap.compress = false
 SitemapGenerator::Sitemap.create do
