@@ -12,8 +12,8 @@ module Marketing::Events::SearchQueryFilter
   def load_search_query
     @search_query = SearchQuery
       .where(
-        query: event_category.query,
-        city_id: city.id,
+        query: @event_category.query,
+        city_id: @city.id,
         status: :completed,
         searcher: nil
       )

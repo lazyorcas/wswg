@@ -11,7 +11,7 @@ module Marketing::Events::SEO::AlternateLinks
   }.freeze
 
   def build_alternate_links_attributes
-    MAPPING[time_period_symbol].map do |time_period_symbol|
+    MAPPING[@time_period.to_sym].map do |time_period_symbol|
       {
         href: build_alternate_link_path(time_period_symbol),
         title: build_alternate_link_title(time_period_symbol)
@@ -19,17 +19,18 @@ module Marketing::Events::SEO::AlternateLinks
     end
   end
 
-  def build_alternate_link_path(time_period_symbol)
-    raise NotImplementedError
-  end
-
   def build_alternate_link_title(time_period_symbol)
-    raise NotImplementedError
+    time_period = TimePeriod.new(@city.time_zone, time_period_symbol)
+    page_builder = self.class.new(
+      city: @city,
+      event_category: @event_category,
+      time_period: time_period,
+      order_by: @order_by
+    )
+    page_builder.build_meta_title
   end
 
-  private
-
-  def time_period_symbol
+  def build_alternate_link_path(time_period_symbol)
     raise NotImplementedError
   end
 end

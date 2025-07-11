@@ -1,6 +1,6 @@
 module Marketing::Events::Ordering
   def order_events
-    if order_by == "popularity"
+    if @order_by == "popularity"
       order_events_by_seens_count
     else
       order_events_by_time
@@ -13,11 +13,5 @@ module Marketing::Events::Ordering
 
   def order_events_by_seens_count
     @events = @events.order(seens_count: :desc, start_date: :asc, start_time: :asc)
-  end
-
-  private
-
-  def order_by
-    raise NotImplementedError
   end
 end

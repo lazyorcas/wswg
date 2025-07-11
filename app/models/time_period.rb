@@ -54,6 +54,10 @@ class TimePeriod
     @slug ||= self.class.slugify(symbol)
   end
 
+  def to_sym
+    @symbol
+  end
+
   def current_date
     @current_date ||= time_zone.current_date
   end
@@ -104,11 +108,11 @@ class TimePeriod
 
   SYMBOLS.each do |symbol|
     define_method("#{symbol}?") do
-      symbol == self.symbol
+      symbol == self.to_sym
     end
   end
 
   def localizable_field
-    name
+    slug
   end
 end

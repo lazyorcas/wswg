@@ -24,23 +24,19 @@ module Marketing::Events::TimePeriodFilters
 
   private
 
-  def time_period
-    raise NotImplementedError
-  end
-
   def start_date
-    @start_date ||= time_period.start_date
+    @start_date ||= @time_period.start_date
   end
 
   def start_time
-    @start_time ||= time_period.start_time
+    @start_time ||= @time_period.start_time
   end
 
   def end_date
-    @end_date ||= time_period.end_date
+    @end_date ||= @time_period.end_date
   end
 
   def end_time
-    @end_time ||= time_period.end_time
+    @end_time ||= @time_period.end_time
   end
 end

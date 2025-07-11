@@ -9,30 +9,28 @@ class Marketing::EventsDirectoryBuilder
     load_event_categories(complete: complete)
 
     if complete
-      title = "Events near me"
+      nearby_city = City.first.dup
+
+      title = I18n.t("marketing.events_near_me")
+
       links = @event_categories.map do |event_category|
         @time_periods.map do |time_period|
-          if event_category.events?
-            {
-              href: time_period.all? ?
-                all_nearby_events_path :
-                nearby_events_path(time_period_slug: time_period.slug),
-              title: I18n.t("marketing.nearby_events_page_builder.defaults.meta_title", time_period: time_period.name).professionalize
-            }
-          else
-            {
-              href: time_period.all? ?
-                all_nearby_search_query_events_path(event_category_slug: event_category.slug) :
-                nearby_search_query_events_path(event_category_slug: event_category.slug, time_period_slug: time_period.slug),
-              title: I18n.t("marketing.nearby_search_query_events_page_builder.defaults.meta_title", event_category: event_category.name, time_period: time_period.name).professionalize
-            }
-          end
+          page_builder = Marketing::EventsPageBuilderFactory.build({
+            city: nearby_city,
+            event_category: event_category,
+            time_period: time_period,
+            order_by: :time
+          })
+          {
+            href: page_builder.build_path,
+            title: page_builder.build_meta_title
+          }
         end
       end.flatten
 
       links << {
         href: map_path,
-        title: "Events map",
+        title: I18n.t("marketing.events_map"),
         turbo: false
       }
 
@@ -40,35 +38,26 @@ class Marketing::EventsDirectoryBuilder
     end
 
     links_groups += @cities.map do |city|
-      title = "Events in #{city.name}"
+      title = I18n.t("marketing.events_in_city", city: city.name)
 
       links = @event_categories.map do |event_category|
         @time_periods.map do |time_period|
-          if event_category.events?
-            params = { city_slug: city.slug }
-            i18n_params = { city: city.name, time_period: time_period.name }
-            {
-              href: time_period.all? ?
-                all_city_events_path(params) :
-                city_events_path(**params, time_period_slug: time_period.slug),
-              title: I18n.t("marketing.city_events_page_builder.defaults.meta_title", **i18n_params).professionalize
-            }
-          else
-            params = { city_slug: city.slug, event_category_slug: event_category.slug }
-            i18n_params = { city: city.name, event_category: event_category.name, time_period: time_period.name }
-            {
-              href: time_period.all? ?
-                all_city_search_query_events_path(params) :
-                city_search_query_events_path(**params, time_period_slug: time_period.slug),
-              title: I18n.t("marketing.city_search_query_events_page_builder.defaults.meta_title", **i18n_params).professionalize
-            }
-          end
+          page_builder = Marketing::EventsPageBuilderFactory.build({
+            city: city,
+            event_category: event_category,
+            time_period: time_period,
+            order_by: :time
+          })
+          {
+            href: page_builder.build_path,
+            title: page_builder.build_meta_title
+          }
         end
       end.flatten
 
       links << {
         href: city_map_path(city_slug: city.slug),
-        title: "#{city.name} events map",
+        title: I18n.t("marketing.city_events_map", city: city.name),
         turbo: false
       }
 

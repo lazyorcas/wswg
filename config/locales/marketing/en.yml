@@ -1,0 +1,90 @@
+en:
+  marketing:
+    no_events_message: "No upcoming %{event_category}."
+    events_near_me: "Events near me"
+    events_in_city: "Events in %{city}"
+    events_map: "Events map"
+    city_events_map: "%{city} events map"
+    defaults:
+      city_events_page_builder:
+        meta_title: "Events %{time_period} in %{city}"
+        meta_description: "Browse and search for events, meetups, and concerts in %{city} %{time_period} from multiple sources in one place."
+        title: "What's happening in %{city} %{time_period}?"
+      city_search_query_events_page_builder:
+        meta_title: "%{event_category} %{time_period} in %{city}"
+        meta_description: "Browse and search for %{event_category} in %{city} %{time_period} from multiple sources in one place."
+        title: "What %{event_category} are happening in %{city} %{time_period}?"
+      nearby_events_page_builder:
+        meta_title: "Events near me %{time_period}"
+        meta_description: "Browse and search for nearby events, meetups, and concerts %{time_period} from multiple sources in one place."
+        title: "What's happening near me %{time_period}?"
+      nearby_search_query_events_page_builder:
+        meta_title: "%{event_category} near me %{time_period}"
+        meta_description: "Browse and search for nearby %{event_category} %{time_period} from multiple sources in one place."
+        title: "What %{event_category} are happening near me %{time_period}?"
+    meta_title:
+      nearby:
+        events:
+          today: "Local events near me today"
+          tomorrow: "Local events near me tomorrow"
+      san_francisco:
+        events:
+          all: "San Francisco events"
+          today: "San Francisco events today"
+          this_week: "Things to do this week in San Francisco"
+          this_weekend: "San Francisco events this weekend"
+        concerts:
+            this_week: "Concerts in San Francisco this week"
+      london:
+        events:
+          all: "Events in London"
+          today: "Events in London today"
+          tomorrow: "London events tomorrow"
+          this_week: "Events in London this week"
+          next_week: "Events in London next week"
+        concerts:
+          tonight: "Concerts on tonight in London"
+      new_york_city:
+        events:
+          all: "New York events"
+          today: "NYC events today"
+          tomorrow: "NYC things to do tomorrow"
+          this_week: "Events in New York this week"
+          this_weekend: "New York City happenings this weekend"
+          next_week: "Next week in New York"
+        meetups:
+          all: "NYC Meetups"
+      singapore:
+        events:
+          all: "Singapore events"
+          today: "Events in Singapore today"
+      berlin:
+        events:
+          today: "Events in Berlin today"
+          tomorrow: "Tomorrow in Berlin"
+          this_week: "This week Berlin"
+        concerts:
+          all: "Concerts Berlin"
+      barcelona:
+        events:
+          all: "Barcelona events"
+          today: "Barcelona events today"
+      paris:
+        events:
+          today: "Paris events today"
+          tomorrow: "Paris tomorrow"
+          this_week: "Paris events this week"
+        concerts:
+          next_week: "Concerts in Paris next week"
+      munich:
+        events:
+          all: "Munich events"
+          today: "Munich events today"
+      lisbon:
+        events:
+          all: "Lisbon events"
+          today: "Lisbon events today"
+          tonight: "Tonight in Lisbon"
+      hamburg:
+        concerts:
+          all: "Hamburg concerts"

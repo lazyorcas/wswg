@@ -10,6 +10,6 @@ module Marketing::Events::NearbyFilter
   end
 
   def origin
-    city.coordinates_arr
+    @city.coordinates_arr
   end
 end

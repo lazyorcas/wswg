@@ -40,6 +40,10 @@ class EventCategory
     @slug ||= self.class.slugify(symbol)
   end
 
+  def to_sym
+    @symbol
+  end
+
   def query
     if concerts?
       "music concerts"
@@ -50,11 +54,11 @@ class EventCategory
 
   SYMBOLS.each do |symbol|
     define_method("#{symbol}?") do
-      symbol == self.symbol
+      symbol == self.to_sym
     end
   end
 
   def localizable_field
-    name
+    slug
   end
 end
