@@ -73,7 +73,7 @@ class Marketing::EventsDirectoryBuilder
 
   def load_time_periods
     @time_periods = TimePeriod::SYMBOLS.map do |time_period_symbol|
-      TimePeriod.new("UTC", time_period_symbol)
+      TimePeriod.new(nil, time_period_symbol)
     end
   end
 

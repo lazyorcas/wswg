@@ -31,18 +31,7 @@ class TimePeriod
   end
 
   def initialize(time_zone, symbol)
-    @time_zone = if time_zone.is_a?(String)
-      TimeZone.new(name: time_zone)
-    elsif time_zone.is_a?(TimeZone)
-      time_zone
-    else
-      raise ArgumentError, "Invalid time zone: #{time_zone}"
-    end
-
-    if SYMBOLS.exclude?(symbol)
-      raise ArgumentError, "Invalid time period: #{symbol}"
-    end
-
+    @time_zone = time_zone
     @symbol = symbol
   end
 

@@ -1,6 +1,4 @@
 class MapController < ApplicationController
-  EVENT_LIMIT = 50
-
   include CityDetection
   include CurrentPerson::Settings::PreferencesHelper
 
@@ -27,30 +25,25 @@ class MapController < ApplicationController
 
       return respond_to_city_not_found if @city.nil?
 
-      if @city.persisted?
-        load_city_events
-      else
-        load_nearby_events
-      end
+      load_event_category
+      load_time_period
+      load_order_by
+      load_events_page_builder
+      build_events
 
       build_search_query
     end
-
-    filter_out_past_events
-    order_events
-    limit_events
-    @events = @events.includes(:source, :location, :city)
 
     ahoy.track "Visited map page", city: @city.name
   end
 
   private
 
+  # Search Query
   def searching?
     params[:search_query_id].present?
   end
 
-  # Search Query
   def build_search_query
     @search_query ||= search_query_scope.build
     @search_query.city_id ||= @city.id
@@ -66,36 +59,33 @@ class MapController < ApplicationController
       .in_order_of(:id, @search_query.result&.event_ids || [])
   end
 
-  def load_city_from_search_query
-    @city = @search_query.city
-  end
-
   def search_query_scope
-    SearchQuery.joins(:city).where(searcher: [ Current.person, nil ])
+    SearchQuery.where(searcher: [ Current.person, nil ])
   end
 
   # Events
-  def load_city_events
-    @events = Event.joins(:city_source).where(city_sources: { city_id: @city.id })
+  def load_time_period
+    @time_period = TimePeriod.new(@city.time_zone, :all)
   end
 
-  def load_nearby_events
-    @events = Event.joins(:location).within(Event::Locatable::MAX_DISTANCE_TO_CITY, origin: @city.coordinates_arr)
+  def load_event_category
+    @event_category = EventCategory.new(:events)
   end
 
-  def filter_out_past_events
-    @events = @events.where("CONCAT(start_date, 'T', start_time) >= ?", "#{@city.time_zone.current_date}T#{@city.time_zone.current_time}")
+  def load_order_by
+    @order_by = sort_by
   end
 
-  def order_events
-    @events = if sort_by_time?
-      @events.order(:start_date, :start_time)
-    else
-      @events.order(seens_count: :desc, start_date: :asc, start_time: :asc)
-    end
+  def load_events_page_builder
+    @events_page_builder ||= Marketing::EventsPageBuilderFactory.build(
+      city: @city,
+      event_category: @event_category,
+      time_period: @time_period,
+      order_by: @order_by
+    )
   end
 
-  def limit_events
-    @events = @events.limit(EVENT_LIMIT)
+  def build_events
+    @events = @events_page_builder.build_events
   end
 end
