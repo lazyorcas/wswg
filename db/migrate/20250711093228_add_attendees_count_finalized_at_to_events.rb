@@ -6,7 +6,8 @@ end
 
 # UPDATE events
 # SET attendees_count_finalized_at = updated_at
-# FROM cities
-# WHERE events.city_id = cities.id
+# FROM city_sources
+#   JOIN cities ON city_sources.city_id = cities.id
+# WHERE events.city_source_id = city_sources.id
 #   AND attendees_count > 0
-#   AND CONCAT(start_date, ' ', start_time) < TO_CHAR(NOW() AT TIME ZONE cities.time_zone, 'YYYY-MM-DD HH24:MI:SS')
+#   AND CONCAT(start_date, ' ', start_time) < TO_CHAR(NOW() AT TIME ZONE cities.time_zone, 'YYYY-MM-DD HH24:MI:SS');

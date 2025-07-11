@@ -1,8 +1,8 @@
 class Events::FinalizeAttendeesCountsJob < ApplicationJob
-  LIMIT = 2000
+  LIMIT = 150 # TODO: lower this
 
   queue_as :default
-  queue_with_priority 3
+  queue_with_priority 10
   limits_concurrency to: 1, key: ->(*) { self.class.name }
 
   def perform

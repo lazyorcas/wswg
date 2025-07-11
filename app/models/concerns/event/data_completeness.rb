@@ -22,6 +22,6 @@ module Event::DataCompleteness
       errors.add(attribute, "must be present") if send(attribute).blank?
     end
 
-    errors.add(:base, :data_incomplete)
+    errors.add(:base, :data_incomplete, message: "Data is incomplete")
   end
 end
