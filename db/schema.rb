@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_07_11_093228) do
+ActiveRecord::Schema[8.0].define(version: 2025_07_11_145358) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -222,6 +222,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_11_093228) do
     t.integer "seens_count", default: 0
     t.integer "attendees_count", default: 0
     t.datetime "attendees_count_finalized_at"
+    t.string "organizer_url"
     t.index ["city_source_id"], name: "index_events_on_city_source_id"
     t.index ["location_id", "start_date", "end_date", "start_time", "end_time"], name: "idx_on_location_id_start_date_end_date_start_time_e_415cb0e2f4"
     t.index ["location_id"], name: "index_events_on_location_id"

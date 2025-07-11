@@ -20,6 +20,10 @@ module OpenAI::Responses::Schemas
       image_url: {
         type: "string"
       },
+      organizer_url: {
+        type: "string",
+        description: "URL of the organizer, usually a user/member page of the hosting platform. The organizer can also be referred to as the event's host. You can look out for \"Hosted by\" or \"Organized by\" in the content. If not mentioned, return an empty string."
+      },
       location: {
         type: "string",
         description: "Location of the event. It can be a precise address or a general area. If not mentioned, return an empty string. If the location is online / virtual, return an empty string. If the location is to be determined / TBD, return an empty string."
@@ -51,6 +55,15 @@ module OpenAI::Responses::Schemas
       not_found: {
         type: "boolean",
         description: "If the event is not found, return true. Otherwise, return false."
+      }
+    })
+  end
+
+  def self.event_organizer_url_schema
+    build_schema("event_organizer_url", {
+      organizer_url: {
+        type: "string",
+        description: "URL of the organizer, usually a user/member page of the hosting platform. The organizer can also be referred to as the event's host. Look out for \"Hosted by\" or \"Organized by\" in the content, but don't rely on it. If not mentioned, return an empty string."
       }
     })
   end
