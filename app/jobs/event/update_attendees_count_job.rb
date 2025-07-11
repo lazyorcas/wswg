@@ -12,7 +12,7 @@ class Event::UpdateAttendeesCountJob < ApplicationJob
     event = Event.find(event_id)
 
     event.fetch
-    json = event.parse
+    json = event.convert_markdown_to_json
 
     if json["attendees_count"].present? && json["attendees_count"].to_i > 0
       event.attendees_count = json["attendees_count"]
