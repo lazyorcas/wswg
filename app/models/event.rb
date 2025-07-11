@@ -21,12 +21,11 @@ class Event < ApplicationRecord
   validates :url, uniqueness: true
 
   def ongoing?
-    end_date >= current_date_in_city.to_s
+    end_date >= city.time_zone.current_date.to_s
   end
 
-  private
-
-  def current_date_in_city
-    city.time_zone.current_date
+  def has_started?
+    start_date <= city.time_zone.current_date.to_s &&
+      start_time <= city.time_zone.current_time
   end
 end

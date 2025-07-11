@@ -16,7 +16,9 @@ class Event::UpdateAttendeesCountJob < ApplicationJob
 
     if json["attendees_count"].present? && json["attendees_count"].to_i > 0
       event.attendees_count = json["attendees_count"]
-      event.save!
     end
+
+    event.attendees_count_finalized_at = Time.current if event.has_started?
+    event.save!
   end
 end
