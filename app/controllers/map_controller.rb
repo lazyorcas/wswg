@@ -56,8 +56,8 @@ class MapController < ApplicationController
 
   def load_search_query_events
     @events = Event
-      .where(id: @search_query.result.event_ids)
-      .in_order_of(:id, @search_query.result.event_ids)
+      .where(id: @search_query.result&.event_ids)
+      .in_order_of(:id, @search_query.result&.event_ids || [])
   end
 
   def load_city_from_search_query

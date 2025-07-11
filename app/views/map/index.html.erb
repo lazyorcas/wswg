@@ -18,10 +18,10 @@
       <%= turbo_frame_tag "content", class: "grow min-h-0 map-content" do %>
         <%= tag.section class: "flex flex-col gap-y-2 h-full", data: { controller: "search" } do %>
           <div class="shrink-0">
-            <%= render "map/search_queries/form", search_query: @search_query %>
+            <%= render "map/search_queries/form", search_query: @search_query.dup %>
           </div>
           <%= tag.section id: "search-results", class: "grow md:min-h-0 popup popup--bottom-sheet bottom-sheet-transition", data: { controller: "bottom-sheet", bottom_sheet_target: "bottomSheet", search_target: "results" } do %>
-            <%= render "events", city: @city, events: @events %>
+            <%= render "events", city: @city, events: @events, search_query: @search_query %>
           <% end %>
         <% end %>
       <% end %>
