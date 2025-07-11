@@ -12,7 +12,7 @@ module Event::DataCompleteness
   private
 
   def data_completeness_fields
-    [ :title, :image_url, :start_date, :end_date, :start_time ]
+    [ :title, :image_url, :start_date, :end_date, :start_time, :organizer_url ]
   end
 
   def validate_date_completeness

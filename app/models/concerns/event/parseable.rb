@@ -53,6 +53,14 @@ module Event::Parseable
     )
   end
 
+  def extract_attendees_count_from_markdown
+    markdown_expert.convert_to_json(
+      markdown,
+      context: GENERAL_CONTEXT,
+      json_schema: OpenAI::Responses::Schemas.event_attendees_count_schema
+    )["attendees_count"]
+  end
+
   def extract_organizer_url_from_markdown
     markdown_expert.convert_to_json(
       markdown,

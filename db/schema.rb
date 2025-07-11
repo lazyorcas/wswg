@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_07_11_145358) do
+ActiveRecord::Schema[8.0].define(version: 2025_07_11_151044) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -220,7 +220,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_11_145358) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "seens_count", default: 0
-    t.integer "attendees_count", default: 0
+    t.integer "attendees_count"
     t.datetime "attendees_count_finalized_at"
     t.string "organizer_url"
     t.index ["city_source_id"], name: "index_events_on_city_source_id"

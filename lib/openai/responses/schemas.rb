@@ -50,11 +50,20 @@ module OpenAI::Responses::Schemas
       },
       attendees_count: {
         type: "number",
-        description: "Number of attendees. If not mentioned, return 0."
+        description: "Number of attendees. If not mentioned, return -1."
       },
       not_found: {
         type: "boolean",
         description: "If the event is not found, return true. Otherwise, return false."
+      }
+    })
+  end
+
+  def self.event_attendees_count_schema
+    build_schema("event_attendees_count", {
+      attendees_count: {
+        type: "number",
+        description: "Number of attendees. If not mentioned, return -1."
       }
     })
   end
