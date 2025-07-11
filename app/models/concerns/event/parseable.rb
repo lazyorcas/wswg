@@ -50,12 +50,6 @@ module Event::Parseable
 
   private
 
-  def normalize
-    if end_time.blank? || start_time == end_time
-      self.end_time = nil
-    end
-  end
-
   def markdown_expert
     @markdown_expert ||= OpenAI::Assistants::MarkdownExpert.new
   end
