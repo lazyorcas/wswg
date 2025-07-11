@@ -25,44 +25,63 @@ en:
     meta_title:
       nearby:
         events:
-          today: "Local events near me today"
+          all: "Upcoming events"
+          today: "Events today"
+          tonight: "Events tonight"
           tomorrow: "Local events near me tomorrow"
+          this_weekend: "Events near me this weekend"
+        concerts:
+          tonight: "Concerts tonight"
+          tomorrow: "Tomorrow concerts"
+          this_weekend: "Concerts this weekend"
+        meetups:
+          all: "Meetup events"
       san_francisco:
         events:
           all: "San Francisco events"
           today: "San Francisco events today"
           this_week: "Things to do this week in San Francisco"
           this_weekend: "San Francisco events this weekend"
+          next_weekend: "Events in San Francisco next weekend"
         concerts:
-            this_week: "Concerts in San Francisco this week"
+          all: "San Francisco concerts"
+          this_week: "Concerts in San Francisco this week"
       london:
         events:
-          all: "Events in London"
+          all: "London events"
           today: "Events in London today"
           tomorrow: "London events tomorrow"
           this_week: "Events in London this week"
           next_week: "Events in London next week"
         concerts:
-          tonight: "Concerts on tonight in London"
+          tonight: "Concerts London tonight"
+          this_weekend: "Concerts London this weekend"
       new_york_city:
         events:
-          all: "New York events"
+          all: "NYC events"
           today: "NYC events today"
-          tomorrow: "NYC things to do tomorrow"
+          tomorrow: "NYC tomorrow"
           this_week: "Events in New York this week"
-          this_weekend: "New York City happenings this weekend"
+          this_weekend: "NYC events this weekend"
           next_week: "Next week in New York"
         meetups:
           all: "NYC Meetups"
+        concerts:
+          all: "New York City concerts"
+          today: "Concerts in NYC today"
+          tonight: "Concerts tonight in NYC"
       singapore:
         events:
           all: "Singapore events"
           today: "Events in Singapore today"
       berlin:
         events:
+          all: "Berlin events"
           today: "Events in Berlin today"
+          tonight: "Berlin tonight events"
           tomorrow: "Tomorrow in Berlin"
           this_week: "This week Berlin"
+          this_weekend: "Berlin this weekend"
         concerts:
           all: "Concerts Berlin"
       barcelona:
@@ -71,9 +90,10 @@ en:
           today: "Barcelona events today"
       paris:
         events:
-          today: "Paris events today"
+          today: "Events in Paris today"
           tomorrow: "Paris tomorrow"
           this_week: "Paris events this week"
+          next_week: "Paris events next week"
         concerts:
           next_week: "Concerts in Paris next week"
       munich:
@@ -88,3 +108,9 @@ en:
       hamburg:
         concerts:
           all: "Hamburg concerts"
+      amsterdam:
+        events:
+          all: "Amsterdam happenings"
+          today: "Amsterdam events today"
+          tonight: "Amsterdam events tonight"
+          this_weekend: "Amsterdam events this weekend"

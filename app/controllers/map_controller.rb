@@ -12,8 +12,10 @@ class MapController < ApplicationController
       redirect_to(root_path, flash: { error: "Too many requests. Please wait a moment and try again." })
     end
 
+  helper_method :searching?
+
   def index
-    if params[:search_query_id].present?
+    if searching?
       load_search_query
       load_search_query_events
       @city = @search_query.city
@@ -43,6 +45,10 @@ class MapController < ApplicationController
   end
 
   private
+
+  def searching?
+    params[:search_query_id].present?
+  end
 
   # Search Query
   def build_search_query
