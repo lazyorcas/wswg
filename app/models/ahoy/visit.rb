@@ -16,7 +16,7 @@ class Ahoy::Visit < ApplicationRecord
 
   before_validation :find_or_create_visitor
 
-  after_create_commit :queue_update_referrer_host, if: -> { referrer.present? }
+  after_create_commit :queue_update_referrer_host
   before_update :set_duration, if: :duration_synced_at_changed?
 
   def self.anonymize(ip:, lat:, lon:)
@@ -48,28 +48,30 @@ class Ahoy::Visit < ApplicationRecord
   def update_referrer_host!
     if landing_page.include?("gad_source")
       self.referrer_host = "google_ads"
-      save!
-      return
+      save and return
     end
+
+    if utm_source.present? && utm_source.include?("chatgpt.com")
+      self.referrer_host = "chatgpt"
+      save and return
+    end
+
+    return if referrer.blank?
 
     uri = URI.parse(referrer)
     return if uri.host.nil?
 
-    if utm_source.present? && utm_source.include?("chatgpt.com")
-      self.referrer_host = "chatgpt"
+    fragments = uri.host.split(".")
+    self.referrer_host = if fragments.include?("google")
+      "google"
+    elsif fragments.include?("linkedin")
+      "linkedin"
+    elsif fragments.include?("reddit")
+      "reddit"
+    elsif fragments.size > 2
+      fragments[1..2].join(".")
     else
-      fragments = uri.host.split(".")
-      self.referrer_host = if fragments.include?("google")
-        "google"
-      elsif fragments.include?("linkedin")
-        "linkedin"
-      elsif fragments.include?("reddit")
-        "reddit"
-      elsif fragments.size > 2
-        fragments[1..2].join(".")
-      else
-        uri.host
-      end
+      uri.host
     end
 
     save!
