@@ -25,7 +25,6 @@ class Event < ApplicationRecord
   end
 
   def has_started?
-    start_date <= city.time_zone.current_date.to_s &&
-      start_time <= city.time_zone.current_time
+    "#{start_date} #{start_time}" <= "#{city.time_zone.current_date} #{city.time_zone.current_time}"
   end
 end
