@@ -68,6 +68,8 @@ class Ahoy::Visit < ApplicationRecord
       "linkedin"
     elsif fragments.include?("reddit")
       "reddit"
+    elsif fragments.include?("chatgpt.com")
+      "chatgpt"
     elsif fragments.size > 2
       fragments[1..2].join(".")
     else
