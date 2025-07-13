@@ -15,8 +15,8 @@ class Event < ApplicationRecord
   has_one :source, through: :city_source, autosave: false
   delegate :time_zone, to: :city
 
-  has_many :bookmarks
-  has_many :seens
+  has_many :bookmarks, dependent: :destroy
+  has_many :seens, dependent: :destroy
 
   validates :url, uniqueness: true
 
