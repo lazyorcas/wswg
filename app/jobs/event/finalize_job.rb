@@ -17,7 +17,7 @@ class Event::FinalizeJob < ApplicationJob
     # to prevent overwriting the markdown
     if json["not_found"]
       # event.reload
-      raise StandardError.new("Event #{event_id} not found")
+      raise StandardError.new("Event \"#{event.url}\" not found")
     else
       event.attendees_count = json["attendees_count"] == -1 ? nil : json["attendees_count"]
       event.organizer_url = json["organizer_url"].presence
