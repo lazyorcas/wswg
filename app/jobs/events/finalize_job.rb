@@ -10,7 +10,9 @@ class Events::FinalizeJob < ApplicationJob
     jobs = Event
       .joins(:city_source)
       .joins(:city)
+      .joins(:source)
       .where(city_sources: { enabled: true })
+      .where.not(sources: { scraper_type: "ApiScraper" })
       .where("CONCAT(start_date, ' ', start_time) < TO_CHAR(NOW() AT TIME ZONE cities.time_zone, 'YYYY-MM-DD HH24:MI:SS')")
       .where("attendees_count_finalized_at IS NULL OR organizer_url IS NULL")
       .order(id: :desc)
