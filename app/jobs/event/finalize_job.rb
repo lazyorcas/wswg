@@ -18,7 +18,7 @@ class Event::FinalizeJob < ApplicationJob
     if json["not_found"]
       event.reload
     else
-      event.attendees_count = json["attendees_count"]
+      event.attendees_count = json["attendees_count"] == -1 ? nil : json["attendees_count"]
       event.organizer_url = json["organizer_url"].presence
     end
 
