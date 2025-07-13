@@ -8,9 +8,9 @@ production:
   reindex_events_job:
     class: Events::ReindexJob
     schedule: "30 * * * *"  # Every hour at 30 minutes
-  # finalize_events_job:
-  #   class: Events::FinalizeJob
-  #   schedule: "30 * * * *"  # Every hour at 30 minutes
+  finalize_events_job:
+    class: Events::FinalizeJob
+    schedule: "30 * * * *"  # Every hour at 30 minutes
   # finalize_attendees_counts_job:
   #   class: Events::FinalizeAttendeesCountsJob
   #   schedule: "30 * * * *"  # Every hour at 30 minutes
