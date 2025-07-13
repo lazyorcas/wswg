@@ -14,10 +14,15 @@ class Event::FinalizeJob < ApplicationJob
     event.fetch
     json = event.convert_markdown_to_json
 
-    event.attendees_count = json["attendees_count"]
-    event.attendees_count_finalized_at = Time.current
+    # to prevent overwriting the markdown
+    if json["not_found"]
+      event.reload
+    else
+      event.attendees_count = json["attendees_count"]
+      event.organizer_url = json["organizer_url"].presence
+    end
 
-    event.organizer_url = json["organizer_url"].presence
+    event.attendees_count_finalized_at = Time.current
 
     event.save!
   end
