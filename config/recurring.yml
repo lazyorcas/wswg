@@ -14,6 +14,6 @@ production:
   # finalize_attendees_counts_job:
   #   class: Events::FinalizeAttendeesCountsJob
   #   schedule: "30 * * * *"  # Every hour at 30 minutes
-  free_credits_top_up_job:
-    class: Credits::FreeTopUpJob
-    schedule: "0 * 1 * *"  # Every month at 00:00 on the first day of the month
+  # free_credits_top_up_job:
+  #   class: Credits::FreeTopUpJob
+  #   schedule: "0 * 1 * *"  # Every month at 00:00 on the first day of the month

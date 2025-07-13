@@ -1,8 +1,4 @@
 <section class="flex gap-x-1 md:gap-x-2 items-center">
-  <%= link_to signed_in? ? current_user_top_up_credits_path : pricing_path, class: "flex gap-x-2 items-center bg-white dark:bg-stone-900 rounded-full py-1 px-2 border border-primary", title: "Top up" do %>
-    <i class="ph ph-coin"></i>
-    <span class="text-sm"><%= Current.person.credits %></span>
-  <% end %>
   <button popovertarget="menu" class="cursor-pointer" title="Open Menu">
     <% if signed_in? %>
       <%= render "user_avatar" %>

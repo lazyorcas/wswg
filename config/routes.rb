@@ -56,11 +56,11 @@ Rails.application.routes.draw do
 
   get "/user/edit", to: "current_user#edit", as: :edit_current_user
   patch "/user", to: "current_user#update", as: :current_user
-  get "/user/top_up_credits", to: "current_user#top_up_credits", as: :current_user_top_up_credits
+  # get "/user/top_up_credits", to: "current_user#top_up_credits", as: :current_user_top_up_credits
 
   get "/visitor/edit", to: "current_visitor#edit", as: :edit_current_visitor
   patch "/visitor", to: "current_visitor#update", as: :current_visitor
-  get "/top_up_needed", to: "current_person#top_up_needed", as: :top_up_needed
+  # get "/top_up_needed", to: "current_person#top_up_needed", as: :top_up_needed
 
   namespace :current_person do
     namespace :settings do

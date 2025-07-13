@@ -18,8 +18,10 @@ class HomeController < ApplicationController
   end
 
   def pricing
-    ahoy.track "Visited pricing page"
-    load_city
+    head(:gone)
+
+    # ahoy.track "Visited pricing page"
+    # load_city
   end
 
   def local_events_directory

@@ -1,7 +1,7 @@
 class Map::SearchQueriesController < ApplicationController
   include BotProtection
   include CityDetection
-  include CreditsCheck
+  # include CreditsCheck
 
   protect_from_bots only: [ :create ]
 
@@ -14,7 +14,7 @@ class Map::SearchQueriesController < ApplicationController
       turbo_stream_flash(status: :too_many_requests)
     end
 
-  require_credits only: [ :create ]
+  # require_credits only: [ :create ]
 
   def create
     build_search_query

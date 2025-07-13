@@ -2,7 +2,7 @@ class SearchQueriesController < ApplicationController
   include FieldTestHelper
   include BotProtection
   include CityDetection
-  include CreditsCheck
+  # include CreditsCheck
 
   protect_from_bots only: [ :create ]
 
@@ -14,7 +14,7 @@ class SearchQueriesController < ApplicationController
       redirect_to(root_path, flash: { error: "Too many requests. Please wait a moment and try again." })
     end
 
-  require_credits only: [ :create ]
+  # require_credits only: [ :create ]
 
   def create
     build_search_query

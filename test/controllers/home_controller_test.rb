@@ -6,10 +6,10 @@ class HomeControllerTest < ApplicationControllerTestCase
     assert_response :success
   end
 
-  test "should get pricing" do
-    get pricing_url
-    assert_response :success
-  end
+  # test "should get pricing" do
+  #   get pricing_url
+  #   assert_response :success
+  # end
 
   test "should get events directory" do
     get local_events_directory_url
