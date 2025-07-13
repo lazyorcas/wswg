@@ -6,7 +6,7 @@ class Jina::ReaderClient
     "Authorization" => "Bearer #{ENV["JINA_API_KEY"]}",
     "X-Engine" => "browser",
     "X-Return-Format" => "markdown",
-    "X-No-Cache" => true
+    "X-No-Cache" => "true"
   }
 
   def fetch(url)
