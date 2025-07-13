@@ -1,7 +1,7 @@
 class Event::FinalizeJob < ApplicationJob
   queue_as :default
   queue_with_priority 3
-  limits_concurrency to: 5, key: ->(*) { self.class.name }
+  limits_concurrency to: 1, key: ->(event_id) { event_id }, on_conflict: :discard
 
   retry_on Jina::TimeoutError, wait: :polynomially_longer, attempts: 3
 

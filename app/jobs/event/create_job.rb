@@ -3,7 +3,7 @@ class Event::CreateJob < ApplicationJob
 
   queue_as :default
   queue_with_priority 2
-  limits_concurrency to: 5, key: ->(*) { self.class.name }
+  limits_concurrency to: 1, key: ->(url:, **attributes) { url }, on_conflict: :discard
 
   retry_on Jina::TimeoutError, wait: :polynomially_longer, attempts: 3
 
