@@ -20,6 +20,7 @@ class Event::CreateJob < ApplicationJob
 
     unless event.data_completed?
       event.fetch
+      # TODO: raise error if not_found and try again for some time
       event.parse
     end
 
