@@ -3,10 +3,11 @@ class Source::Scraper::Strategy::Luma < Source::Scraper::Strategy::BaseBrowserSt
     10
   end
 
-  def get_event_urls(page, &block)
+  def get_event_attributes(page, &block)
     page.css("a.event-link").each do |el|
       url = el.attribute("href")
-      yield url
+      attrs = { url: url }
+      yield attrs
     end
   end
 

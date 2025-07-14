@@ -3,14 +3,15 @@ class Source::Scraper::Strategy::Meetup < Source::Scraper::Strategy::BaseBrowser
     100
   end
 
-  def get_event_urls(page, &block)
+  def get_event_attributes(page, &block)
     els = page.css("[data-element-name=\"categoryResults-eventCard\"] a")
     # old selector
     els = page.css("a#event-card-in-search-results") if els.empty?
 
     els.each do |el|
       url = el.attribute("href").split("?").first
-      yield url
+      attrs = { url: url }
+      yield attrs
     end
   end
 

@@ -1,5 +1,5 @@
 class Source::Scraper::Strategy::BaseBrowserStrategy < Source::Scraper::Strategy::BaseStrategy
-  def get_event_urls(page, &block)
+  def get_event_attributes(page, &block)
     raise NotImplementedError
   end
 

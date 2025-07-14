@@ -13,9 +13,10 @@ class Source::Scraper::BrowserScraper < Source::Scraper::BaseScraper
       max_page_count.times do |page_index|
         wait_for_idle(page, page_index)
 
-        strategy.get_event_urls(page) do |url|
-          event_url = build_event_url(url, base_url: base_url)
-          events_attributes << { url: event_url }
+        strategy.get_event_attributes(page) do |event_attributes|
+          url = build_event_url(event_attributes[:url], base_url: base_url)
+          event_attributes[:url] = url
+          events_attributes << event_attributes
         end
 
         begin
