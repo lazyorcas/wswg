@@ -20,7 +20,6 @@ class Event::CreateJob < ApplicationJob
 
     unless event.data_completed?
       event.fetch
-      # TODO: raise error if not_found and try again for some time
       event.parse
     end
 
@@ -69,4 +68,17 @@ class Event::CreateJob < ApplicationJob
       archived_link.save!
     end
   end
+
+  # def create_archived_link_for_not_found_event(url)
+  #   archived_link = ArchivedLink.find_or_initialize_by(url: url)
+
+  #   if archived_link.new_record?
+  #     archived_link.reason = :not_found_or_expired
+  #     archived_link.metadata = {
+  #       markdown: markdown,
+  #       json: json
+  #     }
+  #     archived_link.save!
+  #   end
+  # end
 end
