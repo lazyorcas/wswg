@@ -42,7 +42,7 @@ class Event::CreateJob < ApplicationJob
     end
 
   rescue Event::DataIncompleteError => e
-    raise e if executions_for(e) < DATA_INCOMPLETE_MAX_ATTEMPTS
+    raise e # if executions_for(e) < DATA_INCOMPLETE_MAX_ATTEMPTS
   end
 
   private
