@@ -40,8 +40,8 @@ Rails.application.routes.draw do
     end
 
     scope event_category_slug: EventCategoryConstraint::REGEX do
-      get "/:event_category_slug-near-me-:time_period_slug", time_period_slug: "all", as: :all_nearby_search_query_events
-      get "/:event_category_slug-near-me", time_period_slug: TimePeriodConstraint::REGEX, as: :nearby_search_query_events
+      get "/:event_category_slug-near-me", time_period_slug: "all", as: :all_nearby_search_query_events
+      get "/:event_category_slug-near-me-:time_period_slug", time_period_slug: TimePeriodConstraint::REGEX, as: :nearby_search_query_events
     end
   end
 
