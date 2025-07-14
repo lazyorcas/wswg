@@ -20,8 +20,8 @@ Rails.application.routes.draw do
   get "/local-events-directory", to: "home#local_events_directory", as: :local_events_directory
   get "/pricing", to: "home#pricing", as: :pricing
 
-  get "/personalization", to: "home/personalization#index", as: :personalization
-  put "/personalize", to: "home/personalization#update", as: :personalize
+  # get "/personalization", to: "home/personalization#index", as: :personalization
+  # put "/personalize", to: "home/personalization#update", as: :personalize
 
   scope to: "home/events#index" do
     scope event_category_slug: "events" do

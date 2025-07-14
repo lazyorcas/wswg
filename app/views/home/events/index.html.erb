@@ -10,11 +10,7 @@
   <section class="py-10 w-full flex flex-col">
     <% if @events.any? %>
       <div class="flex flex-wrap justify-between">
-        <%= link_to personalization_path, class: "button button--ghost" do %>
-          <i class="ph ph-magic-wand"></i>
-          Personalize
-        <% end %>
-        <div class="flex self-end">
+        <div class="ml-auto flex self-end">
           <% if @event_category.events? %>
             <%= render "current_person/settings/preferences/sort_by_popover_button" %>
           <% end %>

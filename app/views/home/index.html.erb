@@ -6,10 +6,6 @@
       <p class="md:max-w-2xl">Browse and search for events, meetups, and concerts from Luma, Meetup, Eventbrite, and Ticketmaster in one place.</p>
     </div>
     <div class="w-full flex flex-col justify-center md:flex-row gap-y-2 md:gap-y-0 md:gap-x-2">
-      <%= link_to personalization_path, class: "button button--secondary" do %>
-        <i class="ph ph-magic-wand"></i>
-        Personalize
-      <% end %>
       <%= link_to map_path, class: "button button--secondary", data: { turbo: false } do %>
         <i class="ph ph-map-trifold"></i>
         Events Map
