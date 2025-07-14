@@ -1,6 +1,5 @@
 class Event::CreateJob < ApplicationJob
   DATA_INCOMPLETE_MAX_ATTEMPTS = 3
-  URL_NOT_FOUND_MAX_ATTEMPTS = 3
 
   queue_as :default
   queue_with_priority 2
@@ -11,7 +10,7 @@ class Event::CreateJob < ApplicationJob
   retry_on OpenAI::TooManyRequestsError, wait: 5.minutes, attempts: 3
   retry_on OpenAI::ServerError, wait: 5.minutes, attempts: 3
 
-  retry_on Event::UrlNotFoundError, wait: 1.hour, attempts: URL_NOT_FOUND_MAX_ATTEMPTS
+  retry_on Event::UrlNotFoundError, wait: 1.hour, attempts: 3
   retry_on Event::DataIncompleteError, wait: 5.minutes, attempts: DATA_INCOMPLETE_MAX_ATTEMPTS
 
   def perform(url:, **attributes)
@@ -42,8 +41,6 @@ class Event::CreateJob < ApplicationJob
 
   rescue Event::DataIncompleteError => e
     raise e if executions_for(e) < DATA_INCOMPLETE_MAX_ATTEMPTS
-  rescue Event::UrlNotFoundError => e
-    raise e if executions_for(e) < URL_NOT_FOUND_MAX_ATTEMPTS
   end
 
   private
