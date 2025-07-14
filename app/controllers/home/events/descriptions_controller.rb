@@ -6,7 +6,7 @@ class Home::Events::DescriptionsController < ApplicationController
   def show
     load_event
 
-    ahoy.track "Viewed event", event_id: @event.id, source: "description"
+    ahoy.track "Viewed event", event_id: @event.id, source: "description", sort_by: sort_by
 
     head(:ok)
   end

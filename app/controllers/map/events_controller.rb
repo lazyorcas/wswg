@@ -6,7 +6,7 @@ class Map::EventsController < ApplicationController
   def show
     load_event
 
-    ahoy.track "Viewed event", event_id: @event.id, source: "map"
+    ahoy.track "Viewed event", event_id: @event.id, source: "map", sort_by: sort_by
   end
 
   private
