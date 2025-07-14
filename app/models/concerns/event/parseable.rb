@@ -30,6 +30,7 @@ module Event::Parseable
 
     self.attributes = json.slice(*self.class.column_names)
     self.location_query = json["location"].presence
+    self.attendees_count = attendees_count == -1 ? nil : attendees_count
   end
 
   def convert_markdown_to_json
