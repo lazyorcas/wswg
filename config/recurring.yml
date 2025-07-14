@@ -1,5 +1,5 @@
 production:
-  find_and_create_events_job:
+  scrape_and_create_events_job:
     class: ScrapeAndCreateEventsJob
     schedule: "0 * * * *"  # Every hour at 0 minutes
   create_search_queries_job:
