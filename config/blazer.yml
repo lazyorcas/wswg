@@ -24,6 +24,7 @@ data_sources:
     smart_variables:
       period: ["day", "week", "month"]
       city_id: "SELECT id, name FROM cities ORDER BY name ASC"
+      user_id: "SELECT id, email FROM users ORDER BY id ASC"
       # status: {0: "Active", 1: "Archived"}
 
     linked_columns:

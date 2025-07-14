@@ -1,4 +1,7 @@
 class UserMailer < ApplicationMailer
+  # User.where.associated(:city).find_each do |user|
+  #   UserMailer.with(user: user).weekly_events_notification.deliver_later
+  # end
   def weekly_events_notification
     @user = params[:user]
     @city = @user.city
