@@ -56,6 +56,11 @@ class Ahoy::Visit < ApplicationRecord
       save and return
     end
 
+    if utm_medium.present? && utm_medium.include?("email")
+      self.referrer_host = "email"
+      save and return
+    end
+
     return if referrer.blank?
 
     uri = URI.parse(referrer)
