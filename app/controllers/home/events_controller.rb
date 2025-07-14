@@ -38,7 +38,6 @@ class Home::EventsController < ApplicationController
     load_event
 
     ahoy.track "Viewed event", event_id: @event.id, source: params[:source]
-    sort_by_converted
   end
 
   private

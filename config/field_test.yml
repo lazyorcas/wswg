@@ -13,6 +13,7 @@ experiments:
     description: >
       Test if the sort by popularity creates more event clicks.
     started_at: June 30, 2025 12:30 pm SGT
+    ended_at: July 14, 2025 11:30 am SGT
     variants:
       - time
       - popularity

@@ -2,7 +2,7 @@ module CurrentPerson::Settings::PreferencesHelper
   include FieldTestHelper
 
   def sort_by
-    Current.person.settings(:preferences).sort_by || field_test_variant(:sort_by)
+    Current.person.settings(:preferences).sort_by
   end
 
   def sort_by_values
@@ -21,9 +21,5 @@ module CurrentPerson::Settings::PreferencesHelper
 
   def sort_by_popularity?
     sort_by == "popularity"
-  end
-
-  def sort_by_converted
-    convert_field_test(:sort_by)
   end
 end

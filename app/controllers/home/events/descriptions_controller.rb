@@ -7,7 +7,6 @@ class Home::Events::DescriptionsController < ApplicationController
     load_event
 
     ahoy.track "Viewed event", event_id: @event.id, source: "description"
-    sort_by_converted
 
     head(:ok)
   end

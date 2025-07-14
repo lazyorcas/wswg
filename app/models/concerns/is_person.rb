@@ -4,7 +4,7 @@ module IsPerson
   included do
     has_settings do |s|
       s.key :personalization
-      s.key :preferences
+      s.key :preferences, defaults: { sort_by: "time" }
     end
 
     belongs_to :city, optional: true
