@@ -75,7 +75,7 @@ Rails.application.routes.draw do
   get "/map", to: "map#index", as: :map
   namespace :map do
     resources :events, only: [ :show ]
-    resources :search_queries, only: [ :create, :show ]
+    resources :search_queries, only: [ :create ]
     resources :bookmarks, only: [ :index ]
   end
 

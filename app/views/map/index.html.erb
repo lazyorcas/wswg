@@ -21,7 +21,11 @@
             <%= render "map/search_queries/form", search_query: @search_query.dup %>
           </div>
           <%= tag.section id: "search-results", class: "grow md:min-h-0 popup popup--bottom-sheet bottom-sheet-transition", data: { controller: "bottom-sheet", bottom_sheet_target: "bottomSheet", search_target: "results" } do %>
-            <%= render "events", city: @city, events: @events, search_query: @search_query %>
+            <% if search_query? %>
+              <%= render "search_query", events: @events, search_query: @search_query %>
+            <% else %>
+              <%= render "events", city: @city, events: @events %>
+            <% end %>
           <% end %>
         <% end %>
       <% end %>
@@ -36,4 +40,7 @@
   <div class="absolute py-4 md:py-8 right-4 md:right-8">
     <%= render partial: "person" %>
   </div>
+<% end %>
+<% if search_query? && @search_query.ongoing? && @search_query.can_broadcast? %>
+  <%= turbo_stream_from @search_query %>
 <% end %>
