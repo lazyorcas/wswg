@@ -13,6 +13,8 @@ class Event::CreateJob < ApplicationJob
   retry_on Event::UrlNotFoundError, wait: 1.hour, attempts: 3
   retry_on Event::DataIncompleteError, wait: 5.minutes, attempts: DATA_INCOMPLETE_MAX_ATTEMPTS
 
+  discard_on JSON::ParserError
+
   def perform(url:, **attributes)
     event = Event.find_or_initialize_by(url: url)
     return if event.persisted?
