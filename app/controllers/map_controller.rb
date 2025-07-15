@@ -29,6 +29,14 @@ class MapController < ApplicationController
       build_events
       eager_load_events_associations
 
+      if sort_by_interests?
+        limit_events_to_batch_size
+        build_next_personalized_event_batch_path
+
+      elsif Current.person.persisted?
+        split_events_into_batches
+      end
+
       build_search_query
     end
 
@@ -36,6 +44,10 @@ class MapController < ApplicationController
   end
 
   private
+
+  def map?
+    true
+  end
 
   def load_city
     @city = if search_query?

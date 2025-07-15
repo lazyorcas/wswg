@@ -44,6 +44,10 @@ class HomeController < ApplicationController
 
   private
 
+  def map?
+    false
+  end
+
   def load_nearby_city
     @city = get_city_from_current_city
   end

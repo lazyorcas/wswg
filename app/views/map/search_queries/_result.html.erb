@@ -12,7 +12,9 @@
   </div>
   <% if events.any? %>
     <div class="grow min-h-0">
-      <%= render Event::Map::ListComponent.new(events) %>
+      <%= render "map/events/events_list" do %>
+        <%= render partial: "map/events/event", collection: events, cached: -> (event) { build_event_cache_key(event, is_map: true) } %>
+      <% end %>
     </div>
   <% end %>
 <% end %>

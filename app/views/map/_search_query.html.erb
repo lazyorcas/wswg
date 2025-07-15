@@ -20,7 +20,9 @@
     </header>
     <div class="grow min-h-0">
       <% if events.any? %>
-        <%= render Event::Map::ListComponent.new(events) %>
+        <%= render "map/events/events_list" do %>
+          <%= render partial: "map/events/event", collection: events, cached: -> (event) { build_event_cache_key(event, is_map: true) } %>
+        <% end %>
       <% else %>
         <p class="text-sm text-secondary px-4 pb-6 md:pb-4">
           No events found.

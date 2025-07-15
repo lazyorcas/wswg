@@ -22,9 +22,27 @@
   </header>
   <div class="grow min-h-0">
     <% if events.any? %>
-      <%= render Event::Map::ListComponent.new(events, 
-        bookmarked_event_ids: Current.person.bookmarked_event_ids, 
-        seen_event_ids: Current.person.seen_event_ids) %>
+      <%= render "map/events/events_list" do %>
+        <% if sort_by_interests? %>
+          <%= render partial: "map/events/event", collection: events, cached: -> (event) { build_event_cache_key(event, is_map: true) } %>
+          <%= turbo_frame_tag "new_event_batch_loader", loading: "lazy", src: @next_personalized_event_batch_path, class: "shrink-0" do %>
+            <%= render partial: "map/events/event_item_skeleton" %>
+          <% end %>
+          <% (EventBatch::BATCH_SIZE - 1).times do %>
+            <%= render partial: "map/events/event_item_skeleton" %>
+          <% end %>
+        <% elsif event_batches.present? %>
+          <% event_batches.each_with_index do |event_batch, index| %>
+            <% if index.zero? %>
+              <%= render partial: "map/events/event", collection: event_batch, cached: -> (event) { build_event_cache_key(event, is_map: true) } %>
+            <% else %>
+              <%= render "map/event_batches/event_batch_loader", event_batch: event_batch, id: "event_batch_#{index}_loader" %>
+            <% end %>
+          <% end %>
+        <% else %>
+          <%= render partial: "map/events/event", collection: events, cached: -> (event) { build_event_cache_key(event, is_map: true) } %>
+        <% end %>
+      <% end %>
     <% else %>
       <p class="text-sm text-secondary px-4 pb-6 md:pb-4">
         No events found.

@@ -14,14 +14,6 @@ class NextPersonalizedEventBatchBuilder
     events
   end
 
-  def build_path
-    next_personalized_event_batch_path(
-      city_id: @city.id,
-      event_category_slug: @event_category.slug,
-      time_period_slug: @time_period.slug
-    )
-  end
-
   private
 
   def events_page_builder

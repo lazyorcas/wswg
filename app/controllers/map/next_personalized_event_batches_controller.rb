@@ -1,4 +1,4 @@
-class Home::NextPersonalizedEventBatchesController < ApplicationController
+class Map::NextPersonalizedEventBatchesController < ApplicationController
   include CurrentPerson::Settings::PreferencesHelper
 
   def show
@@ -10,7 +10,7 @@ class Home::NextPersonalizedEventBatchesController < ApplicationController
     @events = @next_personalized_event_batch_builder.build_events
     @events = @events.includes(:source, :location, :city)
 
-    @next_personalized_event_batch_path = next_personalized_event_batch_path(
+    @next_personalized_event_batch_path = map_next_personalized_event_batch_path(
       city_id: @city.id,
       event_category_slug: @event_category.slug,
       time_period_slug: @time_period.slug

@@ -52,6 +52,10 @@ class Home::EventsController < ApplicationController
 
   private
 
+  def map?
+    false
+  end
+
   def nearby?
     @is_nearby ||= params[:city_slug].blank?
   end

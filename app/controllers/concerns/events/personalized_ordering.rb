@@ -4,10 +4,23 @@ module Events::PersonalizedOrdering
   include CurrentPerson::Settings::PreferencesHelper
 
   def build_next_personalized_event_batch_path
-    @next_personalized_event_batch_path = next_personalized_event_batch_builder.build_path
+    @next_personalized_event_batch_path ||= begin
+      params = {
+        city_id: @city.id,
+        event_category_slug: @event_category.slug,
+        time_period_slug: @time_period.slug
+      }
+      map? ?
+        map_next_personalized_event_batch_path(params) :
+        next_personalized_event_batch_path(params)
+    end
   end
 
   private
+
+  def map?
+    raise NotImplementedError
+  end
 
   def next_personalized_event_batch_builder
     @next_personalized_event_batch_builder ||= NextPersonalizedEventBatchBuilder.new(

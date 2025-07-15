@@ -1,0 +1,6 @@
+<%= turbo_frame_tag params[:target] do %>
+  <%= turbo_stream.replace params[:target] do %>
+    <%= render partial: "map/events/event", collection: @events, cached: -> (event) { build_event_cache_key(event) } %>
+  <% end %>
+  <%= turbo_stream.remove_all ".#{params[:target]}_skeleton" %>
+<% end %>
