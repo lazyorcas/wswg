@@ -45,6 +45,8 @@ Rails.application.routes.draw do
     end
   end
 
+  resource :next_event_batch, only: [ :show ], module: "home"
+
   get "/events/:id", to: "home/events#show", as: :event
   get "/events/:id/description", to: "home/events/descriptions#show", as: :event_description
   get "/events/:id/redirect", to: "home/events/redirects#show"

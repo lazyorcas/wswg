@@ -1,11 +1,11 @@
 <button popovertarget="current_person_settings_preferences_sort_by" class="button button--ghost" title="Sort">
   <i class="ph ph-arrows-down-up"></i>
-  <%= sort_by.humanize %>
+  <%= sort_by_label(sort_by) %>
 </button>
 <%= turbo_frame_tag "current_person_settings_preferences_sort_by", src: current_person_settings_preference_path(id: "sort_by"), popover: "", target: "_top", loading: "lazy", class: "modal p-4 w-xs max-w-full" do %>
   <div class="flex flex-col gap-y-4">
-    <div class="animate-pulse bg-stone-200 dark:bg-stone-700 rounded w-full h-7"></div>
-    <div class="animate-pulse bg-stone-200 dark:bg-stone-700 rounded w-full h-11"></div>
-    <div class="animate-pulse bg-stone-200 dark:bg-stone-700 button w-full"></div>
+    <div class="skeleton rounded w-full h-7"></div>
+    <div class="skeleton rounded w-full h-11"></div>
+    <div class="skeleton button w-full"></div>
   </div>
 <% end %>

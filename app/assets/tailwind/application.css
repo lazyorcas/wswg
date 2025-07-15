@@ -405,6 +405,11 @@
     @apply transition ease-in-out;
   }
 
+  .skeleton {
+    @apply bg-stone-200 dark:bg-stone-700;
+    @apply animate-pulse;
+  }
+
   /* ==========================================================================
   |
   |

@@ -6,12 +6,18 @@ module CurrentPerson::Settings::PreferencesHelper
   end
 
   def sort_by_values
-    [ "time", "popularity" ]
+    values = [ "time", "popularity" ]
+    values << "interests" if Current.user&.admin?
+    values
   end
 
   def sort_by_options
     sort_by_values.map do |value|
-      [ value.humanize, value, selected: sort_by == value ]
+      [
+        sort_by_label(value),
+        value,
+        selected: sort_by == value
+    ]
     end
   end
 
@@ -21,5 +27,13 @@ module CurrentPerson::Settings::PreferencesHelper
 
   def sort_by_popularity?
     sort_by == "popularity"
+  end
+
+  def sort_by_interests?
+    sort_by == "interests"
+  end
+
+  def sort_by_label(value)
+    value == "interests" ? "Personalized" : value.humanize
   end
 end

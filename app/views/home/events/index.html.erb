@@ -19,9 +19,17 @@
           <% end %>
         </div>
       </div>
-      <ol class="mt-4 grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-y-4 lg:gap-y-5 lg:gap-x-5" data-controller="event-list">
+      <%= tag.ol class: "mt-4 grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-y-4 lg:gap-y-5 lg:gap-x-5", data: { controller: "event-list" }, id: "event-list" do %>
         <%= render partial: "event", collection: @events, cached: -> (event) { build_event_cache_key(event) } %>
-      </ol>
+        <% if @next_event_batch_path.present? %>
+          <%= turbo_frame_tag "new_event_batch_loader", loading: "lazy", src: @next_event_batch_path, class: "shrink-0 size-full" do %>
+            <%= render partial: "home/events/event_item_skeleton" %>
+          <% end %>
+          <% (NextEventBatchBuilder::BATCH_SIZE - 1).times do %>
+            <%= render partial: "home/events/event_item_skeleton" %>
+          <% end %>
+        <% end %>
+      <% end %>
       <div class="flex flex-col items-center">
         <%= link_to @search_query.present? ? map_path(search_query_id: @search_query.id) : city_map_path(city_slug: @city.slug), class: " mt-4 lg:mt-5 button button--primary", data: { turbo: false } do %>
           View all <%= @event_category.name %>

@@ -1,4 +1,6 @@
 class Home::EventsController < ApplicationController
+  LIMIT = 10
+
   include CityDetection
   include CurrentPerson::Settings::PreferencesHelper
 
@@ -24,6 +26,12 @@ class Home::EventsController < ApplicationController
     load_events_page_builder
     build_events
     @events = @events.includes(:source, :location, :city)
+
+    if sort_by_interests?
+      limit_events_to_batch_size
+      load_next_event_batch_builder
+      build_next_event_batch_path
+    end
 
     build_meta_title
     build_meta_description
@@ -72,6 +80,23 @@ class Home::EventsController < ApplicationController
 
   def build_events
     @events = @events_page_builder.build_events
+  end
+
+  def load_next_event_batch_builder
+    @next_event_batch_builder = NextEventBatchBuilder.new(
+      city: @city,
+      event_category: @event_category,
+      time_period: @time_period,
+      order_by: sort_by
+    )
+  end
+
+  def limit_events_to_batch_size
+    @events = @events.limit(NextEventBatchBuilder::BATCH_SIZE)
+  end
+
+  def build_next_event_batch_path
+    @next_event_batch_path = @next_event_batch_builder.build_path
   end
 
   def build_meta_title
