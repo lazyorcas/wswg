@@ -16,9 +16,7 @@ class Event::FinalizeAttendeesCountJob < ApplicationJob
     event.fetch
     attendees_count = event.extract_attendees_count_from_markdown
 
-    raise Event::UrlNotFoundError.new(event.url) if attendees_count == -1
-
-    event.attendees_count = attendees_count
+    event.attendees_count = attendees_count if attendees_count != -1
     event.attendees_count_finalized_at = Time.current
 
     event.save!
