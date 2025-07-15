@@ -1,6 +1,6 @@
 <%= turbo_frame_tag id, loading: "lazy", class: "shrink-0 size-full", src: event_batch_path(event_ids: event_batch.pluck(:id), target: id) do %>
   <%= render partial: "home/events/event_item_skeleton" %>
 <% end %>
-<% event_batch.size.times do %>
+<% (event_batch.size - 1).times do %>
   <%= render partial: "home/events/event_item_skeleton", locals: { class_name: "#{id}_skeleton" } %>
 <% end %>
