@@ -92,7 +92,7 @@ class Home::EventsController < ApplicationController
   end
 
   def limit_events_to_batch_size
-    @events = @events.limit(NextEventBatchBuilder::BATCH_SIZE)
+    @events = @events.limit(NextPersonalizedEventBatchBuilder::BATCH_SIZE)
   end
 
   def build_next_personalized_event_batch_path
