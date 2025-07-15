@@ -41,7 +41,7 @@
             <% end %>
           <% end %>
         <% else %>
-          <%= render partial: "event", collection: event_batch, cached: -> (event) { build_event_cache_key(event) } %>
+          <%= render partial: "home/events/event", collection: @events, cached: -> (event) { build_event_cache_key(event) } %>
         <% end %>
       </ol>
       <%= link_to @city.persisted? ? all_city_events_path(city_slug: @city.slug) : all_nearby_events_path, class: "w-fit button button--primary" do %>

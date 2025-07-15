@@ -25,7 +25,7 @@ class Marketing::PageBuilder::CitySearchQueryEventsPageBuilder < Marketing::Even
   end
 
   def build_map_path
-    map_path(search_query_id: @search_query.id)
+    map_path(search_query_id: @search_query&.id)
   end
 
   private
