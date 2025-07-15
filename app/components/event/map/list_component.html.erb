@@ -1,7 +1,7 @@
 <ul class="flex flex-col h-full overflow-y-auto no-scrollbar divide-y divide-primary" data-bottom-sheet-target="nonDraggable">
   <% @events.each do |event| %>
     <%= render Event::Map::ListItemButtonComponent.new(event, 
-      bookmarked: @bookmarked_event_ids.include?(event.id), 
-      seen: @seen_event_ids.include?(event.id)) %>
+      bookmarked: Current.person.bookmarked_event_ids.include?(event.id), 
+      seen: Current.person.seen_event_ids.include?(event.id)) %>
   <% end %>
 </ul>

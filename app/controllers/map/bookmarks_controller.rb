@@ -5,10 +5,6 @@ class Map::BookmarksController < ApplicationController
 
   def index
     load_events
-    load_time_zone
-    if @time_zone.nil?
-      respond_to_city_not_found and return
-    end
     filter_out_past_events
     order_events
     @events = @events.includes(:source, :location, :city)
@@ -20,15 +16,11 @@ class Map::BookmarksController < ApplicationController
     @events = event_scope
   end
 
-  def load_time_zone
-    @time_zone = begin
-      city = get_city_from_current_city || get_city_from_current_person
-      city.time_zone
-    end
-  end
-
   def filter_out_past_events
-    @events = @events.where(end_date: @time_zone.current_date..)
+    @events = @events
+      .joins(:city_source)
+      .joins(:city)
+      .where("CONCAT(start_date, ' ', start_time) >= TO_CHAR(NOW() AT TIME ZONE cities.time_zone, 'YYYY-MM-DD HH24:MI:SS')")
   end
 
   def order_events

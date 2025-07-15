@@ -5,7 +5,7 @@
   <%= tag.div class: "popup popup--bottom-sheet bottom-sheet-transition h-fit md:h-full", data: { controller: "bottom-sheet", bottom_sheet_target: "bottomSheet content", map_target: "source", collapsed: true } do %>
     <% if @events.any? %>
       <div class="pt-6 md:pt-4">
-        <%= render Bookmark::Event::Map::ListComponent.new(@events, time_zone: @time_zone) %>
+        <%= render Bookmark::Event::Map::ListComponent.new(@events) %>
       </div>
     <% else %>
       <p class="px-4 py-6 md:py-4 text-sm">
