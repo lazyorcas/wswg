@@ -1,6 +1,7 @@
 class MapController < ApplicationController
   include CityDetection
   include CurrentPerson::Settings::PreferencesHelper
+  include Events
 
   rate_limit to: 20,
     within: 1.minute,
@@ -16,20 +17,17 @@ class MapController < ApplicationController
     if search_query?
       load_search_query
       load_search_query_events
-      @city = @search_query.city
+      load_city
 
     else
-      @city = get_city_from_params ||
-        get_city_from_current_city ||
-        get_city_from_current_person
-
+      load_city
       return respond_to_city_not_found if @city.nil?
 
       load_event_category
       load_time_period
-      load_order_by
-      load_events_page_builder
+
       build_events
+      eager_load_events_associations
 
       build_search_query
     end
@@ -39,7 +37,24 @@ class MapController < ApplicationController
 
   private
 
-  # Search Query
+  def load_city
+    @city = if search_query?
+      @search_query.city
+    else
+      get_city_from_params ||
+        get_city_from_current_city ||
+        get_city_from_current_person
+    end
+  end
+
+  def event_category_symbol
+    :events
+  end
+
+  def time_period_symbol
+    :all
+  end
+
   def search_query?
     params[:search_query_id].present?
   end
@@ -61,31 +76,5 @@ class MapController < ApplicationController
 
   def search_query_scope
     SearchQuery.where(searcher: [ Current.person, nil ])
-  end
-
-  # Events
-  def load_time_period
-    @time_period = TimePeriod.new(@city.time_zone, :all)
-  end
-
-  def load_event_category
-    @event_category = EventCategory.new(:events)
-  end
-
-  def load_order_by
-    @order_by = sort_by
-  end
-
-  def load_events_page_builder
-    @events_page_builder ||= Marketing::EventsPageBuilderFactory.build(
-      city: @city,
-      event_category: @event_category,
-      time_period: @time_period,
-      order_by: @order_by
-    )
-  end
-
-  def build_events
-    @events = @events_page_builder.build_events
   end
 end
