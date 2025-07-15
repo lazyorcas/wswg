@@ -169,6 +169,7 @@ export default class extends Controller {
     this.map.on("click", this.sourceId, (item) => {
       const feature = item.features[0]
       this.#showFeaturePopup(feature)
+      this.#createSeen(feature.properties.event_id, feature.properties.seen_path)
     })
   }
 
@@ -251,5 +252,18 @@ export default class extends Controller {
     const d = 6371 * c
 
     return d
+  }
+
+  #createSeen(eventId, seenPath) {
+    const formData = new FormData()
+    formData.append("seen[event_id]", eventId)
+
+    fetch(seenPath, {
+      method: "PUT",
+      headers: {
+        "X-CSRF-Token": document.querySelector("meta[name='csrf-token']").content
+      },
+      body: formData
+    })
   }
 }

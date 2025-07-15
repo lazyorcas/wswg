@@ -6,7 +6,7 @@
 <% content_for :description, current_page?(map_path) ? "Discover nearby events, meetups, and concerts from multiple sources on the city map." : "Discover events, meetups, and concerts in #{@city.name} from multiple sources on the city map." %>
 <%= tag.main class: "w-full h-dvh max-h-dvh flex", 
   data: { 
-    controller: "map",
+    controller: "map seens",
     map_access_token_value: ENV['MAPBOX_PUBLIC_ACCESS_TOKEN'],
     map_center_coordinates_value: get_mapbox_coordinates(@city.coordinates),
     map_is_mobile_value: browser.device.mobile?

@@ -19,11 +19,13 @@ module EventComponent::Mappable
       nil
 
     {
-      action: "bottom-sheet#collapse map#showFeaturePopup",
+      action: "bottom-sheet#collapse map#showFeaturePopup seens#createSeen",
       map_target: location.present? ? "item" : nil,
       map_feature: {
         type: "Feature",
         properties: {
+          event_id: @event.id,
+          seen_path: seen_path(source: "map_source_icon"),
           dom_id: dom_id(@event),
           info_window_path: map_event_path(@event),
           source_name: @event.source.name,
@@ -33,7 +35,9 @@ module EventComponent::Mappable
           type: "Point",
           coordinates: coordinates
         }
-      }
+      },
+      seens_event_id_param: @event.id,
+      seens_seen_path_param: seen_path(source: "map_list_item")
     }
   end
 end

@@ -7,7 +7,7 @@
             <%= image_tag source_icon_url, class: "inline-flex event-source-icon", loading: "lazy", alt: "#{@event.source.name} icon" %>
             <span class="text-sm"><%= @event.source.name %></span>
           <% end %>
-          <%= link_to @event.url, class: "w-fit", target: "_blank", rel: "ugc", data: { event_list_target: "link", event_path: event_path(@event, source: "title") } do %>
+          <%= link_to @event.url, class: "w-fit", target: "_blank", rel: "ugc", data: { seens_event_id_param: @event.id, seens_seen_path_param: seen_path(source: "title"), action: "seens#createSeen" } do %>
             <%= tag.h2 @event.title, class: "text-base line-clamp-2 link", style: "word-break: break-word;" %>
           <% end %>
           <span class="flex flex-col gap-y-1 mt-2" data-nosnippet>
@@ -18,22 +18,21 @@
             <% if @event.location.present? %>
               <%= tag.p class: "text-sm text-secondary flex gap-x-2" do %>
                 <i class="ph ph-map-pin text-sm shrink-0 h-fit mt-[3px] size-3.5"></i>
-                <%= link_to "https://www.google.com/maps/search/?api=1&query=#{CGI.escape(@event.location.full_address)}", class: "underline underline-secondary", target: "_blank", data: { event_list_target: "link", event_path: event_path(@event, source: "address") } do %>
+                <%= link_to "https://www.google.com/maps/search/?api=1&query=#{CGI.escape(@event.location.full_address)}", class: "underline underline-secondary", target: "_blank", data: { seens_event_id_param: @event.id, seens_seen_path_param: seen_path(source: "address"), action: "seens#createSeen" } do %>
                   <%= @event.location.full_address %>
                 <% end %>
               <% end %>
             <% end %>
             <% if @event.description.present? %>
-              <details class="group -mr-28 md:-mr-36">
+              <%= tag.details class: "group -mr-28 md:-mr-36", data: { seens_event_id_param: @event.id, seens_seen_path_param: seen_path(source: "description"), action: "seens#createSeen" } do %>
                 <summary class="text-sm text-secondary flex gap-x-2 cursor-pointer group-open:mb-2">
                   <i class="ph ph-caret-down text-sm group-open:rotate-180 transition-transform shrink-0 mt-[3px] size-3.5"></i>
                   <span class="underline underline-secondary">More details</span>
                 </summary>
                 <blockquote class="pl-5 text-sm text-primary overflow-y-scroll max-h-96 md:max-h-128 mb-14 flex flex-col gap-y-1" style="word-break: break-word;">
-                  <%= turbo_frame_tag "event_#{@event.id}_description_ping", src: event_description_path(@event), loading: "lazy" %>
                   <%= render Home::Event::DescriptionComponent.new(@event) %>
                 </blockquote>
-              </details>
+              <% end %>
             <% end %>
           </span>
         </span>

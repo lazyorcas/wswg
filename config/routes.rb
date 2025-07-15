@@ -48,8 +48,6 @@ Rails.application.routes.draw do
   resource :next_personalized_event_batch, only: [ :show ], module: "home"
   resource :event_batch, only: [ :show ], module: "home"
 
-  get "/events/:id", to: "home/events#show", as: :event
-  get "/events/:id/description", to: "home/events/descriptions#show", as: :event_description
   get "/events/:id/redirect", to: "home/events/redirects#show"
 
   resources :users, only: [ :new, :create ]
@@ -86,6 +84,7 @@ Rails.application.routes.draw do
   end
 
   resources :search_queries, only: [ :create ]
+  put "/seens", to: "seens#create", as: :seen
   resources :bookmarks, only: [ :index, :create, :update ]
 
   resources :events, only: [] do

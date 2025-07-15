@@ -5,8 +5,6 @@ class Home::EventsController < ApplicationController
 
   layout "home"
 
-  after_action :add_event_to_seen_events, only: [ :show ], if: -> { Current.person.persisted? }
-
   helper_method :nearby?
 
   def index
@@ -46,8 +44,6 @@ class Home::EventsController < ApplicationController
 
   def show
     load_event
-
-    ahoy.track "Viewed event", event_id: @event.id, source: params[:source], sort_by: sort_by
   end
 
   private
@@ -70,17 +66,5 @@ class Home::EventsController < ApplicationController
 
   def time_period_symbol
     TimePeriod::SLUG_TO_SYMBOL_MAPPING[params[:time_period_slug]]
-  end
-
-  def load_event
-    @event = Event.find(params[:id])
-  end
-
-  def add_event_to_seen_events
-    Person::AddEventToSeenEventsJob.perform_later(
-      person_type: Current.person.class.name,
-      person_id: Current.person.id,
-      event_id: @event.id
-    )
   end
 end

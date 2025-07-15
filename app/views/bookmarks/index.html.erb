@@ -9,7 +9,7 @@
   </header>
   <section class="py-10 w-full flex flex-col items-center">
     <% if @events.any? %>
-      <ol class="w-full grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-y-4 lg:gap-y-5 lg:gap-x-5" data-controller="event-list">
+      <ol class="w-full grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-y-4 lg:gap-y-5 lg:gap-x-5" data-controller="seens">
         <%= render partial: "home/events/event", collection: @events %>
       </ol>
     <% else %>
