@@ -6,7 +6,7 @@
           <%= image_tag source_icon_url, class: "inline-flex event-source-icon", loading: "lazy", alt: "#{@event.source.name} icon" %>
           <span class="text-sm"><%= @event.source.name %></span>
         <% end %>
-        <%= tag.h2 @event.title, class: class_names("text-base line-clamp-2", seen? ? "link-visited" : "link"), style: "word-break: break-word;" %>
+        <%= tag.h2 @event.title, class: "text-base line-clamp-2 link", style: "word-break: break-word;" %>
         <span class="flex flex-col gap-y-1 mt-2">
           <%= tag.span class: "text-sm text-secondary flex gap-x-2" do %>
             <i class="ph ph-clock text-sm shrink-0 h-fit mt-[3px] size-3.5"></i>

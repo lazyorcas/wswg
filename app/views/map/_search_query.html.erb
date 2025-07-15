@@ -20,9 +20,7 @@
     </header>
     <div class="grow min-h-0">
       <% if events.any? %>
-        <%= render Event::Map::ListComponent.new(events, 
-          bookmarked_event_ids: Current.person.bookmarked_event_ids, 
-          seen_event_ids: Current.person.seen_event_ids) %>
+        <%= render Event::Map::ListComponent.new(events) %>
       <% else %>
         <p class="text-sm text-secondary px-4 pb-6 md:pb-4">
           No events found.
