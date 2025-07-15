@@ -1,20 +1,33 @@
 class HomeController < ApplicationController
   include CityDetection
   include CurrentPerson::Settings::PreferencesHelper
+  include Events
 
   layout "home"
 
   def index
     ahoy.track "Visited homepage"
+
+    load_events_directory
     load_nearby_city
 
     if @city.present?
-      load_events_page_builder
-      build_events
-      @events = @events.includes(:source, :location, :city)
-    end
+      load_event_category
+      load_time_period
 
-    load_events_directory
+      build_events
+      eager_load_events_associations
+
+      if sort_by_interests?
+        limit_events_to_batch_size
+        build_next_personalized_event_batch_path
+
+      elsif Current.person.persisted?
+        split_events_into_batches
+      end
+
+      build_map_path
+    end
   end
 
   def pricing
@@ -35,21 +48,12 @@ class HomeController < ApplicationController
     @city = get_city_from_current_city
   end
 
-  def load_city
-    @city = get_city_from_current_city || get_city_from_current_person
+  def event_category_symbol
+    :events
   end
 
-  def load_events_page_builder
-    @events_page_builder = Marketing::EventsPageBuilderFactory.build({
-      city: @city,
-      event_category: EventCategory.new(:events),
-      time_period: TimePeriod.new(@city.time_zone, :all),
-      order_by: sort_by
-    })
-  end
-
-  def build_events
-    @events = @events_page_builder.build_events
+  def time_period_symbol
+    :all
   end
 
   def load_events_directory(complete: false)

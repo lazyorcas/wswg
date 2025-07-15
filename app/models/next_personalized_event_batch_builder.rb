@@ -1,8 +1,6 @@
 class NextPersonalizedEventBatchBuilder
   include Rails.application.routes.url_helpers
 
-  BATCH_SIZE = 10
-
   def initialize(city:, event_category:, time_period:, order_by:)
     @city = city
     @event_category = event_category
@@ -12,7 +10,7 @@ class NextPersonalizedEventBatchBuilder
 
   def build_events
     events = events_page_builder.build_events
-    events.limit(BATCH_SIZE)
+    events.limit(EventBatch::BATCH_SIZE)
     events
   end
 

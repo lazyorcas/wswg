@@ -18,7 +18,7 @@ module SetCurrentRequestDetails
       if city.persisted?
         Current.city = city
       else
-        city.attributes = build_city_attributes_from_cloudflare_headers
+        city.attributes = build_city_attributes_from_cloudflare_headers # mock_city_attributes
         if city.valid?
           Current.city = city
         else
@@ -29,6 +29,17 @@ module SetCurrentRequestDetails
   end
 
   private
+
+  def mock_city_attributes
+    {
+      name: "Singapore City",
+      time_zone: "Asia/Singapore",
+      country_code: "SG",
+      currency: "SGD",
+      lat: 1.283649,
+      lon: 103.858892
+    }
+  end
 
   def build_city_attributes_from_cloudflare_headers
     {

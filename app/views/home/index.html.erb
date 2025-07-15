@@ -17,15 +17,39 @@
       <h2 class="self-center text-center text-2xl md:text-3xl font-semibold">Events near me</h2>
       <div class="self-end w-full flex justify-end">
         <%= render "current_person/settings/preferences/sort_by_popover_button" %>
-        <%= link_to city_map_path(city_slug: @city.slug), class: "self-end icon-button icon-button--base button--ghost", data: { turbo: false }, aria: { label: "Events Map" } do %>
-          <i class="ph ph-map-trifold"></i>
+        <% if @map_path.present? %>
+          <%= link_to @map_path, class: "icon-button icon-button--base button--ghost", data: { turbo: false }, aria: { label: "Events Map" } do %>
+            <i class="ph ph-map-trifold"></i>
+          <% end %>
         <% end %>
       </div>
       <ol class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-y-4 lg:gap-y-5 lg:gap-x-5" data-controller="event-list">
-        <%= render partial: "home/events/event", collection: @events, cached: -> (event) { build_event_cache_key(event) } %>
+        <% if sort_by_interests? %>
+          <%= render partial: "home/events/event", collection: @events, cached: -> (event) { build_event_cache_key(event) } %>
+          <%= turbo_frame_tag "new_event_batch_loader", loading: "lazy", src: @next_personalized_event_batch_path, class: "shrink-0 size-full" do %>
+            <%= render partial: "home/events/event_item_skeleton" %>
+          <% end %>
+          <% (EventBatch::BATCH_SIZE - 1).times do %>
+            <%= render partial: "home/events/event_item_skeleton" %>
+          <% end %>
+        <% elsif @event_batches.present? %>
+          <% @event_batches.each_with_index do |event_batch, index| %>
+            <% if index.zero? %>
+              <%= render partial: "home/events/event", collection: event_batch, cached: -> (event) { build_event_cache_key(event) } %>
+            <% else %>
+              <%= render "home/event_batches/event_batch_loader", event_batch: event_batch, id: "event_batch_#{index}_loader" %>
+            <% end %>
+          <% end %>
+        <% else %>
+          <%= render partial: "event", collection: event_batch, cached: -> (event) { build_event_cache_key(event) } %>
+        <% end %>
       </ol>
-      <%= link_to all_city_events_path(city_slug: @city.slug), class: "w-fit button button--secondary" do %>
-        View all events in <%= @city.name %>
+      <%= link_to @city.persisted? ? all_city_events_path(city_slug: @city.slug) : all_nearby_events_path, class: "w-fit button button--primary" do %>
+        <% if @city.persisted? %>
+          View all events in <%= @city.name %>
+        <% else %>
+          View all nearby events
+        <% end %>
       <% end %>
     </section>
   <% end %>

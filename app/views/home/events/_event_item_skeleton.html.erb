@@ -1,4 +1,4 @@
-<li class="event-item-skeleton shrink-0 size-full pointer-events-none">
+<%= tag.li class: class_names("shrink-0 size-full pointer-events-none", local_assigns[:class_name]) do %>
   <span class="size-full grid-item rounded-xl">
     <span class="size-full flex gap-x-4">
       <span class="grow flex flex-col list-item__text">
@@ -19,4 +19,4 @@
       </span>
     </span>
   </span>
-</li>
+<% end %>

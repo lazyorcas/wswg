@@ -24,6 +24,10 @@ class Marketing::PageBuilder::CitySearchQueryEventsPageBuilder < Marketing::Even
     limit_events
   end
 
+  def build_map_path
+    map_path(search_query_id: @search_query.id)
+  end
+
   private
 
   def i18n_params

@@ -13,4 +13,8 @@ class Marketing::EventsPageBuilder
   def build_path
     build_alternate_link_path(@time_period.to_sym)
   end
+
+  def build_map_path
+    raise NotImplementedError
+  end
 end

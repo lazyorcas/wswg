@@ -5,7 +5,7 @@
     <%= turbo_frame_tag "new_event_batch_loader", loading: "lazy", src: @next_personalized_event_batch_path, class: "shrink-0 size-full" do %>
       <%= render partial: "home/events/event_item_skeleton" %>
     <% end %>
-    <% (NextEventBatchBuilder::BATCH_SIZE - 1).times do %>
+    <% (EventBatch::BATCH_SIZE - 1).times do %>
       <%= render partial: "home/events/event_item_skeleton" %>
     <% end %>
   <% end %>

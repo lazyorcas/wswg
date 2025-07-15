@@ -21,6 +21,10 @@ class Marketing::PageBuilder::NearbyEventsPageBuilder < Marketing::EventsPageBui
     limit_events
   end
 
+  def build_map_path
+    map_path
+  end
+
   private
 
   def city_i18n_key

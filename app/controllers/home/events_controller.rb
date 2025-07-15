@@ -1,43 +1,45 @@
 class Home::EventsController < ApplicationController
-  LIMIT = 10
-
   include CityDetection
   include CurrentPerson::Settings::PreferencesHelper
+  include Events
 
   layout "home"
 
   after_action :add_event_to_seen_events, only: [ :show ], if: -> { Current.person.persisted? }
 
-  helper_method :nearby?, :events?
+  helper_method :nearby?
 
   def index
-    if nearby?
-      @city = get_city_from_current_city
-      if @city.nil?
-        respond_to_city_not_found and return
+    load_city
+    if @city.nil?
+      if nearby?
+        respond_to_city_not_found
+      else
+        head(:not_found)
       end
-    else
-      @city = get_city_from_params
-      return head(:not_found) if @city.nil?
+      return
     end
 
     load_event_category
     load_time_period
-    load_events_page_builder
+
     build_events
-    @events = @events.includes(:source, :location, :city)
+    eager_load_events_associations
 
     if sort_by_interests?
       limit_events_to_batch_size
-      load_next_personalized_event_batch_builder
       build_next_personalized_event_batch_path
+
+    elsif Current.person.persisted?
+      split_events_into_batches
     end
 
     build_meta_title
     build_meta_description
     build_title
     build_description
-    build_alternate_link_attributes
+    build_alternate_links_attributes
+    build_map_path
 
     ahoy.track "Viewed events", city: @city.name, event_category: @event_category.name, time_period: @time_period.name, nearby: nearby?
   end
@@ -50,75 +52,20 @@ class Home::EventsController < ApplicationController
 
   private
 
-  def events?
-    @are_events ||= params[:event_category_slug] == "events"
-  end
-
   def nearby?
     @is_nearby ||= params[:city_slug].blank?
   end
 
-  def load_event_category
-    event_category_symbol = EventCategory::SLUG_TO_SYMBOL_MAPPING[params[:event_category_slug]]
-    @event_category = EventCategory.new(event_category_symbol)
+  def load_city
+    @city = nearby? ? get_city_from_current_city : get_city_from_params
   end
 
-  def load_time_period
-    time_period_symbol = TimePeriod::SLUG_TO_SYMBOL_MAPPING[params[:time_period_slug]]
-    @time_period = TimePeriod.new(@city.time_zone, time_period_symbol)
+  def event_category_symbol
+    EventCategory::SLUG_TO_SYMBOL_MAPPING[params[:event_category_slug]]
   end
 
-  def load_events_page_builder
-    events_page_builder_params = {
-      city: @city,
-      event_category: @event_category,
-      time_period: @time_period,
-      order_by: sort_by
-    }
-    @events_page_builder = Marketing::EventsPageBuilderFactory.build(events_page_builder_params)
-  end
-
-  def build_events
-    @events = @events_page_builder.build_events
-  end
-
-  def load_next_personalized_event_batch_builder
-    @next_personalized_event_batch_builder = NextPersonalizedEventBatchBuilder.new(
-      city: @city,
-      event_category: @event_category,
-      time_period: @time_period,
-      order_by: sort_by
-    )
-  end
-
-  def limit_events_to_batch_size
-    @events = @events.limit(NextPersonalizedEventBatchBuilder::BATCH_SIZE)
-  end
-
-  def build_next_personalized_event_batch_path
-    @next_personalized_event_batch_path = @next_personalized_event_batch_builder.build_path
-  end
-
-  end
-
-  def build_meta_title
-    @meta_title = @events_page_builder.build_meta_title
-  end
-
-  def build_meta_description
-    @meta_description = @events_page_builder.build_meta_description
-  end
-
-  def build_title
-    @title = @events_page_builder.build_title
-  end
-
-  def build_description
-    @description = @events_page_builder.build_description
-  end
-
-  def build_alternate_link_attributes
-    @alternate_links_attributes = @events_page_builder.build_alternate_links_attributes
+  def time_period_symbol
+    TimePeriod::SLUG_TO_SYMBOL_MAPPING[params[:time_period_slug]]
   end
 
   def load_event

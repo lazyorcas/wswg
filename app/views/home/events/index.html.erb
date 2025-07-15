@@ -14,20 +14,32 @@
           <% if @event_category.events? %>
             <%= render "current_person/settings/preferences/sort_by_popover_button" %>
           <% end %>
-          <%= link_to @search_query.present? ? map_path(search_query_id: @search_query.id) : city_map_path(city_slug: @city.slug), class: "icon-button icon-button--base button--ghost", data: { turbo: false }, aria: { label: "Events Map" } do %>
-            <i class="ph ph-map-trifold"></i>
+          <% if @map_path.present? %>
+            <%= link_to @map_path, class: "icon-button icon-button--base button--ghost", data: { turbo: false }, aria: { label: "Events Map" } do %>
+              <i class="ph ph-map-trifold"></i>
+            <% end %>
           <% end %>
         </div>
       </div>
-      <%= tag.ol class: "mt-4 grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-y-4 lg:gap-y-5 lg:gap-x-5", data: { controller: "event-list" }, id: "event-list" do %>
-        <%= render partial: "event", collection: @events, cached: -> (event) { build_event_cache_key(event) } %>
+      <%= tag.ol class: "mt-4 grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-y-4 lg:gap-y-5 lg:gap-x-5", data: { controller: "event-list" } do %>
         <% if sort_by_interests? %>
+          <%= render partial: "event", collection: @events, cached: -> (event) { build_event_cache_key(event) } %>
           <%= turbo_frame_tag "new_event_batch_loader", loading: "lazy", src: @next_personalized_event_batch_path, class: "shrink-0 size-full" do %>
             <%= render partial: "home/events/event_item_skeleton" %>
           <% end %>
-          <% (NextEventBatchBuilder::BATCH_SIZE - 1).times do %>
+          <% (EventBatch::BATCH_SIZE - 1).times do %>
             <%= render partial: "home/events/event_item_skeleton" %>
           <% end %>
+        <% elsif @event_batches.present? %>
+          <% @event_batches.each_with_index do |event_batch, index| %>
+            <% if index.zero? %>
+              <%= render partial: "event", collection: event_batch, cached: -> (event) { build_event_cache_key(event) } %>
+            <% else %>
+              <%= render "home/event_batches/event_batch_loader", event_batch: event_batch, id: "event_batch_#{index}_loader" %>
+            <% end %>
+          <% end %>
+        <% else %>
+          <%= render partial: "event", collection: event_batch, cached: -> (event) { build_event_cache_key(event) } %>
         <% end %>
       <% end %>
       <div class="flex flex-col items-center">

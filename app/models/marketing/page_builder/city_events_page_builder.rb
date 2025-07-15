@@ -22,6 +22,10 @@ class Marketing::PageBuilder::CityEventsPageBuilder < Marketing::EventsPageBuild
     limit_events
   end
 
+  def build_map_path
+    city_map_path(city_slug: @city.slug)
+  end
+
   private
 
   def i18n_params
