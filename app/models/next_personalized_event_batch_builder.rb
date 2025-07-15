@@ -1,4 +1,4 @@
-class NextEventBatchBuilder
+class NextPersonalizedEventBatchBuilder
   include Rails.application.routes.url_helpers
 
   BATCH_SIZE = 10

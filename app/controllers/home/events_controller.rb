@@ -29,8 +29,8 @@ class Home::EventsController < ApplicationController
 
     if sort_by_interests?
       limit_events_to_batch_size
-      load_next_event_batch_builder
-      build_next_event_batch_path
+      load_next_personalized_event_batch_builder
+      build_next_personalized_event_batch_path
     end
 
     build_meta_title
@@ -82,8 +82,8 @@ class Home::EventsController < ApplicationController
     @events = @events_page_builder.build_events
   end
 
-  def load_next_event_batch_builder
-    @next_event_batch_builder = NextEventBatchBuilder.new(
+  def load_next_personalized_event_batch_builder
+    @next_personalized_event_batch_builder = NextPersonalizedEventBatchBuilder.new(
       city: @city,
       event_category: @event_category,
       time_period: @time_period,
@@ -95,8 +95,10 @@ class Home::EventsController < ApplicationController
     @events = @events.limit(NextEventBatchBuilder::BATCH_SIZE)
   end
 
-  def build_next_event_batch_path
-    @next_event_batch_path = @next_event_batch_builder.build_path
+  def build_next_personalized_event_batch_path
+    @next_personalized_event_batch_path = @next_personalized_event_batch_builder.build_path
+  end
+
   end
 
   def build_meta_title

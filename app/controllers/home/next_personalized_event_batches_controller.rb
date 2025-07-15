@@ -1,4 +1,4 @@
-class Home::NextEventBatchesController < ApplicationController
+class Home::NextPersonalizedEventBatchesController < ApplicationController
   LIMIT = 10
 
   include CurrentPerson::Settings::PreferencesHelper
@@ -8,9 +8,11 @@ class Home::NextEventBatchesController < ApplicationController
     load_event_category
     load_time_period
 
-    load_next_event_batch_builder
-    @events = @next_event_batch_builder.build_events
-    @next_event_batch_path = @next_event_batch_builder.build_path
+    load_next_personalized_event_batch_builder
+    @events = @next_personalized_event_batch_builder.build_events
+    @events = @events.includes(:source, :location, :city)
+
+    @next_personalized_event_batch_path = @next_personalized_event_batch_builder.build_path
   end
 
   private
@@ -29,8 +31,8 @@ class Home::NextEventBatchesController < ApplicationController
     @time_period = TimePeriod.new(@city.time_zone, time_period_symbol)
   end
 
-  def load_next_event_batch_builder
-    @next_event_batch_builder = NextEventBatchBuilder.new(
+  def load_next_personalized_event_batch_builder
+    @next_personalized_event_batch_builder = NextPersonalizedEventBatchBuilder.new(
       city: @city,
       event_category: @event_category,
       time_period: @time_period,

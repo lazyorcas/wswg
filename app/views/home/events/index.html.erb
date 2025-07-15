@@ -21,8 +21,8 @@
       </div>
       <%= tag.ol class: "mt-4 grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-y-4 lg:gap-y-5 lg:gap-x-5", data: { controller: "event-list" }, id: "event-list" do %>
         <%= render partial: "event", collection: @events, cached: -> (event) { build_event_cache_key(event) } %>
-        <% if @next_event_batch_path.present? %>
-          <%= turbo_frame_tag "new_event_batch_loader", loading: "lazy", src: @next_event_batch_path, class: "shrink-0 size-full" do %>
+        <% if sort_by_interests? %>
+          <%= turbo_frame_tag "new_event_batch_loader", loading: "lazy", src: @next_personalized_event_batch_path, class: "shrink-0 size-full" do %>
             <%= render partial: "home/events/event_item_skeleton" %>
           <% end %>
           <% (NextEventBatchBuilder::BATCH_SIZE - 1).times do %>
