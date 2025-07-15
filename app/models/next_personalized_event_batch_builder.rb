@@ -13,10 +13,11 @@ class NextPersonalizedEventBatchBuilder
   def build_events
     events = events_page_builder.build_events
     events.limit(BATCH_SIZE)
+    events
   end
 
   def build_path
-    next_event_batch_path(
+    next_personalized_event_batch_path(
       city_id: @city.id,
       event_category_slug: @event_category.slug,
       time_period_slug: @time_period.slug
