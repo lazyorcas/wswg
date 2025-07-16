@@ -33,6 +33,8 @@ data_sources:
     smart_columns:
       user_id: "SELECT id, email FROM users WHERE id IN {value}"
       location_id: "SELECT id, full_address FROM locations WHERE id IN {value}"
+      city_id: "SELECT id, name FROM cities WHERE id IN {value}"
+      source_id: "SELECT id, name FROM sources WHERE id IN {value}"
 
 # create audits
 # audit: true
