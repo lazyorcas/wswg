@@ -247,6 +247,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_14_144920) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["event_id"], name: "index_impressions_on_event_id"
+    t.index ["impressionable_id", "impressionable_type", "event_id"], name: "idx_on_impressionable_id_impressionable_type_event__5861e60e57", unique: true
     t.index ["impressionable_type", "impressionable_id"], name: "index_impressions_on_impressionable"
   end
 
