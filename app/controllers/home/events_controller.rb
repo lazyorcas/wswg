@@ -27,9 +27,6 @@ class Home::EventsController < ApplicationController
     if sort_by_interests?
       limit_events_to_batch_size
       build_next_personalized_event_batch_path
-
-    elsif Current.person.persisted?
-      split_events_into_batches
     end
 
     build_meta_title
