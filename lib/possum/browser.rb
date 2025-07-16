@@ -2,6 +2,7 @@
 
 class Possum::Browser < Ferrum::Browser
   TIMEOUT = 10
+  PROCESS_TIMEOUT = 10
   WINDOW_SIZE = [ 1366, 768 ]
 
   def initialize(
@@ -11,6 +12,7 @@ class Possum::Browser < Ferrum::Browser
     super(
       headless: "new",
       timeout: timeout,
+      process_timeout: process_timeout,
       browser_options: {
         "no-sandbox": nil,
         "disable-blink-features" => "AutomationControlled"
