@@ -39,7 +39,7 @@
             <% end %>
           <% end %>
         <% else %>
-          <%= render partial: "event", collection: event_batch, cached: -> (event) { build_event_cache_key(event) } %>
+          <%= render partial: "event", collection: @events, cached: -> (event) { build_event_cache_key(event) } %>
         <% end %>
       </ol>
       <div class="flex flex-col items-center">
