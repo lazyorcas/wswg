@@ -2,7 +2,7 @@ class Home::EventBatchesController < ApplicationController
   def show
     build_event_batch
     build_events
-    @events = @events.includes(:source, :location, :city)
+    eager_load_events_associations
   end
 
   private
@@ -13,6 +13,10 @@ class Home::EventBatchesController < ApplicationController
 
   def build_events
     @events = @event_batch.build_events
+  end
+
+  def eager_load_events_associations
+    @events = @events.includes(:source, :location, :city)
   end
 
   def event_batch_params
