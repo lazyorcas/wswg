@@ -41,8 +41,12 @@ class Event::CreateJob < ApplicationJob
       create_archived_link_for_duplicated_event(event)
     end
 
-    # rescue Event::DataIncompleteError => e
-    #   raise e if executions_for(e) < DATA_INCOMPLETE_MAX_ATTEMPTS
+  rescue Event::DataIncompleteError => e
+    if executions_for(e) < DATA_INCOMPLETE_MAX_ATTEMPTS
+      raise e
+    else
+      create_archived_link_for_data_incomplete_event(event)
+    end
   end
 
   private
@@ -72,16 +76,16 @@ class Event::CreateJob < ApplicationJob
     end
   end
 
-  # def create_archived_link_for_not_found_event(url)
-  #   archived_link = ArchivedLink.find_or_initialize_by(url: url)
+  def create_archived_link_for_data_incomplete_event(event)
+    archived_link = ArchivedLink.find_or_initialize_by(url: event.url)
 
-  #   if archived_link.new_record?
-  #     archived_link.reason = :not_found_or_expired
-  #     archived_link.metadata = {
-  #       markdown: markdown,
-  #       json: json
-  #     }
-  #     archived_link.save!
-  #   end
-  # end
+    if archived_link.new_record?
+      archived_link.reason = :data_incomplete
+      archived_link.metadata = {
+        attributes: event.attributes,
+        errors: event.errors.to_json
+      }
+      archived_link.save!
+    end
+  end
 end
