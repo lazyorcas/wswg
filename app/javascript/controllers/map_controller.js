@@ -93,6 +93,19 @@ export default class extends Controller {
     }
   }
 
+  delayAddNewFeatures() {
+    setTimeout(this.addNewFeatures.bind(this), 1000)
+  }
+  
+  addNewFeatures() {
+    const source = this.map.getSource(this.sourceId)
+    const features = this.#getFeaturesFromItemTargets()
+    source.setData({
+    type: "FeatureCollection",
+      features,
+    })
+  }
+
   #addSource() {
     this.map.addSource(this.sourceId, {
       type: "geojson",
