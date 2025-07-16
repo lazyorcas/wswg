@@ -41,8 +41,8 @@ class Event::CreateJob < ApplicationJob
       create_archived_link_for_duplicated_event(event)
     end
 
-  rescue Event::DataIncompleteError => e
-    raise e # if executions_for(e) < DATA_INCOMPLETE_MAX_ATTEMPTS
+    # rescue Event::DataIncompleteError => e
+    #   raise e if executions_for(e) < DATA_INCOMPLETE_MAX_ATTEMPTS
   end
 
   private
