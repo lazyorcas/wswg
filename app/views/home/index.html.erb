@@ -24,7 +24,7 @@
         <% end %>
       </div>
       <%= tag.ol class: "grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-y-4 lg:gap-y-5 lg:gap-x-5", data: { 
-        controller: "seens impressions",
+        controller: class_names("seens", { "impressions": Current.person.persisted? }),
         impressions_impression_path_value: impression_path
       } do %>
         <% if sort_by_interests? %>
