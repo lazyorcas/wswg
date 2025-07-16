@@ -12,7 +12,7 @@ class Possum::Browser < Ferrum::Browser
     super(
       headless: "new",
       timeout: timeout,
-      process_timeout: process_timeout,
+      process_timeout: PROCESS_TIMEOUT,
       browser_options: {
         "no-sandbox": nil,
         "disable-blink-features" => "AutomationControlled"
