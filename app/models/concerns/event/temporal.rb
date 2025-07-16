@@ -13,14 +13,18 @@ module Event::Temporal
     validate :validate_ongoing, if: -> { end_date.present? && start_date.present? }, on: :create
   end
 
-  def start_datetime
-    [ start_date, start_time ].join("T")
+  def has_started?
+    "#{start_date} #{start_time}" <= "#{city.time_zone.current_date} #{city.time_zone.current_time}"
+  end
+
+  def has_ended?
+    end_date < city.time_zone.current_date.to_s
   end
 
   private
 
   def validate_ongoing
-    return if ongoing?
+    return if has_ended?
     errors.add(:end_date, "must be greater than or equal to the current date")
   end
 end

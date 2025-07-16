@@ -35,7 +35,13 @@ class SearchQuery::Result < Search::Result
         .map.with_index { |event, index| [ event, scores[index] ] }
 
       events_with_scores
-        .sort_by { |event, score| all_scores_are_equal? ? event.start_datetime : 1.0 / score }
+        .sort_by do |event, score|
+          if all_scores_are_equal?
+            [ event.start_date, event.start_time ]
+          else
+            1.0 / score
+          end
+        end
         .map { |event, _| event }
         .take(EVENT_LIMIT)
     end

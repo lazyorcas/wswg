@@ -19,12 +19,4 @@ class Event < ApplicationRecord
   has_many :seens, dependent: :destroy
 
   validates :url, uniqueness: true
-
-  def ongoing?
-    end_date >= city.time_zone.current_date.to_s
-  end
-
-  def has_started?
-    "#{start_date} #{start_time}" <= "#{city.time_zone.current_date} #{city.time_zone.current_time}"
-  end
 end

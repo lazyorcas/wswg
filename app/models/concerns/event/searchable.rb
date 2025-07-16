@@ -23,7 +23,7 @@ module Event::Searchable
   end
 
   def should_index?
-    data_completed? && ongoing? && city.languages.include?(language)
+    data_completed? && !has_ended? && city.languages.include?(language)
   end
 
   def language
