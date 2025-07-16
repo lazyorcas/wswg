@@ -31,8 +31,7 @@ class ScrapeAndCreateEventsJob < ApplicationJob
 
   def calculate_limit_modifier(city, city_source)
     return INITIAL_LIMIT_MODIFIER if city_source.last_fetched_at.nil?
-    return MIN_LIMIT_MODIFIER if city.current_score.zero?
 
-    [ MAX_LIMIT_MODIFIER, city.current_score ].min
+    [ MIN_LIMIT_MODIFIER, [ MAX_LIMIT_MODIFIER, city.current_score ].min ].max
   end
 end
