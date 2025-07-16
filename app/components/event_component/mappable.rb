@@ -19,8 +19,10 @@ module EventComponent::Mappable
       nil
 
     {
+      event_id: @event.id,
       action: "bottom-sheet#collapse map#showFeaturePopup seens#createSeen",
       map_target: location.present? ? "item" : nil,
+      impressions_target: "event",
       map_feature: {
         type: "Feature",
         properties: {

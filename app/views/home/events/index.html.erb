@@ -21,7 +21,10 @@
           <% end %>
         </div>
       </div>
-      <ol class="mt-4 grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-y-4 lg:gap-y-5 lg:gap-x-5" data-controller="seens">
+      <%= tag.ol class: "mt-4 grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-y-4 lg:gap-y-5 lg:gap-x-5", data: { 
+        controller: "seens impressions",
+        impressions_impression_path_value: impression_path
+      } do %>
         <% if sort_by_interests? %>
           <%= render partial: "event", collection: @events, cached: -> (event) { build_event_cache_key(event) } %>
           <%= turbo_frame_tag "new_event_batch_loader", loading: "lazy", src: @next_personalized_event_batch_path, class: "shrink-0 size-full" do %>
@@ -41,7 +44,7 @@
         <% else %>
           <%= render partial: "event", collection: @events, cached: -> (event) { build_event_cache_key(event) } %>
         <% end %>
-      </ol>
+      <% end %>
       <div class="flex flex-col items-center">
         <%= link_to @search_query.present? ? map_path(search_query_id: @search_query.id) : city_map_path(city_slug: @city.slug), class: " mt-4 lg:mt-5 button button--primary", data: { turbo: false } do %>
           View all <%= @event_category.name %>

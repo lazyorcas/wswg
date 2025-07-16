@@ -83,9 +83,10 @@ Rails.application.routes.draw do
     resource :event_batch, only: [ :show ]
   end
 
-  resources :search_queries, only: [ :create ]
+  put "/impressions", to: "impressions#create", as: :impression
   put "/seens", to: "seens#create", as: :seen
   resources :bookmarks, only: [ :index, :create, :update ]
+  resources :search_queries, only: [ :create ]
 
   resources :events, only: [] do
     resource :bookmark, only: [ :show ], on: :member, module: "events"

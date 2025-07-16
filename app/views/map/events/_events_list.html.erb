@@ -1,3 +1,8 @@
-<ol class="flex flex-col h-full overflow-y-auto no-scrollbar divide-y divide-primary" data-bottom-sheet-target="nonDraggable" data-map-target="source">
+<%= tag.ol class: "flex flex-col h-full overflow-y-auto no-scrollbar divide-y divide-primary", data: { 
+  bottom_sheet_target: "nonDraggable",
+  map_target: "source",
+  controller: "impressions",
+  impressions_impression_path_value: impression_path
+} do %>
   <%= yield %>
-</ol>
+<% end %>

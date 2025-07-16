@@ -23,7 +23,10 @@
           <% end %>
         <% end %>
       </div>
-      <ol class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-y-4 lg:gap-y-5 lg:gap-x-5" data-controller="seens">
+      <%= tag.ol class: "grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-y-4 lg:gap-y-5 lg:gap-x-5", data: { 
+        controller: "seens impressions",
+        impressions_impression_path_value: impression_path
+      } do %>
         <% if sort_by_interests? %>
           <%= render partial: "home/events/event", collection: @events, cached: -> (event) { build_event_cache_key(event) } %>
           <%= turbo_frame_tag "new_event_batch_loader", loading: "lazy", src: @next_personalized_event_batch_path, class: "shrink-0 size-full" do %>
@@ -43,7 +46,7 @@
         <% else %>
           <%= render partial: "home/events/event", collection: @events, cached: -> (event) { build_event_cache_key(event) } %>
         <% end %>
-      </ol>
+      <% end %>
       <%= link_to @city.persisted? ? all_city_events_path(city_slug: @city.slug) : all_nearby_events_path, class: "w-fit button button--primary" do %>
         <% if @city.persisted? %>
           View all events in <%= @city.name %>
