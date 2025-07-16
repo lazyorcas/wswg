@@ -10,7 +10,7 @@ module Event::Temporal
       comparison: { greater_than_or_equal_to: :start_time },
       if: -> { end_time.present? && start_time.present? }
 
-    validate :validate_ongoing, if: -> { end_date.present? && start_date.present? }, on: :create
+    validate :validate_end_date_after_start_date, if: -> { end_date.present? && start_date.present? }, on: :create
   end
 
   def has_started?
@@ -23,8 +23,8 @@ module Event::Temporal
 
   private
 
-  def validate_ongoing
-    return if has_ended?
+  def validate_end_date_after_start_date
+    return if end_date >= start_date
     errors.add(:end_date, "must be greater than or equal to the current date")
   end
 end
