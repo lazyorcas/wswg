@@ -9,6 +9,9 @@ module IsPerson
 
     belongs_to :city, optional: true
 
+    has_many :impressions, as: :impressionable, dependent: :destroy
+    has_many :impression_events, through: :impressions, source: :event
+
     has_many :seens, as: :seenable, dependent: :destroy
     has_many :seen_events, through: :seens, source: :event
 

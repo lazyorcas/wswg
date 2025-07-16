@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_07_14_043543) do
+ActiveRecord::Schema[8.0].define(version: 2025_07_14_144920) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -240,6 +240,16 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_14_043543) do
     t.index ["participant_type", "participant_id", "experiment"], name: "index_field_test_memberships_on_participant", unique: true
   end
 
+  create_table "impressions", force: :cascade do |t|
+    t.string "impressionable_type", null: false
+    t.bigint "impressionable_id", null: false
+    t.bigint "event_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["event_id"], name: "index_impressions_on_event_id"
+    t.index ["impressionable_type", "impressionable_id"], name: "index_impressions_on_impressionable"
+  end
+
   create_table "languages", force: :cascade do |t|
     t.string "name", null: false
     t.string "code", null: false
@@ -368,6 +378,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_14_043543) do
   add_foreign_key "city_sources", "sources"
   add_foreign_key "events", "city_sources"
   add_foreign_key "events", "locations"
+  add_foreign_key "impressions", "events"
   add_foreign_key "location_queries", "locations"
   add_foreign_key "search_queries", "cities"
   add_foreign_key "searches", "search_queries"
