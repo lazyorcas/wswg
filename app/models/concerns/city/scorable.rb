@@ -15,7 +15,7 @@ module City::Scorable
   def visitor_count
     @visitor_count ||= Ahoy::Event
       .joins(:visit)
-      .where(visit: { analyzable: true })
+      .where(ahoy_visits: { analyzable: true })
       .where(name: [ "Viewed events", "Visited map page" ], time: TIME_WINDOW.ago..)
       .where("properties->>'city' = ?", self.name)
       .where("referrer_host IS NULL OR referrer_host != ?", "google_ads")
