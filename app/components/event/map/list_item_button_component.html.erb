@@ -8,12 +8,12 @@
         <% end %>
         <%= tag.h2 @event.title, class: "text-base line-clamp-2 link", style: "word-break: break-word;" %>
         <span class="flex flex-col gap-y-1 mt-2">
-          <%= tag.span class: "text-sm text-secondary flex gap-x-2" do %>
+          <%= tag.span class: "text-sm text-secondary flex gap-x-2", data: { nosnippet: "" } do %>
             <i class="ph ph-clock text-sm shrink-0 h-fit mt-[3px] size-3.5"></i>
             <%= date %> &#x2022; <%= time_range %>
           <% end %>
           <% if @event.location.present? %>
-            <%= tag.span class: "text-sm text-secondary flex gap-x-2", data: { nosnippet: "" } do %>
+            <%= tag.span class: "text-sm text-secondary flex gap-x-2" do %>
               <i class="ph ph-map-pin text-sm shrink-0 h-fit mt-[3px] size-3.5"></i>
               <%= @event.location.full_address %>
             <% end %>
