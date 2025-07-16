@@ -1,8 +1,3 @@
-<%= tag.ol class: "flex flex-col h-full overflow-y-auto no-scrollbar divide-y divide-primary", data: { 
-  bottom_sheet_target: "nonDraggable",
-  map_target: "source",
-  controller: Current.person.persisted? ? "impressions" : nil,
-  impressions_impression_path_value: impression_path
-} do %>
+<%= tag.ol class: "flex flex-col h-full overflow-y-auto no-scrollbar divide-y divide-primary", data: { bottom_sheet_target: "nonDraggable", map_target: "source" } do %>
   <%= yield %>
 <% end %>

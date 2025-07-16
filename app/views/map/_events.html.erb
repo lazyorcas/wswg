@@ -20,7 +20,7 @@
       </div>
     <% end %>
   </header>
-  <div class="grow min-h-0">
+  <%= tag.div class: "grow min-h-0", data: { controller: "impressions", impressions_impression_path_value: impression_path } do %>
     <% if events.any? %>
       <%= render "map/events/events_list" do %>
         <% if sort_by_interests? %>
@@ -48,5 +48,5 @@
         No events found.
       </p>
     <% end %>
-  </div>
+  <% end %>
 <% end %>
