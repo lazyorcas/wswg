@@ -140,6 +140,12 @@
     @apply text-brand-900 dark:text-brand-200;
   }
 
+  .button--active {
+    @apply bg-brand-600 dark:bg-brand-500;
+    @apply hover:bg-brand-700 dark:hover:bg-brand-400;
+    @apply text-brand-100 dark:text-brand-900;
+  }
+
   .button--disabled {
     @apply bg-stone-200 dark:bg-stone-700;
     @apply text-stone-400 dark:text-stone-500;

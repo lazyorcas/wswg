@@ -1,7 +1,7 @@
-<button popovertarget="current_person_settings_preferences_sort_by" class="button button--ghost" title="Sort">
+<%= tag.button popovertarget: "current_person_settings_preferences_sort_by", class: class_names("button", sort_by == Person::Preferences::DEFAULT_SORT_BY ? "button--ghost" : "button--active"), title: "Sort" do %>
   <i class="ph ph-arrows-down-up"></i>
   <%= sort_by_label(sort_by) %>
-</button>
+<% end %>
 <%= turbo_frame_tag "current_person_settings_preferences_sort_by", src: current_person_settings_preference_path(id: "sort_by"), popover: "", target: "_top", loading: "lazy", class: "modal p-4 w-xs max-w-full" do %>
   <div class="flex flex-col gap-y-4">
     <div class="skeleton rounded w-full h-7"></div>

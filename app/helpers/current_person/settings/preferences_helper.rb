@@ -6,7 +6,7 @@ module CurrentPerson::Settings::PreferencesHelper
   end
 
   def sort_by_values
-    values = [ "time", "popularity" ]
+    values = [ "popularity", "time" ]
     values << "interests" if Current.user&.admin?
     values
   end
