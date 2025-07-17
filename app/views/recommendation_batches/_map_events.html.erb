@@ -1,8 +1,8 @@
 <%= turbo_frame_tag "new_event_batch_loader" do %>
   <%= turbo_stream.remove_all ".event-item-skeleton" %>
-  <% if @events.any? %>
-    <%= turbo_stream.replace "new_event_batch_loader" do %>
-      <%= render partial: "map/events/event", collection: @events, cached: -> (event) { build_event_cache_key(event, is_map: true) } %>
+  <%= turbo_stream.replace "new_event_batch_loader" do %>
+    <%= render partial: "map/events/event", collection: @events, cached: -> (event) { build_event_cache_key(event, is_map: true) } %>
+    <% if @recommendation_batch_path.present? %>
       <%= turbo_frame_tag "new_event_batch_loader", loading: "lazy", src: @recommendation_batch_path, class: "shrink-0" do %>
         <%= render partial: "map/events/event_item_skeleton" %>
       <% end %>
@@ -10,8 +10,5 @@
         <%= render partial: "map/events/event_item_skeleton" %>
       <% end %>
     <% end %>
-  <% else %>
-    <%= turbo_stream.remove "new_event_batch_loader" %>
-    <%= turbo_stream.append "flash", partial: "shared/flash" %>
   <% end %>
 <% end %>

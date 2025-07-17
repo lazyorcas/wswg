@@ -1,1 +1,1 @@
-<%= render params[:recommendation_batch_render_mode] == "map_list" ? "map_events" : "events" %>
+<%= render map? ? "map_events" : "events" %>

@@ -40,8 +40,8 @@ class MapController < ApplicationController
 
   private
 
-  def recommendation_batch_render_mode
-    "map_list"
+  def map?
+    true
   end
 
   def load_city

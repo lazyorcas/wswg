@@ -44,10 +44,6 @@ class Home::EventsController < ApplicationController
 
   private
 
-  def recommendation_batch_render_mode
-    "list"
-  end
-
   def nearby?
     @is_nearby ||= params[:city_slug].blank?
   end

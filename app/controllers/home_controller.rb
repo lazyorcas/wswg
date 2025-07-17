@@ -40,10 +40,6 @@ class HomeController < ApplicationController
 
   private
 
-  def recommendation_batch_render_mode
-    "list"
-  end
-
   def load_nearby_city
     @city = get_city_from_current_city
   end
