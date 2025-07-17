@@ -42,6 +42,8 @@ class CurrentPerson::Settings::PreferencesController < ApplicationController
 
   def update_field_test_variant
     field_test_membership = Current.person.field_test_memberships.find_by(experiment: "sort_by_interests")
-    field_test_membership.update(variant: @preferences.sort_by, converted: false)
+    if field_test_membership.present?
+      field_test_membership.update(variant: @preferences.sort_by, converted: false)
+    end
   end
 end
