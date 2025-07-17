@@ -1,5 +1,5 @@
 module Marketing::Events
-  def build_events
+  def load_events
     @events = Event.all
     build_events_query
     @events

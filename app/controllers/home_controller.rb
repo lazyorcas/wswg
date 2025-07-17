@@ -18,7 +18,7 @@ class HomeController < ApplicationController
       if sort_by_interests?
         build_recommendation_batch_path
       else
-        build_events
+        load_events
         eager_load_events_associations
       end
 

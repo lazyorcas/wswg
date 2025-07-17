@@ -1,7 +1,7 @@
 class Home::EventBatchesController < ApplicationController
   def show
     build_event_batch
-    build_events
+    load_events
     eager_load_events_associations
   end
 
@@ -11,8 +11,8 @@ class Home::EventBatchesController < ApplicationController
     @event_batch = EventBatch.new(event_batch_params[:event_ids])
   end
 
-  def build_events
-    @events = @event_batch.build_events
+  def load_events
+    @events = @event_batch.load_events
   end
 
   def eager_load_events_associations

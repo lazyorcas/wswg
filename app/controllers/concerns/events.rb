@@ -9,8 +9,8 @@ module Events
 
   private
 
-  def build_events
-    @events = events_page_builder.build_events
+  def load_events
+    @events = events_page_builder.load_events
   end
 
   def eager_load_events_associations
