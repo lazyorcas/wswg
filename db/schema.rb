@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_07_17_144958) do
+ActiveRecord::Schema[8.0].define(version: 2025_07_17_155454) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -433,6 +433,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_17_144958) do
      FROM (t
        JOIN interest_sets ON ((interest_sets.keywords @@ t.keywords_query)));
   SQL
+  add_index "materialized_recommendations", ["event_id"], name: "index_materialized_recommendations_on_event_id"
   add_index "materialized_recommendations", ["recommendable_id", "recommendable_type", "event_id"], name: "uniq_idx_materialized_recommendations", unique: true
   add_index "materialized_recommendations", ["recommendable_id", "recommendable_type"], name: "idx_materialized_recommendations_on_recommendable_id_and_type"
 
