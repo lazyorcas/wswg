@@ -1,7 +1,7 @@
 module Events::Recommendations
   extend ActiveSupport::Concern
 
-  def build_recommendation_batch_path(already_recommended_event_ids: [], index: 1)
+  def build_recommendation_batch_path(already_recommended_event_ids: [], index: 0)
     @recommendation_batch_path ||= begin
       params = {
         city_id: @city&.id,
