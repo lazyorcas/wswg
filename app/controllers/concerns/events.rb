@@ -26,7 +26,7 @@ module Events
       city: @city,
       event_category: @event_category,
       time_period: @time_period,
-      order_by: sort_by,
+      sort_by: sort_by,
       person: Current.person
     })
   end

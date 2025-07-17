@@ -1,6 +1,6 @@
 module Marketing::Events::Ordering
   def order_events
-    if @order_by == "popularity"
+    if @sort_by == "popularity"
       order_events_by_popularity
     else
       order_events_by_time

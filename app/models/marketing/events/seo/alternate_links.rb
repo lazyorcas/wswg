@@ -25,7 +25,7 @@ module Marketing::Events::SEO::AlternateLinks
       city: @city,
       event_category: @event_category,
       time_period: time_period,
-      order_by: @order_by
+      sort_by: @sort_by
     )
     page_builder.build_meta_title
   end
