@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_07_17_031151) do
+ActiveRecord::Schema[8.0].define(version: 2025_07_17_045122) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -406,5 +406,18 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_17_031151) do
        JOIN seens ON (((seens.seenable_id = persons.id) AND ((seens.seenable_type)::text = persons.person_type))))
        JOIN events ON ((events.id = seens.event_id)))
     GROUP BY persons.id, persons.person_type;
+  SQL
+  create_view "recommendations", sql_definition: <<-SQL
+      WITH t AS (
+           SELECT events.id,
+              plainto_tsquery((events.title)::text) AS keywords_query
+             FROM events
+          )
+   SELECT interest_sets.interestable_id AS recommendable_id,
+      interest_sets.interestable_type AS recommendable_type,
+      t.id AS event_id,
+      ts_rank(interest_sets.keywords, t.keywords_query) AS rank
+     FROM (t
+       JOIN interest_sets ON ((interest_sets.keywords @@ t.keywords_query)));
   SQL
 end

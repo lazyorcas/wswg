@@ -20,5 +20,7 @@ module IsPerson
     has_many :field_test_memberships, class_name: "FieldTest::Membership", as: :participant, dependent: :nullify
 
     has_one :interest_set, as: :interestable
+    has_many :recommendations, as: :recommendable
+    has_many :recommended_events, through: :recommendations, source: :event
   end
 end
