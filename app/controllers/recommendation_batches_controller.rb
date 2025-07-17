@@ -14,6 +14,9 @@ class RecommendationBatchesController < ApplicationController
     eager_load_events_associations
 
     build_recommendation_batch_path
+    if @events.empty?
+      flash.now[:warning] = "No more events to recommend"
+    end
   end
 
   private

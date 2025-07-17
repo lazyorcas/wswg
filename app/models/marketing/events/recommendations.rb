@@ -2,7 +2,7 @@ module Marketing::Events::Recommendations
   def filter_events_by_recommendations
     @events = @events
       .left_joins(:recommendations)
-      .where(recommendations: { recommendable: [ @person, nil ] })
+      .where(recommendations: { recommendable: @person })
   end
 
   def order_events_by_recommendations_ranks
