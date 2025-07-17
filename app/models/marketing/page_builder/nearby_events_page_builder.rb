@@ -4,6 +4,7 @@ class Marketing::PageBuilder::NearbyEventsPageBuilder < Marketing::EventsPageBui
   include Marketing::Events::TimePeriodFilters
   include Marketing::Events::Ordering
   include Marketing::Events::Limiting
+  include Marketing::Events::Recommendations
 
   def build_alternate_link_path(time_period_symbol)
     if time_period_symbol == :all
@@ -17,7 +18,12 @@ class Marketing::PageBuilder::NearbyEventsPageBuilder < Marketing::EventsPageBui
   def build_events_query
     filter_events_by_nearby
     filter_events_by_time_period
-    order_events
+    if @sort_by == "interests"
+      filter_events_by_recommendations
+      order_events_by_recommendations_ranks
+    else
+      order_events
+    end
     limit_events
   end
 

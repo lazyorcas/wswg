@@ -20,7 +20,7 @@ class HomeController < ApplicationController
 
       if sort_by_interests?
         limit_events_to_batch_size
-        build_next_personalized_event_batch_path
+        build_recommendation_batch_path
       end
 
       build_map_path
@@ -41,8 +41,12 @@ class HomeController < ApplicationController
 
   private
 
-  def map?
-    false
+  def recommendation_batch_render_mode
+    "list"
+  end
+
+  def already_recommended_event_ids
+    @events.pluck(:id)
   end
 
   def load_nearby_city

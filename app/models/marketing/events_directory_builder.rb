@@ -18,8 +18,7 @@ class Marketing::EventsDirectoryBuilder
           page_builder = Marketing::EventsPageBuilderFactory.build({
             city: nearby_city,
             event_category: event_category,
-            time_period: time_period,
-            order_by: :time
+            time_period: time_period
           })
           {
             href: page_builder.build_path,
@@ -45,8 +44,7 @@ class Marketing::EventsDirectoryBuilder
           page_builder = Marketing::EventsPageBuilderFactory.build({
             city: city,
             event_category: event_category,
-            time_period: time_period,
-            order_by: :time
+            time_period: time_period
           })
           {
             href: page_builder.build_path,

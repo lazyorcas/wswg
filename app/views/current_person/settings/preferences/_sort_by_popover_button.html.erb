@@ -1,4 +1,4 @@
-<%= tag.button popovertarget: "current_person_settings_preferences_sort_by", class: class_names("button", sort_by == Person::Preferences::DEFAULT_SORT_BY ? "button--ghost" : "button--active"), title: "Sort" do %>
+<%= tag.button popovertarget: "current_person_settings_preferences_sort_by", class: class_names("button", sort_by == sort_by_values.first ? "button--ghost" : "button--active"), title: "Sort" do %>
   <i class="ph ph-arrows-down-up"></i>
   <%= sort_by_label(sort_by) %>
 <% end %>

@@ -25,7 +25,7 @@
       <%= render "map/events/events_list" do %>
         <% if sort_by_interests? %>
           <%= render partial: "map/events/event", collection: events, cached: -> (event) { build_event_cache_key(event, is_map: true) } %>
-          <%= turbo_frame_tag "new_event_batch_loader", loading: "lazy", src: @next_personalized_event_batch_path, class: "shrink-0" do %>
+          <%= turbo_frame_tag "new_event_batch_loader", loading: "lazy", src: @recommendation_batch_path, class: "shrink-0" do %>
             <%= render partial: "map/events/event_item_skeleton" %>
           <% end %>
           <% (EventBatch::BATCH_SIZE - 1).times do %>

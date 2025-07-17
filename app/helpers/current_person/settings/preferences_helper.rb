@@ -2,12 +2,13 @@ module CurrentPerson::Settings::PreferencesHelper
   include FieldTestHelper
 
   def sort_by
-    Current.person.settings(:preferences).sort_by
+    Current.person.settings(:preferences).sort_by || field_test_variant(:sort_by_interests)
   end
 
   def sort_by_values
-    values = [ "popularity", "time" ]
-    values << "interests" if Current.user&.admin?
+    values = []
+    values << "interests" if Current.person.persisted?
+    values += [ "popularity", "time" ]
     values
   end
 
@@ -34,6 +35,6 @@ module CurrentPerson::Settings::PreferencesHelper
   end
 
   def sort_by_label(value)
-    value == "interests" ? "Personalized" : value.humanize
+    value == "interests" ? "Recommended" : value.humanize
   end
 end

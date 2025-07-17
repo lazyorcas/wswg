@@ -1,8 +1,11 @@
 class SeensController < ApplicationController
+  include FieldTestHelper
   include CurrentPerson::Settings::PreferencesHelper
 
   def create
     ahoy.track "Viewed event", event_id: seen_params[:event_id], source: params[:source], sort_by: sort_by
+
+    convert_field_test(:sort_by_interests)
 
     find_or_create_seen!
     head(:ok)

@@ -1,14 +1,15 @@
 module FieldTestHelper
-  EXPERIMENT_DEFAULT = {
+  EXPERIMENT_FALLBACK = {
     search_bar_position: "header",
-    sort_by: "time"
+    sort_by: "time",
+    sort_by_interests: "popularity"
   }.freeze
 
   def field_test_variant(experiment)
     if should_test?
       field_test(experiment)
     else
-      EXPERIMENT_DEFAULT[experiment]
+      EXPERIMENT_FALLBACK[experiment]
     end
   end
 

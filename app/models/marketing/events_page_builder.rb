@@ -3,11 +3,12 @@ class Marketing::EventsPageBuilder
   include Marketing::Events
   include Marketing::Events::SEO
 
-  def initialize(city:, event_category:, time_period:, order_by: :time)
+  def initialize(city:, event_category:, time_period:, order_by: "time", person: nil)
     @city = city
     @event_category = event_category
     @time_period = time_period
     @order_by = order_by
+    @person = person
   end
 
   def build_path

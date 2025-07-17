@@ -17,6 +17,14 @@ experiments:
     variants:
       - time
       - popularity
+  sort_by_interests:
+    name: Sort By Interests
+    description: >
+      Test if the sort by interests creates more event clicks.
+    started_at: July 17, 2025 02:30 pm SGT
+    variants:
+      - interests
+      - popularity
 
 exclude:
   bots: true

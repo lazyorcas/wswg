@@ -1,0 +1,7 @@
+<% if @events.any? %>
+  <%= render params[:recommendation_batch_render_mode] == "map_list" ? "map_events" : "events" %>
+<% else %>
+  <%= turbo_frame_tag "new_event_batch_loader" do %>
+    <%= turbo_stream.remove_all ".event-item-skeleton" %>
+  <% end %>
+<% end %>

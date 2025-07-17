@@ -16,6 +16,7 @@ class CurrentPerson::Settings::PreferencesController < ApplicationController
     build_preferences
 
     if @preferences.save
+      update_field_test_variant
       redirect_to(@return_to)
     else
       flash.now[:error] = "Failed to update preferences."
@@ -37,5 +38,10 @@ class CurrentPerson::Settings::PreferencesController < ApplicationController
   def preferences_params
     preferences_params = params[:preferences]
     preferences_params ? preferences_params.permit(:sort_by) : {}
+  end
+
+  def update_field_test_variant
+    field_test_membership = Current.person.field_test_memberships.find_by(experiment: "sort_by_interests")
+    field_test_membership.update(variant: @preferences.sort_by, converted: false)
   end
 end

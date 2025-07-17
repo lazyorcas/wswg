@@ -4,6 +4,7 @@ class Marketing::PageBuilder::CityEventsPageBuilder < Marketing::EventsPageBuild
   include Marketing::Events::TimePeriodFilters
   include Marketing::Events::Ordering
   include Marketing::Events::Limiting
+  include Marketing::Events::Recommendations
 
   def build_alternate_link_path(time_period_symbol)
     params = { city_slug: @city.slug }
@@ -18,7 +19,12 @@ class Marketing::PageBuilder::CityEventsPageBuilder < Marketing::EventsPageBuild
   def build_events_query
     filter_events_by_city
     filter_events_by_time_period
-    order_events
+    if @sort_by == "interests"
+      filter_events_by_recommendations
+      order_events_by_recommendations_ranks
+    else
+      order_events
+    end
     limit_events
   end
 

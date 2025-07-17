@@ -5,7 +5,7 @@ module Events
   include Filters
   include SEO
   include Batches
-  include PersonalizedOrdering
+  include Recommendations
 
   private
 
@@ -26,7 +26,8 @@ module Events
       city: @city,
       event_category: @event_category,
       time_period: @time_period,
-      order_by: sort_by
+      order_by: sort_by,
+      person: Current.person
     })
   end
 end
