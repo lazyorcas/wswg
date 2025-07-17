@@ -10,15 +10,23 @@ module Marketing::Events::Recommendations
   end
 
   def order_events_by_recommendations_ranks
-    @events = @events
-      .left_joins(:recommendations)
-      .order(
-        Recommendation.arel_table[:rank].desc.nulls_last,
-        attendees_count: :desc,
-        seens_count: :desc,
-        start_date: :asc,
-        start_time: :asc
-      )
+    @events = @person.returning? ?
+      @events
+        .left_joins(:materialized_recommendations)
+        .order(
+          MaterializedRecommendation.arel_table[:rank].desc.nulls_last,
+          attendees_count: :desc,
+          seens_count: :desc,
+          start_date: :asc,
+          start_time: :asc)
+      : @events
+        .left_joins(:recommendations)
+        .order(
+          Recommendation.arel_table[:rank].desc.nulls_last,
+          attendees_count: :desc,
+          seens_count: :desc,
+          start_date: :asc,
+          start_time: :asc)
   end
 
   private
