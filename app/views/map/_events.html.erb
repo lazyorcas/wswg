@@ -8,23 +8,22 @@
           Upcoming events in <%= city.name %>
         <% end %>
       </h1>
-      <% if events.any? %>
+      <% if sort_by_interests? || events.any? %>
         <p class="text-sm text-secondary">
           Search for more relevant events.
         </p>
       <% end %>
     </div>
-    <% if events.any? %>
+    <% if sort_by_interests? || events.any? %>
       <div class="shrink-0">
         <%= render "current_person/settings/preferences/sort_by_popover_button" %>
       </div>
     <% end %>
   </header>
   <%= tag.div class: "grow min-h-0", data: { controller: "impressions", impressions_impression_path_value: impression_path } do %>
-    <% if events.any? %>
+    <% if sort_by_interests? || events.any? %>
       <%= render "map/events/events_list" do %>
         <% if sort_by_interests? %>
-          <%= render partial: "map/events/event", collection: events, cached: -> (event) { build_event_cache_key(event, is_map: true) } %>
           <%= turbo_frame_tag "new_event_batch_loader", loading: "lazy", src: @recommendation_batch_path, class: "shrink-0" do %>
             <%= render partial: "map/events/event_item_skeleton" %>
           <% end %>

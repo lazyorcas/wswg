@@ -25,12 +25,11 @@ class MapController < ApplicationController
       load_event_category
       load_time_period
 
-      build_events
-      eager_load_events_associations
-
       if sort_by_interests?
-        limit_events_to_batch_size
         build_recommendation_batch_path
+      else
+        build_events
+        eager_load_events_associations
       end
 
       build_search_query
@@ -43,10 +42,6 @@ class MapController < ApplicationController
 
   def recommendation_batch_render_mode
     "map_list"
-  end
-
-  def already_recommended_event_ids
-    @events.pluck(:id)
   end
 
   def load_city

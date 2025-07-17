@@ -1,4 +1,5 @@
 class RecommendationBatchesController < ApplicationController
+  include CityDetection
   include CurrentPerson::Settings::PreferencesHelper
   include Events
 
@@ -22,11 +23,13 @@ class RecommendationBatchesController < ApplicationController
   end
 
   def already_recommended_event_ids
-    params[:already_recommended_event_ids] + @events.pluck(:id)
+    (params[:already_recommended_event_ids] || []) + @events.pluck(:id)
   end
 
   def load_city
-    @city = City.find(params[:city_id])
+    @city = get_city_from_params ||
+      get_city_from_current_city ||
+      get_city_from_current_person
   end
 
   def filter_out_already_recommended_events
