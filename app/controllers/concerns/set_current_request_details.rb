@@ -11,6 +11,9 @@ module SetCurrentRequestDetails
         Current.visitor = Visitor.new(id: -1, visitor_token: ahoy.visitor_token)
       else
         Current.visitor = Visitor.find_or_create_by(visitor_token: ahoy.visitor_token)
+        unless Current.visitor.returning?
+          Current.visitor.update(returning: true) if Current.visitor.visits.count > 1
+        end
       end
 
       city_name = request.env["HTTP_CF_IPCITY"]&.to_s&.encode("UTF-8", invalid: :replace, undef: :replace, replace: "")
