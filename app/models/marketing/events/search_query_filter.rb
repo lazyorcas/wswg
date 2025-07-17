@@ -1,16 +1,16 @@
 module Marketing::Events::SearchQueryFilter
   def filter_events_by_search_query
-    @events = @events.where(id: @search_query&.result&.event_ids)
+    @events = @events.where(id: search_query&.result&.event_ids)
   end
 
   def order_events_by_search_query
-    @events = @events.in_order_of(:id, @search_query&.result&.event_ids || [])
+    @events = @events.in_order_of(:id, search_query&.result&.event_ids || [])
   end
 
   private
 
-  def load_search_query
-    @search_query = SearchQuery
+  def search_query
+    @search_query ||= SearchQuery
       .where(
         query: @event_category.query,
         city_id: @city.id,

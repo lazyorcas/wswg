@@ -16,7 +16,6 @@ class Marketing::PageBuilder::NearbySearchQueryEventsPageBuilder < Marketing::Ev
   end
 
   def build_events_query
-    load_search_query
     filter_events_by_nearby
     filter_events_by_search_query
     filter_events_by_time_period

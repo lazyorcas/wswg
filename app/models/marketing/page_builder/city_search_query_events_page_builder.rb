@@ -16,7 +16,6 @@ class Marketing::PageBuilder::CitySearchQueryEventsPageBuilder < Marketing::Even
   end
 
   def build_events_query
-    load_search_query
     filter_events_by_city
     filter_events_by_search_query
     filter_events_by_time_period

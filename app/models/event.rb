@@ -17,6 +17,7 @@ class Event < ApplicationRecord
 
   has_many :bookmarks, dependent: :destroy
   has_many :seens, dependent: :destroy
+  has_many :recommendations
 
   validates :url, uniqueness: true
 end
