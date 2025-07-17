@@ -46,7 +46,7 @@ Rails.application.routes.draw do
   end
 
   resource :next_personalized_event_batch, only: [ :show ], module: "home"
-  resource :event_batch, only: [ :show ], module: "home"
+  # resource :event_batch, only: [ :show ], module: "home"
 
   get "/events/:id/redirect", to: "home/events/redirects#show"
 
@@ -80,7 +80,7 @@ Rails.application.routes.draw do
     resources :bookmarks, only: [ :index ]
 
     resource :next_personalized_event_batch, only: [ :show ]
-    resource :event_batch, only: [ :show ]
+    # resource :event_batch, only: [ :show ]
   end
 
   put "/impressions", to: "impressions#create", as: :impression
