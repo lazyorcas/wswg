@@ -7,7 +7,6 @@ class SearchQueriesController < ApplicationController
     within: 1.minute,
     only: [ :create ],
     with: -> do
-      Sentry.capture_message("Too many requests.", level: :warning)
       redirect_to(root_path, flash: { error: "Too many requests. Please wait a moment and try again." })
     end
 

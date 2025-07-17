@@ -6,7 +6,6 @@ class Map::SearchQueriesController < ApplicationController
     within: 1.minute,
     only: [ :create ],
     with: -> do
-      Sentry.capture_message("Too many requests.", level: :warning)
       flash.now[:error] = "Too many requests. Please wait a moment and try again."
       turbo_stream_flash(status: :too_many_requests)
     end
