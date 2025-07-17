@@ -16,4 +16,8 @@ class User < ApplicationRecord
   def email=(value)
     super(value.split("+").first)
   end
+
+  def returning?
+    true
+  end
 end

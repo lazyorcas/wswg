@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_07_17_143524) do
+ActiveRecord::Schema[8.0].define(version: 2025_07_17_144958) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -420,6 +420,22 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_17_143524) do
        JOIN events ON ((events.id = seens.event_id)))
     GROUP BY persons.id, persons.person_type;
   SQL
+  create_view "materialized_recommendations", materialized: true, sql_definition: <<-SQL
+      WITH t AS (
+           SELECT events.id,
+              plainto_tsquery((events.title)::text) AS keywords_query
+             FROM events
+          )
+   SELECT interest_sets.interestable_id AS recommendable_id,
+      interest_sets.interestable_type AS recommendable_type,
+      t.id AS event_id,
+      ts_rank(interest_sets.keywords, t.keywords_query) AS rank
+     FROM (t
+       JOIN interest_sets ON ((interest_sets.keywords @@ t.keywords_query)));
+  SQL
+  add_index "materialized_recommendations", ["recommendable_id", "recommendable_type", "event_id"], name: "uniq_idx_materialized_recommendations", unique: true
+  add_index "materialized_recommendations", ["recommendable_id", "recommendable_type"], name: "idx_materialized_recommendations_on_recommendable_id_and_type"
+
   create_view "recommendations", sql_definition: <<-SQL
       WITH t AS (
            SELECT events.id,
