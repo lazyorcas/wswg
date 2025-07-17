@@ -18,5 +18,7 @@ module IsPerson
     has_many :search_queries, as: :searcher, dependent: :destroy
 
     has_many :field_test_memberships, class_name: "FieldTest::Membership", as: :participant, dependent: :nullify
+
+    has_one :interest_set, as: :interestable
   end
 end

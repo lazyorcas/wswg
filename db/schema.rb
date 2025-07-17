@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_07_17_024815) do
+ActiveRecord::Schema[8.0].define(version: 2025_07_17_031151) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -388,4 +388,23 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_17_024815) do
   add_foreign_key "seens", "events"
   add_foreign_key "users", "cities"
   add_foreign_key "visitors", "cities"
+
+  create_view "interest_sets", sql_definition: <<-SQL
+      WITH persons AS (
+           SELECT users.id,
+              'User'::text AS person_type
+             FROM users
+          UNION ALL
+           SELECT visitors.id,
+              'Visitor'::text AS person_type
+             FROM visitors
+          )
+   SELECT persons.id AS interestable_id,
+      persons.person_type AS interestable_type,
+      tsvector_agg(events.keywords) AS keywords
+     FROM ((persons
+       JOIN seens ON (((seens.seenable_id = persons.id) AND ((seens.seenable_type)::text = persons.person_type))))
+       JOIN events ON ((events.id = seens.event_id)))
+    GROUP BY persons.id, persons.person_type;
+  SQL
 end

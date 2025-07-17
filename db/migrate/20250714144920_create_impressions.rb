@@ -10,3 +10,10 @@ class CreateImpressions < ActiveRecord::Migration[8.0]
     add_index :impressions, [ :impressionable_id, :impressionable_type, :event_id ], unique: true
   end
 end
+
+# Seen.find_each do |seen|
+#   Impression.find_or_create_by(
+#     impressionable: seen.seenable,
+#     event: seen.event
+#   )
+# end
