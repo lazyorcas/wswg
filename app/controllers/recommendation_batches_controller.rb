@@ -24,8 +24,11 @@ class RecommendationBatchesController < ApplicationController
 
     eager_load_events_associations
 
-    if @events.any?
-      build_recommendation_batch_path(already_recommended_event_ids: already_recommended_event_ids + @events.pluck(:id))
+    if @events.any? && batch_index < Marketing::Events::Limiting::LIMIT / EventBatch::BATCH_SIZE
+      build_recommendation_batch_path(
+        already_recommended_event_ids: already_recommended_event_ids + @events.pluck(:id),
+        index: batch_index + 1
+      )
     end
   end
 
@@ -37,6 +40,10 @@ class RecommendationBatchesController < ApplicationController
 
   def already_recommended_event_ids
     (params[:already_recommended_event_ids] || [])
+  end
+
+  def batch_index
+    params[:index].to_i
   end
 
   def load_city
