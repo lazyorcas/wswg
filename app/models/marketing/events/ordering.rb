@@ -9,10 +9,10 @@ module Marketing::Events::Ordering
 
   def order_events_by_popularity
     @events = @events.order(
-      seens_count: :desc,
+      Event.arel_table[:seens_count].desc,
+      Event.arel_table[:attendees_count].desc.nulls_last,
       start_date: :asc,
       start_time: :asc,
-      attendees_count: :desc
     )
   end
 
