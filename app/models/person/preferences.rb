@@ -1,7 +1,7 @@
 module Person::Preferences
   extend ActiveSupport::Concern
 
-  # DEFAULT_SORT_BY = "popularity".freeze
+  DEFAULT_SORT_BY = "time".freeze
 
   included do
     has_settings do |s|
