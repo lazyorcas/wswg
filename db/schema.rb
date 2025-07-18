@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_07_18_045043) do
+ActiveRecord::Schema[8.0].define(version: 2025_07_18_061114) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -267,6 +267,17 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_18_045043) do
     t.index ["impressionable_type", "impressionable_id"], name: "index_impressions_on_impressionable"
   end
 
+  create_table "interest_sets", force: :cascade do |t|
+    t.string "interestable_type", null: false
+    t.bigint "interestable_id", null: false
+    t.tsvector "keywords", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["interestable_type", "interestable_id"], name: "index_interest_sets_on_interestable"
+    t.index ["interestable_type", "interestable_id"], name: "index_interest_sets_on_interestable_type_and_interestable_id", unique: true
+    t.index ["keywords"], name: "index_interest_sets_on_keywords", using: :gin
+  end
+
   create_table "languages", force: :cascade do |t|
     t.string "name", null: false
     t.string "code", null: false
@@ -403,57 +414,4 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_18_045043) do
   add_foreign_key "seens", "events"
   add_foreign_key "users", "cities"
   add_foreign_key "visitors", "cities"
-
-  create_view "interest_sets", sql_definition: <<-SQL
-      WITH persons AS (
-           SELECT users.id,
-              'User'::text AS person_type
-             FROM (users
-               JOIN ahoy_visits ON ((ahoy_visits.user_id = users.id)))
-            WHERE (ahoy_visits.started_at > (now() - 'P1D'::interval))
-          UNION ALL
-           SELECT visitors.id,
-              'Visitor'::text AS person_type
-             FROM (visitors
-               JOIN ahoy_visits ON (((ahoy_visits.visitor_token)::text = (visitors.visitor_token)::text)))
-            WHERE (ahoy_visits.started_at > (now() - 'P1D'::interval))
-          )
-   SELECT persons.id AS interestable_id,
-      persons.person_type AS interestable_type,
-      tsvector_agg(events.keywords) AS keywords
-     FROM ((persons
-       JOIN seens ON (((seens.seenable_id = persons.id) AND ((seens.seenable_type)::text = persons.person_type))))
-       JOIN events ON ((events.id = seens.event_id)))
-    GROUP BY persons.id, persons.person_type;
-  SQL
-  create_view "materialized_recommendations", materialized: true, sql_definition: <<-SQL
-      WITH t AS (
-           SELECT events.id,
-              plainto_tsquery((events.title)::text) AS keywords_query
-             FROM events
-          )
-   SELECT interest_sets.interestable_id AS recommendable_id,
-      interest_sets.interestable_type AS recommendable_type,
-      t.id AS event_id,
-      ts_rank(interest_sets.keywords, t.keywords_query) AS rank
-     FROM (t
-       JOIN interest_sets ON ((interest_sets.keywords @@ t.keywords_query)));
-  SQL
-  add_index "materialized_recommendations", ["event_id"], name: "index_materialized_recommendations_on_event_id"
-  add_index "materialized_recommendations", ["recommendable_id", "recommendable_type", "event_id"], name: "uniq_idx_materialized_recommendations", unique: true
-  add_index "materialized_recommendations", ["recommendable_id", "recommendable_type"], name: "idx_materialized_recommendations_on_recommendable_id_and_type"
-
-  create_view "recommendations", sql_definition: <<-SQL
-      WITH t AS (
-           SELECT events.id,
-              plainto_tsquery((events.title)::text) AS keywords_query
-             FROM events
-          )
-   SELECT interest_sets.interestable_id AS recommendable_id,
-      interest_sets.interestable_type AS recommendable_type,
-      t.id AS event_id,
-      ts_rank(interest_sets.keywords, t.keywords_query) AS rank
-     FROM (t
-       JOIN interest_sets ON ((interest_sets.keywords @@ t.keywords_query)));
-  SQL
 end

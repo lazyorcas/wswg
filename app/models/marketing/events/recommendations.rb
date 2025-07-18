@@ -1,37 +1,15 @@
 module Marketing::Events::Recommendations
   def filter_events_by_recommendations
-    @events = @person.returning? ?
-      @events
-        .left_joins(:materialized_recommendations)
-        .where(materialized_recommendations: { recommendable: @person })
-      : @events
-        .left_joins(:recommendations)
-        .where(recommendations: { recommendable: @person })
+    @events = @events.where(id: recommendable_event_ids)
   end
 
   def order_events_by_recommendations_ranks
-    @events = @person.returning? ?
-      @events
-        .left_joins(:materialized_recommendations)
-        .order(
-          MaterializedRecommendation.arel_table[:rank].desc.nulls_last,
-          attendees_count: :desc,
-          seens_count: :desc,
-          start_date: :asc,
-          start_time: :asc)
-      : @events
-        .left_joins(:recommendations)
-        .order(
-          Recommendation.arel_table[:rank].desc.nulls_last,
-          attendees_count: :desc,
-          seens_count: :desc,
-          start_date: :asc,
-          start_time: :asc)
+    @events = @events.in_order_of(:id, recommendable_event_ids)
   end
 
   private
 
-  def recommendations
-    @recommendations ||= @person.recommendations
+  def recommendable_event_ids
+    @recommendable_event_ids ||= @person.recommendable_event_ids(@city)
   end
 end
