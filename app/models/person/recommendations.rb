@@ -28,8 +28,8 @@ module Person::Recommendations
       end
 
       events
-        .select(:id, "ts_rank(interest_sets.keywords, plainto_tsquery(concat(events.title, ' ', events.description))) AS rank")
-        .joins("JOIN interest_sets ON interest_sets.interestable_id = #{id} AND interest_sets.interestable_type = '#{self.class.name}' AND interest_sets.keywords @@ plainto_tsquery(concat(events.title, ' ', events.description))")
+        .select(:id, "ts_rank(interest_sets.keywords, plainto_tsquery(events.title)) AS rank")
+        .joins("JOIN interest_sets ON interest_sets.interestable_id = #{id} AND interest_sets.interestable_type = '#{self.class.name}' AND interest_sets.keywords @@ plainto_tsquery(events.title)")
         .order("rank DESC")
         .limit(LIMIT)
         .to_a
