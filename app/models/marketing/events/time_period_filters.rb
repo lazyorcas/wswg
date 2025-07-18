@@ -11,7 +11,7 @@ module Marketing::Events::TimePeriodFilters
   end
 
   def filter_events_by_start_time
-    @events = @events.where("CONCAT(start_date, 'T', start_time) >= ?", "#{start_date}T#{start_time}")
+    @events = @events.where("start_date_time >= ?", "#{start_date} #{start_time}")
   end
 
   def filter_events_by_start_date

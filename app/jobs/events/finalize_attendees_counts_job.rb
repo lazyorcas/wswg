@@ -10,7 +10,7 @@ class Events::FinalizeAttendeesCountsJob < ApplicationJob
       .joins(:city_source)
       .joins(:city)
       .joins(:source)
-      .where("CONCAT(start_date, ' ', start_time) < TO_CHAR(NOW() AT TIME ZONE cities.time_zone, 'YYYY-MM-DD HH24:MI:SS')")
+      .where("start_date_time < TO_CHAR(NOW() AT TIME ZONE cities.time_zone, 'YYYY-MM-DD HH24:MI:SS')")
       .where(sources: { events_finalizable: true })
       .where(attendees_count_finalized_at: nil)
       .order(id: :desc)

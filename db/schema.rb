@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_07_17_155454) do
+ActiveRecord::Schema[8.0].define(version: 2025_07_18_025259) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -236,10 +236,12 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_17_155454) do
     t.datetime "attendees_count_finalized_at"
     t.string "organizer_url"
     t.virtual "keywords", type: :tsvector, as: "to_tsvector('english'::regconfig, (COALESCE(title, ''::character varying))::text)", stored: true
+    t.virtual "start_date_time", type: :string, as: "\nCASE\n    WHEN ((start_date IS NOT NULL) AND (start_time IS NOT NULL)) THEN (((start_date)::text || ' '::text) || (start_time)::text)\n    ELSE NULL::text\nEND", stored: true
     t.index ["city_source_id"], name: "index_events_on_city_source_id"
     t.index ["keywords"], name: "index_events_on_keywords", using: :gin
     t.index ["location_id", "start_date", "end_date", "start_time", "end_time"], name: "idx_on_location_id_start_date_end_date_start_time_e_415cb0e2f4"
     t.index ["location_id"], name: "index_events_on_location_id"
+    t.index ["start_date_time"], name: "index_events_on_start_date_time"
     t.index ["url"], name: "index_events_on_url", unique: true
   end
 
