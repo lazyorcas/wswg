@@ -21,7 +21,7 @@ experiments:
     name: Sort By Interests
     description: >
       Test if the sort by interests creates more event clicks.
-    started_at: July 17, 2025 02:30 pm SGT
+    started_at: July 19, 2025 00:00 am SGT
     variants:
       - interests
       - popularity
