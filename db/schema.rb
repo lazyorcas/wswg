@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_07_18_025259) do
+ActiveRecord::Schema[8.0].define(version: 2025_07_18_045043) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -408,11 +408,15 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_18_025259) do
       WITH persons AS (
            SELECT users.id,
               'User'::text AS person_type
-             FROM users
+             FROM (users
+               JOIN ahoy_visits ON ((ahoy_visits.user_id = users.id)))
+            WHERE (ahoy_visits.started_at > (now() - 'P1D'::interval))
           UNION ALL
            SELECT visitors.id,
               'Visitor'::text AS person_type
-             FROM visitors
+             FROM (visitors
+               JOIN ahoy_visits ON (((ahoy_visits.visitor_token)::text = (visitors.visitor_token)::text)))
+            WHERE (ahoy_visits.started_at > (now() - 'P1D'::interval))
           )
    SELECT persons.id AS interestable_id,
       persons.person_type AS interestable_type,
