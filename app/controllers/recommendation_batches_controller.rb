@@ -10,6 +10,8 @@ class RecommendationBatchesController < ApplicationController
     load_event_category
     load_time_period
 
+    recommended_event_ids = []
+
     if Current.person.seens.any?
       load_events
       filter_out_already_recommended_events
@@ -37,6 +39,8 @@ class RecommendationBatchesController < ApplicationController
         index: batch_index + 1
       )
     end
+
+    ahoy.track "Viewed recommendation batch", recommendations_count: recommended_event_ids.length
   end
 
   private
