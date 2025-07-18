@@ -19,7 +19,7 @@ class RecommendationBatchesController < ApplicationController
 
       if load_more_events?
         recommended_event_ids = @events.pluck(:id)
-        load_popular_events(limit: EventBatch::BATCH_SIZE - @events.count)
+        load_popular_events(limit: MAX_BATCH_COUNT - recommended_event_ids.size)
         filter_out_already_recommended_events
         event_ids = recommended_event_ids + @events.pluck(:id)
         @events = Event.where(id: event_ids).in_order_of(:id, event_ids)
@@ -67,10 +67,10 @@ class RecommendationBatchesController < ApplicationController
   end
 
   def load_more_events?
-    @events.count < EventBatch::BATCH_SIZE
+    @events.count < MAX_BATCH_COUNT
   end
 
-  def load_popular_events(limit: EventBatch::BATCH_SIZE)
+  def load_popular_events(limit: MAX_BATCH_COUNT)
     @events = popular_events_page_builder.load_events
     @events = @events.limit(limit)
   end

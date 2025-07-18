@@ -33,6 +33,7 @@ module Person::Recommendations
   private
 
   def build_keywords
+    # WARNING: cannot use .first because it triggers ORDER
     seen_events.select("tsvector_agg(keywords) AS keywords")[0].keywords
   end
 end
