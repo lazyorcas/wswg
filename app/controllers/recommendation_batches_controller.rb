@@ -17,9 +17,10 @@ class RecommendationBatchesController < ApplicationController
       filter_out_already_recommended_events
       limit_events_to_batch_size
 
-      if load_more_events?
-        recommended_event_ids = @events.pluck(:id)
-        load_popular_events(limit: MAX_BATCH_COUNT - recommended_event_ids.size)
+      recommended_event_ids = @events.pluck(:id)
+
+      if recommended_event_ids.length < MAX_BATCH_COUNT
+        load_popular_events(limit: MAX_BATCH_COUNT - recommended_event_ids.length)
         filter_out_already_recommended_events
         event_ids = recommended_event_ids + @events.pluck(:id)
         @events = Event.where(id: event_ids).in_order_of(:id, event_ids)
@@ -64,10 +65,6 @@ class RecommendationBatchesController < ApplicationController
     return if already_recommended_event_ids.empty?
 
     @events = @events.where.not(id: already_recommended_event_ids)
-  end
-
-  def load_more_events?
-    @events.count < MAX_BATCH_COUNT
   end
 
   def load_popular_events(limit: MAX_BATCH_COUNT)
