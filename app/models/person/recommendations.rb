@@ -11,7 +11,7 @@ module Person::Recommendations
     @recommendable_event_ids ||= begin
       current_date_time = city.time_zone.current_date_time
 
-      events = if !city.persisted?
+      events = if city.persisted?
         Event
           .joins(:city_source)
           .where(city_sources: { city_id: city.id })
