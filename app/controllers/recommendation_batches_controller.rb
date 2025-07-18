@@ -1,5 +1,6 @@
 class RecommendationBatchesController < ApplicationController
-  MAX_BATCH_COUNT = 100
+  EVENT_LIMIT = 1000
+  MAX_BATCH_COUNT = EVENT_LIMIT / EventBatch::BATCH_SIZE
 
   include CityDetection
   include CurrentPerson::Settings::PreferencesHelper
@@ -19,8 +20,8 @@ class RecommendationBatchesController < ApplicationController
 
       recommended_event_ids = @events.pluck(:id)
 
-      if recommended_event_ids.length < MAX_BATCH_COUNT
-        load_popular_events(limit: MAX_BATCH_COUNT - recommended_event_ids.length)
+      if recommended_event_ids.length < EventBatch::BATCH_SIZE
+        load_popular_events(limit: EventBatch::BATCH_SIZE - recommended_event_ids.length)
         filter_out_already_recommended_events
         event_ids = recommended_event_ids + @events.pluck(:id)
         @events = Event.where(id: event_ids).in_order_of(:id, event_ids)
@@ -67,7 +68,7 @@ class RecommendationBatchesController < ApplicationController
     @events = @events.where.not(id: already_recommended_event_ids)
   end
 
-  def load_popular_events(limit: MAX_BATCH_COUNT)
+  def load_popular_events(limit: EventBatch::BATCH_SIZE)
     @events = popular_events_page_builder.load_events
     @events = @events.limit(limit)
   end
