@@ -25,9 +25,6 @@ experiments:
     variants:
       - interests
       - popularity
-    weights:
-      - 25
-      - 75
 
 exclude:
   bots: true
