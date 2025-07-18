@@ -1,7 +1,4 @@
 class RecommendationBatchesController < ApplicationController
-  EVENT_LIMIT = 1000
-  MAX_BATCH_COUNT = EVENT_LIMIT / EventBatch::BATCH_SIZE
-
   include CityDetection
   include CurrentPerson::Settings::PreferencesHelper
   include Events
@@ -34,7 +31,7 @@ class RecommendationBatchesController < ApplicationController
 
     eager_load_events_associations
 
-    if @events.any? && batch_index < MAX_BATCH_COUNT
+    if @events.any? && batch_index < max_batch_count
       build_recommendation_batch_path(
         already_recommended_event_ids: already_recommended_event_ids + @events.pluck(:id),
         index: batch_index + 1
@@ -54,6 +51,10 @@ class RecommendationBatchesController < ApplicationController
 
   def batch_index
     params[:index].to_i
+  end
+
+  def max_batch_count
+    map? ? 100 : 10
   end
 
   def load_city
