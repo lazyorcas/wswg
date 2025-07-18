@@ -7,6 +7,11 @@ module Person::Recommendations
     has_one :interest_set, as: :interestable
   end
 
+  def recommendable_events(city)
+    ids = recommendable_event_ids(city)
+    Event.where(id: ids).in_order_of(:id, ids)
+  end
+
   def recommendable_event_ids(city)
     @recommendable_event_ids ||= begin
       current_date_time = city.time_zone.current_date_time
