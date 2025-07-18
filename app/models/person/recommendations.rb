@@ -11,11 +11,21 @@ module Person::Recommendations
     @recommendable_event_ids ||= begin
       current_date_time = city.time_zone.current_date_time
 
-      Event
+      events = if !city.persisted?
+        Event
+          .joins(:city_source)
+          .where(city_sources: { city_id: city.id })
+          .where("events.start_date_time >= ?", current_date_time)
+      else
+        Event
+          .joins(:location)
+          .within(Event::Locatable::MAX_DISTANCE_TO_CITY, origin: city.coordinates_arr)
+      end
+
+      events
         .select(:id, "ts_rank(interest_sets.keywords, plainto_tsquery(events.title)) AS rank")
         .joins("JOIN interest_sets ON interest_sets.interestable_id = #{id} AND interest_sets.interestable_type = '#{self.class.name}' AND interest_sets.keywords @@ plainto_tsquery(events.title)")
-        .where("events.start_date_time >= ?", current_date_time)
-        .order("rank DESC NULLS LAST")
+        .order("rank DESC")
         .limit(LIMIT)
         .to_a
         .map(&:id)
