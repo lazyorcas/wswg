@@ -185,6 +185,7 @@ accessories:
     env:
       clear:
         TIMEOUT: 600000 # 10 minutes
+        CONCURRENT: 1
   opensearch:
     image: opensearchproject/opensearch:3.0.0
     roles:
