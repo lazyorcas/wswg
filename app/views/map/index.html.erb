@@ -24,7 +24,7 @@
             <% if search_query? %>
               <%= render "search_query", events: @events, search_query: @search_query %>
             <% else %>
-              <%= render "events", city: @city, events: @events, event_batches: @event_batches %>
+              <%= render "events", city: @city, events: @events %>
             <% end %>
           <% end %>
         <% end %>

@@ -1,5 +1,5 @@
 class RecommendationBatchesController < ApplicationController
-  MAX_BATCH_COUNT = 10
+  MAX_BATCH_COUNT = 100
 
   include CityDetection
   include CurrentPerson::Settings::PreferencesHelper
