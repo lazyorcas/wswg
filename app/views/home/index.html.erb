@@ -34,14 +34,6 @@
           <% (EventBatch::BATCH_SIZE - 1).times do %>
             <%= render partial: "home/events/event_item_skeleton" %>
           <% end %>
-        <% elsif @event_batches.present? %>
-          <% @event_batches.each_with_index do |event_batch, index| %>
-            <% if index.zero? %>
-              <%= render partial: "home/events/event", collection: event_batch, cached: -> (event) { build_event_cache_key(event) } %>
-            <% else %>
-              <%= render "home/event_batches/event_batch_loader", event_batch: event_batch, id: "event_batch_#{index}_loader" %>
-            <% end %>
-          <% end %>
         <% else %>
           <%= render partial: "home/events/event", collection: @events, cached: -> (event) { build_event_cache_key(event) } %>
         <% end %>
