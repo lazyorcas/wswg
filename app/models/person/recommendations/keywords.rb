@@ -6,6 +6,7 @@ module Person::Recommendations::Keywords
   def build_weighted_keywords
     keywords_tsvector = get_keywords_tsvector_from_events(seen_events)
     keywords = extract_keywords_from_tsvector(keywords_tsvector)
+    keywords = reject_city_names(keywords)
     weight_groups = split_keywords_into_weight_groups(keywords)
     weight_groups.map { |weight_group| weight_group.join(" ") }.reject(&:blank?)
   end
@@ -23,6 +24,10 @@ module Person::Recommendations::Keywords
         occurrences = word_positions.map(&:second).join(",").split(",").length
         [ word, occurrences ]
       end
+  end
+
+  def reject_city_names(keywords)
+    keywords.reject { |keyword, _| city_names_string.include?(keyword.downcase) }
   end
 
   def split_keywords_into_weight_groups(keywords)
@@ -43,5 +48,11 @@ module Person::Recommendations::Keywords
     weight_groups.map do |weight_group|
       weight_group.map(&:first)
     end
+  end
+
+  private
+
+  def city_names_string
+    @city_names ||= City.all.pluck(:name).map(&:downcase).join(" ")
   end
 end
