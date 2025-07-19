@@ -10,21 +10,9 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_07_18_061114) do
+ActiveRecord::Schema[8.0].define(version: 2025_07_19_155058) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
-
-  execute <<-SQL
-    DO $$ BEGIN
-    CREATE AGGREGATE tsvector_agg(tsvector) (
-      STYPE = pg_catalog.tsvector,
-      SFUNC = pg_catalog.tsvector_concat,
-      INITCOND = ''
-    );
-    EXCEPTION
-      WHEN duplicate_function THEN NULL;
-    END $$;
-  SQL
 
   create_table "accounts", force: :cascade do |t|
     t.bigint "user_id", null: false
@@ -237,7 +225,9 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_18_061114) do
     t.string "organizer_url"
     t.virtual "keywords", type: :tsvector, as: "to_tsvector('english'::regconfig, (COALESCE(title, ''::character varying))::text)", stored: true
     t.virtual "start_date_time", type: :string, as: "\nCASE\n    WHEN ((start_date IS NOT NULL) AND (start_time IS NOT NULL)) THEN (((start_date)::text || ' '::text) || (start_time)::text)\n    ELSE NULL::text\nEND", stored: true
+    t.virtual "extended_keywords", type: :tsvector, as: "to_tsvector('english'::regconfig, COALESCE((((title)::text || ' '::text) || (description)::text), ''::text))", stored: true
     t.index ["city_source_id"], name: "index_events_on_city_source_id"
+    t.index ["extended_keywords"], name: "index_events_on_extended_keywords", using: :gin
     t.index ["keywords"], name: "index_events_on_keywords", using: :gin
     t.index ["location_id", "start_date", "end_date", "start_time", "end_time"], name: "idx_on_location_id_start_date_end_date_start_time_e_415cb0e2f4"
     t.index ["location_id"], name: "index_events_on_location_id"
@@ -270,12 +260,11 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_18_061114) do
   create_table "interest_sets", force: :cascade do |t|
     t.string "interestable_type", null: false
     t.bigint "interestable_id", null: false
-    t.tsvector "keywords", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.text "weighted_keywords", default: [], array: true
     t.index ["interestable_type", "interestable_id"], name: "index_interest_sets_on_interestable"
     t.index ["interestable_type", "interestable_id"], name: "index_interest_sets_on_interestable_type_and_interestable_id", unique: true
-    t.index ["keywords"], name: "index_interest_sets_on_keywords", using: :gin
   end
 
   create_table "languages", force: :cascade do |t|

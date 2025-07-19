@@ -17,7 +17,7 @@ module Person::Recommendations
     @recommendable_event_ids ||= begin
       current_date_time = city.time_zone.current_date_time
 
-      events = if city.persisted?
+      event_scope = if city.persisted?
         Event
           .joins(:city_source)
           .where(city_sources: { city_id: city.id })
@@ -28,27 +28,31 @@ module Person::Recommendations
           .within(Event::Locatable::MAX_DISTANCE_TO_CITY, origin: city.coordinates_arr)
       end
 
-      events
-        .select(:id, "ts_rank(interest_sets.keywords, plainto_tsquery(events.title)) AS rank")
-        .joins("JOIN interest_sets ON interest_sets.interestable_id = #{id} AND interest_sets.interestable_type = '#{self.class.name}' AND interest_sets.keywords @@ plainto_tsquery(events.title)")
-        .order("rank DESC")
-        .limit(LIMIT)
-        .to_a
-        .map(&:id)
+      event_ids = []
+
+      interest_set.weighted_keywords.each do |keyword|
+        break if event_ids.size >= LIMIT
+
+        event_ids += event_scope
+          .select(:id, "ts_rank(events.extended_keywords, plainto_tsquery('#{keyword}')) AS rank")
+          .joins("JOIN interest_sets ON interest_sets.interestable_id = #{id} AND interest_sets.interestable_type = '#{self.class.name}' AND events.extended_keywords @@ plainto_tsquery('#{keyword}')")
+          .order("rank DESC")
+          .limit(LIMIT - event_ids.size)
+          .to_a
+          .map(&:id)
+      end
+
+      event_ids.uniq
     end
   end
 
   def create_or_update_interest_set!
-    if interest_set.present?
-      interest_set.update!(keywords: build_keywords)
-    else
-      InterestSet.create!(interestable: self, keywords: build_keywords)
-    end
-  end
+    weighted_keywords = build_weighted_keywords
 
-  # TODO: consider bookmarks, search queries
-  def build_keywords
-    # WARNING: cannot use .first because it triggers ORDER
-    seen_events.select("tsvector_agg(keywords) AS keywords")[0].keywords
+    if interest_set.present?
+      interest_set.update!(weighted_keywords: weighted_keywords)
+    else
+      InterestSet.create!(interestable: self, weighted_keywords: weighted_keywords)
+    end
   end
 end

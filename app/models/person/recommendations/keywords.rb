@@ -1,13 +1,13 @@
 module Person::Recommendations::Keywords
   extend ActiveSupport::Concern
 
-  WEIGHTS = [ 0.9, 0.8, 0.5 ].freeze
+  WEIGHTS = [ 0.9, 0.6 ].freeze
 
   def build_weighted_keywords
     keywords_tsvector = get_keywords_tsvector_from_events(seen_events)
     keywords = extract_keywords_from_tsvector(keywords_tsvector)
     weight_groups = split_keywords_into_weight_groups(keywords)
-    weight_groups
+    weight_groups.map { |weight_group| weight_group.join(" ") }.reject(&:blank?)
   end
 
   private
@@ -40,6 +40,8 @@ module Person::Recommendations::Keywords
       remaining_keywords -= weight_group
     end
 
-    weight_groups
+    weight_groups.map do |weight_group|
+      weight_group.map(&:first)
+    end
   end
 end
