@@ -50,5 +50,5 @@
       Alternatively, you can view <%= @alternate_links_attributes.map { |link| link_to link[:title], link[:href], class: "link" }.to_sentence.html_safe %>.
     </p>
   </section>
-  <%= render "home/sticky_search_bar", search_query: SearchQuery.new %>
+  <%= render "home/sticky_search_bar", search_query: @search_query %>
 </main>

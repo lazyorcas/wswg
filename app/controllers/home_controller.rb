@@ -24,6 +24,8 @@ class HomeController < ApplicationController
 
       build_map_path
     end
+
+    build_search_query
   end
 
   def pricing
@@ -58,5 +60,9 @@ class HomeController < ApplicationController
 
   def events_directory_builder
     @events_directory_builder ||= Marketing::EventsDirectoryBuilder.new
+  end
+
+  def build_search_query
+    @search_query = SearchQuery.new(city: @city)
   end
 end

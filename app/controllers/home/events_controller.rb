@@ -35,6 +35,8 @@ class Home::EventsController < ApplicationController
     build_alternate_links_attributes
     build_map_path
 
+    build_search_query
+
     ahoy.track "Viewed events", city: @city.name, event_category: @event_category.name, time_period: @time_period.name, nearby: nearby?
   end
 
@@ -50,6 +52,10 @@ class Home::EventsController < ApplicationController
 
   def load_city
     @city = nearby? ? get_city_from_current_city : get_city_from_params
+  end
+
+  def build_search_query
+    @search_query = SearchQuery.new(city: @city)
   end
 
   def event_category_symbol

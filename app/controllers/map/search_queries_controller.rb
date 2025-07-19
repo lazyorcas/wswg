@@ -15,6 +15,8 @@ class Map::SearchQueriesController < ApplicationController
   def create
     build_search_query
 
+    ahoy.track "Searched on map", query: @search_query.query
+
     begin
       assign_city_to_search_query
       if @search_query.city.nil?
@@ -32,22 +34,9 @@ class Map::SearchQueriesController < ApplicationController
       end
       turbo_stream_flash(status: :unprocessable_entity)
     end
-
-    ahoy.track "Searched on map", query: @search_query.query
-  end
-
-  def show
-    load_search_query
-    if @search_query.failed?
-      flash.now[:error] = "Failed to search."
-    end
   end
 
   private
-
-  def load_search_query
-    @search_query = search_query_scope.find(params[:id])
-  end
 
   def build_search_query
     @search_query ||= search_query_scope.build
@@ -75,7 +64,7 @@ class Map::SearchQueriesController < ApplicationController
   end
 
   def search_query_scope
-    SearchQuery.where(searcher: [ Current.person, nil ])
+    SearchQuery.where(searcher: Current.person)
   end
 
   def search_query_params

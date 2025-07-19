@@ -1,5 +1,4 @@
 class SearchQueriesController < ApplicationController
-  include FieldTestHelper
   include CityDetection
   # include CreditsCheck
 
@@ -15,7 +14,7 @@ class SearchQueriesController < ApplicationController
   def create
     build_search_query
 
-    ahoy.track "Searched", query: @search_query.query, source: request.referer
+    ahoy.track "Searched", query: @search_query.query
 
     begin
       assign_city_to_search_query
