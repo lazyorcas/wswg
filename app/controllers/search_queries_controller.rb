@@ -1,6 +1,5 @@
 class SearchQueriesController < ApplicationController
   include CityDetection
-  # include CreditsCheck
 
   rate_limit to: 20,
     within: 1.minute,
@@ -8,8 +7,6 @@ class SearchQueriesController < ApplicationController
     with: -> do
       redirect_to(root_path, flash: { error: "Too many requests. Please wait a moment and try again." })
     end
-
-  # require_credits only: [ :create ]
 
   def create
     build_search_query

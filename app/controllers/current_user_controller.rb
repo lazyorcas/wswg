@@ -14,12 +14,6 @@ class CurrentUserController < ApplicationController
     redirect_to(params[:return_to] || root_path)
   end
 
-  # def top_up_credits
-  #   ahoy.track "Visited top up page"
-
-  #   redirect_to(build_stripe_payment_link(Current.user.email), allow_other_host: true)
-  # end
-
   private
 
   def user_params
