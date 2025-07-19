@@ -158,8 +158,8 @@ accessories:
       - web
     env:
       clear:
-        SCHEDULE: '@daily'
-        BACKUP_KEEP_DAYS: 7
+        SCHEDULE: '@hourly'
+        BACKUP_KEEP_DAYS: 2
         S3_BUCKET: wswg-pg-backups
         S3_PREFIX: backups
         S3_ACCESS_KEY_ID: <%= ENV["S3_ACCESS_KEY_ID"] %>
