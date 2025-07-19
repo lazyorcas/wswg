@@ -182,7 +182,6 @@ export default class extends Controller {
     this.map.on("click", this.sourceId, (item) => {
       const feature = item.features[0]
       this.#showFeaturePopup(feature)
-      this.#createSeen(feature.properties.event_id, feature.properties.seen_path)
     })
   }
 

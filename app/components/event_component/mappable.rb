@@ -27,7 +27,6 @@ module EventComponent::Mappable
         type: "Feature",
         properties: {
           event_id: @event.id,
-          seen_path: seen_path(source: "map_source_icon"),
           dom_id: dom_id(@event),
           info_window_path: map_event_path(@event),
           source_name: @event.source.name,
