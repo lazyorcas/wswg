@@ -6,9 +6,21 @@ class AddWeightedKeywordsToInterestSets < ActiveRecord::Migration[8.0]
 end
 
 # User.where.associated(:seens).find_each do |user|
-#   user.interest_set.update!(weighted_keywords: user.build_weighted_keywords)
+#   weighted_keywords = user.build_weighted_keywords
+
+#   if user.interest_set.present?
+#     user.interest_set.update!(weighted_keywords: weighted_keywords)
+#   else
+#     InterestSet.create!(interestable: user, weighted_keywords: weighted_keywords)
+#   end
 # end
 
 # Visitor.where.associated(:seens).find_each do |visitor|
-#   visitor.interest_set.update!(weighted_keywords: visitor.build_weighted_keywords)
+#   weighted_keywords = visitor.build_weighted_keywords
+
+#   if visitor.interest_set.present?
+#     visitor.interest_set.update!(weighted_keywords: weighted_keywords)
+#   else
+#     InterestSet.create!(interestable: visitor, weighted_keywords: weighted_keywords)
+#   end
 # end
