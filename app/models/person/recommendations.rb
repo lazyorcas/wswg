@@ -1,5 +1,6 @@
 module Person::Recommendations
   extend ActiveSupport::Concern
+  include Keywords
 
   LIMIT = 1000
 
