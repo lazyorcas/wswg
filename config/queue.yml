@@ -8,7 +8,7 @@ default: &default
       processes: 1
       polling_interval: 0.1
     - queues: [ scraper ]
-      threads: 1
+      threads: 2
       processes: 1
       polling_interval: 1
     - queues: [ default ]
