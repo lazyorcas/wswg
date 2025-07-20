@@ -27,7 +27,6 @@ class Source::Scraper::BrowserScraper < Source::Scraper::BaseScraper
       end
     rescue => e
       begin
-        browser.reset
         browser.quit
       rescue
       end
@@ -39,7 +38,6 @@ class Source::Scraper::BrowserScraper < Source::Scraper::BaseScraper
       end
     ensure
       begin
-        browser.reset
         browser.quit
       rescue
       end
