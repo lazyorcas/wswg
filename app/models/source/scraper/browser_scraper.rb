@@ -26,12 +26,12 @@ class Source::Scraper::BrowserScraper < Source::Scraper::BaseScraper
         end
       end
     rescue => e
+      begin
+        browser.reset
+        browser.quit
+      rescue
+      end
       if events_attributes.empty?
-        begin
-          browser.reset
-          browser.quit
-        rescue
-        end
         raise Source::ScraperError.new(
           source_name: source.name,
           error_message: e.message
