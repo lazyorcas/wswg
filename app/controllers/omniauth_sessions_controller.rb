@@ -4,12 +4,7 @@ class OmniauthSessionsController < ApplicationController
     find_or_create_user!
     create_or_update_account!
     store_session
-    load_recent_search_query
-    if @recent_search_query.present?
-      redirect_to(map_path(search_query_id: @recent_search_query.id))
-    else
-      redirect_to(root_path)
-    end
+    redirect_to(root_path)
   rescue => e
     Sentry.capture_exception(e)
     flash.now[:error] = "Failed to login. Try again."
@@ -38,12 +33,5 @@ class OmniauthSessionsController < ApplicationController
 
   def store_session
     session[:user_id] = @user.id
-  end
-
-  def load_recent_search_query
-    @search_query = @user.search_queries
-      .where(created_at: 5.minutes.ago..)
-      .order(created_at: :desc)
-      .first
   end
 end

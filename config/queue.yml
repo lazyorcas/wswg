@@ -10,7 +10,7 @@ default: &default
     - queues: [ scraper ]
       threads: 1
       processes: 1
-      polling_interval: 60
+      polling_interval: 1
     - queues: [ default ]
       threads: <%= ENV.fetch("RAILS_MAX_THREADS", 5).to_i - 2 %>
       processes: 2
