@@ -1,13 +1,12 @@
-# June 3rd 2025, each event's markdown has ~4000 tokens.
+# July 20th 2025, each event's markdown has ~4000 tokens.
 # OpenAI gives 2.5M daily free credits.
 # 2.5M / 4000 = 625 free events per day.
 
 class ScrapeAndCreateEventsJob < ApplicationJob
   HOUR_TO_FETCH_EVENTS = 0
-  EVENT_LIMIT_PER_CITY_SOURCE = 1_000
-  INITIAL_LIMIT_MODIFIER = 0.2
-  MIN_LIMIT_MODIFIER = 0.05
-  MAX_LIMIT_MODIFIER = 1.0
+  NEW_EVENTS_PER_DAY = 1_000
+  INITIAL_LIMIT = 100
+  MIN_LIMIT = 2
 
   queue_as :default
   queue_with_priority 0
@@ -17,11 +16,9 @@ class ScrapeAndCreateEventsJob < ApplicationJob
       next if city.time_zone.current_hour != HOUR_TO_FETCH_EVENTS
 
       city.city_sources.find_each do |city_source|
-        next unless city_source.enabled?
+        next if !city_source.enabled?
 
-        limit_modifier = calculate_limit_modifier(city, city_source)
-        limit = (limit_modifier * EVENT_LIMIT_PER_CITY_SOURCE).floor
-
+        limit = calculate_limit(city, city_source)
         CitySource::ScrapeAndCreateEventsJob.perform_later(city_source.id, limit: limit)
       end
     end
@@ -30,8 +27,20 @@ class ScrapeAndCreateEventsJob < ApplicationJob
   private
 
   def calculate_limit_modifier(city, city_source)
-    return INITIAL_LIMIT_MODIFIER if city_source.last_fetched_at.nil?
+    return INITIAL_LIMIT if city_source.last_fetched_at.nil?
 
-    [ MIN_LIMIT_MODIFIER, [ MAX_LIMIT_MODIFIER, city.current_score ].min ].max
+    [ MIN_LIMIT, [ max_limit, (city.current_score * max_limit).ceil ].min ].max
+  end
+
+  def max_limit
+    @max_limit ||= begin
+      city_sources_count = CitySource
+        .joins(:source)
+        .where(enabled: true)
+        .where(sources: { scraper_type: "BrowserScraper" })
+        .count
+
+      (NEW_EVENTS_PER_DAY / city_sources_count).floor
+    end
   end
 end
