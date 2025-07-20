@@ -8,6 +8,3 @@ production:
   reindex_events_job:
     class: Events::ReindexJob
     schedule: "30 * * * *"  # Every hour at 30 minutes
-  finalize_attendees_counts_job:
-    class: Events::FinalizeAttendeesCountsJob
-    schedule: "0 0 * * *"  # Every day at 00:00
