@@ -5,8 +5,6 @@ class Events::RemindersController < ApplicationController
   helper_method :has_reminder?
 
   def show
-    ahoy.track "Viewed reminder form", event_id: @event.id
-
     load_contact
     load_reminder if @contact.present?
     if @reminder.present?
