@@ -59,24 +59,6 @@ module OpenAI::Responses::Schemas
     })
   end
 
-  def self.event_attendees_count_schema
-    build_schema("event_attendees_count", {
-      attendees_count: {
-        type: "number",
-        description: "Number of attendees. If not mentioned, return -1."
-      }
-    })
-  end
-
-  def self.event_organizer_url_schema
-    build_schema("event_organizer_url", {
-      organizer_url: {
-        type: "string",
-        description: "URL of the organizer, usually a user/member page of the hosting platform. The organizer can also be referred to as the event's host. Look out for \"Hosted by\" or \"Organized by\" in the content, but don't rely on it. If not mentioned, return an empty string."
-      }
-    })
-  end
-
   def self.city_schema
     build_schema("city", {
       city: {
