@@ -36,8 +36,8 @@ module Person::Recommendations
         tsquery = keyword.gsub(" ", " | ")
 
         event_ids += event_scope
-          .select(:id, "ts_rank(events.extended_keywords, plainto_tsquery('#{tsquery}')) AS rank")
-          .joins("JOIN interest_sets ON interest_sets.interestable_id = #{id} AND interest_sets.interestable_type = '#{self.class.name}' AND events.extended_keywords @@ plainto_tsquery('#{tsquery}')")
+          .select(:id, "ts_rank(events.extended_keywords, to_tsquery('#{tsquery}')) AS rank")
+          .joins("JOIN interest_sets ON interest_sets.interestable_id = #{id} AND interest_sets.interestable_type = '#{self.class.name}' AND events.extended_keywords @@ to_tsquery('#{tsquery}')")
           .order("rank DESC")
           .limit(LIMIT - event_ids.size)
           .to_a
