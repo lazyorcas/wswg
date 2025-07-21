@@ -7,7 +7,7 @@ class ScrapeAndCreateEventsJob < ApplicationJob
   NEW_EVENTS_PER_DAY = 1_000
   API_SOURCE_LIMIT = 100
   INITIAL_LIMIT = 100
-  MIN_LIMIT = 2
+  MIN_LIMIT = 10
 
   queue_as :default
   queue_with_priority 0
