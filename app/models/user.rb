@@ -6,7 +6,7 @@ class User < ApplicationRecord
 
   has_one :account, dependent: :destroy
   has_many :visits, class_name: "Ahoy::Visit", dependent: :nullify
-  has_many :events, through: :visits, source: :event
+  has_many :events, through: :visits, source: :events
 
   validates :email,
             presence: true,
