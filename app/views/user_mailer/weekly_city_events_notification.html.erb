@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+  </head>
+  <body style="font-family: 'Inter', sans-serif, system-ui; padding: 20px; margin: 0; font-size: 16px; line-height: 1.5; text-align: center;">
+    <%= render "title" do %>
+      <%= t("title", city_name: @city.name) %>
+    <% end %>
+    <%= render "subtitle" do %>
+      <%= t("subtitle", start_date: @start_date_str, end_date: @end_date_str) %>
+    <% end %>
+    <%= render "description" do %>
+      <%= t("description") %>
+    <% end %>
+    <%= render "cta" do %>
+      <%= t("cta", events_count: @events_count) %>
+    <% end %>
+  </body>
+</html>
