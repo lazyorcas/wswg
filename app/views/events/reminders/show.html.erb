@@ -1,0 +1,18 @@
+<%= content_for :head do %>
+  <meta name="robots" content="noindex">
+<% end %>
+<%= turbo_frame_tag "#{dom_id(@event)}_reminder" do %>
+  <%= turbo_stream.replace "#{dom_id(@event)}_reminder" do %>
+    <% if has_reminder? %>
+      <%= render "reminded_button" %>
+    <% else %>
+      <%= tag.button id: "#{dom_id(@event)}_reminder_button", popovertarget: "#{dom_id(@event)}_reminder", class: "w-full button button--secondary" do %>
+        <i class="ph ph-bell-simple"></i>
+        Remind me
+      <% end %>
+      <%= tag.div popover: "", id: "#{dom_id(@event)}_reminder", class: "modal p-4 w-xs max-w-full" do %>
+        <%= render "form", reminder: @reminder %>
+      <% end %>
+    <% end %>
+  <% end %>
+<% end %>

@@ -1,7 +1,7 @@
 <%= turbo_frame_tag "new_event_batch_loader" do %>
   <%= turbo_stream.remove_all ".event-item-skeleton" %>
   <%= turbo_stream.replace "new_event_batch_loader" do %>
-    <%= render partial: "home/events/event", collection: @events, cached: -> (event) { build_event_cache_key(event) } %>
+    <%= render partial: "home/events/event", collection: @events %>
     <% if @recommendation_batch_path.present? %>
       <%= turbo_frame_tag "new_event_batch_loader", loading: "lazy", src: @recommendation_batch_path, class: "shrink-0 size-full" do %>
         <%= render partial: "home/events/event_item_skeleton" %>

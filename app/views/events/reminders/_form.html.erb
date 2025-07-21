@@ -1,0 +1,14 @@
+<div class="flex flex-col gap-y-4">
+  <p class="text-lg font-bold text-primary line-clamp-2"><%= reminder.event.title %></p>
+  <%= form_for reminder, url: event_reminder_path(reminder.event_id), html: { class: "flex flex-col gap-y-4" } do |form| %>
+    <div class="flex flex-col gap-y-1">
+      <%= form.label :contact, "How can we remind you?", class: "text-sm text-secondary" %>
+      <%= form.text_field :contact, class: "input input--accent", placeholder: "e.g. email, whatsapp number, etc.", autocomplete: "email", required: true %>
+    </div>
+    <div class="flex flex-col gap-y-1">
+      <%= form.label :early_reminder, "Early reminder (optional)", class: "text-sm text-secondary" %>
+      <%= form.text_field :early_reminder, class: "input input--accent", placeholder: "3 days before" %>
+    </div>
+    <%= form.submit "Remind me", class: "button button--primary" %>
+  <% end %>
+</div>

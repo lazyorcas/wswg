@@ -38,12 +38,7 @@
         </span>
         <span class="shrink-0 flex flex-col gap-y-4 h-full items-end justify-between">
           <%= image_tag @event.image_url, class: "grid-item__event-image", loading: "lazy", referrerpolicy: "no-referrer", alt: "Event image" %>
-          <%= turbo_frame_tag "#{dom_id(@event)}_bookmark", src: event_bookmark_path(@event), loading: "lazy" do %>
-            <span class="button button--disabled">
-              <i class="ph ph-bookmark-simple"></i>
-              Save
-            </span>
-          <% end %>
+          <%= render "events/reminders/button", event: @event %>
         </span>
       </span>
     </span>

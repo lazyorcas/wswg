@@ -1,0 +1,5 @@
+<%= turbo_stream.remove "#{dom_id(@event)}_reminder" %>
+<%= turbo_stream.replace "#{dom_id(@event)}_reminder_button" do %>
+  <%= render "reminded_button" %>
+<% end %>
+<%= turbo_stream_flash %>
