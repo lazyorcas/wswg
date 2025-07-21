@@ -15,6 +15,7 @@ class Event < ApplicationRecord
   has_one :source, through: :city_source, autosave: false
   delegate :time_zone, to: :city
 
+  has_many :impressions, dependent: :destroy
   has_many :bookmarks, dependent: :destroy
   has_many :seens, dependent: :destroy
   has_many :recommendations

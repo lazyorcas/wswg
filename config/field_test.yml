@@ -25,6 +25,14 @@ experiments:
     variants:
       - interests
       - popularity
+  hide_impression_events:
+    name: Hide Impression Events
+    description: >
+      Test if hiding impression events creates more event clicks.
+    started_at: July 21, 2025 12:00 pm SGT
+    variants:
+      - show
+      - hide
 
 exclude:
   bots: true

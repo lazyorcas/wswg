@@ -15,7 +15,8 @@
       <% end %>
     </div>
     <% if sort_by_interests? || events.any? %>
-      <div class="shrink-0">
+      <div class="shrink-0 flex gap-x-2">
+        <%= render "current_person/settings/preferences/hide_impression_events_popover_button" %>
         <%= render "current_person/settings/preferences/sort_by_popover_button" %>
       </div>
     <% end %>

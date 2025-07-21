@@ -29,6 +29,7 @@ class MapController < ApplicationController
         build_recommendation_batch_path
       else
         load_events
+        hide_impression_events if hide_impression_events?
         eager_load_events_associations
       end
 

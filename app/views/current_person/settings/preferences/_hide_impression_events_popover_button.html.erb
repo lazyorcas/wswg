@@ -1,0 +1,10 @@
+<%= tag.button popovertarget: "current_person_settings_preferences_hide_impression_events", class: class_names("icon-button icon-button--base", hide_impression_events? ? "button--active" : "button--ghost"), title: "Open Lightning Mode" do %>
+  <i class="ph-fill ph-lightning"></i>
+<% end %>
+<%= turbo_frame_tag "current_person_settings_preferences_hide_impression_events", src: current_person_settings_preference_path(id: "hide_impression_events"), popover: "", target: "_top", loading: "lazy", class: "modal p-4 w-xs max-w-full" do %>
+  <div class="flex flex-col gap-y-4">
+    <div class="skeleton rounded w-full h-7"></div>
+    <div class="skeleton rounded w-full h-11"></div>
+    <div class="skeleton button w-full"></div>
+  </div>
+<% end %>

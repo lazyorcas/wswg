@@ -16,7 +16,8 @@ class CurrentPerson::Settings::PreferencesController < ApplicationController
     build_preferences
 
     if @preferences.save
-      update_field_test_variant
+      update_sort_by_field_test_variant if params[:sort_by].present?
+      update_hide_impression_events_field_test_variant if params[:hide_impression_events].present?
       redirect_to(@return_to)
     else
       flash.now[:error] = "Failed to update preferences."
@@ -37,13 +38,20 @@ class CurrentPerson::Settings::PreferencesController < ApplicationController
 
   def preferences_params
     preferences_params = params[:preferences]
-    preferences_params ? preferences_params.permit(:sort_by) : {}
+    preferences_params ? preferences_params.permit(:sort_by, :hide_impression_events) : {}
   end
 
-  def update_field_test_variant
+  def update_sort_by_field_test_variant
     field_test_membership = Current.person.field_test_memberships.find_by(experiment: "sort_by_interests")
     if field_test_membership.present?
       field_test_membership.update(variant: @preferences.sort_by, converted: false)
+    end
+  end
+
+  def update_hide_impression_events_field_test_variant
+    field_test_membership = Current.person.field_test_memberships.find_by(experiment: "hide_impression_events")
+    if field_test_membership.present?
+      field_test_membership.update(variant: @preferences.hide_impression_events, converted: false)
     end
   end
 end

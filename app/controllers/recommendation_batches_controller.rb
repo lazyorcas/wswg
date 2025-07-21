@@ -31,6 +31,7 @@ class RecommendationBatchesController < ApplicationController
       limit_events_to_batch_size
     end
 
+    hide_impression_events if hide_impression_events?
     eager_load_events_associations
 
     if @events.any? && batch_index < max_batch_count

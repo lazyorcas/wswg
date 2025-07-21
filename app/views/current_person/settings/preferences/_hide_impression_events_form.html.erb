@@ -1,0 +1,7 @@
+<div class="flex flex-col gap-y-4">
+  <p class="text-lg font-bold text-primary">Lightning Mode</p>
+  <%= form_with url: current_person_settings_preference_path(id: "hide_impression_events", return_to: @return_to), method: :patch, html: { class: "flex flex-col gap-y-4" } do |form| %>
+    <%= form.select "preferences[hide_impression_events]", options_for_select(hide_impression_events_options), { }, { class: "input input--accent" } %>
+    <%= form.submit "Save", class: "button button--primary" %>
+  <% end %>
+</div>

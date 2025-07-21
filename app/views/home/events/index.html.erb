@@ -10,7 +10,8 @@
   <section class="py-10 w-full flex flex-col">
     <% if sort_by_interests? || @events.any? %>
       <div class="flex flex-wrap justify-between">
-        <div class="ml-auto flex self-end gap-x-1">
+        <div class="ml-auto flex self-end gap-x-2">
+          <%= render "current_person/settings/preferences/hide_impression_events_popover_button" %>
           <% if @event_category.events? %>
             <%= render "current_person/settings/preferences/sort_by_popover_button" %>
           <% end %>

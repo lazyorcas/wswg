@@ -15,7 +15,8 @@
   <% if @city.present? && (sort_by_interests? || @events&.any?) %>
     <section class="w-full flex flex-col gap-y-4 items-center pt-10 md:pt-20">
       <h2 class="self-center text-center text-2xl md:text-3xl font-semibold">Events near me</h2>
-      <div class="self-end w-full flex justify-end gap-x-1">
+      <div class="self-end w-full flex justify-end gap-x-2">
+        <%= render "current_person/settings/preferences/hide_impression_events_popover_button" %>
         <%= render "current_person/settings/preferences/sort_by_popover_button" %>
         <% if @map_path.present? %>
           <%= link_to @map_path, class: "icon-button icon-button--base button--ghost", data: { turbo: false }, aria: { label: "Events Map" } do %>

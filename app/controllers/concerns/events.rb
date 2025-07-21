@@ -5,6 +5,7 @@ module Events
   include Filters
   include SEO
   include Batches
+  include Impressions
   include Recommendations
 
   private

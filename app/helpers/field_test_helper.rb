@@ -2,7 +2,8 @@ module FieldTestHelper
   EXPERIMENT_FALLBACK = {
     search_bar_position: "header",
     sort_by: "time",
-    sort_by_interests: "popularity"
+    sort_by_interests: "popularity",
+    hide_impression_events: "show"
   }.freeze
 
   def field_test_variant(experiment)
