@@ -52,9 +52,9 @@ class Events::RemindersController < ApplicationController
       Current.person
         .events
         .where(name: Reminder::AHOY_EVENT_NAME)
-        .where("properties->>'event_id' = ?", @event.id)
+        .where("properties->>'event_id' = ?", @event.id.to_s)
         .first
-        &.properties["contact"]
+        &.properties&.dig("contact")
     else
       Current.person.email
     end
