@@ -33,9 +33,11 @@ module Person::Recommendations
       interest_set.weighted_keywords.each do |keyword|
         break if event_ids.size >= LIMIT
 
+        tsquery = keyword.gsub(" ", " | ")
+
         event_ids += event_scope
-          .select(:id, "ts_rank(events.extended_keywords, plainto_tsquery('#{keyword}')) AS rank")
-          .joins("JOIN interest_sets ON interest_sets.interestable_id = #{id} AND interest_sets.interestable_type = '#{self.class.name}' AND events.extended_keywords @@ plainto_tsquery('#{keyword}')")
+          .select(:id, "ts_rank(events.extended_keywords, plainto_tsquery('#{tsquery}')) AS rank")
+          .joins("JOIN interest_sets ON interest_sets.interestable_id = #{id} AND interest_sets.interestable_type = '#{self.class.name}' AND events.extended_keywords @@ plainto_tsquery('#{tsquery}')")
           .order("rank DESC")
           .limit(LIMIT - event_ids.size)
           .to_a
