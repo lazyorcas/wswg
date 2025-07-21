@@ -8,7 +8,7 @@
     <% else %>
       <%= tag.button id: "#{dom_id(@event)}_reminder_button", popovertarget: "#{dom_id(@event)}_reminder", class: "w-full button button--secondary" do %>
         <i class="ph ph-bell-simple"></i>
-        Remind me
+        Remind
       <% end %>
       <%= tag.div popover: "", id: "#{dom_id(@event)}_reminder", class: "modal p-4 w-xs max-w-full" do %>
         <%= render "form", reminder: @reminder %>
