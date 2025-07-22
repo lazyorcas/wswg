@@ -37,11 +37,13 @@
           <%= render partial: "event", collection: @events, cached: -> (event) { build_event_cache_key(event) } %>
         <% end %>
       <% end %>
-      <div class="flex flex-col items-center">
-        <%= link_to @search_query.present? ? map_path(search_query_id: @search_query.id) : city_map_path(city_slug: @city.slug), class: " mt-4 lg:mt-5 button button--primary", data: { turbo: false } do %>
-          View all <%= @event_category.name %>
-        <% end %>
-      </div>
+      <% if @map_path.present? %>
+        <div class="flex flex-col items-center">
+          <%= link_to @map_path, class: " mt-4 lg:mt-5 button button--primary", data: { turbo: false } do %>
+            View all <%= @event_category.name %>
+          <% end %>
+        </div>
+      <% end %>
     <% else %>
       <p class="flash flash--warning mt-8 mx-auto">
         <%= @events_page_builder.no_events_message %>
