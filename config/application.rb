@@ -27,12 +27,5 @@ module WhereShouldWeGo
     config.mission_control.jobs.http_basic_auth_enabled = false
 
     config.i18n.raise_on_missing_translations = true
-
-    if ENV["LOGTAIL_TOKEN"].present? && ENV["LOGTAIL_INGESTING_HOST"].present?
-      config.logger = Logtail::Logger.create_default_logger(
-        ENV["LOGTAIL_TOKEN"],
-        ingesting_host: ENV["LOGTAIL_INGESTING_HOST"]
-      )
-    end
   end
 end
