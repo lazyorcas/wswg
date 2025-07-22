@@ -22,4 +22,5 @@ Sentry.init do |config|
   config.enabled_environments = %w[production]
 
   config.enable_logs = true
+  config.enabled_patches = [ :logger ]
 end
