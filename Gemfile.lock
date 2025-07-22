@@ -223,6 +223,15 @@ GEM
     logger (1.7.0)
     logtail (0.1.17)
       msgpack (~> 1.0)
+    logtail-rack (0.2.6)
+      logtail (~> 0.1)
+      rack (>= 1.2, < 4.0)
+    logtail-rails (0.2.10)
+      actionpack (>= 5.0.0)
+      activerecord (>= 5.0.0)
+      logtail (~> 0.1, >= 0.1.14)
+      logtail-rack (~> 0.1)
+      railties (>= 5.0.0)
     loofah (2.24.1)
       crass (~> 1.0.2)
       nokogiri (>= 1.12.0)
@@ -597,7 +606,7 @@ DEPENDENCIES
   jbuilder
   kamal
   ledermann-rails-settings
-  logtail (~> 0.1.17)
+  logtail-rails
   mission_control-jobs
   money
   money-rails

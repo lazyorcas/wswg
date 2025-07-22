@@ -116,4 +116,4 @@ gem "blazer"
 gem "geokit-rails"
 gem "scenic"
 
-gem "logtail", "~> 0.1.17"
+gem "logtail-rails"
