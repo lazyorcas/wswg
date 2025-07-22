@@ -28,7 +28,7 @@ class Events::RemindersController < ApplicationController
     if @reminder.valid?
       ahoy.track Reminder::AHOY_EVENT_NAME, {
         event_id: @event.id,
-        contact: @contact,
+        contact: @reminder.contact,
         early_reminder: @reminder.early_reminder
       }
       flash.now[:success] = "Reminder created successfully"
