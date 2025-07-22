@@ -1,4 +1,5 @@
 class Event::CreateJob < ApplicationJob
+  URL_NOT_FOUND_MAX_ATTEMPTS = 3
   DATA_INCOMPLETE_MAX_ATTEMPTS = 3
 
   queue_as :default
@@ -10,8 +11,8 @@ class Event::CreateJob < ApplicationJob
   retry_on OpenAI::TooManyRequestsError, wait: 5.minutes, attempts: 3
   retry_on OpenAI::ServerError, wait: 5.minutes, attempts: 3
 
-  retry_on Event::UrlNotFoundError, wait: 5.minutes, attempts: 3
   retry_on Event::DataIncompleteError, wait: 5.minutes, attempts: DATA_INCOMPLETE_MAX_ATTEMPTS
+  retry_on Event::UrlNotFoundError, wait: 5.minutes, attempts: URL_NOT_FOUND_MAX_ATTEMPTS
 
   discard_on JSON::ParserError
 
@@ -52,7 +53,7 @@ class Event::CreateJob < ApplicationJob
     })
 
   rescue Event::UrlNotFoundError => e
-    raise e if executions_for(e) < 3
+    raise e if executions_for(e) < URL_NOT_FOUND_MAX_ATTEMPTS
     create_archived_link(event, :url_not_found, metadata: {
       attributes: event.attributes
     })
