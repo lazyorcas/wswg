@@ -28,7 +28,7 @@ class CitySource::ScrapeAndCreateEventsJob < ApplicationJob
       ActiveJob.perform_all_later(create_event_jobs)
     end
 
-    log("Found #{create_event_jobs.length}/#{events_attributes.length} new events")
+    log("Found #{create_event_jobs.length}/#{events_attributes.length} new events from #{city_source.source.name} in #{city_source.city.name}")
 
     city_source.update(last_fetched_at: Time.current)
 
