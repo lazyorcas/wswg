@@ -33,11 +33,11 @@ en:
       subject: "What's happening in %{city_name} - Week of %{start_date}"
       title: "Events in %{city_name}"
       subtitle: "%{start_date} - %{end_date}"
-      description: "Browse and search for events, meetups, and concerts from Luma, Meetup, Eventbrite, and Ticketmaster in one place."
+      description: "Browse and search for events, meetups, and concerts from multiple sources in one place."
       cta: "View %{events_count}+ events"
     weekly_nearby_events_notification:
       subject: "What's happening near you - Week of %{start_date}"
       title: "Events near you"
       subtitle: "%{start_date} - %{end_date}"
-      description: "Browse and search for events, meetups, and concerts from Luma, Meetup, Eventbrite, and Ticketmaster in one place."
+      description: "Browse and search for events, meetups, and concerts from multiple sources in one place."
       cta: "View events"
