@@ -38,15 +38,24 @@ class Event::CreateJob < ApplicationJob
       nil
 
     elsif duplicated?(event.errors)
-      create_archived_link_for_duplicated_event(event)
+      create_archived_link(event, :duplicated, metadata: {
+        attributes: event.attributes,
+        errors: event.errors.to_json
+      })
     end
 
   rescue Event::DataIncompleteError => e
-    if executions_for(e) < DATA_INCOMPLETE_MAX_ATTEMPTS
-      raise e
-    else
-      create_archived_link_for_data_incomplete_event(event)
-    end
+    raise e if executions_for(e) < DATA_INCOMPLETE_MAX_ATTEMPTS
+    create_archived_link(event, :data_incomplete, metadata: {
+      attributes: event.attributes,
+      errors: event.errors.to_json
+    })
+
+  rescue Event::UrlNotFoundError => e
+    raise e if executions_for(e) < 3
+    create_archived_link(event, :url_not_found, metadata: {
+      attributes: event.attributes
+    })
   end
 
   private
@@ -63,28 +72,12 @@ class Event::CreateJob < ApplicationJob
     errors.any? { |error| error.type == :duplicated }
   end
 
-  def create_archived_link_for_duplicated_event(event)
+  def create_archived_link(event, reason, metadata: {})
     archived_link = ArchivedLink.find_or_initialize_by(url: event.url)
 
     if archived_link.new_record?
-      archived_link.reason = :duplicated
-      archived_link.metadata = {
-        attributes: event.attributes,
-        errors: event.errors.to_json
-      }
-      archived_link.save!
-    end
-  end
-
-  def create_archived_link_for_data_incomplete_event(event)
-    archived_link = ArchivedLink.find_or_initialize_by(url: event.url)
-
-    if archived_link.new_record?
-      archived_link.reason = :data_incomplete
-      archived_link.metadata = {
-        attributes: event.attributes,
-        errors: event.errors.to_json
-      }
+      archived_link.reason = reason
+      archived_link.metadata = metadata
       archived_link.save!
     end
   end
