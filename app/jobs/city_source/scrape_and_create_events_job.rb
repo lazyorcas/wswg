@@ -28,6 +28,8 @@ class CitySource::ScrapeAndCreateEventsJob < ApplicationJob
       ActiveJob.perform_all_later(create_event_jobs)
     end
 
+    log("Found #{create_event_jobs.length}/#{events_attributes.length} new events")
+
     city_source.update(last_fetched_at: Time.current)
 
   rescue CitySource::NoEventsFoundError => e
