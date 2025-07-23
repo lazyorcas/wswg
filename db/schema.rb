@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_07_19_155058) do
+ActiveRecord::Schema[8.0].define(version: 2025_07_23_055939) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -226,6 +226,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_19_155058) do
     t.virtual "keywords", type: :tsvector, as: "to_tsvector('english'::regconfig, (COALESCE(title, ''::character varying))::text)", stored: true
     t.virtual "start_date_time", type: :string, as: "\nCASE\n    WHEN ((start_date IS NOT NULL) AND (start_time IS NOT NULL)) THEN (((start_date)::text || ' '::text) || (start_time)::text)\n    ELSE NULL::text\nEND", stored: true
     t.virtual "extended_keywords", type: :tsvector, as: "to_tsvector('english'::regconfig, COALESCE((((title)::text || ' '::text) || (description)::text), ''::text))", stored: true
+    t.string "organizer_name"
     t.index ["city_source_id"], name: "index_events_on_city_source_id"
     t.index ["extended_keywords"], name: "index_events_on_extended_keywords", using: :gin
     t.index ["keywords"], name: "index_events_on_keywords", using: :gin
