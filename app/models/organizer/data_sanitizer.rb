@@ -8,8 +8,8 @@ class Organizer::DataSanitizer
   end
 
   def sanitize
-    @sanitized_attributes[:url] = sanitize_url
-    @sanitized_attributes[:name] = sanitize_name
+    @sanitized_attributes[:url] = @url.present? ? sanitize_url : nil
+    @sanitized_attributes[:name] = @name.present? ? sanitize_name : nil
   end
 
   def sanitize_url
