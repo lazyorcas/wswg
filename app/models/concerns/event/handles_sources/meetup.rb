@@ -16,7 +16,7 @@ module Event::HandlesSources::Meetup
   def modify_meetup_organizer_url
     return unless should_modify_meetup_organizer_url?
 
-    self.organizer_url = Url.build_url(url, "/#{group_slug}")
+    self.organizer_url = Url.build_url(url, "/#{meetup_group_slug}")
   end
 
   def meetup_group_slug
