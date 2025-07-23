@@ -1,16 +1,17 @@
 class Organizer::EventbriteDataSanitizer < Organizer::DataSanitizer
-  GENERIC_URLS = [
-    "https://www.eventbrite.com/",
-    "https://www.eventbrite.sg/",
-    "https://www.eventbrite.sg/organizer/overview/",
-    "https://www.eventbrite.com/organizer/overview/"
-  ].map { |url| Url.normalize(url) }.freeze
-
   def sanitize_url
-    GENERIC_URLS.include?(normalized_url) ? nil : super
+    root_url? || generic_url? ? nil : super
   end
 
   def sanitize_name
     @name == "Eventbrite" ? nil : super
+  end
+
+  def root_url?
+    Url.parse(normalized_url).path.blank?
+  end
+
+  def generic_url?
+    normalized_url.include?("organizer/overview")
   end
 end
