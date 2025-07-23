@@ -10,7 +10,7 @@ module Event::HandlesSources::Meetup
   end
 
   def should_modify_meetup_organizer_url?
-    url.include?("attendees")
+    organizer_url.include?("attendees")
   end
 
   def modify_meetup_organizer_url
