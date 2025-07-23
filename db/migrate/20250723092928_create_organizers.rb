@@ -15,8 +15,16 @@ class CreateOrganizers < ActiveRecord::Migration[8.0]
 end
 
 # Event.where.not(organizer_url: nil).where(organizer_id: nil).find_each do |event|
-#   event.assign_organizer!
+#   begin
+#     event.assign_organizer!
+#   rescue => e
+#     puts "#{event.id} - #{event.organizer_url} - #{event.organizer_name}"
+#   end
 # end
 # Event.where.not(organizer_name: nil).where(organizer_id: nil).find_each do |event|
-#   event.assign_organizer!
+#   begin
+#     event.assign_organizer!
+#   rescue => e
+#     puts "#{event.id} - #{event.organizer_url} - #{event.organizer_name}"
+#   end
 # end

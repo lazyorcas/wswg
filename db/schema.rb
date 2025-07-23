@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_07_23_092928) do
+ActiveRecord::Schema[8.0].define(version: 2025_07_23_145116) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -306,7 +306,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_23_092928) do
     t.datetime "updated_at", null: false
     t.index ["source_id", "url", "name"], name: "index_organizers_on_source_id_and_url_and_name", unique: true
     t.index ["source_id"], name: "index_organizers_on_source_id"
-    t.index ["url"], name: "index_organizers_on_url", unique: true
+    t.index ["url"], name: "index_organizers_on_url"
   end
 
   create_table "passwordless_sessions", force: :cascade do |t|
