@@ -1,7 +1,7 @@
 class Event::ExtractOrganizerDataJob < ApplicationJob
   queue_as :default
   queue_with_priority 10
-  limits_concurrency to: 1, key: ->(event_id) { event_id }, on_conflict: :discard
+  limits_concurrency to: 5, key: ->(*) { self.class.name }
 
   retry_on OpenAI::TooManyRequestsError, wait: 5.minutes, attempts: 3
   retry_on OpenAI::ServerError, wait: 5.minutes, attempts: 3
