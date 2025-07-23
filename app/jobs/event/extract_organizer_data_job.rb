@@ -16,3 +16,8 @@ class Event::ExtractOrganizerDataJob < ApplicationJob
     )
   end
 end
+
+# jobs = City.find_by_name("Singapore").events.where(organizer_url: nil).pluck(:id).map do |event_id|
+#   Event::ExtractOrganizerDataJob.new(event_id)
+# end
+# ActiveJob.perform_all_later(jobs)
