@@ -2,6 +2,7 @@ class Event < ApplicationRecord
   include Fetchable
   include Parseable
   include Duplicable
+  include Organizable
   include Locatable
   include Temporal
   include Createable

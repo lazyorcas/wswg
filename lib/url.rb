@@ -37,4 +37,13 @@ module Url
   rescue Addressable::URI::InvalidURIError
     raise
   end
+
+  def self.normalize(url)
+    new_url = remove_trailing_slash(url)
+    new_url
+  end
+
+  def self.remove_trailing_slash(url)
+    url.gsub(/\/$/, "")
+  end
 end

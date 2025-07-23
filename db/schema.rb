@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_07_23_090923) do
+ActiveRecord::Schema[8.0].define(version: 2025_07_23_092928) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -228,12 +228,14 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_23_090923) do
     t.virtual "extended_keywords", type: :tsvector, as: "to_tsvector('english'::regconfig, COALESCE((((title)::text || ' '::text) || (description)::text), ''::text))", stored: true
     t.string "organizer_name"
     t.integer "dow"
+    t.bigint "organizer_id"
     t.index ["city_source_id"], name: "index_events_on_city_source_id"
     t.index ["dow"], name: "index_events_on_dow"
     t.index ["extended_keywords"], name: "index_events_on_extended_keywords", using: :gin
     t.index ["keywords"], name: "index_events_on_keywords", using: :gin
     t.index ["location_id", "start_date", "end_date", "start_time", "end_time"], name: "idx_on_location_id_start_date_end_date_start_time_e_415cb0e2f4"
     t.index ["location_id"], name: "index_events_on_location_id"
+    t.index ["organizer_id"], name: "index_events_on_organizer_id"
     t.index ["start_date_time"], name: "index_events_on_start_date_time"
     t.index ["url"], name: "index_events_on_url", unique: true
   end
@@ -294,6 +296,17 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_23_090923) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["lat", "lon"], name: "index_locations_on_lat_and_lon"
+  end
+
+  create_table "organizers", force: :cascade do |t|
+    t.bigint "source_id"
+    t.string "name"
+    t.string "url"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["source_id", "url", "name"], name: "index_organizers_on_source_id_and_url_and_name", unique: true
+    t.index ["source_id"], name: "index_organizers_on_source_id"
+    t.index ["url"], name: "index_organizers_on_url", unique: true
   end
 
   create_table "passwordless_sessions", force: :cascade do |t|
@@ -399,8 +412,10 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_23_090923) do
   add_foreign_key "city_sources", "sources"
   add_foreign_key "events", "city_sources"
   add_foreign_key "events", "locations"
+  add_foreign_key "events", "organizers"
   add_foreign_key "impressions", "events"
   add_foreign_key "location_queries", "locations"
+  add_foreign_key "organizers", "sources"
   add_foreign_key "search_queries", "cities"
   add_foreign_key "searches", "search_queries"
   add_foreign_key "seens", "events"
