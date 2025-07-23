@@ -2,6 +2,8 @@ module Event::Temporal
   extend ActiveSupport::Concern
 
   included do
+    before_validation :set_dow, if: -> { start_date.present? }
+
     validates :end_date,
       comparison: { greater_than_or_equal_to: :start_date },
       if: -> { end_date.present? && start_date.present? }
@@ -22,6 +24,10 @@ module Event::Temporal
   end
 
   private
+
+  def set_dow
+    self.dow = Date.parse(start_date).strftime("%u").to_i
+  end
 
   def validate_end_date_after_start_date
     return if end_date >= start_date
