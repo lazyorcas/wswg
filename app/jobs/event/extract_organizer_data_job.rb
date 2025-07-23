@@ -1,0 +1,18 @@
+class Event::ExtractOrganizerDataJob < ApplicationJob
+  queue_as :default
+  queue_with_priority 10
+  limits_concurrency to: 1, key: ->(event_id) { event_id }, on_conflict: :discard
+
+  retry_on OpenAI::TooManyRequestsError, wait: 5.minutes, attempts: 3
+  retry_on OpenAI::ServerError, wait: 5.minutes, attempts: 3
+
+  def perform(event_id)
+    event = Event.find(event_id)
+    organizer_data = event.extract_organizer_data_from_markdown
+    puts organizer_data
+    event.update!(
+      organizer_url: organizer_data["organizer_url"],
+      organizer_name: organizer_data["organizer_name"]
+    )
+  end
+end

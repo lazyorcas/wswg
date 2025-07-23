@@ -44,6 +44,14 @@ module Event::Parseable
     )
   end
 
+  def extract_organizer_data_from_markdown
+    markdown_expert.convert_to_json(
+      markdown,
+      context: GENERAL_CONTEXT,
+      json_schema: OpenAI::Responses::Schemas.event_organizer_schema
+    )
+  end
+
   private
 
   def markdown_expert

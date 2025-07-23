@@ -22,11 +22,11 @@ module OpenAI::Responses::Schemas
       },
       organizer_url: {
         type: "string",
-        description: "URL of the organizer, usually a user/member page of the hosting platform. The organizer can also be referred to as the event's host. Look out for \"Hosted by\" or \"Organized by\" in the content, but don't rely on it. If not mentioned, return an empty string. It cannot be the name of the hosting platform."
+        description: "URL of the organizer, usually a user/member page of the hosting platform. The organizer can also be referred to as the event's host. Look out for \"Hosted by\" or \"Organized by\" in the content, but don't rely on it. If not mentioned, return an empty string."
       },
       organizer_name: {
         type: "string",
-        description: "Name of the organizer. The organizer can also be referred to as the event's host. Look out for \"Hosted by\" or \"Organized by\" in the content, but don't rely on it. If not mentioned, return an empty string."
+        description: "Name of the organizer. The organizer can also be referred to as the event's host. Look out for \"Hosted by\" or \"Organized by\" in the content, but don't rely on it. If not mentioned, return an empty string. It cannot be the name of the hosting platform."
       },
       location: {
         type: "string",
@@ -119,6 +119,19 @@ module OpenAI::Responses::Schemas
       max_price: {
         type: "number",
         description: "If not mentioned, return -1. If free, return 0."
+      }
+    })
+  end
+
+  def self.event_organizer_schema
+    build_schema("event_organizer", {
+      organizer_url: {
+        type: "string",
+        description: "URL of the organizer, usually a user/member page of the hosting platform. The organizer can also be referred to as the event's host. Look out for \"Hosted by\" or \"Organized by\" in the content, but don't rely on it. If not mentioned, return an empty string."
+      },
+      organizer_name: {
+        type: "string",
+        description: "Name of the organizer. The organizer can also be referred to as the event's host. Look out for \"Hosted by\" or \"Organized by\" in the content, but don't rely on it. If not mentioned, return an empty string. It cannot be the name of the hosting platform."
       }
     })
   end
