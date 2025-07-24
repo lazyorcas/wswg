@@ -6,31 +6,35 @@ class Businesses::EventsController < ApplicationController
   include BusinessesOnly
 
   def index
-    load_events
-    order_events
+    build_event_query
+    query_events
+    @events = Event.where(id: @event_ids).in_order_of(:id, @event_ids)
     limit_events
     eager_load_events_associations
   end
 
   private
 
-  def load_events
-    @events = event_scope
+  def build_event_query
+    @event_query = Business::EventQuery.new(
+      city_id: Current.business.city_id,
+      **event_query_params
+    )
   end
 
-  def order_events
-    @events = @events.order(start_date: :desc)
+  def query_events
+    @event_ids = @event_query.query
   end
 
   def limit_events
-    @events = @events.limit(1000)
+    @events = @events.limit(LIMIT)
   end
 
   def eager_load_events_associations
     @events = @events.includes(:source, :location, :city, :organizer)
   end
 
-  def event_scope
-    Event.joins(:city_source).where(city_sources: { city_id: Current.business.city_id })
+  def event_query_params
+    params.permit(:keywords, :organizer_id, :dow, :tod, :location_id, :source_id)
   end
 end

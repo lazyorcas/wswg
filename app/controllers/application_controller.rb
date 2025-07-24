@@ -13,7 +13,11 @@ class ApplicationController < ActionController::Base
   private
 
   def set_current_person
-    Current.person = Current.user || Current.visitor
+    if request.path.start_with?("/businesses")
+      Current.person = Current.business
+    else
+      Current.person = Current.user || Current.visitor
+    end
   end
 
   def set_sentry_user_context

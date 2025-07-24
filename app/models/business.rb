@@ -1,7 +1,6 @@
 class Business < ApplicationRecord
   include Sluggish
-
-  belongs_to :city
+  include IsPerson
 
   validates :name, presence: true
   validates :slug, presence: true, uniqueness: true

@@ -1,30 +1,30 @@
 <tr>
-  <%= tag.td title: @event.title do %>
+  <%= tag.td do %>
     <%= link_to @event.url, class: "line-clamp-2 hover:underline", target: "_blank" do %>
       <%= @event.title %>
     <% end %>
   <% end %>
-  <%= tag.td title: organizer do %>
+  <%= tag.td do %>
     <% if organizer.present? %>
       <%= link_to organizer_url, class: "line-clamp-2 hover:underline", target: "_blank" do %>
         <%= organizer %>
       <% end %>
     <% end %>
   <% end %>
-  <%= tag.td class: "truncate", title: date do %>
-    <%= date %>
+  <%= tag.td do %>
+    <span class="line-clamp-2"><%= date %></span>
   <% end %>
-  <%= tag.td class: "truncate", title: time_range do %>
-    <%= time_range %>
+  <%= tag.td do %>
+    <span class="line-clamp-2"><%= time_range %></span>
   <% end %>
-  <%= tag.td title: venue do %>
+  <%= tag.td do %>
     <% if venue.present? %>
       <%= link_to "https://www.google.com/maps/search/?api=1&query=#{CGI.escape(venue)}", class: "line-clamp-2 hover:underline", target: "_blank" do %>
         <%= venue %>
       <% end %>
     <% end %>
   <% end %>
-  <%= tag.td title: @event.source.name do %>
+  <%= tag.td do %>
     <span class="flex items-center gap-x-2 flex-wrap">
       <%= image_tag source_icon_url, class: "size-4 rounded" %>
       <%= @event.source.name %>
