@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title><%= content_for?(:title) ? yield(:title) : "Where Should We Go" %></title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+    <%= yield :head %>
+    <%= canonical_tag -%>
+    <%= render "shared/head/visit" if Rails.env.production? %>
+    <%= render "shared/head/fonts" %>
+    <%= render "shared/head/icons" %>
+    <%= render "shared/head/sentry" %>
+    <%= render "shared/head/hotjar" %>
+    <link rel="shortcut icon" href="<%= Current.business.logo_url %>">
+    <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
+    <%= javascript_importmap_tags %>
+  </head>
+  <body class="h-dvh max-h-dvh dark:bg-stone-900 flex flex-col divide-y divide-primary">
+    <header class="shrink-0 p-4 flex items-center divide-x divide-primary gap-x-4">
+      <div class="flex items-center gap-x-4 pr-8">
+        <%= image_tag Current.business.logo_url, class: "size-8 rounded", alt: Current.business.name %>
+        <span class="font-bold"><%= Current.business.name %></span>
+      </div>
+      <nav class="flex">
+        <% [
+          {
+            label: "Events",
+            path: business_events_path(business_id: Current.business.id),
+          },
+          {
+            label: "Organizers",
+            path: business_organizers_path(business_id: Current.business.id),
+          },
+          {
+            label: "Bookmarks",
+            path: business_bookmarks_path(business_id: Current.business.id),
+          }
+        ].each do |item| %>
+          <% if current_page?(item[:path]) %>
+            <h1 class="px-4 h-11 font-bold flex items-center"><%= item[:label] %></h1>
+          <% else %>
+            <%= link_to item[:label], item[:path], class: "button button--ghost" %>
+          <% end %>
+        <% end %>
+      </nav>
+    </header>
+    <div class="grow flex flex-col overflow-y-scroll">
+      <%= yield %>
+    </div>
+    <%= render "shared/floating_flash" %>
+  </body>
+</html>

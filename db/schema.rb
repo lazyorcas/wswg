@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_07_23_145116) do
+ActiveRecord::Schema[8.0].define(version: 2025_07_24_020456) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -151,6 +151,17 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_23_145116) do
     t.index ["event_id"], name: "index_bookmarks_on_event_id"
     t.index ["removed"], name: "index_bookmarks_on_removed"
     t.index ["removed_at"], name: "index_bookmarks_on_removed_at"
+  end
+
+  create_table "businesses", force: :cascade do |t|
+    t.bigint "city_id", null: false
+    t.string "name", null: false
+    t.string "slug", null: false
+    t.string "logo_url"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["city_id"], name: "index_businesses_on_city_id"
+    t.index ["slug"], name: "index_businesses_on_slug", unique: true
   end
 
   create_table "cities", force: :cascade do |t|
@@ -388,6 +399,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_23_145116) do
     t.integer "credits", default: 0, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "business_id"
+    t.index ["business_id"], name: "index_users_on_business_id"
     t.index ["city_id"], name: "index_users_on_city_id"
     t.index ["email"], name: "index_users_on_email", unique: true
   end
@@ -406,6 +419,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_23_145116) do
   add_foreign_key "accounts", "users"
   add_foreign_key "ahoy_visits", "visitors", column: "visitor_token", primary_key: "visitor_token"
   add_foreign_key "bookmarks", "events"
+  add_foreign_key "businesses", "cities"
   add_foreign_key "city_languages", "cities"
   add_foreign_key "city_languages", "languages"
   add_foreign_key "city_sources", "cities"
@@ -419,6 +433,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_23_145116) do
   add_foreign_key "search_queries", "cities"
   add_foreign_key "searches", "search_queries"
   add_foreign_key "seens", "events"
+  add_foreign_key "users", "businesses"
   add_foreign_key "users", "cities"
   add_foreign_key "visitors", "cities"
 end

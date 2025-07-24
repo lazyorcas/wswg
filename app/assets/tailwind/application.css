@@ -368,6 +368,59 @@
     @apply size-4;
     @apply rounded;
   }
+
+  /* ==========================================================================
+  |
+  |
+  |
+  |  Table
+  |
+  |
+  |
+  ============================================================================= */
+  table {
+    @apply w-full;
+    @apply text-sm;
+  }
+
+  thead {
+    @apply sticky top-0;
+  }
+
+  th i {
+    @apply text-xl;
+  }
+  
+  th, td {
+    @apply p-2;
+    @apply text-left;
+    @apply border-x border-stone-300 dark:border-stone-700;
+  }
+
+  th:first-child, td:first-child {
+    @apply pl-4;
+  }
+
+  th:last-child, td:last-child {
+    @apply pr-4;
+  }
+
+  tbody tr:hover {
+    @apply bg-stone-200 dark:bg-stone-700;
+    @apply transition ease-in-out;
+  }
+
+  tbody td {
+    @apply border border-stone-300 dark:border-stone-700;
+  }
+
+  tbody tr:first-child td {
+    @apply border-t-0;
+  }
+
+  tbody tr:last-child td {
+    @apply border-b-0;
+  }
 }
   
 @layer utilities {
@@ -414,6 +467,10 @@
   .skeleton {
     @apply bg-stone-200 dark:bg-stone-700;
     @apply animate-pulse;
+  }
+
+  .bg-accent {
+    @apply bg-stone-100 dark:bg-stone-800;
   }
 
   /* ==========================================================================

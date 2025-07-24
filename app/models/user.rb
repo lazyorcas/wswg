@@ -4,6 +4,8 @@ class User < ApplicationRecord
 
   passwordless_with :email
 
+  belongs_to :business, optional: true
+
   has_one :account, dependent: :destroy
   has_many :visits, class_name: "Ahoy::Visit", dependent: :nullify
   has_many :events, through: :visits, source: :events
@@ -19,5 +21,9 @@ class User < ApplicationRecord
 
   def returning?
     true
+  end
+
+  def business_owner?
+    business.present?
   end
 end

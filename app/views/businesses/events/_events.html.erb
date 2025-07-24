@@ -1,0 +1,53 @@
+<table class="table-fixed">
+  <thead class="bg-accent">
+    <tr>
+      <% [
+        {
+          icon: "ph-text-aa",
+          label: "Title",
+          width: 30
+        },
+        {
+          icon: "ph-megaphone",
+          label: "Organizer",
+          width: 15
+        },
+        {
+          icon: "ph-calendar",
+          label: "Date",
+          width: 15
+        },
+        {
+          icon: "ph-clock",
+          label: "Time",
+          width: 10
+        },
+        {
+          icon: "ph-map-pin",
+          label: "Venue",
+          width: 20
+        },
+        {
+          icon: "ph-globe",
+          label: "Source",
+          width: 10
+        },
+      ].each do |column| %>
+        <%= tag.th style: "width: #{column[:width]}%;" do %>
+          <span class="flex items-center gap-x-2">
+            <%= tag.i class: class_names("ph", column[:icon]) %>
+            <%= tag.span column[:label] %>
+          </span>
+        <% end %>
+      <% end %>
+    </tr>
+    <tr class="h-[1px] bg-stone-300 dark:bg-stone-700">
+      <td colspan="6" class="p-0"></td>
+    </tr>
+  </thead>
+  <tbody>
+    <% events.each do |event| %>
+      <%= render Business::EventTableComponent.new(event) %>
+    <% end %>
+  </tbody>
+</table>

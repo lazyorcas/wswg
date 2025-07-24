@@ -5,8 +5,9 @@ module Authentication
 
   included do
     before_action :set_current_user
+    before_action :set_current_business, if: :signed_in?
 
-    helper_method :signed_in?
+    helper_method :signed_in?, :admin?
   end
 
   private
@@ -17,6 +18,14 @@ module Authentication
 
   def set_current_user
     Current.user = User.find_by(id: session[:user_id]) || authenticate_by_session(User)
+  end
+
+  def set_current_business
+    if admin?
+      Current.business = Business.find_by(id: params[:business_id])
+    else
+      Current.business = Current.user&.business
+    end
   end
 
   def require_user!
@@ -34,11 +43,19 @@ module Authentication
     end
   end
 
+  def require_business_owner!
+    head(:unauthorized) unless signed_in? && Current.user.business_owner?
+  end
+
   def require_admin!
-    head(:unauthorized) unless Current.user&.admin?
+    head(:unauthorized) unless admin?
   end
 
   def require_unauth!
     redirect_to(root_path) if signed_in?
+  end
+
+  def admin?
+    signed_in? && Current.user.admin?
   end
 end
