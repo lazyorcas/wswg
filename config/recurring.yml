@@ -8,3 +8,7 @@ production:
   reindex_events_job:
     class: Events::ReindexJob
     schedule: "30 * * * *"  # Every hour at 30 minutes
+  scrape_and_create_singapore_events_job:
+    class: City::ScrapeAndCreateEventsJob
+    args: [ 22, { limit: 50 } ]
+    schedule: "0 0 * * *"  # Every day at 00:00
