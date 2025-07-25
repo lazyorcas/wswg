@@ -28,7 +28,9 @@ class Business::EventQuery
     filter_by_dow if dow.present?
     filter_by_tod if tod.present?
 
-    if keywords.present?
+    if event_id.present?
+      order_by_relevance_to_event
+    elsif keywords.present?
       order_by_keywords_ranks
     else
       order_by_id
@@ -40,11 +42,11 @@ class Business::EventQuery
   end
 
   def filter_by_event
-    @events = @events.where(id: event_id)
+    @events = @events.where("extended_keywords @@ to_tsquery(?)", event_title_keywords)
   end
 
   def filter_by_keywords
-    @events = @events.where("extended_keywords @@ to_tsquery(?)", keywords)
+    @events = @events.where("extended_keywords @@ plainto_tsquery(?)", keywords)
   end
 
   def filter_by_organizer
@@ -79,19 +81,39 @@ class Business::EventQuery
     end
   end
 
-  def order_by_id
-    @events = @events.order(id: :desc)
+  def order_by_relevance_to_event
+    sql = ActiveRecord::Base.send(:sanitize_sql_array, [
+      "ts_rank(extended_keywords, to_tsquery(?)) DESC",
+      event_title_keywords
+    ])
+    @events = @events.order(Arel.sql(sql))
   end
 
   def order_by_keywords_ranks
     sql = ActiveRecord::Base.send(:sanitize_sql_array, [
-      "ts_rank(extended_keywords, to_tsquery(?)) DESC",
+      "ts_rank(extended_keywords, plainto_tsquery(?)) DESC",
       keywords
     ])
     @events = @events.order(Arel.sql(sql))
   end
 
+  def order_by_id
+    @events = @events.order(id: :desc)
+  end
+
   def limit_events
     @events = @events.limit(LIMIT)
+  end
+
+  def event
+    @event ||= Event.find(event_id)
+  end
+
+  def event_title_keywords
+    @event_title_keywords ||= event.title
+      .gsub(/[^a-zA-Z0-9]/, " ")
+      .gsub(/\s+/, " ")
+      .split(" ")
+      .join(" | ")
   end
 end
