@@ -1,5 +1,4 @@
 class Businesses::EventsController < ApplicationController
-  LIMIT = 1000
   PERMITTED_PARAMS = %i[keywords event_id organizer_id location_id source_id dow tod]
 
   include BusinessesOnly
@@ -11,7 +10,6 @@ class Businesses::EventsController < ApplicationController
     build_event_query
     query_events
     @events = Event.where(id: @event_ids).in_order_of(:id, @event_ids)
-    limit_events
     eager_load_events_associations
 
     build_title
@@ -54,10 +52,6 @@ class Businesses::EventsController < ApplicationController
 
   def query_events
     @event_ids = @event_query.query
-  end
-
-  def limit_events
-    @events = @events.limit(LIMIT)
   end
 
   def eager_load_events_associations

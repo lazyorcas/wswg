@@ -2,6 +2,8 @@ class Business::EventQuery
   include ActiveModel::Model
   include ActiveModel::Attributes
 
+  LIMIT = 1000
+
   attribute :city_id
   attribute :keywords
   attribute :event_id
@@ -31,6 +33,8 @@ class Business::EventQuery
     else
       order_by_id
     end
+
+    limit_events
 
     @events.pluck(:id)
   end
@@ -85,5 +89,9 @@ class Business::EventQuery
       keywords
     ])
     @events = @events.order(Arel.sql(sql))
+  end
+
+  def limit_events
+    @events = @events.limit(LIMIT)
   end
 end
