@@ -4,6 +4,7 @@ class Organizer::DataSanitizer
   def initialize(url:, name:, event_url:)
     @url = url
     @name = name
+    @event_url = event_url
     @sanitized_attributes = {}
   end
 
