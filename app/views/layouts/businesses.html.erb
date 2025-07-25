@@ -20,10 +20,10 @@
   <body class="h-dvh max-h-dvh dark:bg-stone-900 flex flex-col divide-y divide-primary">
     <header class="shrink-0 p-4 flex items-center justify-between gap-x-8">
       <div class="flex items-center divide-x divide-primary gap-x-4">
-        <div class="flex items-center gap-x-4 pr-8">
+        <%= link_to business_path, class: "flex items-center gap-x-4 pr-8" do %>
           <%= image_tag Current.business.logo_url, class: "size-8 rounded", alt: Current.business.name %>
           <span class="font-bold"><%= Current.business.name %></span>
-        </div>
+        <% end %>
         <nav class="flex">
           <% businesses_nav_items.each do |item| %>
             <%= link_to item[:label], item[:path], class: "button button--ghost" %>
