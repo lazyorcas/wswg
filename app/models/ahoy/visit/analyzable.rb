@@ -6,7 +6,7 @@ module Ahoy::Visit::Analyzable
   end
 
   def should_be_analyzed?
-    (user_id.present? || (!bounced? && valid_referrer_host?)) && !admin? && !business_owner?
+    ((user_id.present? && !user.business_owner?) || (!bounced? && valid_referrer_host?)) && !admin?
   end
 
   private
