@@ -29,7 +29,7 @@ class Businesses::EventsController < ApplicationController
       "Events at \"#{location.city_address}\"" if location.present?
 
     elsif filtering_by_keywords?
-      "Events similar to \"#{event_query_params[:keywords]}\""
+      "Search results for \"#{event_query_params[:keywords]}\""
 
     elsif filtering_by_event_id?
       event = Event.find_by(id: event_query_params[:event_id])
