@@ -20,10 +20,12 @@ module Event::Organizable
 
     return if organizer_attributes.blank?
 
-    self.organizer = Organizer.find_or_create_by(
+    organizer = Organizer.find_or_initialize_by(
       source: source,
-      **organizer_attributes
+      url: organizer_attributes[:url]
     )
+    organizer.name = organizer_attributes[:name] if organizer.new_record?
+    self.organizer = organizer
   end
 
   def assign_organizer!
