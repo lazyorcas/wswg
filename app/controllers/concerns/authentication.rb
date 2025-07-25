@@ -21,11 +21,7 @@ module Authentication
   end
 
   def set_current_business
-    if admin?
-      Current.business = Business.find_by(id: params[:business_id])
-    else
-      Current.business = Current.user&.business
-    end
+    Current.business = Current.user&.business
   end
 
   def require_user!

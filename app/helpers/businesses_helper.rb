@@ -1,19 +1,4 @@
 module BusinessesHelper
-  def business_events_path(*args, **kwargs)
-    kwargs = admin? ? { business_id: Current.business.id, **kwargs } : {}
-    super(*args, **kwargs)
-  end
-
-  def business_organizers_path(*args, **kwargs)
-    kwargs = admin? ? { business_id: Current.business.id, **kwargs } : {}
-    super(*args, **kwargs)
-  end
-
-  def business_bookmarks_path(*args, **kwargs)
-    kwargs = admin? ? { business_id: Current.business.id, **kwargs } : {}
-    super(*args, **kwargs)
-  end
-
   def businesses_nav_items
     [
       {

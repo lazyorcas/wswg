@@ -85,11 +85,12 @@ Rails.application.routes.draw do
     resource :reminder, only: [ :show, :create ], on: :member, module: "events"
   end
 
-  get "/businesses(/:business_id)", to: "businesses#show", as: :business
-  scope module: "businesses", as: "business", path: "/businesses/(/:business_id)" do
-    resources :events, only: [ :index ]
-    resources :organizers, only: [ :index ]
-    resources :bookmarks, only: [ :index ]
+  resource :business, only: [ :show ] do
+    scope module: "businesses" do
+      resources :events, only: [ :index ]
+      resources :organizers, only: [ :index ]
+      resources :bookmarks, only: [ :index ]
+    end
   end
 
   # post "/stripe/webhook", to: "stripe#webhook"
