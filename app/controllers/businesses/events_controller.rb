@@ -7,6 +7,8 @@ class Businesses::EventsController < ApplicationController
   helper_method :event_query_params, *PERMITTED_PARAMS.map { |param| "filtering_by_#{param}?" }
 
   def index
+    ahoy.track "Business - Viewed events", **event_query_params
+
     build_event_query
     query_events
     @events = Event.where(id: @event_ids).in_order_of(:id, @event_ids)
