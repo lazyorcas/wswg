@@ -1,8 +1,13 @@
 <tr>
   <%= tag.td do %>
-    <%= link_to @event.url, class: "line-clamp-2 hover:underline", target: "_blank" do %>
-      <%= @event.title %>
-    <% end %>
+    <span class="flex items-center gap-x-2 justify-between">
+      <%= link_to @event.url, class: "line-clamp-2 hover:underline", target: "_blank" do %>
+        <%= @event.title %>
+      <% end %>
+      <%= link_to business_events_path(keywords: @event.title), class: "shrink-0 icon-button icon-button--small button--ghost", title: "View similar events" do %>
+        <%= tag.i class: "ph ph-intersect" %>
+      <% end %>
+    </span>
   <% end %>
   <%= tag.td do %>
     <% if organizer.present? %>
@@ -10,7 +15,7 @@
         <%= link_to organizer_url, class: "grow line-clamp-2 hover:underline", target: "_blank" do %>
           <%= organizer %>
         <% end %>
-        <%= link_to business_events_path(organizer_id: @event.organizer_id), class: "shrink-0 icon-button icon-button--small button--ghost", target: "_blank" do %>
+        <%= link_to business_events_path(organizer_id: @event.organizer_id), class: "shrink-0 icon-button icon-button--small button--ghost", title: "View events by this organizer" do %>
           <%= tag.i class: "ph ph-user-focus" %>
         <% end %>
       </span>
@@ -22,7 +27,7 @@
         <%= link_to "https://www.google.com/maps/search/?api=1&query=#{CGI.escape(venue)}", class: "grow line-clamp-2 hover:underline", target: "_blank" do %>
           <%= venue %>
         <% end %>
-        <%= link_to business_events_path(location_id: @event.location_id), class: "shrink-0 icon-button icon-button--small button--ghost", target: "_blank" do %>
+        <%= link_to business_events_path(location_id: @event.location_id), class: "shrink-0 icon-button icon-button--small button--ghost", title: "View events at this venue" do %>
           <%= tag.i class: "ph ph-cube-focus" %>
         <% end %>
       </span>
