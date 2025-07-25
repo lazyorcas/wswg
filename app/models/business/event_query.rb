@@ -5,10 +5,10 @@ class Business::EventQuery
   attribute :city_id
   attribute :keywords
   attribute :organizer_id
-  attribute :dow
-  attribute :tod
   attribute :location_id
   attribute :source_id
+  attribute :dow
+  attribute :tod
 
   def initialize(attributes = {})
     super(attributes)
@@ -19,10 +19,10 @@ class Business::EventQuery
 
     filter_by_keywords if keywords.present?
     filter_by_organizer if organizer_id.present?
-    filter_by_dow if dow.present?
-    filter_by_tod if tod.present?
     filter_by_location if location_id.present?
     filter_by_source if source_id.present?
+    filter_by_dow if dow.present?
+    filter_by_tod if tod.present?
 
     if keywords.present?
       order_by_keywords_ranks

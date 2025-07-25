@@ -13,9 +13,24 @@ class Businesses::EventsController < ApplicationController
     @events = Event.where(id: @event_ids).in_order_of(:id, @event_ids)
     limit_events
     eager_load_events_associations
+
+    build_title
   end
 
   private
+
+  def build_title
+    @title = if filtering_by_organizer_id?
+      organizer = Organizer.find_by(id: event_query_params[:organizer_id])
+      "Events by \"#{organizer.name}\"" if organizer.present?
+
+    elsif filtering_by_location_id?
+      location = Location.find_by(id: event_query_params[:location_id])
+      "Events at \"#{location.city_address}\"" if location.present?
+    end
+
+    @title ||= "Events"
+  end
 
   PERMITTED_PARAMS.each do |param|
     define_method "filtering_by_#{param}?" do

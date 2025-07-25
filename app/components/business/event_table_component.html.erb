@@ -6,9 +6,26 @@
   <% end %>
   <%= tag.td do %>
     <% if organizer.present? %>
-      <%= link_to organizer_url, class: "line-clamp-2 hover:underline", target: "_blank" do %>
-        <%= organizer %>
-      <% end %>
+      <span class="flex items-center gap-x-2 justify-between">
+        <%= link_to organizer_url, class: "grow line-clamp-2 hover:underline", target: "_blank" do %>
+          <%= organizer %>
+        <% end %>
+        <%= link_to business_events_path(organizer_id: @event.organizer_id), class: "shrink-0 icon-button icon-button--small button--ghost", target: "_blank" do %>
+          <%= tag.i class: "ph ph-user-focus" %>
+        <% end %>
+      </span>
+    <% end %>
+  <% end %>
+  <%= tag.td do %>
+    <% if venue.present? %>
+      <span class="flex items-center gap-x-2 justify-between">
+        <%= link_to "https://www.google.com/maps/search/?api=1&query=#{CGI.escape(venue)}", class: "grow line-clamp-2 hover:underline", target: "_blank" do %>
+          <%= venue %>
+        <% end %>
+        <%= link_to business_events_path(location_id: @event.location_id), class: "shrink-0 icon-button icon-button--small button--ghost", target: "_blank" do %>
+          <%= tag.i class: "ph ph-cube-focus" %>
+        <% end %>
+      </span>
     <% end %>
   <% end %>
   <%= tag.td do %>
@@ -16,13 +33,6 @@
   <% end %>
   <%= tag.td do %>
     <span class="line-clamp-2"><%= time_range %></span>
-  <% end %>
-  <%= tag.td do %>
-    <% if venue.present? %>
-      <%= link_to "https://www.google.com/maps/search/?api=1&query=#{CGI.escape(venue)}", class: "line-clamp-2 hover:underline", target: "_blank" do %>
-        <%= venue %>
-      <% end %>
-    <% end %>
   <% end %>
   <%= tag.td do %>
     <span class="flex items-center gap-x-2 flex-wrap">

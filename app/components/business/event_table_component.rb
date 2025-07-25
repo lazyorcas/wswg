@@ -1,6 +1,6 @@
 class Business::EventTableComponent < EventComponent
   def date
-    Date.parse(@event.start_date).strftime("%A, %B %d")
+    Date.parse(@event.start_date).strftime("%a, %B %d")
   end
 
   def organizer
@@ -21,7 +21,7 @@ class Business::EventTableComponent < EventComponent
 
   def venue
     if @event.location.present?
-      @event.location.full_address.split(",")[0...-1].join(",")
+      @event.location.city_address
     else
       nil
     end

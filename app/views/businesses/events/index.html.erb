@@ -1,2 +1,2 @@
-<%= content_for :title, "Events - #{Current.business.name}" %>
+<%= content_for :title, "#{@title} - #{Current.business.name}" %>
 <%= render "events", events: @events %>

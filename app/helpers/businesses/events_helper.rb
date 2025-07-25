@@ -1,4 +1,48 @@
 module Businesses::EventsHelper
+  def table_headers
+    headers = [
+      {
+        icon: "ph-text-aa",
+        label: "Title",
+        width: 30
+      },
+      {
+        icon: "ph-megaphone",
+        label: "Organizer",
+        width: 20
+      },
+      {
+        icon: "ph-map-pin",
+        label: "Venue",
+        width: 20
+      },
+      {
+        filter_id: :dow,
+        icon: "ph-calendar",
+        label: "Date",
+        width: 10
+      },
+      {
+        filter_id: :tod,
+        icon: "ph-clock",
+        label: "Time",
+        width: 10
+      },
+      {
+        filter_id: :source,
+        icon: "ph-globe",
+        label: "Source",
+        width: 10
+      }
+    ]
+
+    if headers.map { |header| header[:width] }.sum != 100
+      raise "Headers width must sum to 100"
+    end
+
+    headers
+  end
+
   def dow_options
     [
       [ "Monday", 1 ],
