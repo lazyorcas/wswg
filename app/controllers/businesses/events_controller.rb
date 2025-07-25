@@ -1,6 +1,6 @@
 class Businesses::EventsController < ApplicationController
   LIMIT = 1000
-  PERMITTED_PARAMS = %i[keywords organizer_id dow tod location_id source_id]
+  PERMITTED_PARAMS = %i[keywords event_id organizer_id location_id source_id dow tod]
 
   include BusinessesOnly
 
@@ -30,6 +30,10 @@ class Businesses::EventsController < ApplicationController
 
     elsif filtering_by_keywords?
       "Events similar to \"#{event_query_params[:keywords]}\""
+
+    elsif filtering_by_event_id?
+      event = Event.find_by(id: event_query_params[:event_id])
+      "Events similar to \"#{event.title}\"" if event.present?
     end
 
     @title ||= "Events"

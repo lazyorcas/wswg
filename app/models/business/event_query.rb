@@ -4,6 +4,7 @@ class Business::EventQuery
 
   attribute :city_id
   attribute :keywords
+  attribute :event_id
   attribute :organizer_id
   attribute :location_id
   attribute :source_id
@@ -17,6 +18,7 @@ class Business::EventQuery
   def query
     @events = Event.joins(:city_source).where(city_sources: { city_id: city_id })
 
+    filter_by_event if event_id.present?
     filter_by_keywords if keywords.present?
     filter_by_organizer if organizer_id.present?
     filter_by_location if location_id.present?
@@ -33,12 +35,24 @@ class Business::EventQuery
     @events.pluck(:id)
   end
 
+  def filter_by_event
+    @events = @events.where(id: event_id)
+  end
+
   def filter_by_keywords
-    @events = @events.where("extended_keywords @@ to_tsquery(?)", normalized_keywords)
+    @events = @events.where("extended_keywords @@ to_tsquery(?)", keywords)
   end
 
   def filter_by_organizer
     @events = @events.where(organizer_id: organizer_id)
+  end
+
+  def filter_by_location
+    @events = @events.joins(:location).where(locations: { id: location_id })
+  end
+
+  def filter_by_source
+    @events = @events.joins(:city_source).where(city_sources: { source_id: source_id })
   end
 
   def filter_by_dow
@@ -61,14 +75,6 @@ class Business::EventQuery
     end
   end
 
-  def filter_by_location
-    @events = @events.joins(:location).where(locations: { id: location_id })
-  end
-
-  def filter_by_source
-    @events = @events.joins(:city_source).where(city_sources: { source_id: source_id })
-  end
-
   def order_by_id
     @events = @events.order(id: :desc)
   end
@@ -76,16 +82,8 @@ class Business::EventQuery
   def order_by_keywords_ranks
     sql = ActiveRecord::Base.send(:sanitize_sql_array, [
       "ts_rank(extended_keywords, to_tsquery(?)) DESC",
-      normalized_keywords
+      keywords
     ])
     @events = @events.order(Arel.sql(sql))
-  end
-
-  def normalized_keywords
-    @normalized_keywords ||= keywords
-      .gsub(/[^a-zA-Z0-9]/, " ")
-      .gsub(/\s+/, " ")
-      .split(" ")
-      .join(" | ")
   end
 end

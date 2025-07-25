@@ -4,7 +4,7 @@
       <%= link_to @event.url, class: "line-clamp-2 hover:underline", target: "_blank" do %>
         <%= @event.title %>
       <% end %>
-      <%= link_to business_events_path(keywords: @event.title), class: "shrink-0 icon-button icon-button--small button--ghost", title: "View similar events" do %>
+      <%= link_to business_events_path(event_id: @event.id), class: "shrink-0 icon-button icon-button--small button--ghost", title: "View similar events" do %>
         <%= tag.i class: "ph ph-intersect" %>
       <% end %>
     </span>
