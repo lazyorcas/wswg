@@ -118,6 +118,10 @@
     @apply h-8 w-8;
   }
 
+  .icon-button--xs {
+    @apply h-6 w-6;
+  }
+
   .button i, .icon-button--base i {
     @apply text-2xl;
     @apply size-6;
@@ -126,6 +130,11 @@
   .icon-button--small i {
     @apply text-xl;
     @apply size-5;
+  }
+
+  .icon-button--xs i {
+    @apply text-base;
+    @apply size-4;
   }
 
   .button--primary {

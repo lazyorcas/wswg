@@ -20,7 +20,7 @@ module CurrentPerson::Settings::PreferencesHelper
         sort_by_label(value),
         value,
         selected: sort_by == value
-    ]
+      ]
     end
   end
 

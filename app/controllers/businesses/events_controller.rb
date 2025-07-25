@@ -1,9 +1,11 @@
 class Businesses::EventsController < ApplicationController
   LIMIT = 1000
-
-  layout "businesses"
+  PERMITTED_PARAMS = %i[keywords organizer_id dow tod location_id source_id]
 
   include BusinessesOnly
+
+  layout "businesses"
+  helper_method :event_query_params, *PERMITTED_PARAMS.map { |param| "filtering_by_#{param}?" }
 
   def index
     build_event_query
@@ -14,6 +16,12 @@ class Businesses::EventsController < ApplicationController
   end
 
   private
+
+  PERMITTED_PARAMS.each do |param|
+    define_method "filtering_by_#{param}?" do
+      event_query_params[param].present?
+    end
+  end
 
   def build_event_query
     @event_query = Business::EventQuery.new(
@@ -35,6 +43,6 @@ class Businesses::EventsController < ApplicationController
   end
 
   def event_query_params
-    params.permit(:keywords, :organizer_id, :dow, :tod, :location_id, :source_id)
+    params.permit(*PERMITTED_PARAMS)
   end
 end

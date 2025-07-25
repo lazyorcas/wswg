@@ -1,42 +1,16 @@
 <table class="table-fixed">
   <thead class="bg-accent">
     <tr>
-      <% [
-        {
-          icon: "ph-text-aa",
-          label: "Title",
-          width: 30
-        },
-        {
-          icon: "ph-megaphone",
-          label: "Organizer",
-          width: 15
-        },
-        {
-          icon: "ph-calendar",
-          label: "Date",
-          width: 15
-        },
-        {
-          icon: "ph-clock",
-          label: "Time",
-          width: 10
-        },
-        {
-          icon: "ph-map-pin",
-          label: "Venue",
-          width: 20
-        },
-        {
-          icon: "ph-globe",
-          label: "Source",
-          width: 10
-        },
-      ].each do |column| %>
-        <%= tag.th style: "width: #{column[:width]}%;" do %>
+      <% businesses_table_headers.each do |header| %>
+        <%= tag.th style: "width: #{header[:width]}%;" do %>
           <span class="flex items-center gap-x-2">
-            <%= tag.i class: class_names("ph", column[:icon]) %>
-            <%= tag.span column[:label] %>
+            <%= tag.i class: class_names("ph", header[:icon]) %>
+            <%= tag.span header[:label] %>
+            <% if header[:filter_id].present? %>
+              <span class="ml-auto">
+                <%= render "businesses/#{header[:filter_id]}_filter_popover_button" %>
+              </span>
+            <% end %>
           </span>
         <% end %>
       <% end %>

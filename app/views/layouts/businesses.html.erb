@@ -24,25 +24,8 @@
         <span class="font-bold"><%= Current.business.name %></span>
       </div>
       <nav class="flex">
-        <% [
-          {
-            label: "Events",
-            path: business_events_path(business_id: Current.business.id),
-          },
-          {
-            label: "Organizers",
-            path: business_organizers_path(business_id: Current.business.id),
-          },
-          {
-            label: "Bookmarks",
-            path: business_bookmarks_path(business_id: Current.business.id),
-          }
-        ].each do |item| %>
-          <% if current_page?(item[:path]) %>
-            <h1 class="px-4 h-11 font-bold flex items-center"><%= item[:label] %></h1>
-          <% else %>
-            <%= link_to item[:label], item[:path], class: "button button--ghost" %>
-          <% end %>
+        <% businesses_nav_items.each do |item| %>
+          <%= link_to item[:label], item[:path], class: "button button--ghost" %>
         <% end %>
       </nav>
     </header>

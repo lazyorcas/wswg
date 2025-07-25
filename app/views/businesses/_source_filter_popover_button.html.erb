@@ -1,0 +1,23 @@
+<%= tag.button popovertarget: "source_filter_popover", class: class_names("icon-button icon-button--xs", filtering_by_source_id? ? "button--active" : "button--ghost"), title: "Filter by Source" do %>
+  <%= tag.i class: class_names("ph-funnel", filtering_by_source_id? ? "ph-fill" : "ph") %>
+<% end %>
+<div popover id="source_filter_popover" class="modal p-4 w-xs max-w-full">
+  <div class="flex flex-col">
+    <p class="mb-4 text-lg font-bold text-primary">Source</p>
+    <%= form_with url: business_events_path, method: :get, html: { class: "flex flex-col gap-y-4" } do |form| %>
+      <% event_query_params.each do |key, value| %>
+        <%= form.hidden_field key, value: value %>
+      <% end %>
+      <%= form.select "source_id", options_for_select(source_options), { include_blank: "All" }, { class: "input input--accent" } %>
+      <%= form.submit "Filter", class: "button button--primary" %>
+    <% end %>
+    <% if filtering_by_source_id? %>
+      <%= form_with url: business_events_path, method: :get, class: "mt-2" do |form| %>
+        <% event_query_params.except(:source_id).each do |key, value| %>
+          <%= form.hidden_field key, value: value %>
+        <% end %>
+        <%= form.submit "Clear filter", class: "w-full button button--ghost" %>
+      <% end %>
+    <% end %>
+  </div>
+</div>

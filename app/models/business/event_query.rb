@@ -2,13 +2,13 @@ class Business::EventQuery
   include ActiveModel::Model
   include ActiveModel::Attributes
 
-  attribute :city_id, :integer
-  attribute :keywords, :string
-  attribute :organizer_id, :integer
-  attribute :dow, :integer
-  attribute :tod, :string
-  attribute :location_id, :string
-  attribute :source_id, :integer
+  attribute :city_id
+  attribute :keywords
+  attribute :organizer_id
+  attribute :dow
+  attribute :tod
+  attribute :location_id
+  attribute :source_id
 
   def initialize(attributes = {})
     super(attributes)
@@ -33,10 +33,8 @@ class Business::EventQuery
     @events.pluck(:id)
   end
 
-  private
-
   def filter_by_keywords
-    @events = @events.where("extended_keywords @@ plainto_tsquery(?)", keywords)
+    @events = @events.where("extended_keywords @@ to_tsquery(?)", normalized_keywords)
   end
 
   def filter_by_organizer
@@ -68,7 +66,7 @@ class Business::EventQuery
   end
 
   def filter_by_source
-    @events = @events.where(source_id: source_id)
+    @events = @events.joins(:city_source).where(city_sources: { source_id: source_id })
   end
 
   def order_by_id
@@ -77,9 +75,17 @@ class Business::EventQuery
 
   def order_by_keywords_ranks
     sql = ActiveRecord::Base.send(:sanitize_sql_array, [
-      "ts_rank(extended_keywords, plainto_tsquery(?)) DESC",
-      keywords
+      "ts_rank(extended_keywords, to_tsquery(?)) DESC",
+      normalized_keywords
     ])
     @events = @events.order(Arel.sql(sql))
+  end
+
+  def normalized_keywords
+    @normalized_keywords ||= keywords
+      .gsub(/[^a-zA-Z0-9]/, " ")
+      .gsub(/\s+/, " ")
+      .split(" ")
+      .join(" | ")
   end
 end
