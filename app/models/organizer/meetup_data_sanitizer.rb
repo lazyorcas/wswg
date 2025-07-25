@@ -8,7 +8,7 @@ class Organizer::MeetupDataSanitizer < Organizer::DataSanitizer
   end
 
   def group_slug
-    uri = Url.parse(normalized_url)
+    uri = Url.parse(normalized_event_url)
     uri.path.split("/").second
   end
 

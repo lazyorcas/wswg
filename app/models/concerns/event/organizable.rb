@@ -12,7 +12,8 @@ module Event::Organizable
 
     sanitizer = organizer_data_sanitizer_class.new(
       url: organizer_url,
-      name: organizer_name
+      name: organizer_name,
+      event_url: url
     )
     sanitizer.sanitize
     organizer_attributes = sanitizer.sanitized_attributes

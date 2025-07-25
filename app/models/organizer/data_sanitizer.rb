@@ -1,7 +1,7 @@
 class Organizer::DataSanitizer
   attr_reader :sanitized_attributes
 
-  def initialize(url:, name:)
+  def initialize(url:, name:, event_url:)
     @url = url
     @name = name
     @sanitized_attributes = {}
@@ -24,5 +24,9 @@ class Organizer::DataSanitizer
 
   def normalized_url
     @normalized_url ||= Url.normalize(@url)
+  end
+
+  def normalized_event_url
+    @normalized_event_url ||= Url.normalize(@event_url)
   end
 end
