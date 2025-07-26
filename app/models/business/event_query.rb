@@ -18,10 +18,13 @@ class Business::EventQuery
   end
 
   def query
-    @events = Event.joins(:city_source).where(city_sources: { city_id: city_id })
+    if keywords.present?
+      @events = Searchable::EventByKeywords.search(keywords)
+    else
+      @events = Event.joins(:city_source).where(city_sources: { city_id: city_id })
+      filter_by_event if event_id.present?
+    end
 
-    filter_by_event if event_id.present?
-    filter_by_keywords if keywords.present?
     filter_by_organizer if organizer_id.present?
     filter_by_location if location_id.present?
     filter_by_source if source_id.present?
@@ -30,9 +33,7 @@ class Business::EventQuery
 
     if event_id.present?
       order_by_relevance_to_event
-    elsif keywords.present?
-      order_by_keywords_ranks
-    else
+    elsif keywords.blank?
       order_by_id
     end
 
@@ -43,10 +44,6 @@ class Business::EventQuery
 
   def filter_by_event
     @events = @events.where("extended_keywords @@ to_tsquery(?)", event_title_keywords)
-  end
-
-  def filter_by_keywords
-    @events = @events.where("extended_keywords @@ plainto_tsquery(?)", keywords)
   end
 
   def filter_by_organizer
@@ -85,14 +82,6 @@ class Business::EventQuery
     sql = ActiveRecord::Base.send(:sanitize_sql_array, [
       "ts_rank(extended_keywords, to_tsquery(?)) DESC",
       event_title_keywords
-    ])
-    @events = @events.order(Arel.sql(sql))
-  end
-
-  def order_by_keywords_ranks
-    sql = ActiveRecord::Base.send(:sanitize_sql_array, [
-      "ts_rank(extended_keywords, plainto_tsquery(?)) DESC",
-      keywords
     ])
     @events = @events.order(Arel.sql(sql))
   end

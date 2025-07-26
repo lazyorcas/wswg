@@ -7,5 +7,7 @@ class Events::ReindexJob < ApplicationJob
       searchable_class = "Searchable::#{language.name.capitalize}Event"
       searchable_class.constantize.reindex
     end
+
+    Searchable::EventByKeywords.reindex
   end
 end
