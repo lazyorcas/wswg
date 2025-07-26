@@ -33,6 +33,6 @@ class Business::EventTableComponent < EventComponent
     intitle = @event.organizer.name
     inurl = @event.source.name.downcase
     query = "intitle:\"#{intitle}\" inurl:\"#{inurl}\""
-    "https://www.google.com/maps/search/?api=1&query=#{CGI.escape(query)}"
+    "https://www.google.com/search/?q=#{CGI.escape(query)}"
   end
 end
