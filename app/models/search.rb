@@ -34,8 +34,7 @@ class Search < ApplicationRecord
     searchkick_result = searchable_event_model.search(
       self.keywords,
       fields: [ "title^3", "description", "tags" ],
-      where: conditions.deep_symbolize_keys,
-      load: false
+      where: conditions.deep_symbolize_keys
     )
 
     self.result.hits = searchkick_result.response["hits"]["hits"].map do |hit|
