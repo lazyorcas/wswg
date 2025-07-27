@@ -43,7 +43,11 @@ module CurrentPerson::Settings::PreferencesHelper
   # Hide impression events
   def hide_impression_events_value
     Current.person.settings(:preferences).hide_impression_events ||
-      field_test_variant(:hide_impression_events)
+      (
+        Current.person.returning? ?
+          Person::Preferences::DEFAULT_HIDE_IMPRESSION_EVENTS :
+          field_test_variant(:hide_impression_events)
+      )
   end
 
   def hide_impression_events_values
