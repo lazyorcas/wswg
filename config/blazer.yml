@@ -28,7 +28,7 @@ data_sources:
       # status: {0: "Active", 1: "Archived"}
 
     linked_columns:
-      # user_id: "/admin/users/{value}"
+      address: "https://www.google.com/maps/search/?api=1&query={value}"
 
     smart_columns:
       user_id: "SELECT id, email FROM users WHERE id IN {value}"
