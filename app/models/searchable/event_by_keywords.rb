@@ -1,4 +1,6 @@
 class Searchable::EventByKeywords < Event
+  scope :search_import, -> { includes(:city_source) }
+
   def self.synonyms
     @synonyms ||= YAML.load_file("config/synonyms/english_synonyms.yml")
   end
@@ -10,4 +12,13 @@ class Searchable::EventByKeywords < Event
     callbacks: false,
     search_synonyms: synonyms
   )
+
+  def search_data
+    {
+      title: title,
+      description: description,
+      tags: tags,
+      city_id: city_source.city_id
+    }
+  end
 end

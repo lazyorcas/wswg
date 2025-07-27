@@ -20,7 +20,7 @@ class Business::EventQuery
   def query
     if keywords.present?
       event_ids = Searchable::EventByKeywords
-        .search(keywords)
+        .search(keywords, where: { city_id: city_id })
         .response["hits"]["hits"]
         .map { |hit| hit["_id"] }
       @events = Event.where(id: event_ids).in_order_of(:id, event_ids)
