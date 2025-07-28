@@ -1,7 +1,7 @@
 module Business::EventQuery::QueryByKeywords
   extend ActiveSupport::Concern
 
-  include Business::EventQuery::Limitable
+  LIMIT = 1000
 
   def query_by_keywords
     puts "dow: #{dow}, start_time: #{start_time}, end_time: #{end_time}, city_id: #{city_id}, source_id: #{source_id}"
@@ -9,7 +9,7 @@ module Business::EventQuery::QueryByKeywords
     @events = Searchable::EventByKeywords
       .search(keywords,
         where: build_search_conditions,
-        limit: limit
+        limit: LIMIT
       )
   end
 
