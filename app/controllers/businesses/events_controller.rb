@@ -11,7 +11,6 @@ class Businesses::EventsController < ApplicationController
 
     build_event_query
     query_events
-    @events = Event.where(id: @event_ids).in_order_of(:id, @event_ids)
     eager_load_events_associations
 
     build_title
@@ -53,7 +52,7 @@ class Businesses::EventsController < ApplicationController
   end
 
   def query_events
-    @event_ids = @event_query.query
+    @events = @event_query.query
   end
 
   def eager_load_events_associations

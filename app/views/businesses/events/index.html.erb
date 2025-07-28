@@ -7,7 +7,7 @@
 <%= content_for :toolbar do %>
   <%= link_to business_events_path(params: {}), class: class_names("button", event_query_params.present? ? "button--ghost" : "button--disabled pointer-events-none") do %>
     <%= tag.i class: "ph ph-x" %>
-    <span>Clear filters</span>
+    <span>Clear</span>
   <% end %>
 <% end %>
 <%= render "events", events: @events %>

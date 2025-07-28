@@ -9,6 +9,7 @@ class Searchable::EventByKeywords < Event
     language: "english",
     index_name: "events_by_keywords_english_#{Rails.env}",
     searchable: [ :title, :description, :tags ],
+    filterable: [ :dow, :start_time, :end_time, :city_id, :source_id ],
     callbacks: false,
     search_synonyms: synonyms
   )
@@ -18,7 +19,11 @@ class Searchable::EventByKeywords < Event
       title: title,
       description: description,
       tags: tags,
-      city_id: city_source.city_id
+      dow: dow,
+      start_time: start_time,
+      end_time: end_time,
+      city_id: city_source.city_id,
+      source_id: city_source.source_id
     }
   end
 end
