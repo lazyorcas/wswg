@@ -30,11 +30,9 @@
         </div>
       </div>
       <div class="flex gap-x-2 mt-auto">
-        <div class="grow">
-          <%= render "events/reminders/button", event: @event %>
-        </div>
-        <%= link_to @event.url, class: "icon-button icon-button--base button--secondary shrink-0", target: "_blank" do %>
+        <%= link_to @event.url, class: "grow button button--secondary", target: "_blank" do %>
           <i class="ph ph-arrow-square-out"></i>
+          View on website
         <% end %>
       </div>
     </div>

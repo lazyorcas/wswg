@@ -82,7 +82,7 @@ Rails.application.routes.draw do
 
   resources :events, only: [] do
     resource :bookmark, only: [ :show ], on: :member, module: "events"
-    resource :reminder, only: [ :show, :create ], on: :member, module: "events"
+    # resource :reminder, only: [ :show, :create ], on: :member, module: "events"
   end
 
   resource :business, only: [ :show ] do
