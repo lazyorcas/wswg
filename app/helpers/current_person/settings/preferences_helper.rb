@@ -3,8 +3,7 @@ module CurrentPerson::Settings::PreferencesHelper
 
   # Sort by
   def sort_by
-    Current.person.settings(:preferences).sort_by ||
-      field_test_variant(:sort_by_interests)
+    Current.person.settings(:preferences).sort_by || Person::Preferences::DEFAULT_SORT_BY
   end
 
   def sort_by_values
@@ -42,12 +41,7 @@ module CurrentPerson::Settings::PreferencesHelper
 
   # Hide impression events
   def hide_impression_events_value
-    Current.person.settings(:preferences).hide_impression_events ||
-      (
-        Current.person.returning? ?
-        field_test_variant(:hide_impression_events) :
-        Person::Preferences::DEFAULT_HIDE_IMPRESSION_EVENTS
-      )
+    Current.person.settings(:preferences).hide_impression_events || Person::Preferences::DEFAULT_HIDE_IMPRESSION_EVENTS
   end
 
   def hide_impression_events_values

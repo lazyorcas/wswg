@@ -5,9 +5,6 @@ class SeensController < ApplicationController
   def create
     ahoy.track "Viewed event", event_id: seen_params[:event_id], source: params[:source], sort_by: sort_by
 
-    convert_field_test(:sort_by_interests)
-    convert_field_test(:hide_impression_events) if Current.person.returning?
-
     find_or_create_seen!
     head(:ok)
   end

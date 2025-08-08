@@ -22,14 +22,17 @@ experiments:
     description: >
       Test if the sort by interests creates more event clicks.
     started_at: July 20, 2025 00:00 am SGT
+    ended_at: August 8, 2025 11:00 am SGT
     variants:
       - interests
       - popularity
+    winner: popularity
   hide_impression_events:
     name: Hide Impression Events
     description: >
       Test if hiding impression events creates more event clicks.
     started_at: July 21, 2025 12:00 pm SGT
+    ended_at: August 8, 2025 11:00 am SGT
     variants:
       - show
       - hide

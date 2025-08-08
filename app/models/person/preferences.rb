@@ -1,7 +1,7 @@
 module Person::Preferences
   extend ActiveSupport::Concern
 
-  DEFAULT_SORT_BY = "time".freeze
+  DEFAULT_SORT_BY = "interests".freeze
   DEFAULT_HIDE_IMPRESSION_EVENTS = "show".freeze
 
   included do
