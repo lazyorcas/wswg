@@ -9,7 +9,6 @@ class Event::ExtractOrganizerDataJob < ApplicationJob
   def perform(event_id)
     event = Event.find(event_id)
     organizer_data = event.extract_organizer_data_from_markdown
-    puts organizer_data
     event.update!(
       organizer_url: organizer_data["organizer_url"],
       organizer_name: organizer_data["organizer_name"]
