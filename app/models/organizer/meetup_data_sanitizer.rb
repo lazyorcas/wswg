@@ -1,7 +1,7 @@
 class Organizer::MeetupDataSanitizer < Organizer::DataSanitizer
   def sanitize_url
     if should_sanitize_url?
-      Url.build_url(normalized_url, "/#{group_slug}")
+      Url.build_url(normalized_url, "/#{group_slug}/members/?op=leaders")
     else
       super
     end
