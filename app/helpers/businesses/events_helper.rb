@@ -63,13 +63,13 @@ module Businesses::EventsHelper
       [ "Afternoon", "afternoon" ],
       [ "Evening", "evening" ]
     ].map do |label, value|
-      [ label, value, selected: value == event_query_params[:tod] ]
+      [ label, value, selected: value.to_s == event_query_params[:tod] ]
     end
   end
 
   def source_options
     Source.all.map do |source|
-      [ source.name, source.id, selected: source.id == event_query_params[:source_id] ]
+      [ source.name, source.id, selected: source.id.to_s == event_query_params[:source_id] ]
     end
   end
 end
