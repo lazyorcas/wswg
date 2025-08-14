@@ -51,6 +51,11 @@ class Business::EventQuery
   end
 
   def event_scope
-    Event.joins(:city_source).where(city_sources: { city_id: city_id })
+    Event
+      .joins(:city_source)
+      .joins(:source)
+      .joins(:organizer)
+      .where(city_sources: { city_id: city_id })
+      .where.not(sources: { name: "Ticketmaster" })
   end
 end

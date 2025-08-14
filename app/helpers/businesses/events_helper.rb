@@ -68,7 +68,7 @@ module Businesses::EventsHelper
   end
 
   def source_options
-    Source.all.map do |source|
+    Source.where.not(name: "Ticketmaster").map do |source|
       [ source.name, source.id, selected: source.id.to_s == event_query_params[:source_id] ]
     end
   end
