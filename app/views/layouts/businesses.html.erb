@@ -21,7 +21,7 @@
     <header class="shrink-0 p-4 flex items-center justify-between gap-x-8">
       <div class="flex items-center divide-x divide-primary gap-x-4">
         <%= link_to business_path, class: "flex items-center gap-x-4 pr-8" do %>
-          <%= image_tag Current.business.logo_url, class: "size-8 rounded", alt: Current.business.name %>
+          <%= image_tag Current.business.logo_url, class: "size-8 rounded object-contain", alt: Current.business.name %>
           <span class="font-bold"><%= Current.business.name %></span>
         <% end %>
         <nav class="flex">
