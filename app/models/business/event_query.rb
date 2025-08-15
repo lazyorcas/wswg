@@ -13,6 +13,7 @@ class Business::EventQuery
   attribute :organizer_id
   attribute :location_id
   attribute :source_id
+  attribute :month
   attribute :dow
   attribute :tod
 
@@ -36,6 +37,7 @@ class Business::EventQuery
     else
       @events = event_scope.order(id: :desc)
 
+      filter_by_month if month.present?
       filter_by_dow if dow.present?
       filter_by_tod if tod.present?
       filter_by_source if source_id.present?

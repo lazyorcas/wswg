@@ -17,7 +17,7 @@ module Businesses::EventsHelper
         width: 20
       },
       {
-        filter_id: :dow,
+        filter_id: :date,
         icon: "ph-calendar",
         label: "Date",
         width: 10
@@ -54,6 +54,25 @@ module Businesses::EventsHelper
       [ "Sunday", 7 ]
     ].map do |label, value|
       [ label, value, selected: value.to_s == event_query_params[:dow] ]
+    end
+  end
+
+  def month_options
+    [
+      [ "January", 1 ],
+      [ "February", 2 ],
+      [ "March", 3 ],
+      [ "April", 4 ],
+      [ "May", 5 ],
+      [ "June", 6 ],
+      [ "July", 7 ],
+      [ "August", 8 ],
+      [ "September", 9 ],
+      [ "October", 10 ],
+      [ "November", 11 ],
+      [ "December", 12 ]
+    ].map do |label, value|
+      [ label, value, selected: value.to_s == event_query_params[:month] ]
     end
   end
 

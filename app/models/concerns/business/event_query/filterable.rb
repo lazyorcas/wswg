@@ -1,6 +1,10 @@
 module Business::EventQuery::Filterable
   extend ActiveSupport::Concern
 
+  def filter_by_month
+    @events = @events.where("EXTRACT(MONTH FROM start_date::date) = ?", month)
+  end
+
   def filter_by_dow
     @events = @events.where(dow: dow)
   end

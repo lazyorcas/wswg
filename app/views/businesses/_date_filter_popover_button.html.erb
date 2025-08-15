@@ -1,0 +1,24 @@
+<%= tag.button popovertarget: "date_filter_popover", class: class_names("icon-button icon-button--xs", filtering_by_date? ? "button--active" : "button--ghost"), title: "Filter by Date" do %>
+  <%= tag.i class: class_names("ph-funnel", filtering_by_date? ? "ph-fill" : "ph") %>
+<% end %>
+<div popover id="date_filter_popover" class="modal p-4 w-xs max-w-full">
+  <div class="flex flex-col">
+    <p class="mb-4 text-lg font-bold text-primary">Date</p>
+    <%= form_with url: business_events_path, method: :get, html: { class: "flex flex-col gap-y-4" } do |form| %>
+      <% event_query_params.each do |key, value| %>
+        <%= form.hidden_field key, value: value %>
+      <% end %>
+      <%= form.select "month", options_for_select(month_options), { include_blank: "All months" }, { class: "input input--accent" } %>
+      <%= form.select "dow", options_for_select(dow_options), { include_blank: "All days of week" }, { class: "input input--accent" } %>
+      <%= form.submit "Filter", class: "button button--primary" %>
+    <% end %>
+    <% if filtering_by_date? %>
+      <%= form_with url: business_events_path, method: :get, class: "mt-2" do |form| %>
+        <% event_query_params.except(:dow, :month).each do |key, value| %>
+          <%= form.hidden_field key, value: value %>
+        <% end %>
+        <%= form.submit "Clear filter(s)", class: "w-full button button--ghost" %>
+      <% end %>
+    <% end %>
+  </div>
+</div>
