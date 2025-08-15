@@ -25,7 +25,7 @@ module Event::Organizable
         source: source,
         url: organizer_attributes[:url]
       )
-    elsif organizer_attributes[:name].present?
+    else
       Organizer.find_or_initialize_by(
         source: source,
         name: organizer_attributes[:name]
