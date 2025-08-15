@@ -3,18 +3,18 @@ module Businesses::EventsHelper
     headers = [
       {
         icon: "ph-text-aa",
-        label: "Title",
-        width: 20
+        label: "Event",
+        width: 30
       },
       {
         icon: "ph-megaphone",
         label: "Organizer",
-        width: 20
+        width: 15
       },
       {
         icon: "ph-map-pin",
         label: "Venue",
-        width: 20
+        width: 15
       },
       {
         filter_id: :date,
