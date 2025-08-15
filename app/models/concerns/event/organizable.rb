@@ -18,7 +18,7 @@ module Event::Organizable
     sanitizer.sanitize
     organizer_attributes = sanitizer.sanitized_attributes
 
-    return if organizer_attributes.blank?
+    return if organizer_attributes[:url].blank? && organizer_attributes[:name].blank?
 
     organizer = if organizer_attributes[:url].present?
       Organizer.find_or_initialize_by(
