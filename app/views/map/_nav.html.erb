@@ -1,5 +1,5 @@
 <% links = [
-  ["Discover", "ph-sparkle", map_path, !current_page?(map_bookmarks_path)]
+  ["Discover", "ph-sparkle", map_path, true]
 ] %>
 <%= tag.nav class: "shrink-0 flex gap-x-1 md:gap-x-2", data: { controller: "map-nav" } do %>
   <% links.each do |link| %>

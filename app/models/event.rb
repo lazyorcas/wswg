@@ -17,7 +17,6 @@ class Event < ApplicationRecord
   delegate :time_zone, to: :city
 
   has_many :impressions, dependent: :destroy
-  has_many :bookmarks, dependent: :destroy
   has_many :seens, dependent: :destroy
   has_many :recommendations
 

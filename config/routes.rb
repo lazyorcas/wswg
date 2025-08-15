@@ -18,7 +18,6 @@ Rails.application.routes.draw do
   # Defines the root path route ("/")
   root "home#index"
   get "/local-events-directory", to: "home#local_events_directory", as: :local_events_directory
-  get "/pricing", to: "home#pricing", as: :pricing
 
   scope to: "home/events#index" do
     scope event_category_slug: "events" do
@@ -70,26 +69,18 @@ Rails.application.routes.draw do
   namespace :map do
     resources :events, only: [ :show ]
     resources :search_queries, only: [ :create ]
-    resources :bookmarks, only: [ :index ]
   end
 
   put "/impressions", to: "impressions#create", as: :impression
   put "/seens", to: "seens#create", as: :seen
   resource :recommendation_batch, only: [ :show ]
 
-  resources :bookmarks, only: [ :index, :create, :update ]
   resources :search_queries, only: [ :create ]
-
-  resources :events, only: [] do
-    resource :bookmark, only: [ :show ], on: :member, module: "events"
-    # resource :reminder, only: [ :show, :create ], on: :member, module: "events"
-  end
 
   resource :business, only: [ :show ] do
     scope module: "businesses" do
       resources :events, only: [ :index ]
-      # resources :organizers, only: [ :index ]
-      # resources :bookmarks, only: [ :index ]
+      resources :organizers, only: [ :index ]
     end
   end
 
