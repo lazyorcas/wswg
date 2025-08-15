@@ -42,7 +42,7 @@ class EventTest < ActiveSupport::TestCase
       image_url: "https://example.com/image.jpg",
       start_date: Time.current.to_date.to_s,
       end_date: Time.current.to_date.to_s,
-      start_time: "18:00"
+      start_time: "18:00:00"
     }
     event.save!
     event.reload

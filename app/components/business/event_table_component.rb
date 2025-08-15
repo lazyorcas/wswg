@@ -1,4 +1,6 @@
 class Business::EventTableComponent < EventComponent
+  include Turbo::FramesHelper
+
   def date
     Date.parse(@event.start_date).strftime("%a, %B %d")
   end

@@ -1,0 +1,5 @@
+<%= form_for bookmark, url: business_organizer_bookmark_path(organizer_id: bookmark.bookmarkable_id), method: bookmark.new_record? ? :post : :delete, html: { id: "#{dom_id(bookmark.bookmarkable)}_bookmark_form" } do |f| %>
+  <%= f.button type: "submit", class: "icon-button icon-button--small button--ghost" do %>
+    <%= tag.i class: class_names("ph-bookmark-simple", bookmark.new_record? ? "ph" : "ph-fill") %>
+  <% end %>
+<% end %>

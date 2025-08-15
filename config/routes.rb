@@ -80,7 +80,10 @@ Rails.application.routes.draw do
   resource :business, only: [ :show ] do
     scope module: "businesses" do
       resources :events, only: [ :index ]
-      resources :organizers, only: [ :index ]
+      resources :bookmarks, only: [ :index ]
+      resources :organizers, only: [] do
+        resource :bookmark, only: [ :create, :show, :destroy ], module: "organizers"
+      end
     end
   end
 

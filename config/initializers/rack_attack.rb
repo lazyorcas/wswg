@@ -24,7 +24,7 @@ class Rack::Attack
   #
   # Key: "rack::attack:#{Time.now.to_i/:period}:req/ip:#{req.ip}"
   throttle("req/ip", limit: 300, period: 5.minutes) do |req|
-    req.ip if req.get?
+    req.ip if req.get? && !req.path.match?(/bookmark/)
   end
 
   ### Prevent Brute-Force Login Attacks ###

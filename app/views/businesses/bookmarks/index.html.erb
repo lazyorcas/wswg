@@ -1,0 +1,6 @@
+<%= content_for :title, "Bookmarked Organizers - #{Current.business.name}" %>
+<% if @bookmarks.present? %>
+  <%= render "bookmarks", bookmarks: @bookmarks %>
+<% else %>
+  <%= render "no_bookmarks_message" %>
+<% end %>

@@ -1,5 +1,5 @@
 module Businesses::EventsHelper
-  def table_headers
+  def business_events_table_headers
     headers = [
       {
         icon: "ph-text-aa",
@@ -9,7 +9,7 @@ module Businesses::EventsHelper
       {
         icon: "ph-megaphone",
         label: "Organizer",
-        width: 15
+        width: 20
       },
       {
         icon: "ph-map-pin",
@@ -26,7 +26,7 @@ module Businesses::EventsHelper
         filter_id: :tod,
         icon: "ph-clock",
         label: "Time",
-        width: 10
+        width: 7.5
       },
       {
         filter_id: :attendees_count,
@@ -38,7 +38,7 @@ module Businesses::EventsHelper
         filter_id: :source,
         icon: "ph-globe",
         label: "Source",
-        width: 10
+        width: 7.5
       }
     ]
 
