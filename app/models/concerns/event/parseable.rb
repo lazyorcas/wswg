@@ -31,6 +31,7 @@ module Event::Parseable
     self.attributes = json.slice(*self.class.column_names)
     self.location_query = json["location"].presence
     self.end_date ||= self.start_date
+    self.attendees_count = nil if source.name == "Eventbrite"
 
     nil
   end
