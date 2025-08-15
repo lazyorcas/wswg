@@ -1,7 +1,7 @@
 <tr>
   <%= tag.td do %>
     <span class="flex items-center justify-between">
-      <%= image_tag @event.image_url, class: "shrink-0 size-16 rounded-sm object-contain" %>
+      <%= image_tag @event.image_url, class: "shrink-0 size-16 rounded-sm object-cover" %>
       <%= link_to @event.title, @event.url, class: "pl-4 pr-2 grow text-left line-clamp-2 hover:underline", target: "_blank" %>
       <%= link_to business_events_path(event_id: @event.id), class: "shrink-0 icon-button icon-button--small button--ghost", title: "View similar events", target: "_blank" do %>
         <%= tag.i class: "ph ph-intersect" %>
