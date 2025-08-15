@@ -20,11 +20,18 @@ module Event::Organizable
 
     return if organizer_attributes.blank?
 
-    organizer = Organizer.find_or_initialize_by(
-      source: source,
-      url: organizer_attributes[:url],
-      name: organizer_attributes[:name]
-    )
+    organizer = if organizer_attributes[:url].present?
+      Organizer.find_or_initialize_by(
+        source: source,
+        url: organizer_attributes[:url]
+      )
+    elsif organizer_attributes[:name].present?
+      Organizer.find_or_initialize_by(
+        source: source,
+        name: organizer_attributes[:name]
+      )
+    end
+
     self.organizer = organizer
   end
 
