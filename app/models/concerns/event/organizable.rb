@@ -32,6 +32,9 @@ module Event::Organizable
       )
     end
 
+    organizer.name ||= organizer_attributes[:name] if organizer.new_record?
+    organizer.save!
+
     self.organizer = organizer
   end
 
