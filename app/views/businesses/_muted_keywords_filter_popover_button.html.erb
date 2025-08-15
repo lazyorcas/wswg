@@ -5,7 +5,7 @@
   <div class="flex flex-col">
     <p class="mb-4 text-lg font-bold text-primary">Muted Keywords</p>
     <%= form_with url: current_person_settings_preference_path(id: "muted_keywords", return_to: business_events_path), method: :patch, html: { class: "flex flex-col gap-y-4" } do |form| %>
-      <%= form.text_area "preferences[muted_keywords]", class: "textarea input--accent", rows: 10, value: muted_keywords %>
+      <%= form.text_area "preferences[muted_keywords]", class: "textarea input--accent", rows: 10, value: muted_keywords, placeholder: "separated by commas (for example: tennis, running)" %>
       <%= form.submit "Mute", class: "button button--primary" %>
     <% end %>
   </div>
