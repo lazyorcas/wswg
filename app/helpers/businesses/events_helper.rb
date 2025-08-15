@@ -42,8 +42,8 @@ module Businesses::EventsHelper
       }
     ]
 
-    if headers.map { |header| header[:width] }.sum != 100
-      raise "Headers width must sum to 100"
+    if (sum = headers.map { |header| header[:width] }.sum) != 100
+      raise "Headers width (#{sum}) must sum to 100"
     end
 
     headers
