@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_07_25_130840) do
+ActiveRecord::Schema[8.0].define(version: 2025_08_15_030014) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -164,6 +164,12 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_25_130840) do
     t.index ["slug"], name: "index_businesses_on_slug", unique: true
   end
 
+  create_table "chats", force: :cascade do |t|
+    t.string "model_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "cities", force: :cascade do |t|
     t.string "name", null: false
     t.string "slug", null: false
@@ -309,6 +315,20 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_25_130840) do
     t.index ["lat", "lon"], name: "index_locations_on_lat_and_lon"
   end
 
+  create_table "messages", force: :cascade do |t|
+    t.bigint "chat_id", null: false
+    t.string "role"
+    t.text "content"
+    t.string "model_id"
+    t.integer "input_tokens"
+    t.integer "output_tokens"
+    t.bigint "tool_call_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["chat_id"], name: "index_messages_on_chat_id"
+    t.index ["tool_call_id"], name: "index_messages_on_tool_call_id"
+  end
+
   create_table "organizers", force: :cascade do |t|
     t.bigint "source_id"
     t.string "name"
@@ -392,6 +412,17 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_25_130840) do
     t.index ["name"], name: "index_sources_on_name", unique: true
   end
 
+  create_table "tool_calls", force: :cascade do |t|
+    t.bigint "message_id", null: false
+    t.string "tool_call_id", null: false
+    t.string "name", null: false
+    t.jsonb "arguments", default: {}
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["message_id"], name: "index_tool_calls_on_message_id"
+    t.index ["tool_call_id"], name: "index_tool_calls_on_tool_call_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.bigint "city_id"
     t.string "email", null: false
@@ -429,10 +460,12 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_25_130840) do
   add_foreign_key "events", "organizers"
   add_foreign_key "impressions", "events"
   add_foreign_key "location_queries", "locations"
+  add_foreign_key "messages", "chats"
   add_foreign_key "organizers", "sources"
   add_foreign_key "search_queries", "cities"
   add_foreign_key "searches", "search_queries"
   add_foreign_key "seens", "events"
+  add_foreign_key "tool_calls", "messages"
   add_foreign_key "users", "businesses"
   add_foreign_key "users", "cities"
   add_foreign_key "visitors", "cities"

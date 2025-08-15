@@ -15,4 +15,5 @@ ActiveSupport::Inflector.inflections(:en) do |inflect|
   inflect.acronym "OpenAI"
   inflect.acronym "HTTParty"
   inflect.acronym "SEO"
+  inflect.acronym "AI"
 end

@@ -115,5 +115,6 @@ gem "ledermann-rails-settings"
 gem "blazer"
 gem "geokit-rails"
 gem "scenic"
-
+gem "ruby_llm"
+gem "ruby_llm-schema"
 gem "logtail-rails"

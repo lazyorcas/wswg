@@ -1,7 +1,7 @@
 module Event::Parseable
   extend ActiveSupport::Concern
 
-  GENERAL_CONTEXT = "This markdown is about an event.".freeze
+  GENERIC_CONTEXT = "This markdown is about an event.".freeze
   CONTEXT = <<~TEXT
     This markdown should be about an event.
 
@@ -30,7 +30,9 @@ module Event::Parseable
 
     self.attributes = json.slice(*self.class.column_names)
     self.location_query = json["location"].presence
-    self.attendees_count = attendees_count == -1 ? nil : attendees_count
+    self.end_date ||= self.start_date
+
+    nil
   end
 
   def convert_markdown_to_json
@@ -40,21 +42,21 @@ module Event::Parseable
         current_date: time_zone.current_date,
         current_year: time_zone.current_year
       },
-      json_schema: OpenAI::Responses::Schemas.event_schema
+      schema: EventSchema
     )
   end
 
   def extract_organizer_data_from_markdown
     markdown_expert.convert_to_json(
       markdown,
-      context: GENERAL_CONTEXT,
-      json_schema: OpenAI::Responses::Schemas.event_organizer_schema
+      context: GENERIC_CONTEXT,
+      schema: EventOrganizerSchema
     )
   end
 
   private
 
   def markdown_expert
-    @markdown_expert ||= OpenAI::Assistants::MarkdownExpert.new
+    @markdown_expert ||= AI::MarkdownExpert.new
   end
 end

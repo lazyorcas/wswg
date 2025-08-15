@@ -7,62 +7,6 @@ module OpenAI::Responses::Schemas
     })
   end
 
-  def self.event_schema
-    build_schema("event", {
-      title: {
-        type: "string",
-        description: "Title of the event. If not mentioned, return an empty string."
-      },
-      description: {
-        type: "string",
-        description: "Full description in markdown format. If not mentioned, return an empty string."
-      },
-      image_url: {
-        type: "string"
-      },
-      organizer_url: {
-        type: "string",
-        description: "URL of the organizer, usually a user/member page of the hosting platform. The organizer can also be referred to as the event's host. Look out for \"Hosted by\" or \"Organized by\" in the content, but don't rely on it. If not mentioned, return an empty string."
-      },
-      organizer_name: {
-        type: "string",
-        description: "Name of the organizer. The organizer can also be referred to as the event's host. Look out for \"Hosted by\" or \"Organized by\" in the content, but don't rely on it. If not mentioned, return an empty string. It cannot be the name of the hosting platform."
-      },
-      location: {
-        type: "string",
-        description: "Location of the event. It can be a precise address or a general area. If not mentioned, return an empty string. If the location is online / virtual, return an empty string. If the location is to be determined / TBD, return an empty string."
-      },
-      start_date: {
-        type: "string",
-        description: "Start date of the event in YYYY-MM-DD format. If not mentioned, return an empty string."
-      },
-      start_time: {
-        type: "string",
-        description: "Start time of the event in HH:mm:ss format. If not mentioned, return an empty string."
-      },
-      end_date: {
-        type: "string",
-        description: "End date of the event in YYYY-MM-DD format. If not mentioned and the start date is mentioned, return the same date as the start date. If not mentioned and the start date is also not mentioned, return an empty string."
-      },
-      end_time: {
-        type: "string",
-        description: "End time of the event in HH:mm:ss format. If not mentioned, return an empty string."
-      },
-      price: {
-        type: "number",
-        description: "Price of the event. If there's a range, return the minimum price. Round up to the nearest integer. If the price is not available or free, return 0."
-      },
-      attendees_count: {
-        type: "number",
-        description: "Number of attendees. If not mentioned, return -1."
-      },
-      not_found: {
-        type: "boolean",
-        description: "If the event is not found, return true. Otherwise, return false."
-      }
-    })
-  end
-
   def self.city_schema
     build_schema("city", {
       city: {
@@ -119,19 +63,6 @@ module OpenAI::Responses::Schemas
       max_price: {
         type: "number",
         description: "If not mentioned, return -1. If free, return 0."
-      }
-    })
-  end
-
-  def self.event_organizer_schema
-    build_schema("event_organizer", {
-      organizer_url: {
-        type: "string",
-        description: "URL of the organizer, usually a user/member page of the hosting platform. The organizer can also be referred to as the event's host. Look out for \"Hosted by\" or \"Organized by\" in the content, but don't rely on it. If not mentioned, return an empty string."
-      },
-      organizer_name: {
-        type: "string",
-        description: "Name of the organizer. The organizer can also be referred to as the event's host. Look out for \"Hosted by\" or \"Organized by\" in the content, but don't rely on it. If not mentioned, return an empty string. It cannot be the name of the hosting platform."
       }
     })
   end

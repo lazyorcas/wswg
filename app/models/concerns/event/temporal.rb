@@ -4,15 +4,16 @@ module Event::Temporal
   included do
     before_validation :set_dow, if: -> { start_date.present? }
 
-    validates :end_date,
-      comparison: { greater_than_or_equal_to: :start_date },
-      if: -> { end_date.present? && start_date.present? }
+    validates_format_of :start_date, with: /\A\d{4}-\d{2}-\d{2}\z/, if: -> { start_date.present? }
+    validates_format_of :end_date, with: /\A\d{4}-\d{2}-\d{2}\z/, if: -> { end_date.present? }
 
-    validates :end_time,
-      comparison: { greater_than_or_equal_to: :start_time },
-      if: -> { end_time.present? && start_time.present? }
+    validates_format_of :start_time, with: /\A\d{2}:\d{2}:\d{2}\z/, if: -> { start_time.present? }
+    validates_format_of :end_time, with: /\A\d{2}:\d{2}:\d{2}\z/, if: -> { end_time.present? }
 
-    validate :validate_end_date_after_start_date, if: -> { end_date.present? && start_date.present? }, on: :create
+    validates_comparison_of :end_date, greater_than_or_equal_to: :start_date, if: -> { end_date.present? && start_date.present? }
+    validates_comparison_of :end_time, greater_than_or_equal_to: :start_time, if: -> { end_time.present? && start_time.present? }
+
+    validate :validate_end_date_after_start_date, if: -> { end_date.present? && start_date.present? }
   end
 
   def has_started?
