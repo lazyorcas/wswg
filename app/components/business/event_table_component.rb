@@ -27,6 +27,10 @@ class Business::EventTableComponent < EventComponent
     end
   end
 
+  def last_updated_at
+    @event.updated_at.strftime("%B %d")
+  end
+
   private
 
   def build_google_query_url_for_organizer

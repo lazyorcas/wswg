@@ -40,6 +40,11 @@
   <% end %>
   <%= tag.td do %>
     <span class="line-clamp-2"><%= @event.attendees_count %></span>
+    <% if @event.attendees_count.present? %>
+      <span class="text-xs italic text-secondary">
+        (Last updated: <%= last_updated_at %>)
+      </span>
+    <% end %>
   <% end %>
   <%= tag.td do %>
     <span class="flex items-center gap-x-2 flex-wrap">
