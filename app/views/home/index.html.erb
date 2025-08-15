@@ -10,6 +10,12 @@
         <i class="ph ph-map-trifold"></i>
         Events Map
       <% end %>
+      <% if Current.user&.business&.present? %>
+        <%= link_to business_path, class: "button button--primary", data: { turbo: false } do %>
+          <i class="ph ph-database"></i>
+          View Event Database
+        <% end %>
+      <% end %>
     </div>
   </header>
   <% if @city.present? && (sort_by_interests? || @events&.any?) %>
