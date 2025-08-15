@@ -58,6 +58,6 @@ class LocationQuery < ApplicationRecord
   end
 
   def geographer
-    @geographer ||= OpenAI::Assistants::Geographer.new
+    @geographer ||= AI::Geographer.new
   end
 end

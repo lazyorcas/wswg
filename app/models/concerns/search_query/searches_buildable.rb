@@ -67,21 +67,21 @@ module SearchQuery::SearchesBuildable
           within: "#{Event::Locatable::MAX_DISTANCE_TO_CITY}#{Event::Locatable::DISTANCE_UNIT}"
         },
         end_date: {
-          gte: query_object.dig("date_range", "start_date").presence,
-          lte: query_object.dig("date_range", "end_date").presence
+          gte: query_object.dig("date_range", "start_date"),
+          lte: query_object.dig("date_range", "end_date")
         },
         start_time: {
-          gte: query_object.dig("date_range", "start_time").presence,
-          lte: query_object.dig("date_range", "end_time").presence
+          gte: query_object.dig("date_range", "start_time"),
+          lte: query_object.dig("date_range", "end_time")
         },
         price: {
-          lte: query_object["max_price"] == -1 ? nil : query_object["max_price"]
+          lte: query_object["max_price"]
         }
       }
     end
   end
 
   def local_guide
-    @local_guide ||= OpenAI::Assistants::LocalGuide.new
+    @local_guide ||= AI::LocalGuide.new
   end
 end

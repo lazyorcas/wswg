@@ -14,16 +14,16 @@ class EventSchema < RubyLLM::Schema
     string
     null
   end
-  any_of :start_date, description: "Use null if unknown" do
-    string format: "date"
+  any_of :start_date, description: "Start date of the event in YYYY-MM-DD format. Use null if unknown" do
+    string
     null
   end
   any_of :start_time, description: "Start time of the event in HH:mm:ss format. Use null if unknown" do
     string
     null
   end
-  any_of :end_date, description: "Use null if unknown" do
-    string format: "date"
+  any_of :end_date, description: "End date of the event in YYYY-MM-DD format. Use null if unknown" do
+    string
     null
   end
   any_of :end_time, description: "End time of the event in HH:mm:ss format. Use null if unknown" do

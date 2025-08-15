@@ -5,11 +5,11 @@ module SearchQuery::Summarizable
     keywords = searches.pluck(:keywords).reject { |k| k == "*" }.join(" ").split(" ").uniq.join(" ")
     conditions = searches.first.conditions
 
-    price = conditions.dig("price", "lte").presence
-    start_date = conditions.dig("end_date", "gte").presence&.to_date&.strftime("%B %-d")
-    end_date = conditions.dig("end_date", "lte").presence&.to_date&.strftime("%B %-d")
-    start_time = conditions.dig("start_time", "gte").presence&.to_time&.strftime("%H:%M")
-    end_time = conditions.dig("start_time", "lte").presence&.to_time&.strftime("%H:%M")
+    price = conditions.dig("price", "lte")
+    start_date = conditions.dig("end_date", "gte")&.to_date&.strftime("%B %-d")
+    end_date = conditions.dig("end_date", "lte")&.to_date&.strftime("%B %-d")
+    start_time = conditions.dig("start_time", "gte")&.to_time&.strftime("%H:%M")
+    end_time = conditions.dig("start_time", "lte")&.to_time&.strftime("%H:%M")
 
     summary_fragments = [ city.name ]
     summary_fragments << "with a max price of #{price}" if price.present?

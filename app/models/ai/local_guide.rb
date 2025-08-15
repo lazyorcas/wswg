@@ -1,5 +1,5 @@
-class OpenAI::Assistants::LocalGuide
-  INSTRUCTIONS_TEMPLATE = <<~TEXT
+class AI::LocalGuide
+  INSTRUCTIONS = <<~TEXT
     You are a local guide who's passionate about helping people find the best things to do in their city.
 
     You are an expert in building search queries for Elasticsearch, which you use to search fast and efficiently.
@@ -58,12 +58,10 @@ class OpenAI::Assistants::LocalGuide
   TEXT
 
   def initialize
-    @openai_responses_client = OpenAI::ResponsesClient.new
+    @chat = Chat.create(model_id: "gpt-4.1-mini")
   end
 
   def build_search_query(text, now:, city_name:, languages:)
-    instructions = INSTRUCTIONS_TEMPLATE
-
     input = BUILD_SEARCH_QUERY_INPUT_TEMPLATE % {
       current_date: now.strftime("%Y-%m-%d"),
       current_dow: now.strftime("%A"),
@@ -74,12 +72,11 @@ class OpenAI::Assistants::LocalGuide
       text: text
     }
 
-    @openai_responses_client.ask(
-      input: input,
-      instructions: instructions,
-      response_schema: OpenAI::Responses::Schemas.search_query_schema,
-      model: "gpt-4.1-mini"
-    )
+    response = @chat
+      .with_schema(SearchQuerySchema)
+      .with_instructions(INSTRUCTIONS)
+      .ask(input)
+    response.content
   end
 
   DETECT_CITY_INPUT_TEMPLATE = <<~TEXT
@@ -91,14 +88,12 @@ class OpenAI::Assistants::LocalGuide
   TEXT
 
   def detect_city(text)
-    instructions = INSTRUCTIONS_TEMPLATE
     input = DETECT_CITY_INPUT_TEMPLATE % { text: text }
 
-    @openai_responses_client.ask(
-      input: input,
-      instructions: instructions,
-      response_schema: OpenAI::Responses::Schemas.city_schema,
-      model: "gpt-4.1-mini"
-    )
+    response = @chat
+      .with_schema(CitySchema)
+      .with_instructions(INSTRUCTIONS)
+      .ask(input)
+    response.content["city"]
   end
 end

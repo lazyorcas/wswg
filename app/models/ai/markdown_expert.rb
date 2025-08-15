@@ -13,8 +13,6 @@ class AI::MarkdownExpert
     %{markdown}
   TEXT
 
-  attr_reader :response
-
   def initialize
     @chat = Chat.create(model_id: OpenAI::DefaultConfig::MODEL)
   end
@@ -29,7 +27,7 @@ class AI::MarkdownExpert
       .with_schema(schema)
       .with_instructions(INSTRUCTIONS)
       .ask(input)
-    @response = response.content
+    response.content
   end
 
   private

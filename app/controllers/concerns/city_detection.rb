@@ -41,10 +41,10 @@ module CityDetection
   end
 
   def get_city_name_from_query(query)
-    local_guide.detect_city(query)["city"]
+    local_guide.detect_city(query)
   end
 
   def local_guide
-    @local_guide ||= OpenAI::Assistants::LocalGuide.new
+    @local_guide ||= AI::LocalGuide.new
   end
 end
