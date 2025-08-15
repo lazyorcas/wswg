@@ -7,7 +7,7 @@
       <%= link_to business_events_path(organizer_id: @bookmark.bookmarkable_id), class: "shrink-0 icon-button icon-button--small button--ghost", title: "View events by this organizer", target: "_blank" do %>
         <%= tag.i class: "ph ph-user-focus" %>
       <% end %>
-      <%= turbo_frame_tag "#{dom_id(@bookmark.bookmarkable)}_bookmark", src: business_organizer_bookmark_path(@bookmark.bookmarkable) do %>
+      <%= turbo_frame_tag "#{dom_id(@bookmark.bookmarkable)}_bookmark", src: business_organizer_bookmark_path(@bookmark.bookmarkable), loading: "lazy" do %>
         <span class="icon-button icon-button--small button--disabled">
           <%= tag.i class: "ph ph-bookmark-simple" %>
         </span>
