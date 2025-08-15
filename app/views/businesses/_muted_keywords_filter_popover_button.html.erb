@@ -1,0 +1,12 @@
+<%= tag.button popovertarget: "muted_keywords_filter_popover", class: class_names("icon-button icon-button--xs", filtering_by_muted_keywords? ? "button--active" : "button--ghost"), title: "Mute Keywords" do %>
+  <%= tag.i class: class_names("ph-funnel", filtering_by_muted_keywords? ? "ph-fill" : "ph") %>
+<% end %>
+<div popover id="muted_keywords_filter_popover" class="modal p-4 w-xs max-w-full">
+  <div class="flex flex-col">
+    <p class="mb-4 text-lg font-bold text-primary">Muted Keywords</p>
+    <%= form_with url: current_person_settings_preference_path(id: "muted_keywords", return_to: business_events_path), method: :patch, html: { class: "flex flex-col gap-y-4" } do |form| %>
+      <%= form.text_area "preferences[muted_keywords]", class: "textarea input--accent", rows: 10, value: muted_keywords %>
+      <%= form.submit "Mute", class: "button button--primary" %>
+    <% end %>
+  </div>
+</div>

@@ -27,6 +27,11 @@ module Business::EventQuery::Filterable
       .where(city_sources: { source_id: source_id })
   end
 
+  def filter_out_muted_keywords
+    tsquery = muted_keywords.gsub(/,\s*/, " | ")
+    @events = @events.where("keywords @@ (!!to_tsquery('#{tsquery}'))")
+  end
+
   def start_time
     if tod == "morning"
       "00:00:00"

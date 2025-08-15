@@ -67,4 +67,9 @@ module CurrentPerson::Settings::PreferencesHelper
   def hide_impression_events?
     hide_impression_events_value == "hide"
   end
+
+  # Muted keywords
+  def muted_keywords
+    Current.person.settings(:preferences).muted_keywords
+  end
 end

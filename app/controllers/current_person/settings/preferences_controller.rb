@@ -36,6 +36,6 @@ class CurrentPerson::Settings::PreferencesController < ApplicationController
 
   def preferences_params
     preferences_params = params[:preferences]
-    preferences_params ? preferences_params.permit(:sort_by, :hide_impression_events) : {}
+    preferences_params ? preferences_params.permit(:sort_by, :hide_impression_events, :muted_keywords) : {}
   end
 end

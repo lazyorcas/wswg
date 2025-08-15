@@ -18,6 +18,7 @@ class Business::EventQuery
   attribute :tod
   attribute :min_attendees_count
   attribute :max_attendees_count
+  attribute :muted_keywords
 
   def initialize(attributes = {})
     super(attributes)
@@ -45,6 +46,7 @@ class Business::EventQuery
       filter_by_min_attendees_count if min_attendees_count.present?
       filter_by_max_attendees_count if max_attendees_count.present?
       filter_by_source if source_id.present?
+      filter_out_muted_keywords if muted_keywords.present?
 
       limit_events
     end

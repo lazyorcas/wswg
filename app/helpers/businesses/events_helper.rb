@@ -2,6 +2,7 @@ module Businesses::EventsHelper
   def business_events_table_headers
     headers = [
       {
+        filter_id: :muted_keywords,
         icon: "ph-text-aa",
         label: "Event",
         width: 30
