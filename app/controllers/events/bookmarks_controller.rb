@@ -12,7 +12,7 @@ class Events::BookmarksController < ApplicationController
 
   def build_bookmark
     @bookmark ||= Bookmark.find_or_initialize_by(
-      bookmarkable: Current.person,
+      bookmarker: Current.person,
       event: @event
     )
   end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_08_15_030014) do
+ActiveRecord::Schema[8.0].define(version: 2025_08_15_065319) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -144,10 +144,10 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_15_030014) do
     t.datetime "removed_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "bookmarkable_type", null: false
-    t.bigint "bookmarkable_id", null: false
-    t.index ["bookmarkable_type", "bookmarkable_id", "event_id"], name: "idx_on_bookmarkable_type_bookmarkable_id_event_id_de6daff0b6", unique: true
-    t.index ["bookmarkable_type", "bookmarkable_id"], name: "index_bookmarks_on_bookmarkable"
+    t.string "bookmarker_type", null: false
+    t.bigint "bookmarker_id", null: false
+    t.index ["bookmarker_type", "bookmarker_id", "event_id"], name: "idx_on_bookmarker_type_bookmarker_id_event_id_ff59a99ae4", unique: true
+    t.index ["bookmarker_type", "bookmarker_id"], name: "index_bookmarks_on_bookmarkable"
     t.index ["event_id"], name: "index_bookmarks_on_event_id"
     t.index ["removed"], name: "index_bookmarks_on_removed"
     t.index ["removed_at"], name: "index_bookmarks_on_removed_at"
