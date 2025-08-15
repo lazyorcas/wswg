@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_08_15_065439) do
+ActiveRecord::Schema[8.0].define(version: 2025_08_15_070413) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -146,7 +146,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_15_065439) do
     t.datetime "updated_at", null: false
     t.string "bookmarker_type", null: false
     t.bigint "bookmarker_id", null: false
-    t.string "bookmarkable_type"
+    t.string "bookmarkable_type", null: false
     t.index ["bookmarkable_id"], name: "index_bookmarks_on_bookmarkable_id"
     t.index ["bookmarker_type", "bookmarker_id", "bookmarkable_id"], name: "idx_on_bookmarker_type_bookmarker_id_bookmarkable_i_4c0cb07ab4", unique: true
     t.index ["bookmarker_type", "bookmarker_id", "bookmarkable_type", "bookmarkable_id"], name: "idx_on_bookmarker_type_bookmarker_id_bookmarkable_t_33bd4f193f", unique: true
