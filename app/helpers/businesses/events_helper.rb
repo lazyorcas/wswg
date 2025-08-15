@@ -4,7 +4,7 @@ module Businesses::EventsHelper
       {
         icon: "ph-text-aa",
         label: "Title",
-        width: 30
+        width: 20
       },
       {
         icon: "ph-megaphone",
@@ -26,6 +26,12 @@ module Businesses::EventsHelper
         filter_id: :tod,
         icon: "ph-clock",
         label: "Time",
+        width: 10
+      },
+      {
+        filter_id: :attendees_count,
+        icon: "ph-users",
+        label: "Attendees",
         width: 10
       },
       {

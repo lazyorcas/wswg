@@ -40,6 +40,9 @@
     <span class="line-clamp-2"><%= time_range %></span>
   <% end %>
   <%= tag.td do %>
+    <span class="line-clamp-2"><%= @event.attendees_count %></span>
+  <% end %>
+  <%= tag.td do %>
     <span class="flex items-center gap-x-2 flex-wrap">
       <%= image_tag source_icon_url, class: "size-4 rounded" %>
       <%= @event.source.name %>

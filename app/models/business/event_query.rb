@@ -16,6 +16,8 @@ class Business::EventQuery
   attribute :month
   attribute :dow
   attribute :tod
+  attribute :min_attendees_count
+  attribute :max_attendees_count
 
   def initialize(attributes = {})
     super(attributes)
@@ -40,6 +42,8 @@ class Business::EventQuery
       filter_by_month if month.present?
       filter_by_dow if dow.present?
       filter_by_tod if tod.present?
+      filter_by_min_attendees_count if min_attendees_count.present?
+      filter_by_max_attendees_count if max_attendees_count.present?
       filter_by_source if source_id.present?
 
       limit_events

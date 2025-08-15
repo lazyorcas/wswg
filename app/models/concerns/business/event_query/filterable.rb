@@ -13,6 +13,14 @@ module Business::EventQuery::Filterable
     @events = @events.where(start_time: start_time..end_time)
   end
 
+  def filter_by_min_attendees_count
+    @events = @events.where("attendees_count >= ?", min_attendees_count)
+  end
+
+  def filter_by_max_attendees_count
+    @events = @events.where("attendees_count <= ?", max_attendees_count)
+  end
+
   def filter_by_source
     @events = @events
       .joins(:city_source)

@@ -1,10 +1,10 @@
 class Businesses::EventsController < ApplicationController
-  PERMITTED_PARAMS = %i[keywords event_id organizer_id location_id source_id dow tod month]
+  PERMITTED_PARAMS = %i[keywords event_id organizer_id location_id source_id dow tod month min_attendees_count max_attendees_count]
 
   include BusinessesOnly
 
   layout "businesses"
-  helper_method :event_query_params, *PERMITTED_PARAMS.map { |param| "filtering_by_#{param}?" }, :filtering_by_date?
+  helper_method :event_query_params, *PERMITTED_PARAMS.map { |param| "filtering_by_#{param}?" }, :filtering_by_date?, :filtering_by_attendees_count?
 
   def index
     ahoy.track "Business - Viewed events", **event_query_params
@@ -46,6 +46,10 @@ class Businesses::EventsController < ApplicationController
 
   def filtering_by_date?
     filtering_by_month? || filtering_by_dow?
+  end
+
+  def filtering_by_attendees_count?
+    filtering_by_min_attendees_count? || filtering_by_max_attendees_count?
   end
 
   def build_event_query
