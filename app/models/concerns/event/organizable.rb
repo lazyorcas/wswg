@@ -22,9 +22,9 @@ module Event::Organizable
 
     organizer = Organizer.find_or_initialize_by(
       source: source,
-      url: organizer_attributes[:url]
+      url: organizer_attributes[:url],
+      name: organizer_attributes[:name]
     )
-    organizer.name = organizer_attributes[:name] if organizer.new_record?
     self.organizer = organizer
   end
 
