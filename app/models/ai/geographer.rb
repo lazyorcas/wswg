@@ -22,6 +22,7 @@ class AI::Geographer
     response = @chat
       .with_schema(TrueOrFalseSchema)
       .with_instructions(INSTRUCTIONS)
+      .with_temperature(0.0)
       .ask(input)
     response.content["answer"]
   end

@@ -26,6 +26,7 @@ class AI::MarkdownExpert
     response = @chat
       .with_schema(schema)
       .with_instructions(INSTRUCTIONS)
+      .with_temperature(0.0)
       .ask(input)
     response.content
   end

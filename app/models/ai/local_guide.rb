@@ -75,6 +75,7 @@ class AI::LocalGuide
     response = @chat
       .with_schema(SearchQuerySchema)
       .with_instructions(INSTRUCTIONS)
+      .with_temperature(0.0)
       .ask(input)
     response.content
   end
