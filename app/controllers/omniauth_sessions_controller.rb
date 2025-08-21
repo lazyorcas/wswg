@@ -4,7 +4,11 @@ class OmniauthSessionsController < ApplicationController
     find_or_create_user!
     create_or_update_account!
     store_session
-    redirect_to(root_path)
+    if @user.business_owner?
+      redirect_to(business_path)
+    else
+      redirect_to(root_path)
+    end
   rescue => e
     Sentry.capture_exception(e)
     flash.now[:error] = "Failed to login. Try again."
