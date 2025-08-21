@@ -15,7 +15,6 @@
     <%= render "shared/head/fonts" %>
     <%= render "shared/head/icons" %>
     <%= render "shared/head/sentry" %>
-    <%= render "shared/head/hotjar" %>
     <%= render "shared/head/visit" if Rails.env.production? %>
     <%= tag.link rel: "manifest", href: pwa_manifest_path(format: :json) %>
     <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
