@@ -40,7 +40,10 @@ module Authentication
   end
 
   def require_business_owner!
-    return if signed_in? && Current.user.business_owner?
+    if signed_in?
+      return if Current.user.business_owner?
+      head(:unauthorized) and return
+    end
 
     save_passwordless_redirect_location!(User)
     redirect_to(login_path)
