@@ -22,4 +22,5 @@ class Event < ApplicationRecord
   has_many :recommendations
 
   validates :url, uniqueness: true
+  validates :attendees_count, numericality: { greater_than_or_equal_to: 0 }, allow_nil: true
 end
