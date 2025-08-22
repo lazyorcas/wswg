@@ -1,13 +1,13 @@
 <%= content_for :title, "#{@title} - #{Current.business.name}" %>
-<%= content_for :search do %>
-  <%= form_with url: business_events_path, method: :get, html: { style: "width: 512px;" } do |f| %>
-    <%= f.search_field :keywords, class: "input", placeholder: "search for events...", value: event_query_params[:keywords] %>
-  <% end %>
-<% end %>
 <%= content_for :toolbar do %>
-  <%= link_to business_events_path(params: {}), class: class_names("button", event_query_params.present? ? "button--ghost" : "button--disabled pointer-events-none") do %>
-    <%= tag.i class: "ph ph-x" %>
-    <span>Clear</span>
-  <% end %>
+  <section class="flex items-center gap-x-4">
+    <%= form_with url: business_events_path, method: :get, html: { style: "width: 512px;" } do |f| %>
+      <%= f.search_field :keywords, class: "input", placeholder: "search for events...", value: event_query_params[:keywords] %>
+    <% end %>
+    <%= link_to business_events_path(params: {}), class: class_names("button", event_query_params.present? ? "button--ghost" : "button--disabled pointer-events-none") do %>
+      <%= tag.i class: "ph ph-x" %>
+      <span>Clear</span>
+    <% end %>
+  </section>
 <% end %>
 <%= render "events", events: @events %>
