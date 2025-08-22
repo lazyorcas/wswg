@@ -8,6 +8,7 @@ class Event < ApplicationRecord
   include Createable
   include HandlesSources
   include DataCompleteness
+  include Finalizable
 
   belongs_to :city_source
 

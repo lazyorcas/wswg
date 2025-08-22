@@ -44,7 +44,7 @@
     <span class="line-clamp-2"><%= @event.attendees_count %></span>
     <% if @event.attendees_count.present? %>
       <span class="text-xs italic text-secondary">
-        (As of: <%= last_updated_at %>)
+        (As of: <%= attendees_count_finalized_at %>)
       </span>
     <% end %>
   <% end %>

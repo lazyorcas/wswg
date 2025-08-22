@@ -14,16 +14,17 @@ class AI::MarkdownExpert
   TEXT
 
   def initialize
-    @chat = Chat.create(model_id: OpenAI::DefaultConfig::MODEL)
+    @chat = Chat.create
   end
 
-  def convert_to_json(markdown, context:, schema:)
+  def convert_to_json(markdown, context:, schema:, model: OpenAI::DefaultConfig::MODEL)
     input = build_input(
       input_template: CONVERT_TO_JSON_INPUT_TEMPLATE,
       context: context,
       markdown: markdown,
     )
     response = @chat
+      .with_model(model)
       .with_schema(schema)
       .with_instructions(INSTRUCTIONS)
       .with_temperature(0.0)

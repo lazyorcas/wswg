@@ -29,8 +29,8 @@ class Business::EventTableComponent < EventComponent
     end
   end
 
-  def last_updated_at
-    @event.updated_at.strftime("%B %d")
+  def attendees_count_finalized_at
+    (@event.attendees_count_finalized_at || @event.created_at).strftime("%B %d")
   end
 
   private

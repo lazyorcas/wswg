@@ -55,6 +55,16 @@ module Event::Parseable
     )
   end
 
+  def extract_attendees_count_from_markdown
+    json = markdown_expert.convert_to_json(
+      markdown,
+      context: GENERIC_CONTEXT,
+      schema: EventAttendeesCountSchema,
+      model: "gemini-2.5-flash"
+    )
+    json["attendees_count"]
+  end
+
   private
 
   def markdown_expert

@@ -17,7 +17,7 @@ module Event::Temporal
   end
 
   def has_started?
-    "#{start_date} #{start_time}" <= "#{city.time_zone.current_date} #{city.time_zone.current_time}"
+    start_date_time <= "#{city.time_zone.current_date} #{city.time_zone.current_time}"
   end
 
   def has_ended?
@@ -25,6 +25,10 @@ module Event::Temporal
   end
 
   private
+
+  def start_date_time_time
+    Time.find_zone(city.time_zone.name).parse(start_date_time)
+  end
 
   def set_dow
     self.dow = Date.parse(start_date).strftime("%u").to_i
