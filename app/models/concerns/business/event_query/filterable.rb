@@ -28,7 +28,10 @@ module Business::EventQuery::Filterable
   end
 
   def filter_out_muted_keywords
-    tsquery = muted_keywords.gsub(/,\s*/, " | ")
+    keywords = muted_keywords.split(/,\s*/)
+    tsquery = keywords.map do |keyword|
+      keyword.strip.split(/\s+/).join(" <-> ")
+    end.join(" | ")
     @events = @events.where("keywords @@ (!!to_tsquery('#{tsquery}'))")
   end
 
