@@ -23,4 +23,8 @@ class Event < ApplicationRecord
 
   validates :url, uniqueness: true
   validates :attendees_count, numericality: { greater_than_or_equal_to: 0 }, allow_nil: true
+
+  def start_date_time
+    super || "#{start_date} #{start_time}"
+  end
 end
