@@ -3,7 +3,11 @@ module CurrentPerson::Settings::PreferencesHelper
 
   # Sort by
   def sort_by
-    Current.person.settings(:preferences).sort_by || Person::Preferences::DEFAULT_SORT_BY
+    if Current.person.persisted?
+      Current.person.settings(:preferences).sort_by || Person::Preferences::DEFAULT_SORT_BY
+    else
+      "popularity"
+    end
   end
 
   def sort_by_values
