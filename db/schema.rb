@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_08_22_041532) do
+ActiveRecord::Schema[8.0].define(version: 2025_08_25_054843) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -158,7 +158,9 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_22_041532) do
     t.string "logo_url"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "organizer_id"
     t.index ["city_id"], name: "index_businesses_on_city_id"
+    t.index ["organizer_id"], name: "index_businesses_on_organizer_id"
     t.index ["slug"], name: "index_businesses_on_slug", unique: true
   end
 
@@ -246,6 +248,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_22_041532) do
     t.bigint "organizer_id"
     t.datetime "finalizable_from"
     t.datetime "finalizable_until"
+    t.integer "impression_count"
     t.index ["city_source_id"], name: "index_events_on_city_source_id"
     t.index ["dow"], name: "index_events_on_dow"
     t.index ["extended_keywords"], name: "index_events_on_extended_keywords", using: :gin
@@ -451,6 +454,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_22_041532) do
   add_foreign_key "ahoy_visits", "visitors", column: "visitor_token", primary_key: "visitor_token"
   add_foreign_key "bookmarks", "events", column: "bookmarkable_id"
   add_foreign_key "businesses", "cities"
+  add_foreign_key "businesses", "organizers"
   add_foreign_key "city_languages", "cities"
   add_foreign_key "city_languages", "languages"
   add_foreign_key "city_sources", "cities"

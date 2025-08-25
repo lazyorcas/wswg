@@ -2,7 +2,7 @@
   <thead class="bg-accent">
     <tr>
       <% business_organizers_bookmarks_table_headers.each do |header| %>
-        <%= tag.th style: "width: #{header[:width]}%;" do %>
+        <%= tag.th class: "h-10", style: "width: #{header[:width]}%;" do %>
           <span class="flex items-center gap-x-2">
             <%= tag.i class: class_names("ph", header[:icon]) %>
             <%= tag.span header[:label] %>

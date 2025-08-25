@@ -60,9 +60,7 @@ class Business::EventQuery
 
   def event_scope
     Event
-      .joins(:city_source)
-      .joins(:source)
-      .joins(:organizer)
+      .joins(:source, :organizer)
       .where(city_sources: { city_id: city_id })
       .where.not(sources: { name: "Ticketmaster" })
   end

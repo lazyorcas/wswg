@@ -84,6 +84,9 @@ Rails.application.routes.draw do
       resources :organizers, only: [] do
         resource :bookmark, only: [ :create, :show, :destroy ], module: "organizers"
       end
+      resource :organizer, only: [] do
+        resources :events, only: [ :index ], module: "organizers"
+      end
     end
   end
 

@@ -1,0 +1,23 @@
+<tr>
+  <%= tag.td do %>
+    <span class="flex items-center justify-between">
+      <%= image_tag @event.image_url, class: "shrink-0 size-16 rounded-sm object-cover" %>
+      <%= link_to @event.title, @event.url, class: "pl-4 pr-2 grow text-left line-clamp-2 hover:underline", target: "_blank" %>
+    </span>
+  <% end %>
+  <%= tag.td venue do %>
+    <span class="line-clamp-2"><%= venue %></span>
+  <% end %>
+  <%= tag.td do %>
+    <span class="line-clamp-2"><%= date %></span>
+  <% end %>
+  <%= tag.td do %>
+    <span class="line-clamp-2"><%= time_range %></span>
+  <% end %>
+  <%= tag.td do %>
+    <span class="line-clamp-2"><%= @event.impression_count %></span>
+  <% end %>
+  <%= tag.td do %>
+    <span class="line-clamp-2"><%= @event.seens_count %></span>
+  <% end %>
+</tr>

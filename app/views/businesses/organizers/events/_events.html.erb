@@ -1,16 +1,11 @@
 <table class="table-fixed">
   <thead class="bg-accent">
     <tr>
-      <% business_events_table_headers.each do |header| %>
+      <% business_organizer_events_table_headers.each do |header| %>
         <%= tag.th class: "h-10", style: "width: #{header[:width]}%;" do %>
           <span class="flex items-center gap-x-2">
             <%= tag.i class: class_names("ph", header[:icon]) %>
             <%= tag.span header[:label] %>
-            <% if header[:filter_id].present? %>
-              <span class="ml-auto shrink-0">
-                <%= render "businesses/#{header[:filter_id]}_filter_popover_button" %>
-              </span>
-            <% end %>
           </span>
         <% end %>
       <% end %>
@@ -21,7 +16,7 @@
   </thead>
   <tbody>
     <% events.each do |event| %>
-      <%= render Business::EventTableComponent.new(event) %>
+      <%= render Business::Organizer::EventTableComponent.new(event) %>
     <% end %>
   </tbody>
 </table>

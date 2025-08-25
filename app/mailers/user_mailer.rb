@@ -1,9 +1,11 @@
 class UserMailer < ApplicationMailer
   # User.includes(:city).find_each do |user|
+  #   next if user.business_owner?
+
   #   if user.city.present?
-  #     UserMailer.with(user: user).weekly_city_events_notification.deliver_later(wait: 1.hour)
+  #     UserMailer.with(user: user).weekly_city_events_notification.deliver_later
   #   else
-  #     UserMailer.with(user: user).weekly_nearby_events_notification.deliver_later(wait: 1.hour)
+  #     UserMailer.with(user: user).weekly_nearby_events_notification.deliver_later
   #   end
   # end
 

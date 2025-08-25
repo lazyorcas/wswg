@@ -5,6 +5,9 @@ production:
   create_search_queries_job:
     class: CreateSearchQueriesJob
     schedule: "0 * * * *"  # Every hour at 0 minutes
+  update_impression_counts_job:
+    class: Events::UpdateImpressionCountsJob
+    schedule: "30 * * * *"  # Every hour at 30 minutes
   reindex_events_job:
     class: Events::ReindexJob
     schedule: "30 * * * *"  # Every hour at 30 minutes
