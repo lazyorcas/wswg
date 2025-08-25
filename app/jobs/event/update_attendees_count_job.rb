@@ -5,6 +5,7 @@ class Event::UpdateAttendeesCountJob < ApplicationJob
   queue_with_priority 10
   limits_concurrency to: 5, key: ->(*) { self.class.name }
 
+  retry_on Jina::TimeoutError, wait: :polynomially_longer, attempts: 3
   retry_on Event::AttendeesCountNotFoundError, wait: 5.minutes, attempts: ATTENDEES_COUNT_NOT_FOUND_MAX_ATTEMPTS
 
   def perform(event_id)
