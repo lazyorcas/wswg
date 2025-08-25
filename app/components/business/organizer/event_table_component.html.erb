@@ -1,4 +1,4 @@
-<tr>
+<%= tag.tr id: dom_id(@event) do %>
   <%= tag.td do %>
     <span class="flex items-center justify-between">
       <%= image_tag @event.image_url, class: "shrink-0 size-16 rounded-sm object-cover" %>
@@ -20,4 +20,12 @@
   <%= tag.td do %>
     <span class="line-clamp-2"><%= @event.seens_count %></span>
   <% end %>
-</tr>
+  <%= tag.td do %>
+    <span class="flex items-center justify-center">
+      <%= tag.button class: "button button--secondary", data: { controller: "clipboard", clipboard_content_value: business_organizer_events_url(anchor: dom_id(@event)), action: "click->clipboard#copy" } do %>
+        <i class="ph ph-link"></i>
+        Copy link
+      <% end %>
+    </span>
+  <% end %>
+<% end %>

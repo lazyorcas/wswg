@@ -9,7 +9,7 @@ module Businesses::Organizers::EventsHelper
       {
         icon: "ph-map-pin",
         label: "Venue",
-        width: 30
+        width: 20
       },
       {
         icon: "ph-calendar",
@@ -24,12 +24,15 @@ module Businesses::Organizers::EventsHelper
       {
         icon: "ph-eye",
         label: "Views",
-        width: 10
+        width: 7.5
       },
       {
         icon: "ph-cursor-click",
         label: "Clicks",
-        width: 10
+        width: 7.5
+      },
+      {
+        width: 15
       }
     ]
 
