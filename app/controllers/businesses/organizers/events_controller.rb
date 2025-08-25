@@ -5,12 +5,17 @@ class Businesses::Organizers::EventsController < ApplicationController
 
   def index
     load_events
+    order_events
   end
 
   private
 
   def load_events
-    @events = event_scope.order(start_date: :desc, start_time: :desc)
+    @events = event_scope
+  end
+
+  def order_events
+    @events = @events.order(start_date: :desc, start_time: :desc)
   end
 
   def event_scope
