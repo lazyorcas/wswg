@@ -36,6 +36,7 @@ data_sources:
       city_id: "SELECT id, name FROM cities WHERE id IN {value}"
       source_id: "SELECT id, name FROM sources WHERE id IN {value}"
       business_id: "SELECT id, name FROM businesses WHERE id IN {value}"
+      organizer_id: "SELECT id, COALESCE(url, name) FROM organizers WHERE id IN {value}"
 
 # create audits
 # audit: true
