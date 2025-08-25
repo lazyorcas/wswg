@@ -15,7 +15,7 @@ module Businesses::EventsHelper
       {
         icon: "ph-map-pin",
         label: "Venue",
-        width: 15
+        width: 20
       },
       {
         filter_id: :date,
@@ -27,20 +27,20 @@ module Businesses::EventsHelper
         filter_id: :tod,
         icon: "ph-clock",
         label: "Time",
-        width: 7.5
+        width: 10
       },
       {
         filter_id: :attendees_count,
         icon: "ph-users",
         label: "Attendees",
         width: 10
-      },
-      {
-        filter_id: :source,
-        icon: "ph-globe",
-        label: "Source",
-        width: 7.5
       }
+      # {
+      #   filter_id: :source,
+      #   icon: "ph-globe",
+      #   label: "Source",
+      #   width: 7.5
+      # }
     ]
 
     if (sum = headers.map { |header| header[:width] }.sum) != 100
@@ -93,9 +93,9 @@ module Businesses::EventsHelper
     end
   end
 
-  def source_options
-    Source.where.not(name: "Ticketmaster").map do |source|
-      [ source.name, source.id, selected: source.id.to_s == event_query_params[:source_id] ]
-    end
-  end
+  # def source_options
+  #   Source.where.not(name: "Ticketmaster").map do |source|
+  #     [ source.name, source.id, selected: source.id.to_s == event_query_params[:source_id] ]
+  #   end
+  # end
 end
