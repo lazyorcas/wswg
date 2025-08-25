@@ -1,5 +1,7 @@
 class ImpressionsController < ApplicationController
   def create
+    ahoy.track "Impression", event_id: impression_params[:event_id]
+
     find_or_create_impression!
     head(:ok)
   end
