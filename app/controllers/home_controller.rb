@@ -6,8 +6,6 @@ class HomeController < ApplicationController
   layout "home"
 
   def index
-    ahoy.track "Visited homepage"
-
     load_events_directory
     load_nearby_city
 
@@ -27,6 +25,8 @@ class HomeController < ApplicationController
     end
 
     build_search_query
+
+    ahoy.track "Visited homepage", city: @city&.name
   end
 
   def pricing
