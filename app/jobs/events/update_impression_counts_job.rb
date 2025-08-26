@@ -5,6 +5,7 @@ class Events::UpdateImpressionCountsJob < ApplicationJob
   def perform(time_ago: 1.hour)
     Ahoy::Event
       .where(name: "Impression")
+      .where("user_id != 1 OR user_id IS NULL")
       .group("properties->>'event_id'")
       .where(time: time_ago.ago..)
       .count
