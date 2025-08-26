@@ -2,10 +2,11 @@ class Events::UpdateImpressionCountsJob < ApplicationJob
   queue_as :default
   queue_with_priority 2
 
-  def perform
+  def perform(time_ago: 1.hour)
     Ahoy::Event
       .where(name: "Impression")
       .where("user_id != 1 OR user_id IS NULL")
+      .where(time: time_ago.ago..)
       .group("properties->>'event_id'")
       .count
       .each do |event_id, count|
