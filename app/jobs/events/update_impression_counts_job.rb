@@ -9,7 +9,10 @@ class Events::UpdateImpressionCountsJob < ApplicationJob
       .group("properties->>'event_id'")
       .count
       .each do |event_id, count|
-        Event.find(event_id).update!(impression_count: count)
+        event = Event.find(event_id)
+        impression_count = event.impression_count || 0
+        impression_count += count
+        event.update!(impression_count: impression_count)
       end
   end
 end
