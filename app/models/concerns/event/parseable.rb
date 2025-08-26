@@ -62,7 +62,10 @@ module Event::Parseable
       schema: EventAttendeesCountSchema,
       model: "gemini-2.5-flash"
     )
-    json["attendees_count"]
+    attendees_count = json["attendees_count"]
+    # https://ai.google.dev/gemini-api/docs/structured-output
+    # FIX: Gemini uses nullable field
+    attendees_count == "null" ? nil : attendees_count
   end
 
   private
