@@ -4,6 +4,7 @@ class Events::UpdateImpressionCountsJob < ApplicationJob
 
   def perform(time_ago: 1.hour)
     Ahoy::Event
+      .left_joins(:user)
       .where(name: "Impression")
       .where("users.id IS NULL OR users.business_id IS NULL")
       .where(time: time_ago.ago..)
