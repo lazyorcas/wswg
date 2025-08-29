@@ -43,6 +43,10 @@ class Account < ApplicationRecord
   end
 
   def image_url
-    auth_hash.dig("info", "image")
+    if provider == "linkedin"
+      auth_hash.dig("info", "picture")
+    else
+      auth_hash.dig("info", "picture_url")
+    end
   end
 end

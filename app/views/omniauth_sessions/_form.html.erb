@@ -1,4 +1,10 @@
-<%= button_to "/auth/google_oauth2", class: "w-full cursor-pointer button button--secondary", data: { turbo: false } do %>
-  <%= image_tag "/sources/google.ico", class: "w-6 h-6", alt: "Google logo" %>
-  Continue with Google
-<% end %>
+<div class="flex flex-col gap-2">
+  <%= button_to "/auth/google_oauth2", class: "w-full cursor-pointer button button--secondary", data: { turbo: false } do %>
+    <%= image_tag "/sources/google.ico", class: "w-6 h-6", alt: "Google logo" %>
+    Continue with Google
+  <% end %>
+  <%= button_to "/auth/linkedin", class: "w-full cursor-pointer button button--secondary", data: { turbo: false } do %>
+    <%= image_tag "/sources/linkedin.ico", class: "w-6 h-6", alt: "LinkedIn logo" %>
+    Continue with LinkedIn
+  <% end %>
+</div>
