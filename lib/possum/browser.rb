@@ -26,11 +26,11 @@ class Possum::Browser < Ferrum::Browser
       proxy: proxy ? {
         host: ENV["PROXY_HOST"],
         port: ENV["PROXY_PORT"],
-        user: ENV["PROXY_USERNAME"],
-        password:
+        user:
           country_code.present? ?
-            "#{ENV['PROXY_PASSWORD']}_area-#{country_code}" :
-            ENV["PROXY_PASSWORD"]
+            "#{ENV['PROXY_USERNAME']}_area-#{country_code}" :
+            ENV["PROXY_USERNAME"],
+        password: ENV["PROXY_PASSWORD"]
       } : nil,
       **args
     )
