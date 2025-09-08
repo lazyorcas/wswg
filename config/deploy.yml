@@ -163,7 +163,7 @@ accessories:
       - web
     env:
       clear:
-        SCHEDULE: '@hourly'
+        SCHEDULE: '@every 3h'
         BACKUP_KEEP_DAYS: 2
         S3_BUCKET: wswg-pg-backups
         S3_PREFIX: backups
