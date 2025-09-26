@@ -1,0 +1,6 @@
+alias wswg:start="brew services start postgresql@15 opensearch && thrust bin/rails server"
+alias wswg:stop="brew services stop postgresql@15 opensearch"
+alias wswg:tunnel="ngrok http --domain $TUNNEL_DOMAIN 3000"
+alias wswg:db="pgweb --url postgres://localhost/wswg_development"
+alias wswg:p:db="ssh -N -L 8082:localhost:8081 root@$HOST_IP"
+alias wswg:p:chromium="ssh -N -L 9222:localhost:9222 root@$HOST_IP"
